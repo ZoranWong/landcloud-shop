@@ -19,7 +19,7 @@ class Index extends Manage
     public function index()
     {
         setlocale(LC_ALL, 'zh_CN');
-        $filePath = ROOT_PATH . 'public/static/templete/user-csv-import.csv';
+        $filePath = ROOT_PATH . 'public/static/template/user-csv-import.csv';
         $type = pathinfo($filePath);
         $type = strtolower($type["extension"]);
         $inpuFileType = IOFactory::identify($filePath);
@@ -32,8 +32,6 @@ class Index extends Manage
         $phpExcel = $excelReader->load($filePath);
         $sheet = $phpExcel->getSheet(0);
         $sheetData = $sheet->toArray();
-        print_r($sheetData);
-        exit;
 
         $operationModel = new Operation();
         $this->assign('menu', $operationModel->manageMenu(session('manage')['id']));

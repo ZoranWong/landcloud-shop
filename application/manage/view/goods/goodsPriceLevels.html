@@ -1,15 +1,24 @@
 <div class="goods-price-level-template">
-    <table id = "priceLevels" class="layui-table">
-        <thead>
-            <tr>
-                <th>区域</th>
-                <th>规格</th>
-                <th>数量（多少库存）</th>
-                <th>价格</th>
-                <th>操作</th>
-            </tr>
-        </thead>
+    <table id="priceLevels" class="layui-table">
     </table>
 </div>
 <script type="text/javascript">
+    $(function () {
+        layui.use('table', function () {
+            let table = layui.table;
+            table.render({
+                elem: '#priceLevels'
+                ,height: 312
+                ,page: true //开启分页
+                ,cols: [[ //表头
+                    {field: 'area', title: '区域', width:80, merge: true}
+                    ,{field: 'spec_name', title: '规格', width:80, sort: true}
+                    ,{field: 'goods_num', title: '产品数量', width:80}
+                    ,{field: 'price', title: '产品价格', width: 177}
+                    ,{field: 'level', title: '等级', width: 135, sort: true}
+                    ,{field: 'opt', title: '操作'}
+                ]]
+            });
+        });
+    });
 </script>

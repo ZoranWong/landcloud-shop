@@ -158,10 +158,10 @@
             url: "{:url('Goods/index')}?_ajax=1",
             id: 'goodsTable',
             cols: [[
-                {type: 'checkbox'},
-                {type: 'numbers'},
-                {field: 'state', sort: true, title: '热门', width: 80, align: 'center', templet: '#hot', unresize: true},
-                {field: 'state', sort: true, title: '推荐', width: 80, align: 'center', templet: '#rec', unresize: true},
+                {type: 'checkbox', fixed: 'left'},
+                {type: 'numbers', fixed: 'left'},
+                {field: 'state', sort: true, title: '热门', width: 80, align: 'center', templet: '#hot', unresize: true, fixed: 'left'},
+                {field: 'state', sort: true, title: '推荐', width: 80, align: 'center', templet: '#rec', unresize: true, fixed: 'left'},
                 {
                     field: 'image', width: 100, title: '缩略图', align: 'center', templet: function (data) {
                         return '<a href="javascript:void(0);" onclick=viewImage("' + data.image + '")>' +
@@ -210,7 +210,8 @@
                         html += '<a class="layui-btn layui-btn-xs edit-class" data-id="' + data.id + '">编辑</a>';
                         html += '<a class="layui-btn layui-btn-danger layui-btn-xs del-class" data-name="' + data.name + '" data-id="' + data.id + '">删除</a>';
                         return html;
-                    }
+                    },
+                    fixed: 'right'
                 }
             ]]
         });
