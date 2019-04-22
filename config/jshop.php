@@ -10,8 +10,8 @@ return [
     //售后，评论等上传图片数量限制
     'image_max'             => 5,
     //商品导入模板
-    'goods_import_templete' => ROOT_PATH . 'public' . DS . 'static' . DS . 'templete' . DS . 'goods-csv-import.csv',
-    'user_import_templete'  => ROOT_PATH . 'public' . DS . 'static' . DS . 'templete' . DS . 'user-csv-import.csv',
+    'goods_import_templete' => ROOT_PATH . 'public' . DS . 'static' . DS . 'template' . DS . 'goods-csv-import.csv',
+    'user_import_templete'  => ROOT_PATH . 'public' . DS . 'static' . DS . 'template' . DS . 'user-csv-import.csv',
     //快递查询配置参数
     'api_express'           => [
         'key'      => '',

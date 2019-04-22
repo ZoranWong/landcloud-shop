@@ -33,7 +33,7 @@ class InitHooks
         $hooksModel  = new Hooks();
         $addonsModel = new Addons();
         $addonList = [];
-        if (!$data) {
+        if (!$data || true) {
             $hooks = $hooksModel->field('name,addons')->select();
             if (!$hooks->isEmpty()) {
                 $hooks = $hooks->toArray();
