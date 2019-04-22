@@ -1607,3 +1607,14 @@ CREATE TABLE `lc_wsdetail` (
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+DROP TABLE IF EXISTS `lc_goods_price_levels`;
+CREATE TABLE `lc_goods_price_levels`(
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `goods_id` int(11) NOT NULL COMMIT '产品ID',
+  `area` varchar (80) CHARACTER SET utf8 DEFAULT NULL COMMIT '区域名称',
+  `level` int(2) NOT NULL COMMIT '等级',
+  `price` decimal (10, 2) NOT NULL '售卖价格',
+  `name` varchar (16) NOT NULL '等级名称',
+  `buy_num` int(10) NOT NULL '购买数量'
+)ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
