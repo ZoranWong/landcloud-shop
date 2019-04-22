@@ -1618,3 +1618,12 @@ CREATE TABLE `lc_goods_price_levels`(
   `name` varchar (16) NOT NULL '等级名称',
   `buy_num` int(10) NOT NULL '购买数量'
 )ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+
+DROP TABLE IF EXISTS `lc_relation_goods`;
+CREATE TABLE `lc_relation_goods`(
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `main_goods_id` int(11) NOT NULL COMMIT '产品ID',
+  `relation_goods_id` int(11) NOT NULL COMMIT '产品ID',
+  `required` tinyint(1) DEFAULT 0 COMMIT '是否必须',
+)ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+
