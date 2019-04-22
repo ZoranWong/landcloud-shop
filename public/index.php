@@ -14,7 +14,7 @@ namespace think;
 define('ROOT_PATH',dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR);
 define('DS',DIRECTORY_SEPARATOR);
 // 插件目录
-define('ADDON_PATH', ROOT_PATH . 'addons'   . DIRECTORY_SEPARATOR);
+// defined('ADDON_PATH') || define('ADDON_PATH', ROOT_PATH . 'addons'   . DIRECTORY_SEPARATOR);
 
 if(!file_exists(ROOT_PATH.'/public/install/install.lock')&&!file_exists(ROOT_PATH.'/config/install.lock')){
     header('Location:/install');exit;
