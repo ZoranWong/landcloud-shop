@@ -18,17 +18,20 @@ use think\Queue;
 use Apfelbox\FileDownload\FileDownload;
 
 
-class Ietask extends Manage{
+class Ietask extends Manage
+{
 
-    public function index(){
+    public function index()
+    {
         $ietaskModel = new ietaskModel();
 
-        if(Request::isAjax()) {
+        if (Request::isAjax()) {
             $filter = input('request.');
             return $ietaskModel->tableData($filter);
         }
         return $this->fetch('index');
     }
+
     /**
      * taskname :导出任务名称
      * ids :导出时选中相关id
@@ -39,14 +42,14 @@ class Ietask extends Manage{
      */
     public function export()
     {
-        $result   = [
+        $result = [
             'status' => false,
-            'data'   => [],
-            'msg'    => '参数丢失',
+            'data' => [],
+            'msg' => '参数丢失',
         ];
         $taskname = input('taskname/s', '');
-        $filter   = input('filter/s', '');
-        $job      = input('model/s', '');
+        $filter = input('filter/s', '');
+        $job = input('model/s', '');
         if (!$taskname) {
             $taskname = md5(time());
         }
@@ -62,24 +65,24 @@ class Ietask extends Manage{
 
         //增加条件验证
         if (method_exists("app\\common\\model\\$job", "export_validate")) {
-            $model       = "app\\common\\model\\$job";
-            $obj         = new $model();
+            $model = "app\\common\\model\\$job";
+            $obj = new $model();
             $validateRes = $obj->exportValidate($where); //验证过滤条件
             if (!$validateRes['status']) {
                 return $validateRes;
             }
         }
 
-        $ietaskModle    = new ietaskModel();
-        $data['name']   = $taskname;
-        $data['type']   = $ietaskModle::TYPE_EXPORT;
+        $ietaskModle = new ietaskModel();
+        $data['name'] = $taskname;
+        $data['type'] = $ietaskModle::TYPE_EXPORT;
         $data['status'] = $ietaskModle::WAIT_STATUS;
         $data['params'] = json_encode($where);
 
         $res = $ietaskModle->addExportTask($data, $job);
         if ($res !== false) {
             $result['status'] = true;
-            $result['msg']    = '导出任务加入成功，请到任务列表中下载文件';
+            $result['msg'] = '导出任务加入成功，请到任务列表中下载文件';
         }
 
         return $result;
@@ -90,10 +93,11 @@ class Ietask extends Manage{
      */
     public function importTemplete()
     {
-        $tplName = input('tplName','goods');
-        $filePath = config('jshop.'.$tplName.'_import_templete');
+        $tplName = input('tplName', 'goods');
 
-        if(!file_exists($filePath)){ //检查文件是否存在
+        $filePath = config('jshop.' . $tplName . '_import_template');
+
+        if (!file_exists($filePath)) { //检查文件是否存在
             echo '404';
         }
         $file_name=basename($filePath);
@@ -104,11 +108,12 @@ class Ietask extends Manage{
         //输入文件标签
         header("Content-type: application/octet-stream");
         header("Accept-Ranges: bytes");
-        header("Accept-Length: ".filesize($filePath));
-        header("Content-Disposition: attachment; filename=".$file_name);
+        header("Accept-Length: " . filesize($filePath));
+        header("Content-Disposition: attachment; filename=" . $file_name);
         //输出文件内容
-        echo fread($file_type,filesize($filePath));
-        fclose($file_type);exit();
+        echo fread($file_type, filesize($filePath));
+        fclose($file_type);
+        exit();
     }
 
 
@@ -163,52 +168,54 @@ class Ietask extends Manage{
             'data' => [],
             'msg' => '下载失败'
         ];
-        $id = input('id/d',0);
-        if(!$id){
+        $id = input('id/d', 0);
+        if (!$id) {
             $result['msg'] = '关键参数缺失';
             return $result;
         }
         //todo 判断能否下载
-        $result['status']=true;
-        $result['msg']='开始下载';
-        $result['data']['url'] = url('ietask/dodown',['id'=>$id]);
+        $result['status'] = true;
+        $result['msg'] = '开始下载';
+        $result['data']['url'] = url('ietask/dodown', ['id' => $id]);
         return $result;
     }
 
     public function doDown()
     {
-        $id = input('id/d',0);
-        if(!$id){
+        $id = input('id/d', 0);
+        if (!$id) {
             $this->error("关键参数丢失");
         }
         $ietaskModle = new ietaskModel();
-        $task = $ietaskModle->where(['id'=>$id])->find();
-        if($task){
-            try{
+        $task = $ietaskModle->where(['id' => $id])->find();
+        if ($task) {
+            try {
                 $fileDownload = FileDownload::createFromFilePath($task['file_path']);
                 $fileDownload->sendDownload($task['file_name']);
-            }catch (\Exception $e){
-                Log::record('文件下载失败，错误信息：'.json_encode($e->getMessage()));
+            } catch (\Exception $e) {
+                Log::record('文件下载失败，错误信息：' . json_encode($e->getMessage()));
                 $this->error("文件不存在");
             }
-        }else{
+        } else {
             $this->error("文件不存在");
         }
     }
+
     //删除
-    public function del(){
+    public function del()
+    {
         $result = [
             'status' => false,
             'msg' => '删除失败'
         ];
-        $id = input('id/d','');
-        if(!$id){
+        $id = input('id/d', '');
+        if (!$id) {
             $result['msg'] = '关键参数丢失';
             return $result;
         }
-        $model  =new \app\common\model\Ietask();
-        $rel = $model->where('id','eq',$id)->delete();
-        if($rel){
+        $model = new \app\common\model\Ietask();
+        $rel = $model->where('id', 'eq', $id)->delete();
+        if ($rel) {
             $result['status'] = true;
             $result['msg'] = '删除成功';
         }
