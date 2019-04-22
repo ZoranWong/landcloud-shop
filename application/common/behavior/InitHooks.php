@@ -30,10 +30,10 @@ class InitHooks
     {
         //if(isset($_GET['m']) && $_GET['m'] === 'Install') return; //屏蔽安装程序
         $data = Cache::get('hooks');
-        $hooksModel  = new Hooks();
+        $hooksModel = new Hooks();
         $addonsModel = new Addons();
         $addonList = [];
-        if (!$data || true) {
+        if (!$data) {
             $hooks = $hooksModel->field('name,addons')->select();
             if (!$hooks->isEmpty()) {
                 $hooks = $hooks->toArray();
@@ -42,17 +42,17 @@ class InitHooks
                         $where = [];
                         //取出可用插件，然后把可用插件加入钩子
                         $where[] = ['status', 'eq', $addonsModel::INSTALL_STATUS];
-                        $names   = explode(',', $value['addons']);
+                        $names = explode(',', $value['addons']);
                         $where[] = ['name', 'in', $names];
-                        $data    = $addonsModel->where($where)->field('name')->select();
+                        $data = $addonsModel->where($where)->field('name')->select();
                         if (!$data->isEmpty()) {
-                            $data        = $data->toArray();
-                            $data        = array_column($data, 'name');
-                            $addons      = array_intersect($names, $data);
+                            $data = $data->toArray();
+                            $data = array_column($data, 'name');
+                            $addons = array_intersect($names, $data);
                             $addons_list = array_filter(array_map('get_addon_class', $addons));
 
                             Hook::add($value['name'], $addons_list);
-                            $addonList[$value['name']]= $addons_list;
+                            $addonList[$value['name']] = $addons_list;
                         }
                     }
                 }

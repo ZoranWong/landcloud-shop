@@ -720,7 +720,6 @@ class App extends Container
     public function controller($name, $layer = 'controller', $appendSuffix = false, $empty = '')
     {
         list($module, $class) = $this->parseModuleAndClass($name, $layer, $appendSuffix);
-
         if (class_exists($class)) {
             return $this->make($class, true);
         } elseif ($empty && class_exists($emptyClass = $this->parseClass($module, $layer, $empty, $appendSuffix))) {

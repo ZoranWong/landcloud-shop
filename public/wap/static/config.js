@@ -1,2 +1,2 @@
-window.host = '';
+window.host = 'flyshop.cc';
 window.entId = '';
