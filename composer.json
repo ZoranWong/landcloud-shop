@@ -1,18 +1,18 @@
 {
-    "name": "jihainet/jshop",
-    "description": "This is an open source B2C mall.",
+    "name": "land_cloud_shop",
+    "description": "This is a B2C mall.",
     "type": "project",
     "keywords": [
         "framework",
         "thinkphp",
         "ORM"
     ],
-    "homepage": "https://www.jihainet.com/",
+    "homepage": "http://www.ztes.com/",
     "license": "Apache-2.0",
     "authors": [
         {
-            "name": "sin",
-            "email": "sin@jihainet.com"
+            "name": "zoran",
+            "email": "skyandsunning@163.com"
         }
     ],
     "require": {
