@@ -32,6 +32,7 @@ class InitHooks
         $data = Cache::get('hooks');
         $hooksModel  = new Hooks();
         $addonsModel = new Addons();
+        $addonList = [];
         if (!$data) {
             $hooks = $hooksModel->field('name,addons')->select();
             if (!$hooks->isEmpty()) {
@@ -49,11 +50,13 @@ class InitHooks
                             $data        = array_column($data, 'name');
                             $addons      = array_intersect($names, $data);
                             $addons_list = array_filter(array_map('get_addon_class', $addons));
+
                             Hook::add($value['name'], $addons_list);
+                            $addonList[$value['name']]= $addons_list;
                         }
                     }
                 }
-                Cache::set('hooks', Hook::get());
+                Cache::set('hooks', $addonList);
             }
         } else {
 

@@ -307,6 +307,7 @@ abstract class Driver
 
         $serialize = self::$serialize[0];
 
+
         return self::$serialize[2] . $serialize($data);
     }
 

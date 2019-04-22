@@ -161,7 +161,7 @@ class File extends Driver
      * @param  mixed         $value  存储数据
      * @param  int|\DateTime $expire  有效时间 0为永久
      * @return boolean
-     */
+*/
     public function set($name, $value, $expire = null)
     {
         $this->writeTimes++;
