@@ -127,6 +127,7 @@ class Operation extends Common
      */
     public function manageMenu($manage_id, $controllerName="", $actionName="")
     {
+
         $parent_menu_id = self::MENU_MANAGE;
 
         //根据菜单取菜单on的样式
@@ -134,6 +135,7 @@ class Operation extends Common
 
         if(cache('?manage_operation_'.$manage_id)){
             $list = cache('manage_operation_'.$manage_id);
+            //var_dump($list);exit();
         }else{
             $manageModel = new Manage();
             $manageRoleRel = new ManageRoleRel();

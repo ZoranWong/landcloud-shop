@@ -13,5 +13,6 @@ return array(
     'myxland\\addons\\' => array($vendorDir . '/myxland/think-addons/src'),
     'app\\' => array($baseDir . '/application'),
     'Wechat\\' => array($vendorDir . '/zoujingli/wechat-php-sdk/Wechat'),
+    'OSS\\' => array($vendorDir . '/aliyuncs/oss-sdk-php/src/OSS'),
     'Apfelbox\\FileDownload\\' => array($vendorDir . '/apfelbox/php-file-download/src'),
 );

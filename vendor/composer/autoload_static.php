@@ -33,6 +33,10 @@ class ComposerStaticInitd7a1a5f41e2fb6148a8b8c876faba931
         array (
             'Wechat\\' => 7,
         ),
+        'O' => 
+        array (
+            'OSS\\' => 4,
+        ),
         'A' => 
         array (
             'Apfelbox\\FileDownload\\' => 22,
@@ -67,6 +71,10 @@ class ComposerStaticInitd7a1a5f41e2fb6148a8b8c876faba931
         'Wechat\\' => 
         array (
             0 => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat',
+        ),
+        'OSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS',
         ),
         'Apfelbox\\FileDownload\\' => 
         array (
