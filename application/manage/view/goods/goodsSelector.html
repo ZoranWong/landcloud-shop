@@ -1,0 +1,84 @@
+<style type="text/css">
+    .layui-card-body {
+        background-color: #fff;
+        padding: 10px;
+        margin-top: 10px;
+        border: 1px solid #e6e6e6;
+    }
+
+    .layui-tab-card > .layui-tab-title {
+        background-color: #f9f9f9;
+        border-bottom: none;
+    }
+
+    .layui-tab-content {
+        padding: 0;
+    }
+
+    .layui-table, .layui-table-view {
+        margin: 0;
+    }
+
+    .layui-margin-10 {
+        margin: 10px;
+    }
+</style>
+<script src="__STATIC_JS__jquery.form.js" type="text/javascript" charset="utf-8"></script>
+
+<div class="layui-card-body">
+    <div class="layui-tab layui-tab-card" lay-filter="goods-tab">
+        <form class="layui-form seller-form" action="">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">商品名称：</label>
+                    <div class="layui-input-inline seller-inline-4">
+                        <input type="text" name="name" lay-verify="title" placeholder="请输入商品名称" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="layui-tab-content">
+            <table id="goodsTable" lay-filter="test"></table>
+        </div>
+    </div>
+</div>
+<script>
+    var table, window_box;
+    layui.use(['form', 'layedit', 'upload', 'laydate', 'table', 'element'], function () {
+        var upload = layui.upload;
+        var element = layui.element;
+        var filter = {};
+
+        table = layui.table.render({
+            elem: '#goodsTable',
+            height: 'full-310',
+            cellMinWidth: '80',
+            page: 'true',
+            limit: '20',
+            width: 650,
+            url: "{:url('Goods/index')}?_ajax=1",
+            id: 'goodsTable',
+            cols: [[
+                {type: 'numbers', fixed: 'left'},
+                {
+                    field: 'image', width: 100, title: '缩略图', align: 'center', templet: function (data) {
+                        return '<a href="javascript:void(0);" onclick=viewImage("' + data.image + '")>' +
+                            '<image style="max-width:30px;max-height:30px;" src="' + data.image + '"/></a>';
+                    }
+                },
+                {field: 'name', width: 250, title: '名称', align: 'center'},
+                {field: 'required', width: 160, title: '是否必须购买', templet: function (data) {
+                        return `<input type="checkbox" name="is_recommend" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="is_recommend" {{ d.is_recommend== 1 ? 'checked' : '' }}>`;
+                    }},
+                {field: 'opt', width: 100, title: '关联操作', templet: function (data) {
+                        return `<input type="checkbox" name="is_recommend" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="is_recommend" {{ d.is_recommend== 1 ? 'checked' : '' }}>`;
+                    }}
+            ]]
+        });
+
+    });
+
+
+</script>
+

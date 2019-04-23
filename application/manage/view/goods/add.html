@@ -174,7 +174,11 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-form-label">多级价格：</div>
-
+            <div class="layui-input-block">{include file="../application/manage/view/goods/goodsPriceLevels.html"}</div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-form-label">关联产品：</div>
+            <div class="layui-input-block">{include file="../application/manage/view/goods/goodsSelector.html"}</div>
         </div>
     </div>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
@@ -304,10 +308,10 @@
         laytpl = layui.laytpl;
 
         form.render();
-
         //保存商品
         form.on('submit(save)', function (data) {
             formData = data.field;
+            console.log('add goods form data', JSON.stringify(formData));
             if (!formData) {
                 layer.msg('请先完善数据', {time: 1300});
                 return false;

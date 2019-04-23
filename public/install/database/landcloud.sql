@@ -1606,24 +1606,33 @@ CREATE TABLE `lc_wsdetail` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
-SET FOREIGN_KEY_CHECKS = 1;
 
+-- ----------------------------
+--  Table structure for `lc_goods_price_levels`
+-- ----------------------------
 DROP TABLE IF EXISTS `lc_goods_price_levels`;
 CREATE TABLE `lc_goods_price_levels`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `goods_id` int(11) NOT NULL COMMIT '产品ID',
-  `area` varchar (80) CHARACTER SET utf8 DEFAULT NULL COMMIT '区域名称',
-  `level` int(2) NOT NULL COMMIT '等级',
-  `price` decimal (10, 2) NOT NULL '售卖价格',
-  `name` varchar (16) NOT NULL '等级名称',
-  `buy_num` int(10) NOT NULL '购买数量'
-)ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+  `goods_id` int(11) NOT NULL  COMMENT '产品ID',
+  `area` varchar (80) CHARACTER SET utf8 DEFAULT NULL  COMMENT '区域名称',
+  `level` int(2) NOT NULL  COMMENT '梯度',
+  `price` decimal (10, 2) NOT NULL COMMENT '售卖价格',
+  `name` varchar (16) NOT NULL COMMENT '梯度名称',
+  `buy_num` int(10) NOT NULL COMMENT '购买数量',
+  PRIMARY KEY (`id`) USING BTREE
+)ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='梯度价格表';
 
+
+-- ----------------------------
+--  Table structure for `lc_relation_goods`
+-- ----------------------------
 DROP TABLE IF EXISTS `lc_relation_goods`;
 CREATE TABLE `lc_relation_goods`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `main_goods_id` int(11) NOT NULL COMMIT '产品ID',
-  `relation_goods_id` int(11) NOT NULL COMMIT '产品ID',
-  `required` tinyint(1) DEFAULT 0 COMMIT '是否必须',
-)ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+  `main_goods_id` int(11) NOT NULL  COMMENT '产品ID',
+  `relation_goods_id` int(11) NOT NULL  COMMENT '产品ID',
+  `required` tinyint(1) DEFAULT 0  COMMENT '是否必须',
+  PRIMARY KEY (`id`) USING BTREE
+)ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='关联产品';
 
+SET FOREIGN_KEY_CHECKS = 1;

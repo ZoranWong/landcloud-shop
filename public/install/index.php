@@ -139,15 +139,19 @@ if ($get == $config['endPage']) {
 			
             //循环query
             $total_page = ceil(count($sql_array)/$config['limit']);
-            if($_POST['page']<=$total_page){
+            $return['sql'] = [];
+            if($_POST['page']<= $total_page){
                 foreach ($sql_array as $k => $v) {
                     if($k>=$start && $k<$end){
                         if (!empty($v)) {
                             $link->query($v);
+                            //var_dump($k);
+                            $return['sql'][] = [$v, $link->error];
                         }
                     }
                 }
             }
+            //exit();
             $return['status'] = true;
             $return['msg'] = '安装中';
             $return['data']['page']      = $_POST['page'] + 1;
