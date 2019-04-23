@@ -8,13 +8,10 @@
 // +----------------------------------------------------------------------
 namespace app\job\import;
 
-use think\exception\ErrorException;
-use think\facade\Validate;
-use think\queue\Job;
-use app\common\model\User as UserModel;
-
 use app\common\model\Ietask;
+use app\common\model\User as UserModel;
 use think\facade\Log;
+use think\queue\Job;
 
 class User
 {

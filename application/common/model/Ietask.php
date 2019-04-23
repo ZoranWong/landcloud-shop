@@ -60,12 +60,14 @@ class Ietask extends Common
      * @param string $job
      * @return bool
      */
-    public function addImportTask($data, $job = 'Goods'){
+    public function addImportTask($data, $job = 'Goods')
+    {
         if ($this->save($data)) {
             $importData['task_id'] = $this->id;
             $importData['params'] = $data['params'];
-            $jobClass = 'app\job\import\\' . $job . '@exec';
+            $jobClass = "app\\service\\excel\\handler\\{$job}Handler@handle";
             $queueRes = \think\Queue::push($jobClass, $importData);//加入导出队列
+
             return $queueRes;
         } else {
             return false;
@@ -74,9 +76,9 @@ class Ietask extends Common
 
     public function tableWhere($post)
     {
-        $where = $whereOr =[];
+        $where = $whereOr = [];
         if (isset($post['name']) && $post['name'] != "") {
-            $where[] = ['name', 'like', "%".$post['name']."%"];
+            $where[] = ['name', 'like', "%" . $post['name'] . "%"];
         }
         if (isset($post['status']) && $post['status'] !== "") {
             $where[] = ['status', 'eq', $post['status']];
@@ -91,17 +93,16 @@ class Ietask extends Common
 
     public function tableFormat($list)
     {
-        if($list){
-            foreach($list as $key=>$val){
+        if ($list) {
+            foreach ($list as $key => $val) {
                 $list[$key]['utime'] = getTime($val['utime']);
                 $list[$key]['ctime'] = getTime($val['ctime']);
-                if($list[$key]['type'] == self::TYPE_EXPORT){
+                if ($list[$key]['type'] == self::TYPE_EXPORT) {
                     $list[$key]['type'] = "导出";
-                }else{
+                } else {
                     $list[$key]['type'] = "导入";
                 }
-                switch ($list[$key]['status'])
-                {
+                switch ($list[$key]['status']) {
                     case self::WAIT_STATUS:
                         $list[$key]['status'] = "等待执行";
                         break;

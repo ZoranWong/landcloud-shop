@@ -1,65 +1,53 @@
 <?php
 // 应用公共文件
-use think\Cache;
-use think\Config;
-use think\Cookie;
-use think\Db;
-use think\Debug;
-use think\exception\HttpException;
-use think\exception\HttpResponseException;
-use think\Lang;
-use think\Loader;
-use think\Log;
-use think\Model;
-use think\Request;
-use think\Response;
-use think\Session;
-use think\Url;
-use think\View;
-use think\Container;
-use app\common\model\Operation;
 use app\common\model\Area;
-use app\common\model\Payments;
 use app\common\model\Logistics;
+use app\common\model\Payments;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 //毫秒数
 //返回当前的毫秒时间戳
-function msectime() {
+function msectime()
+{
     list($tmp1, $tmp2) = explode(' ', microtime());
     return sprintf('%.0f', (floatval($tmp1) + floatval($tmp2)) * 1000);
 }
+
 /**
  * 获取客户端IP地址
  * @param integer $type 返回类型 0 返回IP地址 1 返回IPV4地址数字
  * @param boolean $adv 是否进行高级模式获取（有可能被伪装）
  * @return mixed
  */
-function get_client_ip($type = 0,$adv=false) {
-    $type       =  $type ? 1 : 0;
-    static $ip  =   NULL;
+function get_client_ip($type = 0, $adv = false)
+{
+    $type = $type ? 1 : 0;
+    static $ip = NULL;
     if ($ip !== NULL) return $ip[$type];
-    if($adv){
+    if ($adv) {
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $arr    =   explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-            $pos    =   array_search('unknown',$arr);
-            if(false !== $pos) unset($arr[$pos]);
-            $ip     =   trim($arr[0]);
-        }elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip     =   $_SERVER['HTTP_CLIENT_IP'];
-        }elseif (isset($_SERVER['REMOTE_ADDR'])) {
-            $ip     =   $_SERVER['REMOTE_ADDR'];
+            $arr = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $pos = array_search('unknown', $arr);
+            if (false !== $pos) unset($arr[$pos]);
+            $ip = trim($arr[0]);
+        } elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (isset($_SERVER['REMOTE_ADDR'])) {
+            $ip = $_SERVER['REMOTE_ADDR'];
         }
-    }elseif (isset($_SERVER['REMOTE_ADDR'])) {
-        $ip     =   $_SERVER['REMOTE_ADDR'];
+    } elseif (isset($_SERVER['REMOTE_ADDR'])) {
+        $ip = $_SERVER['REMOTE_ADDR'];
     }
     // IP地址合法验证
-    $long = sprintf("%u",ip2long($ip));
-    $ip   = $long ? array($ip, $long) : array('0.0.0.0', 0);
+    $long = sprintf("%u", ip2long($ip));
+    $ip = $long ? array($ip, $long) : array('0.0.0.0', 0);
     return $ip[$type];
 }
 
 //判断前端浏览器类型
-function get_client_broswer(){
+function get_client_broswer()
+{
     $ua = $_SERVER['HTTP_USER_AGENT'];
 
     //微信内置浏览器
@@ -74,47 +62,47 @@ function get_client_broswer(){
     }
     return false;
 }
+
 //生成编号
-function get_sn($type){
-    switch ($type)
-    {
+function get_sn($type)
+{
+    switch ($type) {
         case 1:         //订单编号
-            $str = $type.substr(msectime().rand(0,9),1);
+            $str = $type . substr(msectime() . rand(0, 9), 1);
             break;
         case 2:         //支付单编号
-            $str = $type.substr(msectime().rand(0,9),1);
+            $str = $type . substr(msectime() . rand(0, 9), 1);
             break;
         case 3:         //商品编号
-            $str = 'G'.substr(msectime().rand(0,5),1);
+            $str = 'G' . substr(msectime() . rand(0, 5), 1);
             break;
         case 4:         //货品编号
-            $str = 'P'.substr(msectime().rand(0,5),1);
+            $str = 'P' . substr(msectime() . rand(0, 5), 1);
             break;
         case 5:         //售后单编号
-            $str = $type.substr(msectime().rand(0,9),1);
+            $str = $type . substr(msectime() . rand(0, 9), 1);
             break;
         case 6:         //退款单编号
-            $str = $type.substr(msectime().rand(0,9),1);
+            $str = $type . substr(msectime() . rand(0, 9), 1);
             break;
         case 7:         //退货单编号
-            $str = $type.substr(msectime().rand(0,9),1);
+            $str = $type . substr(msectime() . rand(0, 9), 1);
             break;
         case 8:         //发货单编号
-            $str = $type.substr(msectime().rand(0,9),1);
+            $str = $type . substr(msectime() . rand(0, 9), 1);
             break;
         case 9:         //提货单号
             //$str = 'T'.$type.substr(msectime().rand(0,5), 1);
-            $chars = ['Q','W','E','R','T','Y','U','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M','2','3','4','5','6','7','8','9'];
+            $chars = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '2', '3', '4', '5', '6', '7', '8', '9'];
             $charsLen = count($chars) - 1;
             shuffle($chars);
             $str = '';
-            for($i = 0; $i < 6; $i++)
-            {
+            for ($i = 0; $i < 6; $i++) {
                 $str .= $chars[mt_rand(0, $charsLen)];
             }
             break;
         default:
-            $str = substr(msectime().rand(0,9),1);
+            $str = substr(msectime() . rand(0, 9), 1);
     }
     return $str;
 }
@@ -126,8 +114,8 @@ function get_sn($type){
  */
 function get_hash()
 {
-    $chars   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()+-';
-    $random  = $chars[mt_rand(0,73)] . $chars[mt_rand(0,73)] . $chars[mt_rand(0,73)] . $chars[mt_rand(0,73)] . $chars[mt_rand(0,73)];
+    $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()+-';
+    $random = $chars[mt_rand(0, 73)] . $chars[mt_rand(0, 73)] . $chars[mt_rand(0, 73)] . $chars[mt_rand(0, 73)] . $chars[mt_rand(0, 73)];
     $content = uniqid() . $random;
     return sha1($content);
 }
@@ -153,10 +141,10 @@ function get_file_extension($filename)
  * Email:1457529125@qq.com
  * Date: 2018-01-09 15:26
  */
-function get_hash_dir($name='default')
+function get_hash_dir($name = 'default')
 {
-    $ident = sha1(uniqid('',true) . $name . microtime());
-    $dir   = '/' . $ident{0} . $ident{1} . '/' . $ident{2} . $ident{3} . '/' . $ident{4} . $ident{5} . '/';
+    $ident = sha1(uniqid('', true) . $name . microtime());
+    $dir = '/' . $ident{0} . $ident{1} . '/' . $ident{2} . $ident{3} . '/' . $ident{4} . $ident{5} . '/';
     return $dir;
 }
 
@@ -165,18 +153,18 @@ function get_hash_dir($name='default')
  * +--------------------------------------------------------------------
  * Description 递归创建目录
  * +--------------------------------------------------------------------
- * @param  string $dir 需要创新的目录
+ * @param string $dir 需要创新的目录
  * +--------------------------------------------------------------------
  * @return 若目录存在,或创建成功则返回为TRUE
  * +--------------------------------------------------------------------
  * @author gongwen
  * +--------------------------------------------------------------------
  */
-function mkdirs($dir,$mode = 0777)
+function mkdirs($dir, $mode = 0777)
 {
-    if(is_dir($dir) || mkdir($dir,$mode,true)) return true;
-    if(!mkdirs(dirname($dir),$mode)) return false;
-    return mkdir($dir,$mode,true);
+    if (is_dir($dir) || mkdir($dir, $mode, true)) return true;
+    if (!mkdirs(dirname($dir), $mode)) return false;
+    return mkdir($dir, $mode, true);
 }
 
 
@@ -207,7 +195,7 @@ function _sImage($image_id = '', $type = 's')
     }
 
     $image_obj = new \app\common\model\Images();
-    $image     = $image_obj->where([
+    $image = $image_obj->where([
         'id' => $image_id
     ])->field('url')->find();
     if ($image) {
@@ -224,19 +212,19 @@ function _sImage($image_id = '', $type = 's')
 /**
  * 相对地址转换为绝对地址
  */
-function getRealUrl($url='')
+function getRealUrl($url = '')
 {
-    if(stripos($url,'http')!==false||stripos($url,'https')!==false) {
+    if (stripos($url, 'http') !== false || stripos($url, 'https') !== false) {
         return $url;
-    }else{
+    } else {
         $storage_params = getSetting('image_storage_params');
         if (isset($storage_params['domain']) && $storage_params['domain']) {
             return $storage_params['domain'] . $url;
         }
-        if(config('jshop.image_storage.domain')){
-            return config('jshop.image_storage.domain').$url;
+        if (config('jshop.image_storage.domain')) {
+            return config('jshop.image_storage.domain') . $url;
         }
-        return request()->domain().$url;
+        return request()->domain() . $url;
     }
 }
 
@@ -245,61 +233,64 @@ function getRealUrl($url='')
  */
 function format_mobile($mobile)
 {
-    return substr($mobile,0,5)."****".substr($mobile,9,2);
+    return substr($mobile, 0, 5) . "****" . substr($mobile, 9, 2);
 }
 
 //如果没有登陆的情况下，记录来源url，并跳转到登陆页面
 function redirect_url()
 {
-    if(cookie('?redirect_url')){
+    if (cookie('?redirect_url')) {
         $str = cookie('redirect_url');
-        cookie('redirect_url',null);
-    }else{
+        cookie('redirect_url', null);
+    } else {
         $str = '/';
     }
     return $str;
 }
+
 //返回用户信息
-function get_user_info($user_id,$field = 'mobile')
+function get_user_info($user_id, $field = 'mobile')
 {
     $user = app\common\model\User::get($user_id);
-    if($user){
-        if($field == 'nickname') {
+    if ($user) {
+        if ($field == 'nickname') {
             $nickname = $user['nickname'];
             if ($nickname == '') {
                 $nickname = format_mobile($user['mobile']);
             }
             return $nickname;
-        }else{
+        } else {
             return $user->$field;
         }
-    }else{
+    } else {
         return "";
     }
 }
+
 //返回商品信息
-function get_goods_info($goods_id,$field = 'name')
+function get_goods_info($goods_id, $field = 'name')
 {
     $goodsModel = new \app\common\model\Goods();
-    $info = $goodsModel->where(['id'=>$goods_id])->find();
-    if($info){
-        if($field == 'image_id'){
+    $info = $goodsModel->where(['id' => $goods_id])->find();
+    if ($info) {
+        if ($field == 'image_id') {
             return _sImage($info[$field]);
-        }else{
+        } else {
             return $info[$field];
         }
-    }else{
+    } else {
         return '';
     }
 }
+
 //返回用户信息
 function get_user_id($mobile)
 {
     $userModel = new app\common\model\User();
-    $user = $userModel->where(array('mobile'=>$mobile))->find();
-    if($user){
+    $user = $userModel->where(array('mobile' => $mobile))->find();
+    if ($user) {
         return $user->id;
-    }else{
+    } else {
         return false;
     }
 }
@@ -318,25 +309,25 @@ function getMoney($money = 0)
 }
 
 //根据支付方式编码取支付方式名称等
-function get_payment_info($payment_code,$field = 'name')
+function get_payment_info($payment_code, $field = 'name')
 {
     $paymentModel = new Payments();
-    $paymentInfo = $paymentModel->where(['code'=>$payment_code])->find();
-    if($paymentInfo){
+    $paymentInfo = $paymentModel->where(['code' => $payment_code])->find();
+    if ($paymentInfo) {
         return $paymentInfo[$field];
-    }else{
+    } else {
         return $payment_code;
     }
 }
 
 //根据物流编码取物流名称等信息
-function get_logi_info($logi_code,$field='logi_name')
+function get_logi_info($logi_code, $field = 'logi_name')
 {
     $logisticsModel = new Logistics();
-    $logiInfo = $logisticsModel->where(['logi_code'=>$logi_code])->find();
-    if($logiInfo){
+    $logiInfo = $logisticsModel->where(['logi_code' => $logi_code])->find();
+    if ($logiInfo) {
         return $logiInfo[$field];
-    }else{
+    } else {
         return $logi_code;
     }
 }
@@ -351,27 +342,28 @@ function get_area($area_id)
     $areaModel = new Area();
     $data = $areaModel->getArea($area_id);
     $parse = "";
-    foreach($data as $v){
-        if(isset($v['info'])){
-            $parse .= $v['info']['name']." ";
+    foreach ($data as $v) {
+        if (isset($v['info'])) {
+            $parse .= $v['info']['name'] . " ";
         }
     }
     return $parse;
 }
-function error_code($code,$mini = false)
+
+function error_code($code, $mini = false)
 {
     $result = [
         'status' => false,
         'data' => 10000,
         'msg' => config('error.10000')
     ];
-    if(config('?error.'.$code)){
+    if (config('?error.' . $code)) {
         $result['data'] = $code;
-        $result['msg'] = config('error.'.$code);
+        $result['msg'] = config('error.' . $code);
     }
-    if($mini){
+    if ($mini) {
         return $result['msg'];
-    }else{
+    } else {
         return $result;
     }
 }
@@ -382,9 +374,10 @@ function error_code($code,$mini = false)
  * @param $value
  * @return mixed
  */
-function unsetByValue($arr, $value){
+function unsetByValue($arr, $value)
+{
     $keys = array_keys($arr, $value);
-    if(!empty($keys)){
+    if (!empty($keys)) {
         foreach ($keys as $key) {
             unset($arr[$key]);
         }
@@ -397,21 +390,22 @@ function unsetByValue($arr, $value){
  * @param $image_id
  * @return bool
  */
-function delImage($image_id){
-    $image_obj= new \app\common\model\Images();
-    $image = $image_obj->where(['id'=>$image_id])->find();
-    if($image){
+function delImage($image_id)
+{
+    $image_obj = new \app\common\model\Images();
+    $image = $image_obj->where(['id' => $image_id])->find();
+    if ($image) {
         //删除图片数据
-        $res = $image_obj->where(['id'=>$image_id])->delete();
-        if($image['type']=='local'){
+        $res = $image_obj->where(['id' => $image_id])->delete();
+        if ($image['type'] == 'local') {
             @unlink($image['path']);
         }
         //todo 其它存储引擎不调整
-        if($res){
+        if ($res) {
             return true;
         }
         //默认本地存储，返回本地域名图片地址
-    }else{
+    } else {
         return false;
     }
 }
@@ -423,7 +417,7 @@ function delImage($image_id){
  */
 function getLabel($ids)
 {
-    if(!$ids){
+    if (!$ids) {
         return [];
     }
     $label_obj = new \app\common\model\Label();
@@ -434,8 +428,9 @@ function getLabel($ids)
     return [];
 }
 
-function getLabelStyle($style){
-    $label_style='';
+function getLabelStyle($style)
+{
+    $label_style = '';
     switch ($style) {
         case 'red':
             $label_style = "";
@@ -463,25 +458,16 @@ function getRealSize($size)
     $gb = 1024 * $mb;   // Gigabyte
     $tb = 1024 * $gb;   // Terabyte
 
-    if($size < $kb)
-    {
+    if ($size < $kb) {
         return $size . 'B';
-    }
-    else if($size < $mb)
-    {
-        return round($size/$kb, 2) . 'KB';
-    }
-    else if($size < $gb)
-    {
-        return round($size/$mb, 2) . 'MB';
-    }
-    else if($size < $tb)
-    {
-        return round($size/$gb, 2) . 'GB';
-    }
-    else
-    {
-        return round($size/$tb, 2) . 'TB';
+    } else if ($size < $mb) {
+        return round($size / $kb, 2) . 'KB';
+    } else if ($size < $gb) {
+        return round($size / $mb, 2) . 'MB';
+    } else if ($size < $tb) {
+        return round($size / $gb, 2) . 'GB';
+    } else {
+        return round($size / $tb, 2) . 'TB';
     }
 }
 
@@ -506,8 +492,9 @@ function convertUrlQuery($query)
  * @param string $value
  * @return mixed
  */
-function getBool($value='1'){
-    $bool = ['1'=>'是','2'=>'否'];
+function getBool($value = '1')
+{
+    $bool = ['1' => '是', '2' => '否'];
     return $bool[$value];
 }
 
@@ -516,8 +503,9 @@ function getBool($value='1'){
  * @param int $time
  * @return false|string
  */
-function getTime($time = 0){
-    return date('Y-m-d H:i:s',$time);
+function getTime($time = 0)
+{
+    return date('Y-m-d H:i:s', $time);
 }
 
 /**
@@ -525,12 +513,13 @@ function getTime($time = 0){
  * @param array $labels
  * @return string
  */
-function getExportLabel($labels = []){
+function getExportLabel($labels = [])
+{
     $labelString = '';
-    foreach((array)$labels as $v){
-        $labelString = $v['name'].',';
+    foreach ((array)$labels as $v) {
+        $labelString = $v['name'] . ',';
     }
-    return substr($labelString,0,-1);
+    return substr($labelString, 0, -1);
 }
 
 /**
@@ -538,11 +527,11 @@ function getExportLabel($labels = []){
  * @param string $status
  * @return string
  */
-function getMarketable($marketable='1'){
-    $status = ['1'=>'上架','2'=>'下架'];
+function getMarketable($marketable = '1')
+{
+    $status = ['1' => '上架', '2' => '下架'];
     return $status[$marketable];
 }
-
 
 
 /**
@@ -571,9 +560,9 @@ function arrayToXml($arr, $root = "root")
  * @param $default
  * @return mixed
  */
-function setDefault($val,$default)
+function setDefault($val, $default)
 {
-    return $val?$val:$default;
+    return $val ? $val : $default;
 }
 
 
@@ -614,22 +603,23 @@ function isIntranet($url = '')
  * @param type $type 接口名称 ( Card|Custom|Device|Extend|Media|Oauth|Pay|Receive|Script|User )
  * @return \Wehcat\WechatReceive 返回接口对接
  */
-function & load_wechat($type = '') {
+function & load_wechat($type = '')
+{
 
     static $wechat = array();
     $index = md5(strtolower($type));
     if (!isset($wechat[$index])) {
         // 从数据库获取配置信息
         $options = array(
-            'token'           => getSetting('wx_official_token'), // 填写你设定的key
-            'appid'           => getSetting('wx_official_appid'), // 填写高级调用功能的app id, 请在微信开发模式后台查询
-            'appsecret'       => getSetting('wx_official_app_secret'), // 填写高级调用功能的密钥
-            'encodingaeskey'  => getSetting('wx_official_encodeaeskey'), // 填写加密用的EncodingAESKey（可选，接口传输选择加密时必需）
-            'mch_id'          => '', // 微信支付，商户ID（可选）
-            'partnerkey'      => '', // 微信支付，密钥（可选）
-            'ssl_cer'         => '', // 微信支付，双向证书（可选，操作退款或打款时必需）
-            'ssl_key'         => '', // 微信支付，双向证书（可选，操作退款或打款时必需）
-            'cachepath'       => '', // 设置SDK缓存目录（可选，默认位置在Wechat/Cache下，请保证写权限）
+            'token' => getSetting('wx_official_token'), // 填写你设定的key
+            'appid' => getSetting('wx_official_appid'), // 填写高级调用功能的app id, 请在微信开发模式后台查询
+            'appsecret' => getSetting('wx_official_app_secret'), // 填写高级调用功能的密钥
+            'encodingaeskey' => getSetting('wx_official_encodeaeskey'), // 填写加密用的EncodingAESKey（可选，接口传输选择加密时必需）
+            'mch_id' => '', // 微信支付，商户ID（可选）
+            'partnerkey' => '', // 微信支付，密钥（可选）
+            'ssl_cer' => '', // 微信支付，双向证书（可选，操作退款或打款时必需）
+            'ssl_key' => '', // 微信支付，双向证书（可选，操作退款或打款时必需）
+            'cachepath' => '', // 设置SDK缓存目录（可选，默认位置在Wechat/Cache下，请保证写权限）
         );
         \Wechat\Loader::config($options);
         $wechat[$index] = \Wechat\Loader::get($type);
@@ -646,21 +636,18 @@ function & load_wechat($type = '') {
  */
 function get_lately_days($day, $data)
 {
-    $day = $day-1;
+    $day = $day - 1;
     $days = [];
     $d = [];
-    for($i = $day; $i >= 0; $i --)
-    {
-        $d[] = date('d', strtotime('-'.$i.' day')).'日';
-        $days[date('Y-m-d', strtotime('-'.$i.' day'))] = 0;
+    for ($i = $day; $i >= 0; $i--) {
+        $d[] = date('d', strtotime('-' . $i . ' day')) . '日';
+        $days[date('Y-m-d', strtotime('-' . $i . ' day'))] = 0;
     }
-    foreach($data as $v)
-    {
+    foreach ($data as $v) {
         $days[$v['day']] = $v['nums'];
     }
     $new = [];
-    foreach ($days as $v)
-    {
+    foreach ($days as $v) {
         $new[] = $v;
     }
     return ['day' => $d, 'data' => $new];
@@ -688,15 +675,14 @@ function sendMessage($user_id, $code, $params)
 function getUserWxInfo($user_id)
 {
     $wxModel = new \app\common\model\UserWx();
-    $filter[] = ['user_id','eq',$user_id];
+    $filter[] = ['user_id', 'eq', $user_id];
     $wxInfo = $wxModel->field('id,user_id,openid,unionid,avatar,nickname')->where($filter)->find();
-    if($wxInfo){
+    if ($wxInfo) {
         return $wxInfo->toArray();
-    }else{
+    } else {
         return false;
     }
 }
-
 
 
 /**
@@ -711,23 +697,24 @@ function hasNewMessage($user_id)
 }
 
 //格式化银行卡号，前四位和最后显示原样的，其他隐藏
-function bankCardNoFormat($cardNo){
+function bankCardNoFormat($cardNo)
+{
     $n = strlen($cardNo);
     //判断尾部几位显示原型
-    if($n%4 == 0){
+    if ($n % 4 == 0) {
         $j = 4;
-    }else{
-        $j = $n%4;
+    } else {
+        $j = $n % 4;
     }
     $str = "";
-    for($i=0;$i<$n;$i++){
-        if($i <4 || $i> $n-$j-1){
+    for ($i = 0; $i < $n; $i++) {
+        if ($i < 4 || $i > $n - $j - 1) {
             $str .= $cardNo[$i];
-        }else{
+        } else {
             $str .= "*";
         }
-        if($i%4 == 3){
-            $str .=" ";
+        if ($i % 4 == 3) {
+            $str .= " ";
         }
     }
     return $str;
@@ -738,7 +725,8 @@ function bankCardNoFormat($cardNo){
  * @param string $key
  * @return array
  */
-function getSetting($key = ''){
+function getSetting($key = '')
+{
     $systemSettingModel = new \app\common\model\Setting();
     return $systemSettingModel->getValue($key);
 }
@@ -748,42 +736,45 @@ function getSetting($key = ''){
  * @param string $name 插件名称
  * @return array
  */
-function getAddonsConfig($name = ''){
-    if(!$name){
+function getAddonsConfig($name = '')
+{
+    if (!$name) {
         return [];
     }
     $addonModel = new \app\common\model\Addons();
     return $addonModel->getSetting($name);
 }
+
 //货品上的多规格信息，自动拆分成二维数组
-function getProductSpesDesc($str_spes_desc){
-    if($str_spes_desc == ""){
+function getProductSpesDesc($str_spes_desc)
+{
+    if ($str_spes_desc == "") {
         return [];
     }
-    $spes = explode(',',$str_spes_desc);
+    $spes = explode(',', $str_spes_desc);
     $re = [];
-    foreach($spes as $v){
-        $val = explode(':',$v);
+    foreach ($spes as $v) {
+        $val = explode(':', $v);
         $re[$val[0]] = $val[1];
     }
     return $re;
 }
 
 //返回管理员信息
-function get_manage_info($manage_id,$field = 'username')
+function get_manage_info($manage_id, $field = 'username')
 {
     $user = app\common\model\Manage::get($manage_id);
-    if($user){
-        if($field == 'nickname') {
+    if ($user) {
+        if ($field == 'nickname') {
             $nickname = $user['nickname'];
             if ($nickname == '') {
                 $nickname = format_mobile($user['mobile']);
             }
             return $nickname;
-        }else{
+        } else {
             return $user->$field;
         }
-    }else{
+    } else {
         return "";
     }
 }
@@ -797,7 +788,7 @@ function _krsort($array = [])
 {
     krsort($array);
     if (is_array($array)) {
-        $i          = 0;
+        $i = 0;
         $temp_array = [];
         foreach ($array as $val) {
             $temp_array[$i] = $val;
@@ -817,7 +808,7 @@ function _krsort($array = [])
 function checkAddons($hookname = '')
 {
     $hooksModel = new \app\common\model\Hooks();
-    $addons     = $hooksModel->where(['name' => $hookname])->field('addons')->find();
+    $addons = $hooksModel->where(['name' => $hookname])->field('addons')->find();
     if (isset($addons['addons']) && !empty($addons['addons'])) {
         return true;
     } else {
@@ -838,11 +829,11 @@ function isInGroup($gid = 0, &$promotion_id = 0)
 
     $promotion = new app\common\model\Promotion();
 
-    $where[]   = ['p.status', 'eq', $promotion::STATUS_OPEN];
-    $where[]   = ['p.stime', 'lt', time()];
-    $where[]   = ['p.etime', 'gt', time()];
-    $where[]   = ['pc.params', 'like', '%"' . $gid . '"%'];
-    $where[]   = ['p.type', 'in', [$promotion::TYPE_GROUP, $promotion::TYPE_SKILL]];
+    $where[] = ['p.status', 'eq', $promotion::STATUS_OPEN];
+    $where[] = ['p.stime', 'lt', time()];
+    $where[] = ['p.etime', 'gt', time()];
+    $where[] = ['pc.params', 'like', '%"' . $gid . '"%'];
+    $where[] = ['p.type', 'in', [$promotion::TYPE_GROUP, $promotion::TYPE_SKILL]];
     $condition = $promotion->field('p.id as id')
         ->alias('p')
         ->join('promotion_condition pc', 'pc.promotion_id = p.id')
@@ -861,8 +852,9 @@ function isInGroup($gid = 0, &$promotion_id = 0)
  * @param $str
  * @return bool
  */
-function isjson($str){
-    return is_null(json_decode($str))?false:true;
+function isjson($str)
+{
+    return is_null(json_decode($str)) ? false : true;
 }
 
 /**
@@ -870,7 +862,8 @@ function isjson($str){
  * @param $mobile
  * @return bool
  */
-function isMobile($mobile = ''){
+function isMobile($mobile = '')
+{
     if (preg_match("/^1[3456789]{1}\d{9}$/", $mobile)) {
         return true;
     } else {
@@ -887,24 +880,24 @@ function isMobile($mobile = ''){
 function secondConversion($second = 0)
 {
     $newtime = '';
-    $d = floor($second / (3600*24));
-    $h = floor(($second % (3600*24)) / 3600);
-    $m = floor((($second % (3600*24)) % 3600) / 60);
-    if($d>'0'){
-        if($h == '0' && $m == '0'){
-            $newtime= $d.'天';
-        }else{
-            $newtime= $d.'天'.$h.'小时'.$m.'分';
+    $d = floor($second / (3600 * 24));
+    $h = floor(($second % (3600 * 24)) / 3600);
+    $m = floor((($second % (3600 * 24)) % 3600) / 60);
+    if ($d > '0') {
+        if ($h == '0' && $m == '0') {
+            $newtime = $d . '天';
+        } else {
+            $newtime = $d . '天' . $h . '小时' . $m . '分';
         }
-    }else{
-        if($h!='0'){
-            if($m == '0'){
-                $newtime= $h.'小时';
-            }else{
-                $newtime= $h.'小时'.$m.'分';
+    } else {
+        if ($h != '0') {
+            if ($m == '0') {
+                $newtime = $h . '小时';
+            } else {
+                $newtime = $h . '小时' . $m . '分';
             }
-        }else{
-            $newtime= $m.'分';
+        } else {
+            $newtime = $m . '分';
         }
     }
     return $newtime;
@@ -929,7 +922,7 @@ function _sFile($file_id, $type = 's')
         return $file_id;
     }
     $file_obj = new \app\common\model\Files();
-    $file     = $file_obj->where([
+    $file = $file_obj->where([
         'id' => $file_id
     ])->field('url')->find();
     if ($file) {
@@ -948,11 +941,12 @@ function _sFile($file_id, $type = 's')
  * @param $email
  * @return bool
  */
-function isEmail($email){
+function isEmail($email)
+{
     $pattern = '/^[a-z0-9]+([._-][a-z0-9]+)*@([0-9a-z]+\.[a-z]{2,14}(\.[a-z]{2})?)$/i';
-    if(preg_match($pattern,$email)){
+    if (preg_match($pattern, $email)) {
         return true;
-    }else{
+    } else {
         return false;
     }
 }
@@ -962,7 +956,7 @@ function isEmail($email){
  */
 function convertString($value = '')
 {
-    return $value."\t";
+    return $value . "\t";
 }
 
 /**
@@ -976,7 +970,7 @@ function getUserIdByToken($token = '')
         return 0;
     }
     $userTokenModel = new \app\common\model\UserToken();
-    $return_token   = $userTokenModel->checkToken($token);
+    $return_token = $userTokenModel->checkToken($token);
     if ($return_token['status'] == false) {
         return 0;
     }
@@ -988,14 +982,55 @@ function getUserIdByToken($token = '')
  * @param $content
  * @return mixed
  */
-function clearHtml($content,$rule = [] ){
-    if(!$rule){
+function clearHtml($content, $rule = [])
+{
+    if (!$rule) {
         return $content;
     }
-    foreach($rule as $v){
-        $content = preg_replace('/'.$v.'\s*=\s*\d+\s*/i', '', $content);
-        $content = preg_replace('/'.$v.'\s*=\s*.+?["\']/i', '', $content);
-        $content = preg_replace('/'.$v.'\s*:\s*\d+\s*px\s*;?/i', '', $content);
+    foreach ($rule as $v) {
+        $content = preg_replace('/' . $v . '\s*=\s*\d+\s*/i', '', $content);
+        $content = preg_replace('/' . $v . '\s*=\s*.+?["\']/i', '', $content);
+        $content = preg_replace('/' . $v . '\s*:\s*\d+\s*px\s*;?/i', '', $content);
     }
     return $content;
+}
+
+/**
+ * 解析表格数据
+ */
+if (!function_exists('importDataFromExcel')) {
+    /**
+     * @param $filePath
+     * @return array
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    function importDataFromExcel($filePath)
+    {
+        $pathinfo = pathinfo($filePath);
+        $type = strtolower($pathinfo['extension']);
+        $inputFileType = IOFactory::identify($filePath);
+        $excelReader = IOFactory::createReader($inputFileType);
+        if (in_array($type, [FILE_CSV])) {
+            $excelReader->setInputEncoding('GBK');
+            $excelReader->setDelimiter(',');
+        }
+        $phpExcel = $excelReader->load($filePath);
+        $sheet = $phpExcel->getSheet(0);
+        return $sheet->toArray();
+    }
+}
+
+if (!function_exists('encrypt')) {
+    function encrypt($value)
+    {
+        return app('encrypter')->encrypt($value);
+    }
+}
+
+if (!function_exists('decrypt')) {
+    function decrypt($value)
+    {
+        return app('encrypter')->decrypt($value);
+    }
 }

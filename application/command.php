@@ -9,6 +9,9 @@
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
 
+use app\common\command\KeyGenerateCommand;
+
 return [
-    'app\crontab\Crontab',
+//    'app\crontab\Crontab',
+    KeyGenerateCommand::class
 ];

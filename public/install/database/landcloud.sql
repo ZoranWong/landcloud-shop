@@ -1319,7 +1319,8 @@ DROP TABLE IF EXISTS `lc_user`;
 CREATE TABLE `lc_user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `username` varchar(20) DEFAULT NULL COMMENT '用户名',
-  `password` char(32) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
+--   `password` char(32) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
+  `password` varchar(255) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
   `mobile` varchar(15) DEFAULT NULL COMMENT '手机号',
   `sex` tinyint(1) unsigned DEFAULT '3' COMMENT '1=男 2=女 3=未知',
   `birthday` date DEFAULT NULL COMMENT '生日',
@@ -1333,6 +1334,10 @@ CREATE TABLE `lc_user` (
   `status` tinyint(1) unsigned DEFAULT '1' COMMENT '1 = 正常 2 = 停用',
   `pid` int(10) unsigned DEFAULT '0' COMMENT '销售客服',
   `isdel` bigint(12) unsigned DEFAULT NULL COMMENT '删除标志 有数据就是删除',
+  `company` varchar(30) comment '公司',
+  `erp_user_id` int(10) unsigned not null comment '用户erp系统id',
+  `erp_manage_id` int(10) unsigned comment '销售经理erp系统id',
+  `erp_manage_name` varchar(20) comment '销售经理erp系统name',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户表';
 
