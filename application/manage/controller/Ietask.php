@@ -92,27 +92,36 @@ class Ietask extends Manage
      */
     public function importTemplete()
     {
-        $tplName = input('tplName', 'goods');
+//        $tplName = input('tplName', 'goods');
+//
+//        $filePath = config('jshop.' . $tplName . '_import_template');
+//
+//        if (!file_exists($filePath)) { //检查文件是否存在
+//            echo '404';
+//        }
+//        $file_name = basename($filePath);
+//        $file_type = explode('.', $filePath);
+//        $file_type = $file_type[count($file_type) - 1];
+////        $file_name = trim($new_name == '') ? $file_name : urlencode($new_name);
+//        $file_type = fopen($filePath, 'r'); //打开文件
+//        //输入文件标签
+//        header("Content-type: application/octet-stream");
+//        header("Accept-Ranges: bytes");
+//        header("Accept-Length: " . filesize($filePath));
+//        header("Content-Disposition: attachment; filename=" . $file_name);
+//        //输出文件内容
+//        echo fread($file_type, filesize($filePath));
+//        fclose($file_type);
+//        exit();
 
-        $filePath = config('jshop.' . $tplName . '_import_template');
+        $tplName = ucwords(input('tplName', 'product'));
 
-        if (!file_exists($filePath)) { //检查文件是否存在
-            echo '404';
+        $generatorClass = config('app.generator_namespace') . "{$tplName}ImportExcelTplGenerator";
+
+
+        if (class_exists($generatorClass)) {
+            (new $generatorClass)->generate();
         }
-        $file_name = basename($filePath);
-        $file_type = explode('.', $filePath);
-        $file_type = $file_type[count($file_type) - 1];
-//        $file_name = trim($new_name == '') ? $file_name : urlencode($new_name);
-        $file_type = fopen($filePath, 'r'); //打开文件
-        //输入文件标签
-        header("Content-type: application/octet-stream");
-        header("Accept-Ranges: bytes");
-        header("Accept-Length: " . filesize($filePath));
-        header("Content-Disposition: attachment; filename=" . $file_name);
-        //输出文件内容
-        echo fread($file_type, filesize($filePath));
-        fclose($file_type);
-        exit();
     }
 
 

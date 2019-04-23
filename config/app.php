@@ -120,4 +120,6 @@ return [
     'cipher' => 'AES-256-CBC',
     'public_key' => env('APP_PUBLIC_KEY', ''),
     'private_key' => env('APP_PRIVATE_KEY', ''),
+
+    'generator_namespace' => "app\\service\\excel\\generator\\",
 ];

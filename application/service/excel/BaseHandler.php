@@ -11,9 +11,27 @@ abstract class BaseHandler
 {
     abstract public function model();
 
-    abstract public function getHeader();
+    abstract public function parseToModel(array $importData);
 
-    abstract public function extractData(array $fields, array $sheetData);
+    public function getHeader()
+    {
+        return ($this->model())::excelHeader();
+    }
+
+    public function extractData(array $fields, array $sheetData)
+    {
+        $importData = [];
+        if ($fields) {
+            $i = 0;
+            foreach ($sheetData as $item) {
+                foreach ($fields as $key => $field) {
+                    $importData[$i][$field['value']] = $item[$field['index']];
+                }
+                $i++;
+            }
+        }
+        return $importData;
+    }
 
     public function extractFields(array $sheetHeader)
     {
@@ -46,7 +64,9 @@ abstract class BaseHandler
 
             $fields = $this->extractFields($sheetHeader);
 
-            $errorMessages = $this->extractData($fields, $sheetData);
+            $importData = $this->extractData($fields, $sheetData);
+
+            $errorMessages = $this->parseToModel($importData);
 
             $uData['status'] = $ieTaskModel::IMPORT_SUCCESS_STATUS;
             $uData['message'] = '导入成功';

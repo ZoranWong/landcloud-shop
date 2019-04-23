@@ -39,26 +39,10 @@ class UserHandler extends BaseHandler
         return UserModel::class;
     }
 
-    public function getHeader()
+    public function parseToModel(array $importData)
     {
-        return ($this->model())::excelHeader();
-    }
-
-    public function extractData(array $fields, array $sheetData)
-    {
-        $importData = [];
         $message = [];
         $userModel = new UserModel();
-
-        if ($fields) {
-            $i = 0;
-            foreach ($sheetData as $item) {
-                foreach ($fields as $key => $field) {
-                    $importData[$i][$field['value']] = $item[$field['index']];
-                }
-                $i++;
-            }
-        }
 
         foreach ($importData as $record) {
             $user['erp_user_id'] = $record['erp_user_id'];

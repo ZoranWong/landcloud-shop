@@ -10,7 +10,7 @@ return [
     //售后，评论等上传图片数量限制
     'image_max' => 5,
     //商品导入模板
-    'products_import_template' => ROOT_PATH . 'public' . DS . 'static' . DS . 'template' . DS . 'excel' . DS . 'products_import.xls',
+    'product_import_template' => ROOT_PATH . 'public' . DS . 'static' . DS . 'template' . DS . 'excel' . DS . 'products_import.xls',
     // 用户导入模板
     'user_import_template' => ROOT_PATH . 'public' . DS . 'static' . DS . 'template' . DS . 'excel' . DS . 'users_import.xls',
     // 用户收货地址导入模板

@@ -8,7 +8,6 @@ use app\common\model\Brand;
 use app\common\model\Goods;
 use app\common\model\Operation;
 use app\common\model\Order;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 use think\facade\Cache;
 
 
