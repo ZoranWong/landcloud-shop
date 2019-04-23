@@ -1119,7 +1119,7 @@ class User extends Common
     {
         return [
             [
-                'id' => 'id',
+                'id' => 'erp_user_id',
                 'desc' => '用户ID'
             ],
             [
@@ -1151,34 +1151,20 @@ class User extends Common
                 'desc' => '昵称'
             ],
             [
-                'id' => 'balance',
-                'desc' => '余额'
-            ],
-//            [
-//                'id' => 'point',
-//                'desc' => '积分',
-//                // 'modify'=>'getBool'
-//            ],
-            [
                 'id' => 'status',
                 'desc' => '状态',
-                //'modify'=>'getMarketable',
             ],
             [
-                'id' => 'manage_id',
+                'id' => 'erp_manage_id',
                 'desc' => '销售代表ID'
             ],
             [
-                'id' => 'manage_name',
+                'id' => 'erp_manage_name',
                 'desc' => '销售代表姓名'
             ],
             [
-                'id' => 'ctime',
-                'desc' => '创建时间',
-            ],
-            [
-                'id' => 'utime',
-                'desc' => '更新时间'
+                'id' => 'company',
+                'desc' => '公司'
             ]
         ];
     }

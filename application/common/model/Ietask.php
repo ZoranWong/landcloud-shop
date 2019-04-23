@@ -65,8 +65,9 @@ class Ietask extends Common
         if ($this->save($data)) {
             $importData['task_id'] = $this->id;
             $importData['params'] = $data['params'];
-            $jobClass = 'app\job\import\\' . $job . '@exec';
+            $jobClass = "app\\service\\excel\\handler\\{$job}Handler@handle";
             $queueRes = \think\Queue::push($jobClass, $importData);//加入导出队列
+
             return $queueRes;
         } else {
             return false;

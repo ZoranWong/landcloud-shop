@@ -2,6 +2,8 @@
 
 namespace app\service\excel;
 
+use app\common\model\Ietask as IeTaskModel;
+use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadSheetException;
 use think\facade\Log;
 use think\queue\Job;
 
@@ -29,9 +31,10 @@ abstract class BaseHandler
         return $fields;
     }
 
-    public function handle(Job $job, $params)
+    public function handle(Job $job = null, $params)
     {
         Log::record($params);
+        $ieTaskModel = new IeTaskModel();
 
         try {
             $file = json_decode($params['params'], true);
@@ -43,9 +46,26 @@ abstract class BaseHandler
 
             $fields = $this->extractFields($sheetHeader);
 
-            $this->extractData($fields, $sheetData);
-        } catch (\PhpOffice\PhpSpreadsheet\Exception $exception) {
+            $errorMessages = $this->extractData($fields, $sheetData);
+
+            $uData['status'] = $ieTaskModel::IMPORT_SUCCESS_STATUS;
+            $uData['message'] = '导入成功';
+            if ($errorMessages) {
+                $uData['message'] .= json_encode($errorMessages);
+            }
+            $uData['utime'] = time();
+            $ieTaskModel->update($uData, ['id' => $params['task_id']]);
+
+        } catch (PhpSpreadSheetException $exception) {
             Log::error('解析文件错误：', $exception->getTrace());
+        }
+
+        if ($job->attempts() > 3) {
+            $uData['status'] = $ieTaskModel::IMPORT_FAIL_STATUS;
+            $uData['message'] = '导入执行失败';
+            $uData['utime'] = time();
+            $ieTaskModel->update($uData, ['id' => $params['task_id']]);
+            $job->delete();
         }
     }
 }
