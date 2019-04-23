@@ -1,28 +1,10 @@
 <?php
 // 应用公共文件
+use app\common\model\Area;
+use app\common\model\Logistics;
+use app\common\model\Payments;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
-use think\Cache;
-use think\Config;
-use think\Cookie;
-use think\Db;
-use think\Debug;
-use think\exception\HttpException;
-use think\exception\HttpResponseException;
-use think\Lang;
-use think\Loader;
-use think\Log;
-use think\Model;
-use think\Request;
-use think\Response;
-use think\Session;
-use think\Url;
-use think\View;
-use think\Container;
-use app\common\model\Operation;
-use app\common\model\Area;
-use app\common\model\Payments;
-use app\common\model\Logistics;
 
 //毫秒数
 //返回当前的毫秒时间戳
@@ -1017,6 +999,12 @@ function clearHtml($content, $rule = [])
  * 解析表格数据
  */
 if (!function_exists('importDataFromExcel')) {
+    /**
+     * @param $filePath
+     * @return array
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     function importDataFromExcel($filePath)
     {
         $pathinfo = pathinfo($filePath);
@@ -1030,5 +1018,19 @@ if (!function_exists('importDataFromExcel')) {
         $phpExcel = $excelReader->load($filePath);
         $sheet = $phpExcel->getSheet(0);
         return $sheet->toArray();
+    }
+}
+
+if (!function_exists('encrypt')) {
+    function encrypt($value)
+    {
+        return app('encrypter')->encrypt($value);
+    }
+}
+
+if (!function_exists('decrypt')) {
+    function decrypt($value)
+    {
+        return app('encrypter')->decrypt($value);
     }
 }

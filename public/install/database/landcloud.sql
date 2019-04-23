@@ -1319,7 +1319,8 @@ DROP TABLE IF EXISTS `lc_user`;
 CREATE TABLE `lc_user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `username` varchar(20) DEFAULT NULL COMMENT '用户名',
-  `password` char(32) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
+--   `password` char(32) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
+  `password` varchar(255) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
   `mobile` varchar(15) DEFAULT NULL COMMENT '手机号',
   `sex` tinyint(1) unsigned DEFAULT '3' COMMENT '1=男 2=女 3=未知',
   `birthday` date DEFAULT NULL COMMENT '生日',

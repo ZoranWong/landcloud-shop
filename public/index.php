@@ -11,17 +11,23 @@
 
 // [ 应用入口文件 ]
 namespace think;
-define('ROOT_PATH',dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR);
-define('DS',DIRECTORY_SEPARATOR);
+define('ROOT_PATH', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+define('DS', DIRECTORY_SEPARATOR);
+require '../application/PatternDict.php';
 // 插件目录
 // defined('ADDON_PATH') || define('ADDON_PATH', ROOT_PATH . 'addons'   . DIRECTORY_SEPARATOR);
 
-if(!file_exists(ROOT_PATH.'/public/install/install.lock')&&!file_exists(ROOT_PATH.'/config/install.lock')){
-    header('Location:/install');exit;
+if (!file_exists(ROOT_PATH . '/public/install/install.lock') && !file_exists(ROOT_PATH . '/config/install.lock')) {
+    header('Location:/install');
+    exit;
 }
 // 加载基础文件
 require __DIR__ . '/../thinkphp/base.php';
 
 // 支持事先使用静态方法设置Request对象和Config对象
 // 执行应用并响应
-Container::get('app')->run()->send();
+$app = Container::get('app')->run();
+
+require __DIR__ . '/../config/bind.php';
+
+$app->send();

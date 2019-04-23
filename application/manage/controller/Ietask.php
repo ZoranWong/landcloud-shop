@@ -9,13 +9,12 @@
 namespace app\Manage\controller;
 
 
-use app\common\controller\Manage;
-use Request;
-
-use app\common\model\Ietask as ietaskModel;
-use think\facade\Log;
-use think\Queue;
 use Apfelbox\FileDownload\FileDownload;
+use app\common\controller\Manage;
+use app\common\model\Ietask as ietaskModel;
+use Request;
+use think\facade\Log;
+use think\File;
 
 
 class Ietask extends Manage
@@ -100,11 +99,11 @@ class Ietask extends Manage
         if (!file_exists($filePath)) { //检查文件是否存在
             echo '404';
         }
-        $file_name=basename($filePath);
-        $file_type=explode('.',$filePath);
-        $file_type=$file_type[count($file_type)-1];
-        $file_name=trim($new_name=='')?$file_name:urlencode($new_name);
-        $file_type=fopen($filePath,'r'); //打开文件
+        $file_name = basename($filePath);
+        $file_type = explode('.', $filePath);
+        $file_type = $file_type[count($file_type) - 1];
+//        $file_name = trim($new_name == '') ? $file_name : urlencode($new_name);
+        $file_type = fopen($filePath, 'r'); //打开文件
         //输入文件标签
         header("Content-type: application/octet-stream");
         header("Accept-Ranges: bytes");
@@ -131,7 +130,9 @@ class Ietask extends Manage
         $model = input('model', 'Goods');
 
         $savepath = ROOT_PATH . 'public' . DS . 'uploads' . get_hash_dir($file->getInfo('name'));
-        $info = $file->validate(['size' => config('jshop.upload_filesize'), 'ext' => 'csv'])->move($savepath);
+
+        /** @var File $info */
+        $info = $file->validate(['size' => config('jshop.upload_filesize'), 'ext' => [FILE_CSV, FILE_XLS, FILE_XLSX]])->move($savepath);
 
         if ($info) {
             $params = [
@@ -139,16 +140,17 @@ class Ietask extends Manage
                 'file_size' => $file->getInfo('size'),
                 'file_path' => $savepath . $info->getSaveName(),
             ];
-            $ietaskModle = new ietaskModel();
+            $ietaskModel = new ietaskModel();
 
             $data['name'] = $model . '-导入';
-            $data['type'] = $ietaskModle::TYPE_INPORT;
+            $data['type'] = $ietaskModel::TYPE_INPORT;
             $data['params'] = json_encode($params);
-            $data['status'] = $ietaskModle::WAIT_STATUS;
+            $data['status'] = $ietaskModel::WAIT_STATUS;
             $data['file_name'] = $file->getInfo('name');
             $data['file_size'] = getRealSize($file->getInfo('size'));
             $data['file_path'] = $savepath . $info->getSaveName();
-            $res = $ietaskModle->addImportTask($data, $model);
+            $data['file_type'] = $info->getExtension();
+            $res = $ietaskModel->addImportTask($data, $model);
             if ($res !== false) {
                 $result['status'] = true;
                 $result['msg'] = '导入任务加入成功，请到任务列表中查看进度';

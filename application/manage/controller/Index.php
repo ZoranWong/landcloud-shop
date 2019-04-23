@@ -4,13 +4,12 @@ namespace app\Manage\controller;
 
 use app\common\controller\Manage;
 use app\common\model\BillAftersales;
+use app\common\model\Brand;
+use app\common\model\Goods;
 use app\common\model\Operation;
 use app\common\model\Order;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use think\facade\Cache;
-use app\common\model\WeixinAuthor;
-use app\common\model\Goods;
-use app\common\model\Brand;
 
 
 class Index extends Manage
@@ -18,6 +17,43 @@ class Index extends Manage
 
     public function index()
     {
+        var_dump($value = encrypt('1234'));
+        var_dump(decrypt($value));
+        exit;
+
+        setlocale(LC_ALL, 'zh_CN');
+        $filePath = ROOT_PATH . 'public/static/template/excel/users_import2.xls';
+        $type = pathinfo($filePath);
+        $type = strtolower($type["extension"]);
+        $inpuFileType = IOFactory::identify($filePath);
+
+        $excelReader = IOFactory::createReader($inpuFileType);
+        if ($type === 'csv') {
+            $excelReader->setInputEncoding('GBK');
+            $excelReader->setDelimiter(',');
+        }
+        $phpExcel = $excelReader->load($filePath);
+        $sheet = $phpExcel->getSheet(0);
+        $sheetData = $sheet->toArray();
+
+        $sheetHeader = $sheetData[0];
+//        unset($sheetData[0]);
+        $header = \app\common\model\User::excelHeader();
+        $fields = [];
+        foreach ($header as $item) {
+            $index = array_search($item['desc'], $sheetHeader);
+            if ($index >= 0 && !is_bool($index)) {
+                $fields[] = [
+                    'index' => $index,
+                    'value' => $item['id']
+                ];
+            }
+        }
+
+        var_dump($fields);
+        print_r($sheetData);
+        exit;
+
         $operationModel = new Operation();
         $this->assign('menu', $operationModel->manageMenu(session('manage')['id']));
 

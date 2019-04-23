@@ -73,7 +73,7 @@ class File extends SplFileObject
     /**
      * 是否测试
      * @access public
-     * @param  bool   $test 是否测试
+     * @param bool $test 是否测试
      * @return $this
      */
     public function isTest($test = false)
@@ -86,7 +86,7 @@ class File extends SplFileObject
     /**
      * 设置上传信息
      * @access public
-     * @param  array   $info 上传文件信息
+     * @param array $info 上传文件信息
      * @return $this
      */
     public function setUploadInfo($info)
@@ -99,7 +99,7 @@ class File extends SplFileObject
     /**
      * 获取上传文件的信息
      * @access public
-     * @param  string   $name
+     * @param string $name
      * @return array|string
      */
     public function getInfo($name = '')
@@ -120,7 +120,7 @@ class File extends SplFileObject
     /**
      * 设置上传文件的保存文件名
      * @access public
-     * @param  string   $saveName
+     * @param string $saveName
      * @return $this
      */
     public function setSaveName($saveName)
@@ -133,7 +133,7 @@ class File extends SplFileObject
     /**
      * 获取文件的哈希散列值
      * @access public
-     * @param  string $type
+     * @param string $type
      * @return string
      */
     public function hash($type = 'sha1')
@@ -148,7 +148,7 @@ class File extends SplFileObject
     /**
      * 检查目录是否可写
      * @access protected
-     * @param  string   $path    目录
+     * @param string $path 目录
      * @return boolean
      */
     protected function checkPath($path)
@@ -180,7 +180,7 @@ class File extends SplFileObject
     /**
      * 设置文件的命名规则
      * @access public
-     * @param  string   $rule    文件命名规则
+     * @param string $rule 文件命名规则
      * @return $this
      */
     public function rule($rule)
@@ -193,7 +193,7 @@ class File extends SplFileObject
     /**
      * 设置上传文件的验证规则
      * @access public
-     * @param  array   $rule    验证规则
+     * @param array $rule 验证规则
      * @return $this
      */
     public function validate($rule = [])
@@ -220,7 +220,7 @@ class File extends SplFileObject
     /**
      * 检测上传文件
      * @access public
-     * @param  array   $rule    验证规则
+     * @param array $rule 验证规则
      * @return bool
      */
     public function check($rule = [])
@@ -240,7 +240,7 @@ class File extends SplFileObject
     /**
      * 检测上传文件后缀
      * @access public
-     * @param  array|string   $ext    允许后缀
+     * @param array|string $ext 允许后缀
      * @return bool
      */
     public function checkExt($ext)
@@ -295,12 +295,12 @@ class File extends SplFileObject
     /**
      * 检测上传文件大小
      * @access public
-     * @param  integer   $size    最大大小
+     * @param integer $size 最大大小
      * @return bool
      */
     public function checkSize($size)
     {
-        if ($this->getSize() > (int) $size) {
+        if ($this->getSize() > (int)$size) {
             $this->error = 'filesize not match';
             return false;
         }
@@ -311,7 +311,7 @@ class File extends SplFileObject
     /**
      * 检测上传文件类型
      * @access public
-     * @param  array|string   $mime    允许类型
+     * @param array|string $mime 允许类型
      * @return bool
      */
     public function checkMime($mime)
@@ -331,10 +331,10 @@ class File extends SplFileObject
     /**
      * 移动文件
      * @access public
-     * @param  string           $path    保存路径
-     * @param  string|bool      $savename    保存的文件名 默认自动生成
-     * @param  boolean          $replace 同名文件是否覆盖
-     * @param  bool             $autoAppendExt     自动补充扩展名
+     * @param string $path 保存路径
+     * @param string|bool $savename 保存的文件名 默认自动生成
+     * @param boolean $replace 同名文件是否覆盖
+     * @param bool $autoAppendExt 自动补充扩展名
      * @return false|File       false-失败 否则返回File实例
      */
     public function move($path, $savename = true, $replace = true, $autoAppendExt = true)
@@ -391,8 +391,8 @@ class File extends SplFileObject
     /**
      * 获取保存文件名
      * @access protected
-     * @param  string|bool   $savename    保存的文件名 默认自动生成
-     * @param  bool          $autoAppendExt     自动补充扩展名
+     * @param string|bool $savename 保存的文件名 默认自动生成
+     * @param bool $autoAppendExt 自动补充扩展名
      * @return string
      */
     protected function buildSaveName($savename, $autoAppendExt = true)
@@ -428,7 +428,7 @@ class File extends SplFileObject
                     break;
                 default:
                     if (in_array($this->rule, hash_algos())) {
-                        $hash     = $this->hash($this->rule);
+                        $hash = $this->hash($this->rule);
                         $savename = substr($hash, 0, 2) . DIRECTORY_SEPARATOR . substr($hash, 2);
                     } elseif (is_callable($this->rule)) {
                         $savename = call_user_func($this->rule);
@@ -444,7 +444,7 @@ class File extends SplFileObject
     /**
      * 获取错误代码信息
      * @access private
-     * @param  int $errorNo  错误号
+     * @param int $errorNo 错误号
      */
     private function error($errorNo)
     {
@@ -482,7 +482,7 @@ class File extends SplFileObject
         if (is_array($this->error)) {
             list($msg, $vars) = $this->error;
         } else {
-            $msg  = $this->error;
+            $msg = $this->error;
             $vars = [];
         }
 
