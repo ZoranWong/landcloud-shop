@@ -1334,6 +1334,10 @@ CREATE TABLE `lc_user` (
   `status` tinyint(1) unsigned DEFAULT '1' COMMENT '1 = 正常 2 = 停用',
   `pid` int(10) unsigned DEFAULT '0' COMMENT '销售客服',
   `isdel` bigint(12) unsigned DEFAULT NULL COMMENT '删除标志 有数据就是删除',
+  `company` varchar(30) comment '公司',
+  `erp_user_id` int(10) unsigned not null comment '用户erp系统id',
+  `erp_manage_id` int(10) unsigned comment '销售经理erp系统id',
+  `erp_manage_name` varchar(20) comment '销售经理erp系统name',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户表';
 
