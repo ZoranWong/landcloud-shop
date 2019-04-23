@@ -56,19 +56,19 @@
             cellMinWidth: '80',
             page: 'true',
             limit: '20',
-            width: 650,
             url: "{:url('Goods/index')}?_ajax=1",
             id: 'goodsTable',
             cols: [[
-                {type: 'numbers', fixed: 'left'},
+                {field: 'bn', width: 150, title: '产品编号'},
+                {field: 'erp_goods_id', width: 150, title: 'ERP产品编号'},
                 {
                     field: 'image', width: 100, title: '缩略图', align: 'center', templet: function (data) {
                         return '<a href="javascript:void(0);" onclick=viewImage("' + data.image + '")>' +
                             '<image style="max-width:30px;max-height:30px;" src="' + data.image + '"/></a>';
                     }
                 },
-                {field: 'name', width: 250, title: '名称', align: 'center'},
-                {field: 'required', width: 160, title: '是否必须购买', templet: function (data) {
+                {field: 'name', title: '名称', align: 'center'},
+                {field: 'required', width: 150, title: '是否必须购买', templet: function (data) {
                         return `<input type="checkbox" name="is_recommend" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="is_recommend" {{ d.is_recommend== 1 ? 'checked' : '' }}>`;
                     }},
                 {field: 'opt', width: 100, title: '关联操作', templet: function (data) {

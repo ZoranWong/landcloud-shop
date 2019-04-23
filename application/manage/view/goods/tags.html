@@ -1,0 +1,26 @@
+<style>
+    .tags-item{
+        background-color: #eee;
+        padding: 3px;
+        border-radius: 3px;
+        margin-right:3px;
+    }
+    .tags-input{
+        border: none;
+        height: 36px;
+        line-height: 1.3;
+    }
+</style>
+<div class="layui-input">
+    <input type="text" id="tags" placeholder="请输入搜索关键词" class="tags-input">
+</div>
+<script>
+    $(function () {
+        $('#tags').keypress(function(e){
+            if(e.keyCode== 13){
+                $(this).before('<span class="tags-item"><span>'+$(this).val()+'</span><i class="layui-icon layui-icon-close"></i></span>');
+                $(this).val('');
+            }
+        });
+    });
+</script>
