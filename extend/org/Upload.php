@@ -10,6 +10,8 @@
 // +----------------------------------------------------------------------
 namespace org;
 
+use org\upload\driver\Aliyun;
+
 class Upload
 {
     /**
@@ -55,7 +57,7 @@ class Upload
 
     /**
      * 上传驱动实例
-     * @var Object
+     * @var Object|Aliyun
      */
     private $uploader;
 
@@ -461,6 +463,11 @@ class Upload
             }
         }
         return $name;
+    }
+
+    public function getPrefixFiles(string $prefix, int $count = 100)
+    {
+        return $this->uploader->getPrefixFiles($prefix, $count);
     }
 
 }

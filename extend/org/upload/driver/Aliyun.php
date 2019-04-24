@@ -116,4 +116,44 @@ class Aliyun
     {
         return $this->error;
     }
+
+    public function getPrefixFiles(string $prefix, int $maxKeys = 20)
+    {
+        $options = array(
+            'prefix' => $prefix,
+            'max-keys' => $maxKeys,
+        );
+        $list = $this->aliyun->listObjects($this->config['bucket'], $options);
+        $list = $list->getObjectList();
+        $paths = [];
+        foreach ($list as $item) {
+            $paths[] = $this->getUrl($item->getKey());
+        }
+        return $paths;
+    }
+
+    /**
+     * Get resource url.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function getUrl($path)
+    {
+        return $this->normalizeHost().ltrim($path, '/');
+    }
+
+    /**
+     * normalize Host.
+     *
+     * @return string
+     */
+    protected function normalizeHost()
+    {
+        $domain = $this->config['bucket'].'.'.$this->config['endpoint'];
+        $domain = "https://{$domain}";
+        return rtrim($domain, '/').'/';
+    }
+
 }
