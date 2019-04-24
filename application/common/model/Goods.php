@@ -143,7 +143,7 @@ class Goods extends Common implements Excelable
         return $goodsid ? $goodsid : 0;
     }
 
-    protected function tableFormat($list)
+    public function tableFormat($list)
     {
 
         foreach ($list as $key => $val) {

@@ -144,6 +144,16 @@
             <input type="text" name="goods[stock]" value="{$product.stock}"   autocomplete="off" placeholder="请输入商品库存" class="layui-input">
         </div>
     </div>
+    <div class="layui-form-item">
+        <div class="layui-form-label">多级价格：</div>
+        <div class="layui-input-block">{include file="../application/manage/view/goods/goodsPriceLevels.html"}</div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-form-label">关联产品：</div>
+        <div class="layui-input-block">{include file="../application/manage/view/goods/goodsSelector.html"}</div>
+    </div>
+
+
 </div>
 </div>
 

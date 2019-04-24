@@ -23,11 +23,9 @@
         margin: 10px;
     }
 </style>
-<script src="__STATIC_JS__jquery.form.js" type="text/javascript" charset="utf-8"></script>
-
 <div class="layui-card-body">
     <div class="layui-tab layui-tab-card" lay-filter="goods-tab">
-        <form class="layui-form seller-form" action="">
+        <div class="layui-form seller-form" action="">
             <div class="layui-form-item">
                 <div class="layui-inline">
                     <label class="layui-form-label">商品名称：</label>
@@ -37,7 +35,7 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
         <div class="layui-tab-content">
             <table id="goodsTable" lay-filter="test"></table>
         </div>
@@ -49,14 +47,14 @@
         var upload = layui.upload;
         var element = layui.element;
         var filter = {};
-
+        var relationGoods = JSON.parse('<?php echo $relationGoods ?: "[]";?>');
         table = layui.table.render({
             elem: '#goodsTable',
             height: 'full-310',
             cellMinWidth: '80',
             page: 'true',
             limit: '20',
-            url: "{:url('Goods/index')}?_ajax=1",
+            url: "{:url('Goods/goodsForRelation')}?_ajax=1&goods_id={$goodsId}",
             id: 'goodsTable',
             cols: [[
                 {field: 'bn', width: 150, title: '产品编号'},
@@ -68,12 +66,28 @@
                     }
                 },
                 {field: 'name', title: '名称', align: 'center'},
-                {field: 'required', width: 150, title: '是否必须购买', templet: function (data) {
-                        return `<input type="checkbox" name="is_recommend" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="is_recommend" {{ d.is_recommend== 1 ? 'checked' : '' }}>`;
-                    }},
-                {field: 'opt', width: 100, title: '关联操作', templet: function (data) {
-                        return `<input type="checkbox" name="is_recommend" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="is_recommend" {{ d.is_recommend== 1 ? 'checked' : '' }}>`;
-                    }}
+                {
+                    field: 'required', width: 150, title: '是否必须购买', templet: function (data) {
+                        var value = false;
+                        for (let i in relationGoods) {
+                            if (relationGoods[i]['relation_goods_id'] === data['id'] && relationGoods[i]['required']) {
+                                value = true;
+                            }
+                        }
+                        return `<input type="checkbox" name="relations[${data['LAY_TABLE_INDEX']}][required]" value="1" lay-skin="switch" lay-text="是|否" lay-filter="required" ${ value ? 'checked' : '' }>`;
+                    }
+                },
+                {
+                    field: 'opt', width: 100, title: '关联操作', templet: function (data) {
+                        var value = false;
+                        for (let i in relationGoods) {
+                            if (relationGoods[i]['relation_goods_id'] === data['id']) {
+                                value = true;
+                            }
+                        }
+                        return `<input type="checkbox" name="relations[${data['LAY_TABLE_INDEX']}][relation_goods_id]" value="${data['id']}" lay-skin="switch" lay-text="是|否" lay-filter="relation" ${ value ? 'checked' : '' }>`;
+                    }
+                }
             ]]
         });
 
