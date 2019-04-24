@@ -14,7 +14,8 @@ class Manage extends Common implements Excelable
     const STATUS_DISABLE = 2;       //用户状态 停用
 
     protected $rule = [
-        'username' => 'length:3,20|alphaDash',
+//        'username' => 'length:3,20|alphaDash',
+        'username' => 'length:2,50',
         'mobile' => ['regex' => '^1[3|4|5|6|7|8][0-9]\d{4,8}$'],
         'nickname' => 'length:2,50',
     ];
@@ -69,7 +70,8 @@ class Manage extends Common implements Excelable
         $result = array(
             'status' => false,
             'data' => '',
-            'msg' => ''
+            'msg' => '',
+            'insertId' => 0
         );
 
         //校验数据
@@ -78,7 +80,6 @@ class Manage extends Common implements Excelable
             $result['msg'] = $validate->getError();
             return $result;
         }
-
 
         //判断是新增还是修改
         if (isset($data['id'])) {
@@ -91,7 +92,8 @@ class Manage extends Common implements Excelable
                 if ($data['password'] == "") {
                     unset($data['password']);
                 } else {
-                    $data['password'] = $this->enPassword($data['password'], $manageInfo['ctime']);
+//                    $data['password'] = $this->enPassword($data['password'], $manageInfo['ctime']);
+                    $data['password'] = encrypt($data['password']);
                 }
             } else {
                 return error_code(11009);
@@ -111,7 +113,8 @@ class Manage extends Common implements Excelable
             if (!isset($data['password']) && $data['password'] == "") {
                 return error_code(11009);
             }
-            $data['password'] = $this->enPassword($data['password'], $data['ctime']);
+//            $data['password'] = $this->enPassword($data['password'], $data['ctime']);
+            $data['password'] = encrypt($data['password']);
             //插入数据库
             $this->data($data)->allowField(true)->save();
             $data['id'] = $this->id;
@@ -133,6 +136,7 @@ class Manage extends Common implements Excelable
 
 
         $result['status'] = true;
+        $result['insertId'] = $this->id;
         return $result;
     }
 

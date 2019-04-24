@@ -3,6 +3,9 @@
 namespace app\service\excel\handler;
 
 use app\common\model\Manage as ManageModel;
+use app\common\model\ManageRole as ManageRoleModel;
+use app\common\model\ManageRoleRel;
+use app\common\model\ManageRoleRel as ManageRoleRelModel;
 use app\service\excel\BaseHandler;
 use think\facade\Log;
 
@@ -18,12 +21,14 @@ class AdministratorImportHandler extends BaseHandler
     {
         $message = [];
         $manageModel = new ManageModel();
+        $manageRoleRelModel = new ManageRoleRelModel();
+        $manageRoleModel = new ManageRoleModel();
 
         foreach ($importData as $record) {
             $manage['erp_manage_id'] = $record['erp_manage_id'];
             $manage['username'] = $record['user_name'];
             $manage['mobile'] = $record['mobile'];
-            $manage['password'] = encrypt($record['password']);
+            $manage['password'] = $record['password'];
             $manage['avatar'] = $record['avatar'];
             $manage['nickname'] = $record['nickname'];
             $manage['utime'] = time();
@@ -34,24 +39,37 @@ class AdministratorImportHandler extends BaseHandler
             $manageModel->startTrans();
             $manageData = $manageModel->field('id')->where(['mobile' => $manage['mobile']])->find();
             if ($manageData && isset($manageData['id']) && $manageData['id'] !== '') {
-                Log::record("管理者导入失败：『#{$manage['erp_manage_id']}』{$manage['username']} 已存在，导入失败！");
+                $manage['password'] = encrypt($manage['password']);
+                $res = $manageModel->save($manage, ['id' => $manageData['id']]);
+                if ($res === false) {
+                    Log::record("管理者导入失败：『#{$manage['erp_manage_id']}』{$manage['username']}");
+                }
                 $manage_id = $manageData['id'];
             } else {
-                $manage_id = $manageModel->toAdd($manage);
+                $result = $manageModel->toAdd($manage);
+                $manage_id = $result['insertId'];
             }
+
             if (!$manage_id) {
                 $manageModel->rollback();
                 $message[] = "管理者导入失败";
                 Log::record("管理者导入失败：『#{$manage['erp_manage_id']}』{$manage['username']}");
                 continue;
             } else {
+                $manageRoleRelModel = new ManageRoleRel();
+                //清空所有的旧角色
+                $manageRoleRelModel->where(['manage_id' => $manage_id])->delete();
+
                 if (!empty($record['role_name'])) {
-                    $manageRoleId = model('common/ManageRole')->getInfoByName($record['role_name'], true);
-                    model('common/ManageRoleRel')->insert(['manage_id' => $manage_id, 'role_id' => $manageRoleId]);
+                    $roleNames = explode('|', $record['role_name']);
+                    foreach ($roleNames as $key => $roleName) {
+                        $manageRoleId = $manageRoleModel->getInfoByName($roleName, true);
+                        $manageRoleRelModel->insert(['manage_id' => $manage_id, 'role_id' => $manageRoleId]);
+                    }
                 }
 
                 $manageModel->commit();
-                Log::record("管理者导入成功：『#{$manage['erp_manage_id']}』{$manage['username']} 导入失败！");
+                Log::record("管理者导入成功：『#{$manage['erp_manage_id']}』{$manage['username']}");
             }
         }
 

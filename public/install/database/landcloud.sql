@@ -871,6 +871,7 @@ COMMIT;
 DROP TABLE IF EXISTS `lc_manage`;
 CREATE TABLE `lc_manage` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `erp_manage_id` int(10) unsigned not null comment '用户ERP的ID',
   `username` varchar(20) DEFAULT NULL COMMENT '用户名',
   `password` char(32) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
   `mobile` char(15) DEFAULT NULL COMMENT '手机号',
@@ -1327,7 +1328,7 @@ CREATE TABLE `lc_template_order` (
 DROP TABLE IF EXISTS `lc_user`;
 CREATE TABLE `lc_user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `username` varchar(20) DEFAULT NULL COMMENT '用户名',
+  `username` varchar(50) DEFAULT NULL COMMENT '用户名',
 --   `password` char(32) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
   `password` varchar(255) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
   `mobile` varchar(15) DEFAULT NULL COMMENT '手机号',

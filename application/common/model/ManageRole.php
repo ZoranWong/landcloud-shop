@@ -108,7 +108,7 @@ class ManageRole extends Common
         $manageRole = $this->field('id')->where([['name', 'like', '%' . $name . '%']])->find();
 
         if (!$manageRole && $isForce) {
-            $this->save([
+            $this->insert([
                 'name' => $name,
             ]);
             $manage_role_id = $this->getLastInsID();
