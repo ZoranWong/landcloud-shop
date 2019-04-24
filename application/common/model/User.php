@@ -963,6 +963,7 @@ class User extends Common
         $newData['status'] = isset($data['status']) ? $data['status'] : self::STATUS_NORMAL;
         $newData['pid'] = 0;
         $newData['grade'] = $data['grade'];
+        $newData['erp_user_id'] = $data['erp_user_id'];
 
         $result = $this->save($newData);
         $return['data'] = $this->id;

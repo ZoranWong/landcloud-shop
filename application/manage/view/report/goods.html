@@ -7,6 +7,20 @@
             <div class="layui-input-inline seller-inline-4">
                 <input  type="text" name="date" value="" id="date" placeholder="请输入起止时间" autocomplete="off" class="layui-input">
             </div>
+            <label class="layui-form-label">品类：</label>
+            <div class="layui-input-inline seller-inline-2">
+                <select name="filter">
+                    <option value="nums">销量</option>
+                    <option value="amount">销售额</option>
+                </select>
+            </div>
+            <label class="layui-form-label">商品：</label>
+            <div class="layui-input-inline seller-inline-2">
+                <select name="filter">
+                    <option value="nums">销量</option>
+                    <option value="amount">销售额</option>
+                </select>
+            </div>
             <label class="layui-form-label">排名条件：</label>
             <div class="layui-input-inline seller-inline-2">
                 <select name="filter">
@@ -21,10 +35,10 @@
                     <option value="asc">升序</option>
                 </select>
             </div>
+            <button class="layui-btn layui-btn-sm" val="" lay-submit lay-filter="*"><i class="iconfont icon-chaxun"></i>确定</button>
         </div>
         <div class="layui-inline">
             <div class="">
-                <button class="layui-btn layui-btn-sm" val="" lay-submit lay-filter="*"><i class="iconfont icon-chaxun"></i>确定</button>
                 <button class="layui-btn layui-btn-primary layui-btn-sm" val="1" lay-submit lay-filter="*">今日</button>
                 <button class="layui-btn layui-btn-primary layui-btn-sm" val="2" lay-submit lay-filter="*">昨日</button>
                 <button class="layui-btn layui-btn-primary layui-btn-sm" val="3" lay-submit lay-filter="*">本周</button>
