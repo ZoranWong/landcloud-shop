@@ -13,12 +13,16 @@ use think\Db;
 
 class GoodsPriceLevels extends Common
 {
-    public static function sync($goodsId, $levels) {
+    public static function sync($goodsId, $levels)
+    {
         (new static())->where('goods_id', 'eq', $goodsId)->delete();
+        if (!$levels) {
+            return true;
+        }
         foreach ($levels as &$level) {
             $level['goods_id'] = $goodsId;
             $goodsPriceLevel = new static();
-            if(!$goodsPriceLevel->save($level)) {
+            if (!$goodsPriceLevel->save($level)) {
                 return false;
             }
         }

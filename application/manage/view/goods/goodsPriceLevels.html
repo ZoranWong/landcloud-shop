@@ -8,9 +8,9 @@
     </table>
 </div>
 <script type="text/javascript">
-    var areas = (<?php echo $areas;?>);
-    var levels = (<?php echo $levels?>);
-
+    var areas = JSON.parse('<?php echo $areas;?>');
+    var levels = JSON.parse('<?php echo $levels?>');
+    console.log(levels);
     $(function () {
 
         layui.use('table', function () {

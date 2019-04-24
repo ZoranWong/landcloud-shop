@@ -11,6 +11,7 @@ namespace app\Manage\controller;
 use app\common\controller\Manage;
 use app\common\model\GoodsGrade;
 use app\common\model\GoodsPriceLevels;
+use app\common\model\RelationGoods;
 use app\common\model\UserGrade;
 use Request;
 use app\common\model\Goods as goodsModel;
@@ -24,6 +25,7 @@ use app\common\model\GoodsImages;
 use app\common\model\Ietask;
 use app\common\model\GoodsTypeParams;
 use think\Db;
+use think\db\Query;
 use think\Queue;
 use app\common\validate\Goods as GoodsValidate;
 use app\common\validate\Products as ProductsValidate;
@@ -75,6 +77,7 @@ class Goods extends Manage
         }
         $levels = [];
         $this->assign('levels', json_encode($levels));
+        $this->assign('goodsId', null);
 //        $priceLevelsTable = $this->fetch('goodsPriceLevels');
         return $this->fetch('add');
     }
@@ -142,8 +145,13 @@ class Goods extends Manage
     protected function syncPriceLevels($goodsId)
     {
         $levels = \think\facade\Request::post('levels') ?: \think\facade\Request::put('levels');
-//        var_dump($levels); exit();
         return GoodsPriceLevels::sync($goodsId, $levels);
+    }
+
+    protected function syncRelationGoods($goodsId)
+    {
+        $relations = \think\facade\Request::post('relations') ?: \think\facade\Request::put('relations');
+        return RelationGoods::sync($goodsId, $relations);
     }
 
     /**
@@ -176,11 +184,19 @@ class Goods extends Manage
             $result['msg'] = '商品数据保存失败';
             return $result;
         }
+
         if (!$this->syncPriceLevels($goods_id)) {
             Db::rollback();
             $result['msg'] = '商品数据保存失败';
             return $result;
         }
+
+        if (!$this->syncRelationGoods($goods_id)) {
+            Db::rollback();
+            $result['msg'] = '商品数据保存失败';
+            return $result;
+        }
+
         $open_spec = input('post.open_spec', 0);
         if ($open_spec) {
             //多规格
@@ -205,7 +221,7 @@ class Goods extends Manage
                 $checkData = $this->checkProductInfo($tmp_product, $goods_id);
                 if (!$checkData['status']) {
                     $result['msg'] = $checkData['msg'];
-                    $goodsModel->rollback();
+                    Db::rollback();
                     return $result;
                 }
                 $data['product'] = $checkData['data']['product'];
@@ -502,6 +518,7 @@ class Goods extends Manage
             $this->assign('areas', json_encode($areas[0]['list']));
             $levels = [];
             $this->assign('levels', json_encode($levels));
+            $this->assign('goodsId', null);
             $html = $this->fetch('getSpec');
             $result['status'] = true;
             $result['msg'] = '获取成功';
@@ -624,6 +641,18 @@ class Goods extends Manage
 
     }
 
+    protected function assignRelationGoods($id)
+    {
+        $goods = RelationGoods::where('main_goods_id', 'eq', $id)->select();
+        $this->assign('relationGoods', $goods ? json_encode($goods->toArray()): '[]');
+    }
+
+    protected function assignPriceLevels($id)
+    {
+        $levels = GoodsPriceLevels::where('goods_id', 'eq', $id)->select();
+        $this->assign('levels', $levels ? json_encode($levels->toArray()) : '[]');
+    }
+
     /***
      * 编辑商品
      * User: wjima
@@ -676,8 +705,9 @@ class Goods extends Manage
             }
         }
         $this->assign('gradelist', $gradelist);
-        $levels = [];
-        $this->assign('levels', json_encode($levels));
+        $this->assignPriceLevels($goods_id);
+        $this->assignRelationGoods($goods_id);
+        $this->assign('goodsId', $goods_id);
 
         return $this->fetch('edit');
     }
@@ -715,6 +745,13 @@ class Goods extends Manage
             $result['msg'] = '商品数据保存失败';
             return $result;
         }
+
+        if (!$this->syncRelationGoods($goods_id)) {
+            Db::rollback();
+            $result['msg'] = '商品数据保存失败';
+            return $result;
+        }
+
         $productIds = [];
         $products = $productsModel->field('id')->where(['goods_id' => $goods_id])->select()->toArray();
         $productIds = array_column($products, 'id');
@@ -996,10 +1033,9 @@ class Goods extends Manage
                 $this->assign('product', $goods['products'][0]);
             }
             $this->assign('items', $items);
-
-            $levels = [];
-            $this->assign('levels', json_encode($levels));
-
+            $this->assignPriceLevels($goods['id']);
+            $this->assignRelationGoods($goods['id']);
+            $this->assign('goodsId', $goods['id']);
             $areaModel = new \app\common\model\Area();
             $areas = $areaModel->getArea();
             $this->assign('areas', json_encode($areas[0]['list']));
@@ -1229,4 +1265,42 @@ class Goods extends Manage
         }
         return $result;
     }
+
+    public function goodsForRelation()
+    {
+        $result = [
+            'status' => false,
+            'msg' => '获取成功',
+            'data' => '',
+        ];
+        $goodsId = \think\facade\Request::get('goods_id');
+        $search = \think\facade\Request::get('search');
+        $limit = \think\facade\Request::get('limit');
+        $query = \app\common\model\Goods::with(['defaultImage'])->where('id','neq', $goodsId);
+        if($search){
+            $query->where(function ($query) use($search){
+                /**@var Query $query **/
+                $query->where('name', 'like', "%{$search}%");
+            });
+        }
+        $relationGoods = $goodsId ? RelationGoods::where('main_goods_id', 'eq', $goodsId)->select() : null;
+        if($relationGoods){
+            $field = '';
+            foreach ($relationGoods as $relationGood) {
+                $field .= ", {$relationGood['relation_goods_id']}";
+            }
+            $field = trim($field, ',');
+            $query->order(Db::raw("`id` NOT IN ( {$field})"));
+        }
+
+        $goods = $query->paginate($limit);
+        $result['sql'] = $query->getLastSql();
+        $count = $query->count();
+        $result['count'] = $count;
+        $result['code'] = 0;
+        $result['status'] = true;
+        $result['data'] = (new \app\common\model\Goods())->tableFormat($goods->getCollection());
+        return $result;
+    }
+
 }
