@@ -550,7 +550,7 @@ CREATE TABLE `lc_goods` (
   `ctime` bigint(12) unsigned DEFAULT NULL COMMENT '创建时间',
   `utime` bigint(12) unsigned DEFAULT NULL COMMENT '更新时间',
   `isdel` bigint(12) unsigned DEFAULT NULL COMMENT '删除标志 有数据表示删除',
-  `erp_goods_id` varchar(100) unsigned not null comment 'erp产品id',
+  `erp_goods_id` varchar(100) not null comment 'erp产品id',
   `en_name` varchar(200)  default null comment '产品英文名称',
   `length` decimal(10,2) unsigned default 0 comment '产品长度',
   `width` decimal(10,2) unsigned default 0 comment '产品宽度',
@@ -1425,6 +1425,7 @@ DROP TABLE IF EXISTS `lc_user_ship`;
 CREATE TABLE `lc_user_ship` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned DEFAULT NULL COMMENT '用户id 关联user.id',
+  `erp_user_id` int(10) unsigned default null comment '用户ERP中ID',
   `area_id` int(10) unsigned DEFAULT NULL COMMENT '收货地区ID',
   `address` varchar(200) DEFAULT NULL COMMENT '收货详细地址',
   `name` varchar(50) DEFAULT NULL COMMENT '收货人姓名',

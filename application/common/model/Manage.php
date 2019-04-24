@@ -2,10 +2,10 @@
 
 namespace app\common\model;
 
-use think\model\concern\SoftDelete;
+use app\service\excel\Excelable;
 use think\Validate;
 
-class Manage extends Common
+class Manage extends Common implements Excelable
 {
 
     const TYPE_SUPER_ID = 13;            //超级管理员 id
@@ -28,9 +28,9 @@ class Manage extends Common
 
     /**
      * 返回layui的table所需要的格式
-     * @author sin
      * @param $post
      * @return mixed
+     * @author sin
      */
     public function tableData($post)
     {
@@ -263,4 +263,16 @@ class Manage extends Common
         return md5(md5($password) . $ctime);
     }
 
+    public static function excelHeader()
+    {
+        return [
+            ['id' => 'erp_manage_id', 'desc' => '用户ID（ERP）'],
+            ['id' => 'user_name', 'desc' => '用户名'],
+            ['id' => 'mobile', 'desc' => '手机号'],
+            ['id' => 'password', 'desc' => '密码'],
+            ['id' => 'role_name', 'desc' => '角色'],
+            ['id' => 'avatar', 'desc' => '头像'],
+            ['id' => 'nickname', 'desc' => '昵称']
+        ];
+    }
 }

@@ -16,8 +16,8 @@ class ManageRole extends Common
         $where = [];
 
 
-        if(isset($post['name']) && $post['name'] != ""){
-            $where[] = ['name', 'like', '%'.$post['name'].'%'];
+        if (isset($post['name']) && $post['name'] != "") {
+            $where[] = ['name', 'like', '%' . $post['name'] . '%'];
         }
         $result['where'] = $where;
         $result['field'] = "*";
@@ -27,14 +27,14 @@ class ManageRole extends Common
 
     /**
      * 根据查询结果，格式化数据
-     * @author sin
      * @param $list  array格式的collection
      * @return mixed
+     * @author sin
      */
     protected function tableFormat($list)
     {
-        foreach($list as $k => $v) {
-            if($v['utime']) {
+        foreach ($list as $k => $v) {
+            if ($v['utime']) {
                 $list[$k]['utime'] = getTime($v['utime']);
             }
 
@@ -57,7 +57,7 @@ class ManageRole extends Common
         Db::startTrans();
         try {
             $this->where($where)->delete();
-            $mrorModel->where(['manage_role_id'=>$id])->delete();
+            $mrorModel->where(['manage_role_id' => $id])->delete();
             Db::commit();
             $result['status'] = true;
             $result['msg'] = '删除成功';
@@ -77,17 +77,17 @@ class ManageRole extends Common
     {
         $result = [
             'status' => true,
-            'data'   => [],
-            'msg'    => ''
+            'data' => [],
+            'msg' => ''
         ];
 
-        $where['id']    = $id;
+        $where['id'] = $id;
         $sellerRoleInfo = $this->where($where)->find();
         if (!$sellerRoleInfo) {
             return error_code(11071);
         }
         $mrorModel = new ManageRoleOperationRel();
-        $permList  = $mrorModel->where(['manage_role_id' => $id])->select();
+        $permList = $mrorModel->where(['manage_role_id' => $id])->select();
         if (!$permList->isEmpty()) {
             $nodeList = array_column($permList->toArray(), 'manage_role_id', 'operation_id');
         } else {
@@ -99,6 +99,23 @@ class ManageRole extends Common
         return $result;
     }
 
+    public function getInfoByName($name = '', $isForce = false)
+    {
+        if (!$name) {
+            return false;
+        }
+        $manage_role_id = 0;
+        $manageRole = $this->field('id')->where([['name', 'like', '%' . $name . '%']])->find();
 
+        if (!$manageRole && $isForce) {
+            $this->save([
+                'name' => $name,
+            ]);
+            $manage_role_id = $this->getLastInsID();
+        } elseif ($manageRole) {
+            $manage_role_id = $manageRole['id'];
+        }
+        return $manage_role_id;
+    }
 
 }

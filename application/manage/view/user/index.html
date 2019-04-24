@@ -64,7 +64,12 @@
         </div>
         <div class="layui-inline">
             <button type="button" class="layui-btn layui-btn-sm" lay-submit lay-filter="import-user"><i
-                    class="layui-icon"></i>导入
+                    class="layui-icon"></i>导入用户
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button type="button" class="layui-btn layui-btn-sm" lay-submit lay-filter="import-user-address"><i
+                    class="layui-icon"></i>导入用户收获地址
             </button>
         </div>
     </div>
@@ -106,6 +111,27 @@
                 <label class="layui-form-label">
                     <input type="file" class="layui-file" name="importFile" id="importFile">
                     <input type="hidden" name="model" value="User">
+                </label>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="importUserAddress" style="display: none;">
+    <form class="layui-form import-address-form" method="post" action="{:url('ietask/import')}"
+          enctype="multipart/form-data">
+        <div class="layui-form-item">
+            <div class="layui-margin-10">
+                <blockquote class="layui-elem-quote layui-text">
+                    请先下载<a href="{:url('ietask/importTemplete',['tplName'=>'userShip'])}">导入模板</a><br>
+                    填写前请先下载<a href="{:url('ietask/importTemplete',['tplName'=>'area','withData'=>1])}">地址填写指导手册，严格按照手册地址填写</a><br>
+                    友情提示：若您修改了【控制面板-地区管理】，导入前请仔细检查您修改的地区部分和手册中的地区代码
+                </blockquote>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">
+                    <input type="file" class="layui-file" name="importFile" id="importFile">
+                    <input type="hidden" name="model" value="userShip">
                 </label>
             </div>
         </div>
@@ -425,6 +451,36 @@
                 content: $("#importUser").html(),
                 yes: function (index, obj) {
                     $(obj).find('.import-form').ajaxSubmit({
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (result) {
+                            layer.msg(result.msg, {time: 1500}, function () {
+                                if (result.status) {
+                                    table.reload();
+                                    layer.closeAll();
+                                }
+                            });
+                        },
+                        error: function (result) {
+                            layer.msg("导入失败");
+                        }
+                    });
+                }, btn2: function () {
+                    layer.closeAll();
+                }
+            });
+        });
+
+        //会员导入
+        layui.form.on('submit(import-user-address)', function (data) {
+            layer.open({
+                type: 1,
+                title: '会员收获地址导入',
+                area: ['400px', '290px'], //宽高
+                btn: ['确定', '取消'],
+                content: $("#importUserAddress").html(),
+                yes: function (index, obj) {
+                    $(obj).find('.import-address-form').ajaxSubmit({
                         type: 'post',
                         dataType: 'json',
                         success: function (result) {

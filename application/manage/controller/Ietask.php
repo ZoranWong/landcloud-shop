@@ -116,11 +116,16 @@ class Ietask extends Manage
 
         $tplName = ucwords(input('tplName', 'product'));
 
+        $withData = (boolean)input('withData', false);
+
         $generatorClass = config('app.generator_namespace') . "{$tplName}ImportExcelTplGenerator";
 
-
+        $data = null;
+        if ($withData) {
+            $data = (new \app\common\model\Area())->getAllArea2();
+        }
         if (class_exists($generatorClass)) {
-            (new $generatorClass)->generate();
+            (new $generatorClass)->generate($data);
         }
     }
 

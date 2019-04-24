@@ -9,9 +9,9 @@
 namespace app\common\model;
 
 
-use think\Db;
+use app\service\excel\Excelable;
 
-class GoodsPriceLevels extends Common
+class GoodsPriceLevels extends Common implements Excelable
 {
     public static function sync($goodsId, $levels)
     {
@@ -27,5 +27,27 @@ class GoodsPriceLevels extends Common
             }
         }
         return true;
+    }
+
+
+    public static function excelHeader()
+    {
+        return [
+            ['id' => 'erp_goods_id', 'desc' => '产品ID（ERP U8编号）'],
+            ['id' => 'area', 'desc' => '区域（省）'],
+            ['id' => 'level', 'desc' => '梯度'],
+            ['id' => 'name', 'desc' => '产品规格'],
+            ['id' => 'number', 'desc' => '产品数量'],
+            ['id' => 'price', 'desc' => '产品价格'],
+        ];
+    }
+
+    public function doAdd($data = [])
+    {
+        $result = $this->insert($data);
+        if ($result) {
+            return $this->getLastInsID();
+        }
+        return $result;
     }
 }

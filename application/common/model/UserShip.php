@@ -1,12 +1,15 @@
 <?php
+
 namespace app\common\model;
+
+use app\service\excel\Excelable;
 
 /**
  * 用户收货地址
  * Class UserShip
  * @package app\common\model
  */
-class UserShip extends Common
+class UserShip extends Common implements Excelable
 {
     const SHIP_DEFAULT = 1;
     const SHIP_DEFAULT_NO = 2;
@@ -32,26 +35,20 @@ class UserShip extends Common
 
         $res = $this->where($where)
             ->find();
-        if($res)
-        {
+        if ($res) {
             $data['utime'] = time();
             $this->where($where)->update($data);
             $ship_id = $res['id'];
-        }
-        else
-        {
+        } else {
             $awhere[] = ['user_id', 'eq', $data['user_id']];
             $awhere[] = ['is_def', 'eq', self::SHIP_DEFAULT];
             $flag = $this->where($awhere)->find();
-            if(!$flag)
-            {
+            if (!$flag) {
                 //没有默认
                 $ship_data['is_def'] = self::SHIP_DEFAULT;
-            }
-            else
-            {
+            } else {
                 //有默认
-                $ship_data['is_def'] = $data['is_def']?$data['is_def']:self::SHIP_DEFAULT_NO;
+                $ship_data['is_def'] = $data['is_def'] ? $data['is_def'] : self::SHIP_DEFAULT_NO;
             }
 
             $ship_data['user_id'] = $data['user_id'];
@@ -86,17 +83,13 @@ class UserShip extends Common
         $where[] = ['mobile', 'eq', $data['mobile']];
 
         $res_data = $this->where($where)->find();
-        if($res_data)
-        {
-            if($data['is_def'] === self::SHIP_DEFAULT)
-            {
+        if ($res_data) {
+            if ($data['is_def'] === self::SHIP_DEFAULT) {
                 //查找该用户是否有默认的地址
                 $defData = $this->where(['user_id' => $data['user_id'], 'is_def' => self::SHIP_DEFAULT])->select();
-                if(count($defData)>0)
-                {
-                    foreach($defData as $k => $v)
-                    {
-                        $this->where('id',$v['id'])->update(['is_def' => self::SHIP_DEFAULT_NO]);
+                if (count($defData) > 0) {
+                    foreach ($defData as $k => $v) {
+                        $this->where('id', $v['id'])->update(['is_def' => self::SHIP_DEFAULT_NO]);
                     }
                 }
             }
@@ -105,19 +98,14 @@ class UserShip extends Common
             $this->where($where)->update($setData);
 
             $ship_id = $res_data['id'];
-        }
-        else
-        {
+        } else {
             //如果设置的地址是默认的
-            if($data['is_def'] == self::SHIP_DEFAULT)
-            {
+            if ($data['is_def'] == self::SHIP_DEFAULT) {
                 //查找该用户是否有默认的地址
                 $defData = $this->where(['user_id' => $data['user_id'], 'is_def' => self::SHIP_DEFAULT])->select();
-                if(count($defData)>0)
-                {
-                    foreach($defData as $k => $v)
-                    {
-                        $this->where('id',$v['id'])->update(['is_def' => self::SHIP_DEFAULT_NO]);
+                if (count($defData) > 0) {
+                    foreach ($defData as $k => $v) {
+                        $this->where('id', $v['id'])->update(['is_def' => self::SHIP_DEFAULT_NO]);
                     }
                 }
             }
@@ -148,7 +136,7 @@ class UserShip extends Common
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
-    public function editShip ($data,$user_id)
+    public function editShip($data, $user_id)
     {
         $return = [
             'status' => false,
@@ -158,26 +146,20 @@ class UserShip extends Common
         $where[] = ['id', 'eq', $data['id']];
         $where[] = ['user_id', 'eq', $user_id];
         $oldData = $this->where($where)->find();
-        if($oldData)
-        {
-            if($data['is_def'] == self::SHIP_DEFAULT)
-            {
+        if ($oldData) {
+            if ($data['is_def'] == self::SHIP_DEFAULT) {
                 $where1[] = ['user_id', 'eq', $user_id];
                 $where1[] = ['is_def', 'eq', self::SHIP_DEFAULT];
                 $defData = $this->where($where1)->select();
-                foreach($defData as $k => $v)
-                {
-                    $this->where('id',$v['id'])->update(['is_def' => self::SHIP_DEFAULT_NO]);
+                foreach ($defData as $k => $v) {
+                    $this->where('id', $v['id'])->update(['is_def' => self::SHIP_DEFAULT_NO]);
                 }
             }
-            if($this->allowField(true)->save($data,['id'=>$data['id'],'user_id'=>$user_id]))
-            {
+            if ($this->allowField(true)->save($data, ['id' => $data['id'], 'user_id' => $user_id])) {
                 $return['status'] = true;
                 $return['msg'] = '保存成功';
             }
-        }
-        else
-        {
+        } else {
             $return['msg'] = '该地址不存在';
         }
         return $return;
@@ -198,47 +180,38 @@ class UserShip extends Common
     public function removeShip($id, $user_id)
     {
         $res = ['status' => false, 'msg' => '删除失败', 'data' => ''];
-        $data = $this->where(['id'=>$id,'user_id'=>$user_id])->find();
+        $data = $this->where(['id' => $id, 'user_id' => $user_id])->find();
         //判断收货地址是否存在
-        if($data)
-        {
+        if ($data) {
             //如果要删除的是默认地址
-            if($data['is_def'] === self::SHIP_DEFAULT)
-            {
+            if ($data['is_def'] === self::SHIP_DEFAULT) {
                 //查询是否有其他地址
-                $where[] = ['id','neq',$id];
-                $where[] = ['user_id','eq',$user_id];
+                $where[] = ['id', 'neq', $id];
+                $where[] = ['user_id', 'eq', $user_id];
                 $list = $this->where($where)->order('utime desc')->find();
-                if($list)
-                {
+                if ($list) {
                     $this->startTrans();
-                    try{
-                        $this->save(['is_def' => self::SHIP_DEFAULT ], ['id' => $list['id'], 'user_id' => $user_id]);
+                    try {
+                        $this->save(['is_def' => self::SHIP_DEFAULT], ['id' => $list['id'], 'user_id' => $user_id]);
                         $this->where(['id' => $id, 'user_id' => $user_id])->delete();
                         $this->commit();
                         $res['status'] = true;
                         $res['msg'] = '删除成功';
-                    }catch(\Exception $e){
+                    } catch (\Exception $e) {
                         $this->rollback();
                         $res['msg'] = $e->getMessage();
                     }
-                }
-                else
-                {
+                } else {
                     $this->where(['id' => $id, 'user_id' => $user_id])->delete();
                     $res['status'] = true;
                     $res['msg'] = '删除成功';
                 }
-            }
-            else
-            {
+            } else {
                 $this->where(['id' => $id, 'user_id' => $user_id])->delete();
                 $res['status'] = true;
                 $res['msg'] = '删除成功';
             }
-        }
-        else
-        {
+        } else {
             $res['msg'] = '该收货地址不存在';
         }
         return $res;
@@ -259,36 +232,29 @@ class UserShip extends Common
     {
         $res = ['status' => false, 'msg' => '保存失败', 'data' => ''];
         $data = $this->where(['id' => $id, 'user_id' => $user_id])->find();
-        if($data)
-        {
+        if ($data) {
             //是否有默认
             $def = $this->where(['user_id' => $user_id, 'is_def' => self::SHIP_DEFAULT])->find();
-            if($def)
-            {
+            if ($def) {
                 $this->startTrans();
-                try{
-                    $this->save(['is_def' => self::SHIP_DEFAULT_NO], ['id' => $def['id'],'user_id' => $user_id]);
-                    $this->save(['is_def' => self::SHIP_DEFAULT], ['id' => $data['id'],'user_id' => $user_id]);
+                try {
+                    $this->save(['is_def' => self::SHIP_DEFAULT_NO], ['id' => $def['id'], 'user_id' => $user_id]);
+                    $this->save(['is_def' => self::SHIP_DEFAULT], ['id' => $data['id'], 'user_id' => $user_id]);
                     $this->commit();
                     $res['status'] = true;
                     $res['msg'] = '保存成功';
-                }catch(\Exception $e){
+                } catch (\Exception $e) {
                     $this->rollback();
                     $res['msg'] = $e->getMessage();
                 }
-            }
-            else
-            {
+            } else {
                 //没有默认的直接设置为默认
-                if($this->save(['is_def' => self::SHIP_DEFAULT], ['id' => $data['id'],'user_id' => $user_id]))
-                {
+                if ($this->save(['is_def' => self::SHIP_DEFAULT], ['id' => $data['id'], 'user_id' => $user_id])) {
                     $res['status'] = true;
                     $res['msg'] = '保存成功';
                 }
             }
-        }
-        else
-        {
+        } else {
             $res['msg'] = '该地址不存在';
         }
         return $res;
@@ -304,9 +270,9 @@ class UserShip extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function getShipById($id,$user_id)
+    public function getShipById($id, $user_id)
     {
-        $ship_data = $this->where('id', 'eq', $id)->where('user_id','eq',$user_id)
+        $ship_data = $this->where('id', 'eq', $id)->where('user_id', 'eq', $user_id)
             ->find();
         return $ship_data;
     }
@@ -324,10 +290,8 @@ class UserShip extends Common
     {
         $info = $this->where('user_id', 'eq', $user_id)
             ->select();
-        if($info && count($info) > 0)
-        {
-            foreach($info as $k => &$v)
-            {
+        if ($info && count($info) > 0) {
+            foreach ($info as $k => &$v) {
                 $v['area_name'] = get_area($v['area_id']);
             }
         }
@@ -350,21 +314,18 @@ class UserShip extends Common
         $res = $this->where($where)
             ->order('utime desc')
             ->find();
-        if($res !== false)
-        {
-            if(isset($res['area_id']) && $res['area_id']){
+        if ($res !== false) {
+            if (isset($res['area_id']) && $res['area_id']) {
                 $res['area_name'] = get_area($res['area_id']);
-            }else{
-                $res=[];
+            } else {
+                $res = [];
             }
             $return = [
                 'status' => true,
                 'msg' => '获取成功',
                 'data' => $res
             ];
-        }
-        else
-        {
+        } else {
             $return = [
                 'status' => false,
                 'msg' => '获取失败',
@@ -372,5 +333,26 @@ class UserShip extends Common
             ];
         }
         return $return;
+    }
+
+    public static function excelHeader()
+    {
+        return [
+            ['id' => 'erp_user_id', 'desc' => '用户ID（ERP）'],
+            ['id' => 'area_id', 'desc' => '地区代码'],
+            ['id' => 'address', 'desc' => '详细地址'],
+            ['id' => 'postal_code', 'desc' => '邮编'],
+            ['id' => 'mobile', 'desc' => '联系电话'],
+            ['id' => 'name', 'desc' => '收件人姓名']
+        ];
+    }
+
+    public function doAdd($data = [])
+    {
+        $result = $this->insert($data);
+        if ($result) {
+            return $this->getLastInsID();
+        }
+        return $result;
     }
 }

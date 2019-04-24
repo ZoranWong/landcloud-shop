@@ -9,8 +9,14 @@
 namespace app\common\model;
 
 
-class RelationGoods extends Common
+use app\service\excel\Excelable;
+
+class RelationGoods extends Common implements Excelable
 {
+    protected $type = [
+        'required' => 'boolean'
+    ];
+
     public static function sync($goodsId, $relations)
     {
         (new static())->where('main_goods_id', 'eq', $goodsId)->delete();
@@ -25,5 +31,23 @@ class RelationGoods extends Common
             }
         }
         return true;
+    }
+
+    public static function excelHeader()
+    {
+        return [
+            ['id' => 'erp_goods_id', 'desc' => '产品ID（ERP U8编号）'],
+            ['id' => 'erp_relation_goods_id', 'desc' => '关联产品ID（ERP U8编号）'],
+            ['id' => 'required', 'desc' => '是否必须（是或否，不可识别视为"是"）']
+        ];
+    }
+
+    public function doAdd($data = [])
+    {
+        $result = $this->insert($data);
+        if ($result) {
+            return $this->getLastInsID();
+        }
+        return $result;
     }
 }

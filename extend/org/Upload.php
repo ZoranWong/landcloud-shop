@@ -20,31 +20,31 @@ class Upload
      */
     private $config = [
         // 允许上传的文件MiMe类型
-        'mimes'        => [],
+        'mimes' => [],
         // 上传的文件大小限制 (0-不做限制)
-        'maxSize'      => 0,
+        'maxSize' => 0,
         // 允许上传的文件后缀
-        'exts'         => [],
+        'exts' => [],
         // 自动子目录保存文件
-        'autoSub'      => true,
+        'autoSub' => true,
         // 子目录创建方式，[0]-函数名，[1]-参数，多个参数使用数组
-        'subName'      => ['date', 'Y-m-d'],
+        'subName' => ['date', 'Y-m-d'],
         //保存根路径
-        'rootPath'     => './Uploads/',
+        'rootPath' => './Uploads/',
         // 保存路径
-        'savePath'     => '',
+        'savePath' => '',
         // 上传文件命名规则，[0]-函数名，[1]-参数，多个参数使用数组
-        'saveName'     => ['uniqid', ''],
+        'saveName' => ['uniqid', ''],
         // 文件保存后缀，空则使用原后缀
-        'saveExt'      => '',
+        'saveExt' => '',
         // 存在同名是否覆盖
-        'replace'      => false,
+        'replace' => false,
         // 是否生成hash编码
-        'hash'         => true,
+        'hash' => true,
         // 检测文件是否存在回调，如果存在返回文件信息数组
-        'callback'     => false,
+        'callback' => false,
         // 文件上传驱动e,
-        'driver'       => '',
+        'driver' => '',
         // 上传驱动配置
         'driverConfig' => [],
     ];
@@ -63,7 +63,7 @@ class Upload
 
     /**
      * 构造方法，用于构造上传实例
-     * @param array  $config 配置
+     * @param array $config 配置
      * @param string $driver 要使用的上传驱动 LOCAL-本地上传驱动，FTP-FTP上传驱动
      */
     public function __construct($config = [], $driver = '', $driverConfig = null)
@@ -91,7 +91,7 @@ class Upload
 
     /**
      * 使用 $this->name 获取配置
-     * @param  string $name 配置名称
+     * @param string $name 配置名称
      * @return multitype    配置值
      */
     public function __get($name)
@@ -127,7 +127,7 @@ class Upload
 
     /**
      * 上传单个文件
-     * @param  array  $file 文件数组
+     * @param array $file 文件数组
      * @return array        上传成功后的文件信息
      */
     public function uploadOne($file)
@@ -190,7 +190,7 @@ class Upload
 
             /* 获取文件hash */
             if ($this->hash) {
-                $file['md5']  = md5_file($file['tmp_name']);
+                $file['md5'] = md5_file($file['tmp_name']);
                 $file['sha1'] = sha1_file($file['tmp_name']);
             }
 
@@ -250,16 +250,16 @@ class Upload
     /**
      * 转换上传文件数组变量为正确的方式
      * @access private
-     * @param array $files  上传的文件变量
+     * @param array $files 上传的文件变量
      * @return array
      */
     private function dealFiles($files)
     {
         $fileArray = [];
-        $n         = 0;
+        $n = 0;
         foreach ($files as $key => $file) {
             if (is_array($file['name'])) {
-                $keys  = array_keys($file);
+                $keys = array_keys($file);
                 $count = count($file['name']);
                 for ($i = 0; $i < $count; $i++) {
                     $fileArray[$n]['key'] = $key;
@@ -283,9 +283,9 @@ class Upload
      */
     private function setDriver($driver = null, $config = null)
     {
-        $driver         = $driver ?: $this->config['driver'];
-        $config         = $config ?: $this->config['driverConfig'];
-        $class          = strpos($driver, '\\') ? $driver : '\\org\\upload\\driver\\' . ucfirst(strtolower($driver));
+        $driver = $driver ?: $this->config['driver'];
+        $config = $config ?: $this->config['driverConfig'];
+        $class = strpos($driver, '\\') ? $driver : '\\org\\upload\\driver\\' . ucfirst(strtolower($driver));
         $this->uploader = new $class($config);
     }
 
@@ -337,7 +337,7 @@ class Upload
 
     /**
      * 获取错误代码信息
-     * @param string $errorNo  错误号
+     * @param string $errorNo 错误号
      */
     private function error($errorNo)
     {
@@ -420,12 +420,12 @@ class Upload
 
     /**
      * 获取子目录的名称
-     * @param array $file  上传的文件信息
+     * @param array $file 上传的文件信息
      */
     private function getSubPath($filename)
     {
         $subpath = '';
-        $rule    = $this->subName;
+        $rule = $this->subName;
         if ($this->autoSub && !empty($rule)) {
             $subpath = $this->getName($rule, $filename) . '/';
 
@@ -439,8 +439,8 @@ class Upload
 
     /**
      * 根据指定的规则获取文件或目录名称
-     * @param  array  $rule     规则
-     * @param  string $filename 原文件名
+     * @param array $rule 规则
+     * @param string $filename 原文件名
      * @return string           文件或目录名称
      */
     private function getName($rule, $filename)
@@ -448,8 +448,8 @@ class Upload
         $name = '';
         if (is_array($rule)) {
             //数组规则
-            $func  = $rule[0];
-            $param = (array) $rule[1];
+            $func = $rule[0];
+            $param = (array)$rule[1];
             foreach ($param as &$value) {
                 $value = str_replace('__FILE__', $filename, $value);
             }
@@ -465,7 +465,7 @@ class Upload
         return $name;
     }
 
-    public function getPrefixFiles(string $prefix, int $count = 100)
+    public function getPrefixFiles(string $prefix, int $count = 100): array
     {
         return $this->uploader->getPrefixFiles($prefix, $count);
     }

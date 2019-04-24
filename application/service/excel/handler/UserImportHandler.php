@@ -8,7 +8,7 @@ use app\service\excel\BaseHandler;
 use think\facade\Log;
 use think\Validate;
 
-class UserHandler extends BaseHandler
+class UserImportHandler extends BaseHandler
 {
     protected $rule = [
         'username' => 'require|max:40',
@@ -71,7 +71,7 @@ class UserHandler extends BaseHandler
                 $userModel->startTrans();
                 //判断用户是否存在，存在跳过
                 $userData = $userModel->field('id')->where(['mobile' => $user['mobile']])->find();
-                if ($userData && isset($userData['id']) && $userData['id'] != '') {
+                if ($userData && isset($userData['id']) && $userData['id'] !== '') {
                     Log::record("#{$userData['id']} : {$user['username']} 已存在，导入失败！");
                     $user_id = $userData['id'];
                 } else {

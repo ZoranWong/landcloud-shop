@@ -9,7 +9,7 @@
 
 namespace app\common\model;
 
-use think\Db;
+use app\service\excel\Excelable;
 use think\facade\Cache;
 
 /**
@@ -18,7 +18,7 @@ use think\facade\Cache;
  * @package app\common\model
  * @author keinx
  */
-class Area extends Common
+class Area extends Common implements Excelable
 {
 
     const PROVINCE_DEPTH = 1;
@@ -63,83 +63,69 @@ class Area extends Common
         $where1[] = ['depth', 'eq', self::COUNTY_DEPTH];
         $county = $this->where($where1)
             ->select();
-        if(count($county) > 0)
-        {
-            if(count($county) > 1)
-            {
+        if (count($county) > 0) {
+            if (count($county) > 1) {
                 $where2[] = ['name', 'eq', $cityName];
                 $where2[] = ['depth', 'eq', self::CITY_DEPTH];
                 $city = $this->where($where2)
                     ->find();
-                foreach($county as $k => $v)
-                {
-                    if($v['parent_id'] == $city['id'])
-                    {
+                foreach ($county as $k => $v) {
+                    if ($v['parent_id'] == $city['id']) {
                         $id = $v['id'];
                     }
                 }
-            }
-            else
-            {
+            } else {
                 $id = $county[0]['id'];
             }
-        }
-        else
-        {
+        } else {
             $where2[] = ['name', 'eq', $cityName];
             $where2[] = ['depth', 'eq', self::CITY_DEPTH];
             $city = $this->where($where2)
                 ->find();
-            if($city)
-            {
+            if ($city) {
                 //创建区域
-                $county_data['parent_id']   = $city['id'];
-                $county_data['depth']       = self::COUNTY_DEPTH;
-                $county_data['name']        = $countyName;
+                $county_data['parent_id'] = $city['id'];
+                $county_data['depth'] = self::COUNTY_DEPTH;
+                $county_data['name'] = $countyName;
                 $county_data['postal_code'] = $postalCode;
-                $id                         = $this->insertGetId($county_data);
-            }
-            else
-            {
+                $id = $this->insertGetId($county_data);
+            } else {
                 $where3[] = ['name', 'eq', $provinceName];
                 $where3[] = ['depth', 'eq', self::PROVINCE_DEPTH];
                 $province = $this->where($where3)
                     ->find();
-                if($province)
-                {
+                if ($province) {
                     //创建城市
                     $city_data['parent_id'] = $province['id'];
-                    $city_data['depth']     = self::CITY_DEPTH;
-                    $city_data['name']      = $cityName;
-                    $city_id                = $this->insertGetId($city_data);
+                    $city_data['depth'] = self::CITY_DEPTH;
+                    $city_data['name'] = $cityName;
+                    $city_id = $this->insertGetId($city_data);
 
                     //创建区域
-                    $county_data['parent_id']   = $city_id;
-                    $county_data['depth']       = self::COUNTY_DEPTH;
-                    $county_data['name']        = $countyName;
+                    $county_data['parent_id'] = $city_id;
+                    $county_data['depth'] = self::COUNTY_DEPTH;
+                    $county_data['name'] = $countyName;
                     $county_data['postal_code'] = $postalCode;
-                    $id                         = $this->insertGetId($county_data);
-                }
-                else
-                {
+                    $id = $this->insertGetId($county_data);
+                } else {
                     //创建省份
                     $province_data['parent_id'] = self::PROVINCE_PARENT_ID;
-                    $province_data['depth']     = self::PROVINCE_DEPTH;
-                    $province_data['name']      = $provinceName;
-                    $province_id                = $this->insertGetId($province_data);
+                    $province_data['depth'] = self::PROVINCE_DEPTH;
+                    $province_data['name'] = $provinceName;
+                    $province_id = $this->insertGetId($province_data);
 
                     //创建城市
                     $city_data['parent_id'] = $province_id;
-                    $city_data['depth']     = self::CITY_DEPTH;
-                    $city_data['name']      = $cityName;
-                    $city_id                = $this->insertGetId($city_data);
+                    $city_data['depth'] = self::CITY_DEPTH;
+                    $city_data['name'] = $cityName;
+                    $city_id = $this->insertGetId($city_data);
 
                     //创建区域
-                    $county_data['parent_id']   = $city_id;
-                    $county_data['depth']       = self::COUNTY_DEPTH;
-                    $county_data['name']        = $countyName;
+                    $county_data['parent_id'] = $city_id;
+                    $county_data['depth'] = self::COUNTY_DEPTH;
+                    $county_data['name'] = $countyName;
                     $county_data['postal_code'] = $postalCode;
-                    $id                         = $this->insertGetId($county_data);
+                    $id = $this->insertGetId($county_data);
                 }
             }
         }
@@ -161,7 +147,7 @@ class Area extends Common
             $data = array();
             $this->recursive($area_id, $data);
             $result = $this->structuralTransformation($data);
-            $name   = '';
+            $name = '';
             for ($i = 1; $i <= count($result); $i++) {
                 $name .= $result[$i] . '-';
             }
@@ -183,7 +169,7 @@ class Area extends Common
      */
     public function recursive($area_id, &$data = array())
     {
-        $info   = $this->where('id', 'eq', $area_id)
+        $info = $this->where('id', 'eq', $area_id)
             ->find();
         $data[] = array('depth' => $info['depth'], 'name' => $info['name']);
         if ($info['depth'] != self::PROVINCE_DEPTH) {
@@ -297,22 +283,22 @@ class Area extends Common
         if ($is_parent) {
             $result = array(
                 'status' => false,
-                'msg'    => '该地区下存在关联地区，无法删除',
-                'data'   => array(),
+                'msg' => '该地区下存在关联地区，无法删除',
+                'data' => array(),
             );
         } else {
             $res = $this->destroy($id);
             if ($res) {
                 $result = array(
                     'status' => true,
-                    'msg'    => '删除成功',
-                    'data'   => array(),
+                    'msg' => '删除成功',
+                    'data' => array(),
                 );
             } else {
                 $result = array(
                     'status' => false,
-                    'msg'    => '删除失败',
-                    'data'   => array(),
+                    'msg' => '删除失败',
+                    'data' => array(),
                 );
             }
         }
@@ -380,8 +366,8 @@ class Area extends Common
     {
         $return_data = [
             'status' => false,
-            'msg'    => '查询失败',
-            'data'   => [],
+            'msg' => '查询失败',
+            'data' => [],
         ];
         $area_tree = Cache::get('area_tree');
         if ($area_tree) {
@@ -414,17 +400,17 @@ class Area extends Common
             }
             $isLast = false;
             $chid = $this->where(['parent_id' => $val['id']])->count();
-            if(!$chid){
+            if (!$chid) {
                 $isLast = true;
             }
             $area_tree[$key] = [
-                'id'       => $val['id'],
-                'title'    => $val['name'],
-                'isLast'   => $isLast,
-                'level'    => $val['depth'],
+                'id' => $val['id'],
+                'title' => $val['name'],
+                'isLast' => $isLast,
+                'level' => $val['depth'],
                 'parentId' => $val['parent_id'],
                 "checkArr" => [
-                    'type'      => '0',
+                    'type' => '0',
                     'isChecked' => $isChecked,
                 ]
             ];
@@ -472,4 +458,80 @@ class Area extends Common
         return $list;
     }
 
+    public static function excelHeader()
+    {
+        return [
+            ['id' => 'province', 'desc' => '省份'],
+            ['id' => 'city', 'desc' => '市'],
+            ['id' => 'county', 'desc' => '县/区'],
+            ['id' => 'area_id', 'desc' => '地区代码']
+        ];
+    }
+
+    public function getAllArea()
+    {
+        $areas = [];
+
+        $provinces = $this->getAreaList('province', 0);
+        $i = 0;
+        foreach ($provinces as $province) {
+            $areas[$i]['province_name'] = $province['name'];
+            $areas[$i]['province_id'] = $province['id'];
+            $cities = $this->getAreaList('city', $province->id);
+            $j = 0;
+            foreach ($cities as $city) {
+                $areas[$i]['cities'][$j]['city_name'] = $city['name'];
+                $areas[$i]['cities'][$j]['city_id'] = $city->id;
+                $counties = $this->getAreaList('area', $city->id);
+                $k = 0;
+                foreach ($counties as $county) {
+                    $areas[$i]['cities'][$j]['counties'][$k]['county_name'] = $county['name'];
+                    $areas[$i]['cities'][$j]['counties'][$k]['county_id'] = $county->id;
+                    $fouths = $this->getAreaList('four', $county->id);
+                    $m = 0;
+                    foreach ($fouths as $fouth) {
+                        $areas[$i]['cities'][$j]['counties'][$k]['fouths'][$m]['fouth_name'] = $fouth['name'];
+                        $areas[$i]['cities'][$j]['counties'][$k]['fouths'][$m]['fouth_id'] = $fouth->id;
+                        $m++;
+                    }
+                    $k++;
+                }
+                $j++;
+            }
+            $i++;
+        }
+
+        return $areas;
+    }
+
+    public function getAllArea2()
+    {
+        $areas = [];
+
+        $provinces = $this->getAreaList('province', 0);
+        $i = 0;
+        foreach ($provinces as $province) {
+            $areas[$i]['province'] = $province['name'];
+            $cities = $this->getAreaList('city', $province->id);
+            foreach ($cities as $city) {
+                $areas[$i]['city'] = $city['name'];
+                $counties = $this->getAreaList('area', $city->id);
+                foreach ($counties as $county) {
+                    $areas[$i]['county'] = $county['name'];
+                    $areas[$i]['area_id'] = $county->id;
+                    $i++;
+                }
+                if (!count($counties)) {
+                    $areas[$i]['area_id'] = $city->id;
+                    $i++;
+                }
+            }
+            if (!count($cities)) {
+                $areas[$i]['area_id'] = $province->id;
+                $i++;
+            }
+        }
+
+        return $areas;
+    }
 }

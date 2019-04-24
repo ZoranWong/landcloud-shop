@@ -34,6 +34,10 @@ class Goods extends Common implements Excelable
     const HOT_YES = 1; //热卖
     const HOT_NO = 2; //非热卖
 
+    protected $type = [
+        'keywords' => 'array'
+    ];
+
     public function tableData($post, $isPage = true)
     {
         if (isset($post['limit'])) {
@@ -556,7 +560,7 @@ class Goods extends Common implements Excelable
         ];
         $data = $this->where(['id' => $goods_id])->field($fields)->find();
         if ($data) {
-            $goodsImagesModel = new goodsImages();
+            $goodsImagesModel = new GoodsImages();
             $images = $goodsImagesModel->getAllImages($data->id);
             $tmp_image = [];
             if ($images['status']) {
@@ -916,6 +920,7 @@ class Goods extends Common implements Excelable
             ['id' => 'cat_name', 'desc' => '产品分类'],
             ['id' => 'bn', 'desc' => '商品编号|货号', 'modify' => 'convertString'],
             ['id' => 'brief', 'desc' => '产品简介'],
+            ['id' => 'image_url_prefix', 'desc' => '产品图片前缀'],
             ['id' => 'brand_name', 'desc' => '品牌名称'],
             ['id' => 'weight', 'desc' => '产品重量'],
             ['id' => 'length', 'desc' => '产品长度'],
@@ -1042,6 +1047,11 @@ class Goods extends Common implements Excelable
             $return['msg'] = '获取成功';
         }
         return $return;
+    }
+
+    public function priceLevels()
+    {
+        return $this->hasMany('GoodsPriceLevels', 'goods_id', 'id');
     }
 
 }

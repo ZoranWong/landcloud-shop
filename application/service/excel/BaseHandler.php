@@ -84,7 +84,7 @@ abstract class BaseHandler
         } catch (PhpSpreadSheetException $exception) {
             Log::error('解析文件错误：', $exception->getTrace());
         } catch (Exception $exception) {
-            Log::error('数据导入发生错误', $exception->getTrace());
+            Log::error('数据导入发生错误' . $exception->getTraceAsString());
         }
 
         if ($job->attempts() > 3) {

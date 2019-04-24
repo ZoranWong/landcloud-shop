@@ -86,6 +86,16 @@
                     class="iconfont icon-shaixuan"></i>高级筛选
             </button>
         </div>
+        <div class="layui-inline">
+            <button type="button" class="layui-btn layui-btn-sm" lay-submit lay-filter="import-goods-price-level"><i
+                    class="layui-icon"></i>导入商品梯度价格
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button type="button" class="layui-btn layui-btn-sm" lay-submit lay-filter="import-relation_goods"><i
+                    class="layui-icon"></i>导入商品关联信息
+            </button>
+        </div>
     </div>
 </form>
 
@@ -142,6 +152,43 @@
         </div>
     </form>
 </div>
+
+<div id="importGoodsPriceLevel" style="display: none;">
+    <form class="layui-form import-form" method="post" action="{:url('ietask/import')}" enctype="multipart/form-data">
+        <div class="layui-form-item">
+            <div class="layui-margin-10">
+                <blockquote class="layui-elem-quote layui-text">
+                    请先下载<a href="{:url('ietask/importTemplete',['tplName'=>'productPriceLevel'])}">导入模板</a>
+                </blockquote>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">
+                    <input type="file" class="layui-file" name="importFile" id="importFile">
+                    <input type="hidden" name="model" value="productPriceLevel">
+                </label>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="importGoodsRelation" style="display: none;">
+    <form class="layui-form import-form" method="post" action="{:url('ietask/import')}" enctype="multipart/form-data">
+        <div class="layui-form-item">
+            <div class="layui-margin-10">
+                <blockquote class="layui-elem-quote layui-text">
+                    请先下载<a href="{:url('ietask/importTemplete',['tplName'=>'productRelation'])}">导入模板</a>
+                </blockquote>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">
+                    <input type="file" class="layui-file" name="importFile" id="importFile">
+                    <input type="hidden" name="model" value="productRelation">
+                </label>
+            </div>
+        </div>
+    </form>
+</div>
+
 <script>
     var table, window_box;
     layui.use(['form', 'layedit', 'upload', 'laydate', 'table', 'element'], function () {
@@ -258,6 +305,66 @@
                 area: ['400px', '290px'], //宽高
                 btn: ['确定', '取消'],
                 content: $("#importGoods").html(),
+                yes: function (index, obj) {
+                    $(obj).find('.import-form').ajaxSubmit({
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (result) {
+                            layer.msg(result.msg, {time: 1500}, function () {
+                                if (result.status) {
+                                    table.reload();
+                                    layer.closeAll();
+                                }
+                            });
+                        },
+                        error: function (result) {
+                            layer.msg("导入失败");
+                        }
+                    });
+                }, btn2: function () {
+                    layer.closeAll();
+                }
+            });
+        });
+
+        //商品梯度价格导入
+        layui.form.on('submit(import-goods-price-level)', function (data) {
+            layer.open({
+                type: 1,
+                title: '商品梯度价格导入',
+                area: ['400px', '290px'], //宽高
+                btn: ['确定', '取消'],
+                content: $("#importGoodsPriceLevel").html(),
+                yes: function (index, obj) {
+                    $(obj).find('.import-form').ajaxSubmit({
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (result) {
+                            layer.msg(result.msg, {time: 1500}, function () {
+                                if (result.status) {
+                                    table.reload();
+                                    layer.closeAll();
+                                }
+                            });
+                        },
+                        error: function (result) {
+                            layer.msg("导入失败");
+                        }
+                    });
+                }, btn2: function () {
+                    layer.closeAll();
+                }
+            });
+        });
+
+        //商品关联信息导入
+        layui.form.on('submit(import-relation_goods)', function (data) {
+            layer.open({
+                type: 1,
+                title: '商品导入',
+                area: ['400px', '290px'], //宽高
+                btn: ['确定', '取消'],
+                content: $("#importGoodsRelation").html(),
                 yes: function (index, obj) {
                     $(obj).find('.import-form').ajaxSubmit({
                         type: 'post',

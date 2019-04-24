@@ -42,7 +42,7 @@ class GoodsCat extends Common
     {
 
         $data = $this->field('id, parent_id, name, type_id, sort, image_id')
-            ->order([ 'sort' => 'asc'])
+            ->order(['sort' => 'asc'])
             ->select();
 
         $return_data = $this->getTree($data);
@@ -61,10 +61,8 @@ class GoodsCat extends Common
     protected function getTree($data)
     {
         $new_data = array();
-        foreach($data as $v)
-        {
-            if($v['parent_id'] == self::TOP_CLASS_PARENT_ID)
-            {
+        foreach ($data as $v) {
+            if ($v['parent_id'] == self::TOP_CLASS_PARENT_ID) {
                 $new_data[$v['id']]['id'] = $v['id'];
                 $new_data[$v['id']]['name_1'] = $v['name'];
                 $new_data[$v['id']]['name_2'] = '';
@@ -72,9 +70,7 @@ class GoodsCat extends Common
                 $new_data[$v['id']]['image_id'] = $v['image_id'];
                 $new_data[$v['id']]['sort'] = $v['sort'];
                 $new_data[$v['id']]['operating'] = $this->getOperating($v['id'], self::TOP_CLASS);
-            }
-            else
-            {
+            } else {
                 $new_data[$v['parent_id']]['subclass'][] = array(
                     'id' => $v['id'],
                     'name_1' => '',
@@ -88,8 +84,7 @@ class GoodsCat extends Common
         }
 
         $return_data = array();
-        foreach($new_data as $v)
-        {
+        foreach ($new_data as $v) {
             $return_data[] = array(
                 'id' => $v['id'],
                 'name_1' => $v['name_1'],
@@ -99,10 +94,8 @@ class GoodsCat extends Common
                 'sort' => $v['sort'],
                 'operating' => $v['operating']
             );
-            if(isset($v['subclass']) && count($v['subclass']) > 0)
-            {
-                foreach($v['subclass'] as $vv)
-                {
+            if (isset($v['subclass']) && count($v['subclass']) > 0) {
+                foreach ($v['subclass'] as $vv) {
                     $return_data[] = array(
                         'id' => $vv['id'],
                         'name_1' => $vv['name_1'],
@@ -129,13 +122,10 @@ class GoodsCat extends Common
      */
     public function getAllCat($id = false)
     {
-        if($id)
-        {
+        if ($id) {
             $where[] = ['id', 'neq', $id];
             $where[] = ['parent_id', 'neq', $id];
-        }
-        else
-        {
+        } else {
             $where = [];
         }
         $data = $this->field('id, parent_id, name, sort, image_id')
@@ -159,28 +149,20 @@ class GoodsCat extends Common
     protected function getTreeApi($data)
     {
         $new_data = array();
-        foreach($data as $v)
-        {
-            if($v['parent_id'] == self::TOP_CLASS_PARENT_ID)
-            {
+        foreach ($data as $v) {
+            if ($v['parent_id'] == self::TOP_CLASS_PARENT_ID) {
                 $new_data[$v['id']]['id'] = $v['id'];
                 $new_data[$v['id']]['name'] = $v['name'];
                 $new_data[$v['id']]['image_id'] = $v['image_id'];
-                if($v['image_id'])
-                {
+                if ($v['image_id']) {
                     $new_data[$v['id']]['image_url'] = _sImage($v['image_id']);
-                }
-                else
-                {
+                } else {
                     $new_data[$v['id']]['image_url'] = _sImage();
                 }
                 $new_data[$v['id']]['sort'] = $v['sort'];
                 $new_data[$v['id']]['child'] = [];
-            }
-            else
-            {
-                if($v['image_id'])
-                {
+            } else {
+                if ($v['image_id']) {
                     $new_data[$v['parent_id']]['child'][] = array(
                         'id' => $v['id'],
                         'name' => $v['name'],
@@ -188,9 +170,7 @@ class GoodsCat extends Common
                         'image_url' => _sImage($v['image_id']),
                         'sort' => $v['sort']
                     );
-                }
-                else
-                {
+                } else {
                     $new_data[$v['parent_id']]['child'][] = array(
                         'id' => $v['id'],
                         'name' => $v['name'],
@@ -202,8 +182,7 @@ class GoodsCat extends Common
             }
         }
         $edition = [];
-        foreach ((array)$new_data as $key => $val)
-        {
+        foreach ((array)$new_data as $key => $val) {
             $edition[] = $val['sort'];
         }
         array_multisort($edition, SORT_ASC, $new_data);
@@ -222,12 +201,9 @@ class GoodsCat extends Common
      */
     protected function getImage($image_id)
     {
-        if($image_id)
-        {
+        if ($image_id) {
             return _sImage($image_id);
-        }
-        else
-        {
+        } else {
             return '';
         }
     }
@@ -240,12 +216,9 @@ class GoodsCat extends Common
      */
     protected function getTypeName($type_id)
     {
-        if($type_id === self::DEFAULT_TYPE)
-        {
+        if ($type_id === self::DEFAULT_TYPE) {
             return self::DEFAULT_TYPE_NAME;
-        }
-        else
-        {
+        } else {
             return model('common/GoodsType')->getNameById($type_id);
         }
     }
@@ -260,16 +233,13 @@ class GoodsCat extends Common
     protected function getOperating($id, $type = self::TOP_CLASS)
     {
         $html = '';
-        if($type == self::TOP_CLASS)
-        {
-            $html .= '<a class="layui-btn layui-btn-primary layui-btn-xs add-class" data-id="'.$id.'">添加</a>';
-            $html .= '<a class="layui-btn layui-btn-xs edit-class" data-id="'.$id.'">编辑</a>';
-            $html .= '<a class="layui-btn layui-btn-danger layui-btn-xs del-class" data-id="'.$id.'">删除</a>';
-        }
-        elseif($type == self::SUB_CLASS)
-        {
-            $html .= '<a class="layui-btn layui-btn-xs edit-class" data-id="'.$id.'">编辑</a>';
-            $html .= '<a class="layui-btn layui-btn-danger layui-btn-xs del-class" data-id="'.$id.'">删除</a>';
+        if ($type == self::TOP_CLASS) {
+            $html .= '<a class="layui-btn layui-btn-primary layui-btn-xs add-class" data-id="' . $id . '">添加</a>';
+            $html .= '<a class="layui-btn layui-btn-xs edit-class" data-id="' . $id . '">编辑</a>';
+            $html .= '<a class="layui-btn layui-btn-danger layui-btn-xs del-class" data-id="' . $id . '">删除</a>';
+        } elseif ($type == self::SUB_CLASS) {
+            $html .= '<a class="layui-btn layui-btn-xs edit-class" data-id="' . $id . '">编辑</a>';
+            $html .= '<a class="layui-btn layui-btn-danger layui-btn-xs del-class" data-id="' . $id . '">删除</a>';
         }
         return $html;
     }
@@ -292,10 +262,8 @@ class GoodsCat extends Common
             ->order('sort asc')
             ->select();
 
-        foreach($data as &$v)
-        {
-            if($v['image_id'])
-            {
+        foreach ($data as &$v) {
+            if ($v['image_id']) {
                 $v['image_url'] = _sImage($v['image_id']);
             }
         }
@@ -328,12 +296,9 @@ class GoodsCat extends Common
         $data = $this->field('id, name, parent_id, type_id, sort, image_id')
             ->where($where)
             ->find();
-        if($data)
-        {
+        if ($data) {
             return $data;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -356,13 +321,11 @@ class GoodsCat extends Common
         ];
 
         //判断是否要变成二级分类
-        if($data['parent_id'] != self::TOP_CLASS_PARENT_ID)
-        {
+        if ($data['parent_id'] != self::TOP_CLASS_PARENT_ID) {
             //判断是否有子类
             $result = $this->where('parent_id', 'eq', $data['id'])
                 ->select();
-            if(count($result) > 0)
-            {
+            if (count($result) > 0) {
                 $return['msg'] = '该分类下有二级分类，无法转移分类';
                 return $return;
             }
@@ -370,13 +333,10 @@ class GoodsCat extends Common
 
         $res = $this->update($data);
         $return['data'] = $res;
-        if($res)
-        {
+        if ($res) {
             $return['status'] = true;
             $return['msg'] = '修改成功';
-        }
-        else
-        {
+        } else {
             $return['msg'] = '修改失败';
         }
         return $return;
@@ -394,31 +354,22 @@ class GoodsCat extends Common
     public function getIsDel($id)
     {
         $info = $this->getCatInfo($id);
-        if($info)
-        {
-            if($info['parent_id'] != self::TOP_CLASS_PARENT_ID)
-            {
+        if ($info) {
+            if ($info['parent_id'] != self::TOP_CLASS_PARENT_ID) {
                 //子类可以删除
-                $return_data = array('is' => true, 'name'=> $info['name']);
-            }
-            else
-            {
+                $return_data = array('is' => true, 'name' => $info['name']);
+            } else {
                 //父类判断是否有子类
                 $result = $this->where('parent_id', 'eq', $id)
                     ->select();
-                if(count($result) > 0)
-                {
-                    $return_data = array('is' => false, 'name'=> $info['name']);
-                }
-                else
-                {
-                    $return_data = array('is' => true, 'name'=> $info['name']);
+                if (count($result) > 0) {
+                    $return_data = array('is' => false, 'name' => $info['name']);
+                } else {
+                    $return_data = array('is' => true, 'name' => $info['name']);
                 }
             }
-        }
-        else
-        {
-            $return_data = array('is' => false, 'name'=> $info['name']);
+        } else {
+            $return_data = array('is' => false, 'name' => $info['name']);
         }
         return $return_data;
     }
@@ -435,14 +386,11 @@ class GoodsCat extends Common
     public function del($id)
     {
         $is_del = $this->getIsDel($id);
-        if($is_del['is'])
-        {
+        if ($is_del['is']) {
             $where[] = ['id', 'eq', $id];
             $return_data = $this->where($where)
                 ->delete();
-        }
-        else
-        {
+        } else {
             $return_data = false;
         }
         return $return_data;
@@ -484,14 +432,14 @@ class GoodsCat extends Common
      */
     public function getInfoByName($name = '', $isForce = false)
     {
-        if (!$name ) {
+        if (!$name) {
             return false;
         }
         $cat_id = 0;
         $cat = $this->field('id')->where([['name', 'like', '%' . $name . '%']])->find();
 
         if (!$cat && $isForce) {
-            $this->save([
+            $this->insert([
                 'name' => $name,
             ]);
             $cat_id = $this->getLastInsID();
@@ -511,18 +459,19 @@ class GoodsCat extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function isChild($cat_parent_id,$cat_id){
-        if($cat_parent_id == $cat_id){
+    public function isChild($cat_parent_id, $cat_id)
+    {
+        if ($cat_parent_id == $cat_id) {
             return true;
         }
-        $info = $this->where(['id'=>$cat_parent_id])->find();
-        if(!$info){
+        $info = $this->where(['id' => $cat_parent_id])->find();
+        if (!$info) {
             return false;
         }
 
-        $children = $this->where(['parent_id'=>$info['id']])->select();
-        foreach($children as $k => $v){
-            if($this->isChild($v['id'],$cat_id)){
+        $children = $this->where(['parent_id' => $info['id']])->select();
+        foreach ($children as $k => $v) {
+            if ($this->isChild($v['id'], $cat_id)) {
                 return true;
             }
         }
@@ -541,7 +490,7 @@ class GoodsCat extends Common
      */
     public function getCatByLastId($id, $data = [])
     {
-        $info   = $this->where(['id' => $id])->find();
+        $info = $this->where(['id' => $id])->find();
         $data[] = $info;
         if ($info['parent_id']) {
             return $this->getCatByLastId($info['parent_id'], $data);
@@ -568,8 +517,7 @@ class GoodsCat extends Common
         ];
         $where[] = ['id', 'eq', $id];
         $info = $this->field('name')->where($where)->find();
-        if($info)
-        {
+        if ($info) {
             $return['status'] = true;
             $return['msg'] = '获取成功';
             $return['data'] = $info['name'];
@@ -585,7 +533,7 @@ class GoodsCat extends Common
      */
     public function getCatIdsByLastId($id)
     {
-        $ids     = $this->getCatByLastId($id);
+        $ids = $this->getCatByLastId($id);
         $catInfo = _krsort($ids);
         if ($catInfo) {
             $ids = '';
