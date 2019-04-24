@@ -907,7 +907,7 @@ class Goods extends Common implements Excelable
         ];
     }
 
-    public function excelHeader()
+    public static function excelHeader()
     {
         return [
             ['id' => 'erp_goods_id', 'desc' => '产品ID（ERP U8编号）'],

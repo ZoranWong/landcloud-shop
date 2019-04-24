@@ -60,11 +60,12 @@ class Ietask extends Common
      * @param string $job
      * @return bool
      */
-    public function addImportTask($data, $job = 'Goods')
+    public function addImportTask($data, $job = 'product')
     {
         if ($this->save($data)) {
             $importData['task_id'] = $this->id;
             $importData['params'] = $data['params'];
+            $job = ucwords($job);
             $jobClass = "app\\service\\excel\\handler\\{$job}Handler@handle";
             $queueRes = \think\Queue::push($jobClass, $importData);//加入导出队列
 

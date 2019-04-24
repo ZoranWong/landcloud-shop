@@ -130,13 +130,13 @@
         <div class="layui-form-item">
             <div class="layui-margin-10">
                 <blockquote class="layui-elem-quote layui-text">
-                    请先下载<a href="{:url('ietask/importTemplete',['tplName'=>'goods'])}">导入模板</a>
+                    请先下载<a href="{:url('ietask/importTemplete',['tplName'=>'product'])}">导入模板</a>
                 </blockquote>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">
                     <input type="file" class="layui-file" name="importFile" id="importFile">
-                    <input type="hidden" name="model" value="Goods">
+                    <input type="hidden" name="model" value="product">
                 </label>
             </div>
         </div>
@@ -160,8 +160,26 @@
             cols: [[
                 {type: 'checkbox', fixed: 'left'},
                 {type: 'numbers', fixed: 'left'},
-                {field: 'state', sort: true, title: '热门', width: 80, align: 'center', templet: '#hot', unresize: true, fixed: 'left'},
-                {field: 'state', sort: true, title: '推荐', width: 80, align: 'center', templet: '#rec', unresize: true, fixed: 'left'},
+                {
+                    field: 'state',
+                    sort: true,
+                    title: '热门',
+                    width: 80,
+                    align: 'center',
+                    templet: '#hot',
+                    unresize: true,
+                    fixed: 'left'
+                },
+                {
+                    field: 'state',
+                    sort: true,
+                    title: '推荐',
+                    width: 80,
+                    align: 'center',
+                    templet: '#rec',
+                    unresize: true,
+                    fixed: 'left'
+                },
                 {
                     field: 'image', width: 100, title: '缩略图', align: 'center', templet: function (data) {
                         return '<a href="javascript:void(0);" onclick=viewImage("' + data.image + '")>' +

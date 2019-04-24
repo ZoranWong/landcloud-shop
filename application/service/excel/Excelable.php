@@ -4,5 +4,5 @@ namespace app\service\excel;
 
 interface Excelable
 {
-    public function excelHeader();
+    public static function excelHeader();
 }

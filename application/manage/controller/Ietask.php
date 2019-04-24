@@ -136,7 +136,7 @@ class Ietask extends Manage
         if (!$file) {
             return $result;
         }
-        $model = input('model', 'Goods');
+        $model = input('model', 'product');
 
         $savepath = ROOT_PATH . 'public' . DS . 'uploads' . get_hash_dir($file->getInfo('name'));
 

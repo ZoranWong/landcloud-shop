@@ -6,6 +6,7 @@
  * Date: 2018/3/17
  * Time: 下午12:36
  */
+
 namespace app\common\validate;
 
 use think\Validate;
@@ -28,12 +29,12 @@ class Goods extends Validate
         'stock' => 'number|max:8|egt:0',
         'weight' => 'float|max:10',
         'sort' => 'number|max:5',
-        'bn'=>'unique:goods',
+        'bn' => 'unique:goods',
     ];
 
     protected $scene = [
-        'edit'  =>  ['name','brief','costprice','mktprice','price','image_id','goods_cat_id','goods_type_id','brand_id','is_nomal_virtual','marketable','stock','weight','sort','bn'=>'unique:goods,bn^id'],
-        'import'  =>  ['name','brief','costprice','mktprice','price','goods_cat_id','goods_type_id','brand_id','is_nomal_virtual','marketable','stock','weight','sort'],
+        'edit' => ['name', 'brief', 'costprice', 'mktprice', 'price', 'image_id', 'goods_cat_id', 'goods_type_id', 'brand_id', 'is_nomal_virtual', 'marketable', 'stock', 'weight', 'sort', 'bn' => 'unique:goods,bn^id'],
+        'import' => ['name', 'brief', 'mktprice', 'price', 'goods_cat_id', 'brand_id', 'weight'],
     ];
 
     protected $message = [

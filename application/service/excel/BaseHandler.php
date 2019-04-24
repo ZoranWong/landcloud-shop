@@ -4,6 +4,7 @@ namespace app\service\excel;
 
 use app\common\model\Ietask as IeTaskModel;
 use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadSheetException;
+use think\Exception;
 use think\facade\Log;
 use think\queue\Job;
 
@@ -49,7 +50,11 @@ abstract class BaseHandler
         return $fields;
     }
 
-    public function handle(Job $job = null, $params)
+    /**
+     * @param Job|null $job
+     * @param $params
+     */
+    public function handle(Job $job, $params)
     {
         Log::record($params);
         $ieTaskModel = new IeTaskModel();
@@ -78,6 +83,8 @@ abstract class BaseHandler
 
         } catch (PhpSpreadSheetException $exception) {
             Log::error('解析文件错误：', $exception->getTrace());
+        } catch (Exception $exception) {
+            Log::error('数据导入发生错误', $exception->getTrace());
         }
 
         if ($job->attempts() > 3) {
