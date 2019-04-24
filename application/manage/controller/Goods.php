@@ -78,6 +78,7 @@ class Goods extends Manage
         $levels = [];
         $this->assign('levels', json_encode($levels));
         $this->assign('goodsId', null);
+        $this->assign('tags', "[]");
 //        $priceLevelsTable = $this->fetch('goodsPriceLevels');
         return $this->fetch('add');
     }
@@ -351,6 +352,15 @@ class Goods extends Manage
         $data['goods']['unit'] = input('post.goods.unit', '');
         $data['goods']['marketable'] = input('post.goods.marketable', '2');
         $data['goods']['is_recommend'] = input('post.goods.is_recommend', '2');
+        $data['goods']['erp_goods_id'] = input('post.goods.erp_goods_id', '');
+        $keywords = input('post.goods.keywords', null);
+        if($keywords){
+            if(is_string($keywords)){
+                $keywords = json_decode($keywords);
+            }
+            $data['goods']['keywords'] = $keywords;
+        }
+//        var_dump(input('post.goods.erp_goods_id'));exit;
         $data['goods']['is_hot'] = input('post.goods.is_hot', '2');
         $open_spec = input('post.open_spec', 0);
         $specdesc = input('post.spec/a', []);
@@ -395,7 +405,6 @@ class Goods extends Manage
         }
         $data['goods']['image_id'] = reset($images);
         $data['images'] = $images;
-        $goodsModel = new goodsModel();
 
         if ($isEdit) {
             $data['goods']['id'] = input('post.goods.id/d', 0);
@@ -672,6 +681,7 @@ class Goods extends Manage
         $this->assign('open_spec', '0');
         $this->assign('data', $goods['data']);
         $this->assign('products', $goods['data']['products']);
+        $this->assign('tags', $goods['data']['keywords'] ?: '[]');
         if ($goods['data']['spes_desc'] != '') {
             $this->assign('open_spec', '1');
         } else {
@@ -1284,7 +1294,7 @@ class Goods extends Manage
             });
         }
         $relationGoods = $goodsId ? RelationGoods::where('main_goods_id', 'eq', $goodsId)->select() : null;
-        if($relationGoods){
+        if($relationGoods && $relationGoods->count() > 0){
             $field = '';
             foreach ($relationGoods as $relationGood) {
                 $field .= ", {$relationGood['relation_goods_id']}";

@@ -1,11 +1,12 @@
 <style>
-    .tags-item{
+    .tags-item {
         background-color: #eee;
         padding: 3px;
         border-radius: 3px;
-        margin-right:3px;
+        margin-right: 3px;
     }
-    .tags-input{
+
+    .tags-input {
         border: none;
         height: 36px;
         line-height: 1.3;
@@ -13,14 +14,41 @@
 </style>
 <div class="layui-input">
     <input type="text" id="tags" placeholder="请输入搜索关键词" class="tags-input">
+    <input type="hidden" id = "goodsKeywords" name="goods[keywords]">
 </div>
 <script>
+    var tags = JSON.parse('<?php echo $tags;?>')
     $(function () {
-        $('#tags').keypress(function(e){
-            if(e.keyCode== 13){
-                $(this).before('<span class="tags-item"><span>'+$(this).val()+'</span><i class="layui-icon layui-icon-close"></i></span>');
-                $(this).val('');
+        function addTag(tag, $input, index) {
+            $input.before(`<span class="tags-item" ><span>${tag}</span><i data-index = "${index}" class="tag-close layui-icon layui-icon-close"></i></span>`);
+        }
+
+        function tagsRender() {
+            $('.tags-item').remove();
+            for (var i in tags) {
+                addTag(tags[i], $('#tags'), i);
             }
+        }
+
+        tagsRender();
+        setKeywords();
+        function setKeywords() {
+            $('#goodsKeywords').val(JSON.stringify(tags));
+        }
+
+        $('#tags').keypress(function (e) {
+            if (e.keyCode == 32) {
+                addTag($(this).val(), $(this), tags.length);
+                tags.push($(this).val());
+                $(this).val('');
+                setKeywords();
+            }
+        });
+
+        $(document).on('click', '.tag-close', function () {
+           var index = $(this).data('index');
+           tags.splice(index, 1);
+           tagsRender();
         });
     });
 </script>

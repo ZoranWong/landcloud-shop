@@ -1,4 +1,5 @@
 <?php
+
 namespace app\common\model;
 
 /**
@@ -10,7 +11,7 @@ namespace app\common\model;
 class MessageCenter extends Common
 {
     const SEND_TRUE = 1;        //发送
-    const SEND_FALSE= 2;        //不发送
+    const SEND_FALSE = 2;        //不发送
 
 
     //商户类型，只有商户类型才存表
@@ -27,31 +28,31 @@ class MessageCenter extends Common
             'message' => self::SEND_TRUE,
             'wx_tpl_message' => self::SEND_FALSE,           //当type是2的时候，这个字段可能没用
         ],
-        'remind_order_pay' =>[                              //订单快关闭的时候，提醒用户去支付
+        'remind_order_pay' => [                              //订单快关闭的时候，提醒用户去支付
             'name' => '订单催付提醒',
             'sms' => self::SEND_FALSE,
             'message' => self::SEND_TRUE,
             'wx_tpl_message' => self::SEND_FALSE,
         ],
-        'delivery_notice' =>[                              //订单快关闭的时候，提醒用户去支付
+        'delivery_notice' => [                              //订单快关闭的时候，提醒用户去支付
             'name' => '订单发货通知',
             'sms' => self::SEND_FALSE,
             'message' => self::SEND_TRUE,
             'wx_tpl_message' => self::SEND_FALSE,
         ],
-        'aftersales_pass' =>[                              //售后通过
+        'aftersales_pass' => [                              //售后通过
             'name' => '售后确认通过',
             'sms' => self::SEND_FALSE,
             'message' => self::SEND_TRUE,
             'wx_tpl_message' => self::SEND_FALSE,
         ],
-        'refund_success' =>[                              //退款成功
+        'refund_success' => [                              //退款成功
             'name' => '用户退款成功通知',
             'sms' => self::SEND_FALSE,
             'message' => self::SEND_TRUE,
             'wx_tpl_message' => self::SEND_FALSE,
         ],
-        'seller_order_notice' =>[                              //订单付款
+        'seller_order_notice' => [                              //订单付款
             'name' => '订单付款成功平台通知',
             'sms' => self::SEND_TRUE,
             'message' => self::SEND_FALSE,
@@ -65,10 +66,10 @@ class MessageCenter extends Common
         //取商户的消息配置信息
         $list = $this->select();
         $data = [];
-        foreach($this->tpl as $k => $v){
+        foreach ($this->tpl as $k => $v) {
             $v['code'] = $k;
-            foreach($list as $vv){
-                if($vv['code'] == $k){
+            foreach ($list as $vv) {
+                if ($vv['code'] == $k) {
                     $v['sms'] = $vv['sms'];
                     $v['message'] = $vv['message'];
                     $v['wx_tpl_message'] = $vv['wx_tpl_message'];
@@ -90,39 +91,39 @@ class MessageCenter extends Common
      * @param $code                 模板编码
      * @param $params               参数
      */
-    public function sendMessage($user_id,$code,$params)
+    public function sendMessage($user_id, $code, $params)
     {
-        if(!isset($this->tpl[$code])){
+        if (!isset($this->tpl[$code])) {
             return error_code(10100);
         }
         $info = $this->tpl[$code];
 
         //判断后台是否设置
-        $conf = $this->where(['code'=>$code])->find();
-        if($conf){
+        $conf = $this->where(['code' => $code])->find();
+        if ($conf) {
             $info['sms'] = $conf['sms'];
             $info['message'] = $conf['message'];
             $info['wx_tpl_message'] = $conf['wx_tpl_message'];
         }
-        if($info['sms'] == self::SEND_TRUE){
+        if ($info['sms'] == self::SEND_TRUE) {
             //判断短信是否够,如果够，就去发
-            $mobile = get_user_info($user_id,'mobile');
-            if($mobile){
+            $mobile = get_user_info($user_id, 'mobile');
+            if ($mobile) {
                 $smsModel = new Sms();
-                $smsModel->send($mobile,$code,$params);
+                $smsModel->send($mobile, $code, $params);
             }
         }
         //站内消息
-        if($info['message'] == self::SEND_TRUE){
+        if ($info['message'] == self::SEND_TRUE) {
             $messageModel = new Message();
-            $messageModel->send($user_id,$code,$params);
+            $messageModel->send($user_id, $code, $params);
         }
-        if($info['wx_tpl_message'] == self::SEND_TRUE){
+        if ($info['wx_tpl_message'] == self::SEND_TRUE) {
             //微信模板消息【小程序，公众号都走这里】
             hook('sendwxmessage', ['params' => [
-                'user_id'   => $user_id,
-                'code'      => $code,
-                'params'    => $params,
+                'user_id' => $user_id,
+                'code' => $code,
+                'params' => $params,
             ]]);
         }
 
@@ -143,9 +144,9 @@ class MessageCenter extends Common
      */
     public function tableData($post)
     {
-        if(isset($post['limit'])){
+        if (isset($post['limit'])) {
             $limit = $post['limit'];
-        }else{
+        } else {
             $limit = config('paginate.list_rows');
         }
         $tableWhere = $this->tableWhere($post);
@@ -171,7 +172,7 @@ class MessageCenter extends Common
     {
         $where = [];
 
-        if(isset($post['code']) && $post['code'] != ""){
+        if (isset($post['code']) && $post['code'] != "") {
             $where[] = ['code', 'eq', $post['code']];
         }
 
@@ -189,10 +190,10 @@ class MessageCenter extends Common
      */
     protected function tableFormat($list)
     {
-        foreach($list as $k => $v){
-            if(isset($this->tpl[$v['code']])){
+        foreach ($list as $k => $v) {
+            if (isset($this->tpl[$v['code']])) {
                 $list[$k]['code_name'] = $this->tpl[$v['code']]['name'];
-            }else{
+            } else {
                 $list[$k]['code_name'] = self::SEND_FALSE;
             }
 
