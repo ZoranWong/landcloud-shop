@@ -53,19 +53,19 @@
         {Jshop:goodscat id='goods_cat_id' name="goods_cat_id" value="$catids"/}
     </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label"><i class="required-color">*</i>商品类型：</label>
-        <div class="layui-input-inline">
-            <select name="goods_type_id" id="goods_type_id" lay-filter="goods_type_id">
-                <option value="">请选择类型</option>
-                {if condition="count($typeList)>0"}
-                    {volist name="typeList" id="vo"}
-                        <option value="{$vo.id}" {if condition="$vo.id eq $data.goods_type_id"} selected{/if}>{$vo.name}</option>
-                    {/volist}
-                {/if}
-            </select>
-        </div>
-    </div>
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label"><i class="required-color">*</i>商品类型：</label>-->
+        <!--<div class="layui-input-inline">-->
+            <!--<select name="goods_type_id" id="goods_type_id" lay-filter="goods_type_id">-->
+                <!--<option value="">请选择类型</option>-->
+                <!--{if condition="count($typeList)>0"}-->
+                    <!--{volist name="typeList" id="vo"}-->
+                        <!--<option value="{$vo.id}" {if condition="$vo.id eq $data.goods_type_id"} selected{/if}>{$vo.name}</option>-->
+                    <!--{/volist}-->
+                <!--{/if}-->
+            <!--</select>-->
+        <!--</div>-->
+    <!--</div>-->
     <div class="layui-form-item">
         <label class="layui-form-label"><i class="required-color">*</i>商品名称：</label>
         <div class="layui-input-inline">

@@ -60,6 +60,7 @@
     <fieldset class="layui-elem-field layui-field-title">
         <legend>商品详情</legend>
     </fieldset>
+
     <table class="layui-table" lay-size="sm">
         <thead>
             <tr>
@@ -69,6 +70,7 @@
                 <th>购买数量</th>
                 <th>已发数量</th>
                 <th>发货数量</th>
+                <th>本次发货数量</th>
             </tr>
         </thead>
         {foreach $order.items as $key=>$vo}
@@ -79,9 +81,13 @@
             <td>{$vo.nums}</td>
             <td>{if $vo.sendnums}{$vo.sendnums}{else /}0{/if}</td>
             <td>{$vo.nums-$vo.sendnums}<input type="hidden" data-id="{$vo.id}" class="order-ship-nums" max="{$vo.nums-$vo.sendnums}" value="{$vo.nums-$vo.sendnums}" min="0"></td>
+            <td><input class="order-send-num layui-input"></td>
         </tbody>
         {/foreach}
     </table>
+    <div class="">
+        <button class="layui-btn">生成发货单</button>
+    </div>
     <fieldset class="layui-elem-field layui-field-title">
         <legend>物流信息</legend>
     </fieldset>
