@@ -550,7 +550,7 @@ CREATE TABLE `lc_goods` (
   `ctime` bigint(12) unsigned DEFAULT NULL COMMENT '创建时间',
   `utime` bigint(12) unsigned DEFAULT NULL COMMENT '更新时间',
   `isdel` bigint(12) unsigned DEFAULT NULL COMMENT '删除标志 有数据表示删除',
-  `erp_goods_id` int(10) unsigned not null comment 'erp产品id',
+  `erp_goods_id` varchar(100) unsigned not null comment 'erp产品id',
   `en_name` varchar(200)  default null comment '产品英文名称',
   `length` decimal(10,2) unsigned default 0 comment '产品长度',
   `width` decimal(10,2) unsigned default 0 comment '产品宽度',
