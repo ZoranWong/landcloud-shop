@@ -206,26 +206,16 @@
             id: 'goodsTable',
             cols: [[
                 {type: 'checkbox', fixed: 'left'},
-                {type: 'numbers', fixed: 'left'},
                 {
-                    field: 'state',
-                    sort: true,
-                    title: '热门',
-                    width: 80,
-                    align: 'center',
-                    templet: '#hot',
-                    unresize: true,
+                    field: 'bn',
+                    title: '商城商品编号',
+                    width: 200,
                     fixed: 'left'
                 },
                 {
-                    field: 'state',
-                    sort: true,
-                    title: '推荐',
-                    width: 80,
-                    align: 'center',
-                    templet: '#rec',
-                    unresize: true,
-                    fixed: 'left'
+                    field: 'erp_goods_id',
+                    title: 'ERP商品编号',
+                    width: 200
                 },
                 {
                     field: 'image', width: 100, title: '缩略图', align: 'center', templet: function (data) {
@@ -258,6 +248,24 @@
                 {field: 'cat_name', width: 150, title: '分类', align: 'center'},
                 {field: 'type_name', width: 150, title: '类型', align: 'center'},
                 {field: 'brand_name', width: 100, title: '品牌', align: 'center'},
+                {
+                    field: 'state',
+                    sort: true,
+                    title: '热门',
+                    width: 80,
+                    align: 'center',
+                    templet: '#hot',
+                    unresize: true
+                },
+                {
+                    field: 'state',
+                    sort: true,
+                    title: '推荐',
+                    width: 80,
+                    align: 'center',
+                    templet: '#rec',
+                    unresize: true
+                },
                 {
                     field: 'marketable', width: 100, title: '上下架', align: 'center', templet: function (data) {
                         if (data.marketable == '1') {

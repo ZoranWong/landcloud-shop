@@ -59,8 +59,13 @@ class InitHooks
                 Cache::set('hooks', $addonList);
             }
         } else {
+            if (is_string($data)) {
+                $data = @json_decode($data);
+            }
+            if (is_array($data)) {
+                Hook::import($data, false);
+            }
 
-            Hook::import($data, false);
         }
     }
 
