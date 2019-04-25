@@ -7,8 +7,9 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 abstract class BaseGenerator
 {
-    const START_COLUMN = (int)'A';
+    const START_COLUMN = 65;//字母A
     const START_ROW = 1;
+
     abstract public function model(): string;
 
     abstract public function fileName(): string;
@@ -35,16 +36,19 @@ abstract class BaseGenerator
 
         $spreadSheet = new Spreadsheet();
         $sheet = $spreadSheet->getActiveSheet();
-
+        if (!$data) {
+            $data = [];
+        }
+        array_unshift($data, $headers);
         if (!is_null($data)) {
             if (!is_iterable($data)) {
                 $data = [$data];
             }
-            array_unshift( $data, $headers);
+
             foreach ($data as $key => $item) {             //循环设置单元格：
                 for ($i = 0; $i < $count; $i++) {     //数字转字母从65开始：
                     $column = strtoupper(chr($i + self::START_COLUMN));
-                    $sheet->setCellValue($column . ($key + self::START_ROW), $item[$keys[$i]]);
+                    $sheet->setCellValue($column . ($key + self::START_ROW), isset($item[$keys[$i]]) ? $item[$keys[$i]] : $item[$i]);
                     $spreadSheet->getActiveSheet()->getColumnDimension($column)->setWidth(20); //固定列宽
                 }
 
