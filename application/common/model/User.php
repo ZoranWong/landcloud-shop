@@ -951,7 +951,8 @@ class User extends Common
         $time = time();
         $newData['username'] = null;
         $newData['mobile'] = $data['mobile'];
-        $newData['password'] = $this->enPassword($data['password'], $time);
+//        $newData['password'] = $this->enPassword($data['password'], $time);
+        $newData['password'] = encrypt($data['password']);
         $newData['sex'] = isset($data['sex']) ? $data['sex'] : 3;
         $newData['birthday'] = $data['birthday'] ? $data['birthday'] : null;
         $newData['avatar'] = isset($data['avatar']) ? $data['avatar'] : '';
@@ -1027,7 +1028,8 @@ class User extends Common
                 return $return;
             }
             $userInfo = $this->get($data['id']);
-            $newData['password'] = $this->enPassword($data['password'], $userInfo['ctime']);
+//            $newData['password'] = $this->enPassword($data['password'], $userInfo['ctime']);
+            $newData['password'] = encrypt($data['password']);
         }
 
         $where[] = ['id', 'eq', $data['id']];
