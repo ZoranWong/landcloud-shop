@@ -1654,25 +1654,24 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 // 服务工单
 drop table if exists `lc_work_order`;
-create table lc_work_order
-(
-    id      int(10) auto_increment
-        primary key,
-    user_id int(10)              not null comment '工单发起人',
-    type    tinyint(1) default 1 null comment '工单类型
-1->咨询 2->投诉',
-    status  tinyint(1) default 0 null comment '工单状态',
-    ctime   bigint(12)           not null comment '发起时间'
-)ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='服务工单';
+CREATE TABLE `lc_work_order` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL COMMENT '工单发起人',
+  `title` varchar(100) NOT NULL COMMENT '工单标题',
+  `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '工单类型\r\n1->咨询 2->投诉',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '工单状态',
+  `ctime` bigint(12) NOT NULL COMMENT '发起时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='服务工单表';
 
 // 服务工单跟单
 drop table if exists `lc_work_order_comment`;
-create table lc_work_order_comment
-(
-    id            int(10) auto_increment
-        primary key,
-    manage_id     int(10)    null comment '跟单人 null为发起人',
-    work_order_id int(10)    not null comment '跟踪的服务工单',
-    content       text       not null comment '跟单内容',
-    ctime         bigint(12) not null comment '跟单时间'
-)ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='服务工单跟单';
+CREATE TABLE `lc_work_order_comment` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `manage_id` int(10) DEFAULT NULL COMMENT '跟单人 null为发起人',
+  `work_order_id` int(10) NOT NULL COMMENT '跟踪的服务工单',
+  `content` text NOT NULL COMMENT '跟单内容',
+  `is_reply` tinyint(1) DEFAULT '0' COMMENT '是否已回复，0->未回复 1->已回复',
+  `ctime` bigint(12) NOT NULL COMMENT '跟单时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COMMENT='服务工单跟单表';
