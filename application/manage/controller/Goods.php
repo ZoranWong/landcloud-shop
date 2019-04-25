@@ -9,26 +9,22 @@
 namespace app\Manage\controller;
 
 use app\common\controller\Manage;
+use app\common\model\Brand;
+use app\common\model\Goods as goodsModel;
+use app\common\model\GoodsCat;
 use app\common\model\GoodsGrade;
+use app\common\model\GoodsImages;
 use app\common\model\GoodsPriceLevels;
+use app\common\model\GoodsType;
+use app\common\model\GoodsTypeParams;
+use app\common\model\Products;
 use app\common\model\RelationGoods;
 use app\common\model\UserGrade;
-use Request;
-use app\common\model\Goods as goodsModel;
-use app\common\model\GoodsType;
-use app\common\model\GoodsCat;
-use app\common\model\Brand;
-use app\common\model\GoodsTypeSpec;
-use app\common\model\GoodsTypeSpecRel;
-use app\common\model\Products;
-use app\common\model\GoodsImages;
-use app\common\model\Ietask;
-use app\common\model\GoodsTypeParams;
-use think\Db;
-use think\db\Query;
-use think\Queue;
 use app\common\validate\Goods as GoodsValidate;
 use app\common\validate\Products as ProductsValidate;
+use Request;
+use think\Db;
+use think\db\Query;
 
 /***
  * 商品
@@ -354,8 +350,8 @@ class Goods extends Manage
         $data['goods']['is_recommend'] = input('post.goods.is_recommend', '2');
         $data['goods']['erp_goods_id'] = input('post.goods.erp_goods_id', '');
         $keywords = input('post.goods.keywords', null);
-        if($keywords){
-            if(is_string($keywords)){
+        if ($keywords) {
+            if (is_string($keywords)) {
                 $keywords = json_decode($keywords);
             }
             $data['goods']['keywords'] = $keywords;
@@ -653,7 +649,7 @@ class Goods extends Manage
     protected function assignRelationGoods($id)
     {
         $goods = RelationGoods::where('main_goods_id', 'eq', $id)->select();
-        $this->assign('relationGoods', $goods ? json_encode($goods->toArray()): '[]');
+        $this->assign('relationGoods', $goods ? json_encode($goods->toArray()) : '[]');
     }
 
     protected function assignPriceLevels($id)
@@ -1286,15 +1282,15 @@ class Goods extends Manage
         $goodsId = \think\facade\Request::get('goods_id');
         $search = \think\facade\Request::get('search');
         $limit = \think\facade\Request::get('limit');
-        $query = \app\common\model\Goods::with(['defaultImage'])->where('id','neq', $goodsId);
-        if($search){
-            $query->where(function ($query) use($search){
-                /**@var Query $query **/
+        $query = \app\common\model\Goods::with(['defaultImage'])->where('id', 'neq', $goodsId);
+        if ($search) {
+            $query->where(function ($query) use ($search) {
+                /**@var Query $query * */
                 $query->where('name', 'like', "%{$search}%");
             });
         }
         $relationGoods = $goodsId ? RelationGoods::where('main_goods_id', 'eq', $goodsId)->select() : null;
-        if($relationGoods && $relationGoods->count() > 0){
+        if ($relationGoods && $relationGoods->count() > 0) {
             $field = '';
             foreach ($relationGoods as $relationGood) {
                 $field .= ", {$relationGood['relation_goods_id']}";

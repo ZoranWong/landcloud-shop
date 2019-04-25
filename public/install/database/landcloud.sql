@@ -1652,3 +1652,26 @@ CREATE TABLE `lc_relation_goods`(
 )ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='关联产品';
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+// 服务工单
+drop table if exists `lc_work_order`;
+create table lc_work_order
+(
+    id      int(10) auto_increment
+        primary key,
+    user_id int(10)    not null comment '工单发起人',
+    ctime   bigint(12) not null comment '发起时间'
+)
+    comment '服务工单表';
+
+// 服务工单跟单
+drop table if exists `lc_work_order_comment`;
+create table lc_work_order_comment
+(
+    id        int(10) auto_increment
+        primary key,
+    manage_id int(10)    null comment '跟单人 null为发起人',
+    content   text       not null comment '跟单内容',
+    ctime     bigint(12) not null comment '跟单时间'
+)
+    comment '服务工单跟单表';
