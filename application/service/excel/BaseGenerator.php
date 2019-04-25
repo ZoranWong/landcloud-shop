@@ -8,7 +8,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 abstract class BaseGenerator
 {
     const START_COLUMN = (int)'A';
-
+    const START_ROW = 1;
     abstract public function model(): string;
 
     abstract public function fileName(): string;
@@ -27,7 +27,7 @@ abstract class BaseGenerator
         return [$headers, $keys];
     }
 
-    public function generate($data = null, $contentRowStart = 2)
+    public function generate($data = null)
     {
         list($headers, $keys) = $this->headers();
 
@@ -36,20 +36,15 @@ abstract class BaseGenerator
         $spreadSheet = new Spreadsheet();
         $sheet = $spreadSheet->getActiveSheet();
 
-        for ($i = 0; $i < $count; $i++) {     //数字转字母从65开始，循环设置表头：
-            $sheet->setCellValue(strtoupper(chr($i + self::START_COLUMN)) . '1', $headers[$i]);
-        }
-
         if (!is_null($data)) {
             if (!is_iterable($data)) {
                 $data = [$data];
             }
-
+            array_unshift( $data, $headers);
             foreach ($data as $key => $item) {             //循环设置单元格：
-                //$key+2,因为第一行是表头，所以写到表格时   从第二行开始写
                 for ($i = 0; $i < $count; $i++) {     //数字转字母从65开始：
                     $column = strtoupper(chr($i + self::START_COLUMN));
-                    $sheet->setCellValue($column . ($key + $contentRowStart), $item[$keys[$i]]);
+                    $sheet->setCellValue($column . ($key + self::START_ROW), $item[$keys[$i]]);
                     $spreadSheet->getActiveSheet()->getColumnDimension($column)->setWidth(20); //固定列宽
                 }
 
