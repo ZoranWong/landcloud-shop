@@ -63,62 +63,67 @@
 
     <table class="layui-table" lay-size="sm">
         <thead>
-            <tr>
-                <th>商品名称</th>
-                <th>商品编码</th>
-                <th>货品编码</th>
-                <th>购买数量</th>
-                <th>已发数量</th>
-                <th>发货数量</th>
-                <th>本次发货数量</th>
-            </tr>
+        <tr>
+            <th>商品名称</th>
+            <th>商品编码</th>
+            <th>货品编码</th>
+            <th>购买数量</th>
+            <th>已发数量</th>
+            <th>发货数量</th>
+        </tr>
         </thead>
-        {foreach $order.items as $key=>$vo}
         <tbody>
+        {foreach $order.items as $key=>$vo}
+        <tr>
             <td>{$vo.name} - {$vo.addon}</td>
             <td>{$vo.bn}</td>
             <td>{$vo.sn}</td>
             <td>{$vo.nums}</td>
             <td>{if $vo.sendnums}{$vo.sendnums}{else /}0{/if}</td>
-            <td>{$vo.nums-$vo.sendnums}<input type="hidden" data-id="{$vo.id}" class="order-ship-nums" max="{$vo.nums-$vo.sendnums}" value="{$vo.nums-$vo.sendnums}" min="0"></td>
-            <td><input class="order-send-num layui-input"></td>
-        </tbody>
+            <td>{$vo.nums-$vo.sendnums}<input type="hidden" data-id="{$vo.id}" class="order-ship-num"
+                                              max="{$vo.nums-$vo.sendnums}" value="{$vo.nums-$vo.sendnums}" min="0">
+            </td>
+        </tr>
         {/foreach}
+        </tbody>
     </table>
-    <div class="">
-        <button class="layui-btn">生成发货单</button>
-    </div>
-    <fieldset class="layui-elem-field layui-field-title">
-        <legend>物流信息</legend>
-    </fieldset>
-    <div class="layui-form-item">
-        <label class="layui-form-label">物流公司：</label>
-        <div class="layui-input-inline seller-inline-3">
-            <select name="logi_code" id="logi_code" lay-search>
-                <option value="">搜索选择物流公司</option>
-                {foreach $logi as $k=>$v}
-                    <option value="{$v['logi_code']}" {if $v['logi_code'] == $ship['logi_code']}selected{/if}>{$v['logi_name']}</option>
-                {/foreach}
-            </select>
-        </div>
-
-        <label class="layui-form-label">物流单号：</label>
-        <div class="layui-input-inline seller-inline-4">
-            <input type="text" id="logi_no" value="" class="layui-input">
+    <div class="layui-inline layadmin-flexible">
+        <div style="margin-top: 12px">
+            <button data-id="{$order.order_id}" class="layui-btn express-order-btn">商城发货</button>
+            <button data-id = "{$order.order_id}" class="layui-btn">ERP发货</button>
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">发货备注：</label>
-        <div class="layui-input-inline seller-inline-10">
-            <input type="text" id="memo" value="" class="layui-input">
-        </div>
-    </div>
-    <button class="layui-btn layui-btn-fluid order-ship-btn">发货</button>
+    <!--<fieldset class="layui-elem-field layui-field-title">-->
+        <!--<legend>物流信息</legend>-->
+    <!--</fieldset>-->
+    <!--<div class="express-orders list-box">-->
+        <!--<div class="express-order list-item layui-card">-->
+            <!--<div class="layui-card-header">-->
+                <!--<div class="layui-form-label">快递单号：</div>-->
+                <!--<div class="layui-form-label">快递公司：</div>-->
+            <!--</div>-->
+            <!--<table class="layui-table" lay-size="sm">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th>商品名称</th>-->
+                    <!--<th>商品编码</th>-->
+                    <!--<th>货品编码</th>-->
+                    <!--<th>发货数量</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+            <!--</table>-->
+        <!--</div>-->
+    <!--</div>-->
 </div>
 <script>
     //渲染表单
-    layui.use('form', function() {
+    shipRender = null;
+    layui.use('form', function () {
         var form = layui.form;
-        form.render();
+        shipRender = function () {
+            form.render();
+        };
+        shipRender();
+
     });
 </script>
