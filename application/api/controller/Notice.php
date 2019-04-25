@@ -8,8 +8,8 @@
 // +----------------------------------------------------------------------
 namespace app\api\controller;
 
-use app\common\model\Notice as NoticeModel;
 use app\common\controller\Api;
+use app\common\model\Notice as NoticeModel;
 
 class Notice extends Api
 {
@@ -40,7 +40,6 @@ class Notice extends Api
         //获取公告类型
         $type   = input('param.type',1);
         $data = $noticeModel->getNoticeList($type, $order, $orderType, $page, $pageSize);
-
         if($data) {
             $result['data'] = $data;
         }

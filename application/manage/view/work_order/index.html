@@ -1,10 +1,76 @@
+<form action="" class="layui-form seller-form">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label seller-inline-2">工单类型：</label>
+            <div class="layui-input-inline seller-inline-4">
+                <select name="type" lay-verify="">
+                    <option value="">请选择类型</option>
+                    <option value="consult">咨询</option>
+                    <option value="complain">投诉</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label seller-inline-2">工单状态：</label>
+            <div class="layui-input-inline seller-inline-4">
+                <select name="status">
+                    <option value="">请选择状态</option>
+                    <option value="1">新工单</option>
+                    <option value="2">跟单中</option>
+                    <option value="3">手动结束</option>
+                    <option value="4">自动结束</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-sm" lay-submit lay-filter="search">
+                <i class="iconfont icon-chaxun"></i>筛选
+            </button>
+        </div>
+    </div>
+</form>
+
 <div class="table-body">
-    <table id="work_order" lay-filter="work_order"></table>
+    <table id="work_order" lay-filter="work_order">
+        <script id="workOrderCommiter" type="text/html">
+            [#{{d.user_id}}]-{{d.initer.username}}
+        </script>
+        <script id="workOrderType" type="text/html">
+            {{# if(d.type === 1){ }}
+            <span style="color: #0dc244;">咨询</span>
+            {{# } else { }}
+            <span style="color: #d6b919;">投诉</span>
+            {{# } }}
+        </script>
+        <script id="workOrderStatus" type="text/html">
+            {{# if(d.status === 1) { }}
+            <span style="color: #1E9FFF;">已发起,待处理</span>
+            <span class="layui-badge layui-bg-blue">&nbsp;{{d.comments_not_reply_count}}</span>
+            {{# } else if (d.status === 2){ }}
+            <span style="color: #5FB878">跟单中</span>
+            <span class="layui-badge layui-bg-green">&nbsp;{{d.comments_not_reply_count}}</span>
+            {{# } else if (d.status === 3){ }}
+            <span style="color: #009688;">已结束[手动结束]</span>
+            {{# } else if (d.status === 4){ }}
+            <span style="color: #009688;">已结束[自动结束]</span>
+            {{# } else { }}
+            <span style="color: #FF5722;">状态错误，未知状态:{{d.status}}</span>
+            {{# } }}
+        </script>
+        <script id="workOrderOp" type="text/html">
+            {{# if(d.status === 1 || d.status === 2) { }}
+            <a class="layui-btn layui-btn-radius layui-btn-normal layui-btn-xs" lay-event="process">跟单</a>
+            {{# } }}
+        </script>
+    </table>
 </div>
 
 <script>
-    layui.use(['table', 'form', 'layer', 'laydate'], function () {
-        var layer = layui.layer, table = layui.table, form = layui.form, date = layui.laydate;
+    layui.use(['table', 'form', 'layer', 'laydate', 'laytpl', 'util'], function () {
+        var layer = layui.layer, table = layui.table, form = layui.form, date = layui.laydate, laytpl = layui.laytpl,
+            util = layui.util;
 
         table.render({
             elem: '#work_order',
@@ -15,11 +81,41 @@
             url: "{:url('WorkOrder/index')}",
             cols: [[
                 {type: 'numbers'},
-                {field: 'user_id', title: '工单发起人', align: 'center'},
-                {field: 'type', title: '工单类型', align: 'center'},
-                {field: 'status', title: '工单状态', align: 'center'},
-                {title: '操作', align: 'center', width: 150}
+                {field: 'user_id', title: '工单发起人', templet: '#workOrderCommiter'},
+                {field: 'title', title: '工单标题'},
+                {title: '工单类型', align: 'center', templet: '#workOrderType'},
+                {title: '工单状态', align: 'center', templet: '#workOrderStatus'},
+                {
+                    title: '发起时间', align: 'center', templet: function (d) {
+                        return util.toDateString(d.ctime * 1000, "yyyy-MM-dd HH:mm:ss");
+                    }
+                },
+                {title: '操作', align: 'center', width: 150, toolbar: '#workOrderOp'}
             ]],
+        });
+
+        let events = {
+            process: function (data) {
+                window.location.href = "{:url('WorkOrder/process')}?id=" + data.id;
+            }
+        };
+
+        table.on('tool(work_order)', function (obj) {
+            let data = obj.data;
+            let layEvent = obj.event;
+            let tr = obj.tr;
+
+            events[layEvent] && events[layEvent].call(this, data);
+        });
+
+        form.on('submit(search)', function (data) {
+            layui.table.reload('work_order', {
+                where: data.field,
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
         });
     });
 </script>

@@ -1,6 +1,7 @@
 <?php
 header('Content-type:text/html;charset=utf-8');
 session_start();
+
 //配置信息
 $config = array(
     'version'     => 'v2.0',           //版本号
@@ -136,7 +137,7 @@ if ($get == $config['endPage']) {
             $sql_array = preg_split("/;[\r\n]+/", str_replace($config['prefix'], $db['DB_PREFIX'], $sql_str));
             $start = ($_POST['page']-1)*$config['limit'];
             $end = $start+$config['limit'];
-			
+
             //循环query
             $total_page = ceil(count($sql_array)/$config['limit']);
             $return['sql'] = [];
@@ -170,11 +171,12 @@ if ($get == $config['endPage']) {
             $link->query("SET NAMES 'utf8'");
             $link->select_db($db['DB_NAME']);
             //插入数据库默认账号密码
-            $account  = $_POST['admin_account'];
-            $time     = time();
-            $password = md5(md5($_POST['admin_password']) . $time);
-            $add_user_sql = "INSERT INTO `" . $db['DB_PREFIX'] . "manage` (`id`, `username`, `password`, `mobile`, `avatar`, `nickname`, `ctime`, `utime`, `status`) VALUES (13, '" . $account . "', '" . $password . "', '', NULL, NULL, " . $time . ", " . $time . ", 1);";
-            $link->query($add_user_sql);
+//            $account  = $_POST['admin_account'];
+//            $time     = time();
+////            $password = md5(md5($_POST['admin_password']) . $time);
+//            $password = encrypt($_POST['admin_password']);
+//            $add_user_sql = "INSERT INTO `" . $db['DB_PREFIX'] . "manage` (`id`, `username`, `password`, `mobile`, `avatar`, `nickname`, `ctime`, `utime`, `status`) VALUES (13, '" . $account . "', '" . $password . "', '', NULL, NULL, " . $time . ", " . $time . ", 1);";
+//            $link->query($add_user_sql);
 
             $return['data']['page']=1;
             $return['data']['totalPage']=1000;//临时给一个随便默认值

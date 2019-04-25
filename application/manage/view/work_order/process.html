@@ -1,0 +1,110 @@
+<style>
+    .comment-header {
+        font-size: 16px;
+        padding: 5px;
+    }
+
+    .comment-manage {
+        /*position: relative;*/
+        /*min-height: 65px;*/
+        /*display: flex;*/
+    }
+
+    .comment-manage .comment-header {
+        /*right: 0px;*/
+        /*position: absolute;*/
+    }
+
+    .comment-manage p {
+        /*position: absolute;*/
+        /*right: 0px;*/
+        /*top: 26px;*/
+    }
+
+    .comment-initer {
+        /*position: relative;*/
+        /*min-height: 65px;*/
+    }
+</style>
+
+<div style="padding: 30px;" class="layui-form seller-alone-form">
+    <input type="hidden" name="work_order_id" value="{$workOrder.id}">
+
+    <h3>工单详情</h3>
+    <hr>
+    <blockquote class="layui-elem-quote" style="position: relative;">
+        <p style="display: inline;padding: 0 10px;">工单标题：{$workOrder.title}</p>
+        <p style="display: inline;padding: 0 10px;">发布于:{:getTime($workOrder.ctime)}</p>
+        <p style="display: inline;position: absolute;right: 20px;">
+            {switch $workOrder.status}
+            {case 1 }新服务工单{/case}
+            {case 2}跟单中{/case}
+            {case 3}已结束[手动结束]{/case}
+            {case 4}已结束[自动结束]{/case}
+            {default /}默认情况
+            {/switch}
+        </p>
+    </blockquote>
+
+    <div style="padding: 20px 0;">
+        <div style="padding: 0 20px 20px 20px;">
+            {volist name="comments" id="comment"}
+            {if !is_null($comment.manage_id)}
+            <div class="layui-form-item">
+                <div class="comment-manage">
+                    <div class="layui-form-inline comment-header">
+                        <span>{$comment.manage.username}</span>
+                        <span>{:getTime($comment.ctime)}</span>
+                    </div>
+                    <p>{$comment.content}</p>
+                </div>
+            </div>
+            {else /}
+            <div class="layui-form-item">
+                <div class="comment-initer">
+                    <div class="layui-form-inline comment-header">
+                        <span>{$workOrder.initer.username}</span>
+                        <span>{:getTime($comment.ctime)}</span>
+                    </div>
+                    <p>{$comment.content}</p>
+                </div>
+            </div>
+            {/if}
+            {/volist}
+        </div>
+
+        <h3 style="padding: 10px 0px;">继续跟进</h3>
+        <div class="layui-form-item">
+            <textarea name="content" required lay-verify="required" placeholder="请输入回复内容"
+                      class="layui-textarea">
+            </textarea>
+        </div>
+
+        <div class="layui-form-item" style="padding-top: 20px;text-align: center;">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit lay-filter="process">保存</button>
+                <button onclick="javascript:history.back(-1);" type="reset" class="layui-btn layui-btn-warm">取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['table', 'form', 'layer', 'laytpl', 'util'], function () {
+        var layer = layui.layer, table = layui.table, form = layui.form, laytpl = layui.laytpl,
+            util = layui.util;
+
+        form.on('submit(process)', function (data) {
+            JsPost("{:url('WorkOrder/process')}", data.field, function (res) {
+                if (res.status) {
+                    layer.msg(res.msg, {time: 1500}, function () {
+                        window.location.href = "{:url('WorkOrder/index')}";
+                    });
+                } else {
+                    layer.msg(res.msg);
+                }
+            });
+        });
+    });
+</script>

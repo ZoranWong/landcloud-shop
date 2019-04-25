@@ -873,7 +873,7 @@ CREATE TABLE `lc_manage` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `erp_manage_id` int(10) unsigned not null comment '用户ERP的ID',
   `username` varchar(20) DEFAULT NULL COMMENT '用户名',
-  `password` char(32) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
+  `password` varchar(255) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
   `mobile` char(15) DEFAULT NULL COMMENT '手机号',
   `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
   `nickname` varchar(50) DEFAULT NULL COMMENT '昵称',
@@ -1329,7 +1329,6 @@ DROP TABLE IF EXISTS `lc_user`;
 CREATE TABLE `lc_user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `username` varchar(50) DEFAULT NULL COMMENT '用户名',
---   `password` char(32) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
   `password` varchar(255) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
   `mobile` varchar(15) DEFAULT NULL COMMENT '手机号',
   `sex` tinyint(1) unsigned DEFAULT '3' COMMENT '1=男 2=女 3=未知',
@@ -1345,9 +1344,9 @@ CREATE TABLE `lc_user` (
   `pid` int(10) unsigned DEFAULT '0' COMMENT '销售客服',
   `isdel` bigint(12) unsigned DEFAULT NULL COMMENT '删除标志 有数据就是删除',
   `company` varchar(30) comment '公司',
-  `erp_user_id` varchar (64) unsigned not null comment '用户erp系统id',
-  `erp_manage_id` varchar (64) unsigned comment '销售经理erp系统id',
-  `erp_manage_name` varchar(20) comment '销售经理erp系统name',
+  `erp_user_id` varchar (64) not null comment '用户erp系统id',
+  `erp_manage_id` varchar (64) not null comment '销售经理erp系统id',
+  `erp_manage_name` varchar(20) not null comment '销售经理erp系统name',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户表';
 
@@ -1654,6 +1653,7 @@ CREATE TABLE `lc_relation_goods`(
 SET FOREIGN_KEY_CHECKS = 1;
 
 // 服务工单
+drop table if exists `lc_work_order`;
 create table lc_work_order
 (
     id      int(10) auto_increment
@@ -1663,10 +1663,10 @@ create table lc_work_order
 1->咨询 2->投诉',
     status  tinyint(1) default 0 null comment '工单状态',
     ctime   bigint(12)           not null comment '发起时间'
-)
-    comment '服务工单表';
+)ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='服务工单';
 
 // 服务工单跟单
+drop table if exists `lc_work_order_comment`;
 create table lc_work_order_comment
 (
     id            int(10) auto_increment
@@ -1675,5 +1675,4 @@ create table lc_work_order_comment
     work_order_id int(10)    not null comment '跟踪的服务工单',
     content       text       not null comment '跟单内容',
     ctime         bigint(12) not null comment '跟单时间'
-)
-    comment '服务工单跟单表';
+)ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='服务工单跟单';

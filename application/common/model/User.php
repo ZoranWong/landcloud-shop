@@ -964,9 +964,11 @@ class User extends Common
         $newData['pid'] = 0;
         $newData['grade'] = $data['grade'];
         $newData['erp_user_id'] = $data['erp_user_id'];
+//        $newData['erp_manage_id'] = 1;
+//        $newData['erp_manage_name'] = 'hlj';
 
         $result = $this->save($newData);
-        $return['data'] = $this->id;
+        $return['data'] = $this->getLastInsID();
 
         if ($result) {
             if (session('manage.id')) {

@@ -183,8 +183,9 @@ class Manage extends Common implements Excelable
         }
 
         //判断是否是用户名登陆
-        $userInfo = $this->where(array('username|mobile' => $data['mobile'], 'password' => $this->enPassword($data['password'], $userInfo->ctime)))->find();
-        if ($userInfo) {
+//        $userInfo = $this->where(array('username|mobile' => $data['mobile'], 'password' => $this->enPassword($data['password'], $userInfo->ctime)))->find();
+        $userInfo = $this->where(['username|mobile' => $data['mobile']])->find();
+        if ($userInfo && $data['password'] === decrypt($userInfo->password)) {
             $result = $this->setSession($userInfo);
         } else {
             //写失败次数到session里
