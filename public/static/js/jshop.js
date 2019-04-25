@@ -30,7 +30,7 @@ function uploadSImage(id) {
         //普通图片上传
         var uploadInst = upload.render({
             elem: '#upload_img_' + id
-            , url: Jshop_Image
+            , url: Shop_Image
             , before: function (obj) {
                 obj.preview(function (index, file, result) {
                     $('#image_src_' + id).attr('src', result); //图片链接（base64）
