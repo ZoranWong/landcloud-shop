@@ -1,0 +1,67 @@
+<style type="text/css">
+    .layui-form-label {
+        width: 100px;
+    }
+</style>
+<div class="layui-form seller-alone-form" style="padding:10px">
+    <div><span class="layui-layer-tips">本功能支持分批发货</span></div>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>待发货商品</legend>
+    </fieldset>
+
+    <table class="layui-table" lay-size="sm">
+        <thead>
+        <tr>
+            <th>商品名称</th>
+            <th>商品编码</th>
+            <th>货品编码</th>
+            <th>购买数量</th>
+            <th>已发数量</th>
+            <th>待发货数量</th>
+        </tr>
+        </thead>
+        {foreach $order.items as $key=>$vo}
+        <tbody>
+        <td>{$vo.name} - {$vo.addon}</td>
+        <td>{$vo.bn}</td>
+        <td>{$vo.sn}</td>
+        <td>{$vo.nums}</td>
+        <td>{if $vo.sendnums}{$vo.sendnums}{else /}0{/if}</td>
+        <td><input type="text" data-id="{$vo.id}" class="order-express-num layui-input" max="{$vo.nums-$vo.sendnums}" value="{$vo.nums-$vo.sendnums}" min="0"></td>
+        </tbody>
+        {/foreach}
+    </table>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>物流信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">物流公司：</label>
+        <div class="layui-input-inline seller-inline-3">
+            <select name="logi_code" id="logi_code" lay-search>
+                <option value="">搜索选择物流公司</option>
+                {foreach $logi as $k=>$v}
+                <option value="{$v['logi_code']}" {if $v['logi_code'] == $ship['logi_code']}selected{/if}>{$v['logi_name']}</option>
+                {/foreach}
+            </select>
+        </div>
+
+        <label class="layui-form-label">物流单号：</label>
+        <div class="layui-input-inline seller-inline-4">
+            <input type="text" id="logi_no" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发货备注：</label>
+        <div class="layui-input-inline seller-inline-10">
+            <input type="text" id="memo" value="" class="layui-input">
+        </div>
+    </div>
+    <button class="layui-btn layui-btn-fluid order-ship-btn">发货</button>
+</div>
+<script>
+    //渲染表单
+    layui.use('form', function() {
+        var form = layui.form;
+        form.render();
+    });
+</script>

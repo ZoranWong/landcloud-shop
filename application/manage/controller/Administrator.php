@@ -177,22 +177,22 @@ class Administrator extends ManageController
         ];
         $product = config('jshop.product');
         $version = config('jshop.version');
-        $url     = config('jshop.authorization_url') . '/b2c/Authorization/verification';
+        //$url     = config('jshop.authorization_url') . '/b2c/Authorization/verification';
         $domain  = $_SERVER['SERVER_NAME'];
-        $curl    = new Curl();
-        $params  = [
-            'domain'  => $domain,
-            'product' => $product,
-            'version' => $version,
-            'time'    => time(),
-        ];
-        $data    = $curl::post($url, $params);
-        $data =  json_decode($data,true);
-        if ($data['status']) {//未授权
-            $return['data']['is_authorization'] = $data['data']['is_authorization'];
+//        $curl    = new Curl();
+//        $params  = [
+//            'domain'  => $domain,
+//            'product' => $product,
+//            'version' => $version,
+//            'time'    => time(),
+//        ];
+        //$data    = $curl::post($url, $params);
+       // $data =  json_decode($data,true);
+        if (true) {//未授权
+            $return['data']['is_authorization'] = true;
             $return['data']['version']          = $version;
             $return['data']['product']          = $product;
-            $return['data']['changeLog']        = $data['data']['changeLog'];
+//            $return['data']['changeLog']        = $data['data']['changeLog'];
             $return['msg']                      = '授权查询成功';
             $return['status']                   = true;
             return $return;

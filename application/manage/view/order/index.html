@@ -381,10 +381,7 @@
             });
             return false;
         });
-
-        //发货页面
-        $(document).on('click', '.ship-order', function(){
-            var id = $(this).attr('data-id');
+        function openShipOrder (id) {
             $.ajax({
                 url: '{:url("order/ship")}',
                 type: 'get',
@@ -395,6 +392,33 @@
                     window_box = layer.open({
                         type: 1,
                         title: '订单发货',
+                        area: ['800px', '500px'], //宽高
+                        content: e
+                    });
+                }
+            });
+        }
+        //发货页面
+        $(document).on('click', '.ship-order', function(){
+            var id = $(this).attr('data-id');
+            openShipOrder(id);
+            return false;
+        });
+
+
+        // 创见快递单
+        $(document).on('click', '.express-order-btn', function () {
+            var id = $(this).attr('data-id');
+            $.ajax({
+                url: '{:url("order/express")}',
+                type: 'get',
+                data: {
+                    'order_id': id
+                },
+                success: function(e){
+                    window_box = layer.open({
+                        type: 1,
+                        title: '创建快递单',
                         area: ['800px', '500px'], //宽高
                         content: e
                     });
@@ -411,9 +435,9 @@
             var logi_code = $("#logi_code").val();
             var memo = $("#memo").val();
             var flag = true;
-            $(".order-ship-nums").each(function(){
-                var ship_num = $(this).val();
-                var max = $(this).attr('max');
+            $(".order-express-num").each(function(){
+                var ship_num = parseInt($(this).val());
+                var max = parseInt($(this).attr('max'));
                 var id = $(this).attr('data-id');
                 if(ship_num > max || ship_num < 0){
                     flag = false;
@@ -436,7 +460,8 @@
                         'ship_data': ship_data
                     },
                     success: function(e){
-                        layer.close(window_box);
+                        layer.closeAll();
+                        openShipOrder(order_id);
                         layer.msg(e.msg, {time: 1300}, function(){
                             table.reload();
                         });
