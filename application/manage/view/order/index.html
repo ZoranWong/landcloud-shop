@@ -418,7 +418,7 @@
                 success: function(e){
                     window_box = layer.open({
                         type: 1,
-                        title: '创见快递单',
+                        title: '创建快递单',
                         area: ['800px', '500px'], //宽高
                         content: e
                     });
@@ -436,8 +436,8 @@
             var memo = $("#memo").val();
             var flag = true;
             $(".order-express-num").each(function(){
-                var ship_num = $(this).val();
-                var max = $(this).attr('max');
+                var ship_num = parseInt($(this).val());
+                var max = parseInt($(this).attr('max'));
                 var id = $(this).attr('data-id');
                 if(ship_num > max || ship_num < 0){
                     flag = false;
