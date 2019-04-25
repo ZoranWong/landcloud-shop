@@ -19,8 +19,8 @@ class Setting extends Common
             'value' => '我的平台地址'
         ],
         'shop_beian' => [
-            'name' => '备案信息',
-            'value' => '网站备案信息'
+            'name' => '备案号',
+            'value' => ''
         ],
         'shop_logo' => [
             'name' => '平台logo',
@@ -66,15 +66,15 @@ class Setting extends Common
             'name' => '订单自动评价时间',
             'value' => '30'
         ],
-        'remind_order_time'=>[
+        'remind_order_time' => [
             'name' => '订单提醒付款时间',
             'value' => '1'
         ],
-        'goods_stocks_warn' =>  [
+        'goods_stocks_warn' => [
             'name' => '库存警报数量',
             'value' => '10'
         ],
-        'is_author'           =>  [         //此字段不显示到前台，在控制器中直接进行操作的，对商户不可见
+        'is_author' => [         //此字段不显示到前台，在控制器中直接进行操作的，对商户不可见
             'name' => '是否授权',
             'value' => ''
         ],
@@ -155,35 +155,35 @@ class Setting extends Common
             'name' => '指定日期追加',
             'value' => 10
         ],
-        'wx_nick_name'=>[
-            'name'=>'小程序名称',
+        'wx_nick_name' => [
+            'name' => '小程序名称',
             'value' => 'JSHOP',
         ],
         //小程序设置
-        'wx_appid'=>[           //小程序id
-            'name'=>'AppId',
+        'wx_appid' => [           //小程序id
+            'name' => 'AppId',
             'value' => '',
         ],
-        'wx_app_secret'=>[
-            'name'=>'AppSecret',
+        'wx_app_secret' => [
+            'name' => 'AppSecret',
             'value' => '',
         ],
-        'wx_user_name'=>[
-            'name'=>'原始Id',
+        'wx_user_name' => [
+            'name' => '原始Id',
             'value' => '',
         ],
-        'wx_principal_name'=>[
-            'name'=>'主体信息',
+        'wx_principal_name' => [
+            'name' => '主体信息',
             'value' => '河南吉海网络科技有限公司',
         ],
-        'wx_signature'=>[
-            'name'=>'简介',
+        'wx_signature' => [
+            'name' => '简介',
             'value' => 'Jshop小程序是一款标准B2C商城小程序',
         ],
         //小程序logo
-        'wx_head_img'=>[
-            'name'=>'Logo',
-            'value'=>''
+        'wx_head_img' => [
+            'name' => 'Logo',
+            'value' => ''
         ],
         'sms_user_id' => [
             'name' => '短信通道用户ID',
@@ -202,67 +202,67 @@ class Setting extends Common
             'value' => 'Jshop'
         ],
         //公众号设置
-        'wx_official_name'=>[
-            'name'=>'公众号名称',
+        'wx_official_name' => [
+            'name' => '公众号名称',
             'value' => '',
         ],
-        'wx_official_id'=>[
-            'name'=>'微信号',
+        'wx_official_id' => [
+            'name' => '微信号',
             'value' => '',
         ],
-        'wx_official_appid'=>[
-            'name'=>'AppId',
+        'wx_official_appid' => [
+            'name' => 'AppId',
             'value' => '',
         ],
-        'wx_official_app_secret'=>[
-            'name'=>'AppSecret',
+        'wx_official_app_secret' => [
+            'name' => 'AppSecret',
             'value' => '',
         ],
-        'wx_official_source_id'=>[
-            'name'=>'公众号原始ID',
+        'wx_official_source_id' => [
+            'name' => '公众号原始ID',
             'value' => '',
         ],
-        'wx_official_token'=>[
-            'name'=>'微信验证TOKEN',
+        'wx_official_token' => [
+            'name' => '微信验证TOKEN',
             'value' => '',
         ],
-        'wx_official_encodeaeskey'=>[
-            'name'=>'EncodingAESKey',
-            'value'=>''
+        'wx_official_encodeaeskey' => [
+            'name' => 'EncodingAESKey',
+            'value' => ''
         ],
-        'wx_official_type'=>[
-            'name'=>'公众号类型',
-            'value'=>'service'
+        'wx_official_type' => [
+            'name' => '公众号类型',
+            'value' => 'service'
         ],
         // 提现设置
-        'tocash_money_low'=>[
-            'name'=>'最低提现金额',
-            'value'=>'0'
+        'tocash_money_low' => [
+            'name' => '最低提现金额',
+            'value' => '0'
         ],
         'tocash_money_rate' => [
             'name' => '提现服务费率',
             'value' => '0'
         ],
         //其他设置
-        'qq_map_key'=>[
-            'name'=>'腾讯地图key',
-            'value'=>''
+        'qq_map_key' => [
+            'name' => '腾讯地图key',
+            'value' => ''
         ],
-        'kuaidi100_customer'=>[
-            'name'=>'公司编号',
-            'value'=>''
+        'kuaidi100_customer' => [
+            'name' => '公司编号',
+            'value' => ''
         ],
-        'kuaidi100_key'=>[
-            'name'=>'授权key',
-            'value'=>''
+        'kuaidi100_key' => [
+            'name' => '授权key',
+            'value' => ''
         ],
-        'image_storage_type'=>[
-            'name'=>'图片存储引擎',
-            'value'=>'Local'
+        'image_storage_type' => [
+            'name' => '图片存储引擎',
+            'value' => 'Local'
         ],
-        'image_storage_params'=>[
-            'name'=>'图片存储配置参数',
-            'value'=>''
+        'image_storage_params' => [
+            'name' => '图片存储配置参数',
+            'value' => ''
         ],
         //搜索发现关键字
         'recommend_keys' => [
@@ -278,6 +278,18 @@ class Setting extends Common
         'invoice_switch' => [
             'name' => '发票功能',
             'value' => '1'
+        ],
+        'place_order_sms_remind' => [
+            'name' => '下单短信提醒',
+            'value' => '0'
+        ],
+        'shipments_sms_remind' => [
+            'name' => '发货短信提醒',
+            'value' => '0'
+        ],
+        'password_retrieve_sms_remind' => [
+            'name' => '密码找回短信提醒',
+            'value' => '0'
         ]
     ];
 
@@ -287,18 +299,18 @@ class Setting extends Common
     {
 
         $result = $this->check($skey, $value);
-        if(!$result['status']){
+        if (!$result['status']) {
             return $result;
         }
-        if(is_array($value)){
+        if (is_array($value)) {
             $value = json_encode($value);
         }
-        $info = $this->where(array('skey'=>$skey))->find();
-        if($info){
+        $info = $this->where(array('skey' => $skey))->find();
+        if ($info) {
 
             $info->value = $value;
             $info->save();
-        }else{
+        } else {
             $model = new $this;
             $model->save([
                 'skey' => $skey,
@@ -315,15 +327,15 @@ class Setting extends Common
     public function getValue($skey)
     {
         $info = $this->where(array('skey' => $skey))->find();
-        if($info){
-            if(isjson( $info['value'])){
-                $info['value'] = json_decode($info['value'],true);
+        if ($info) {
+            if (isjson($info['value'])) {
+                $info['value'] = json_decode($info['value'], true);
             }
             return $info['value'];
-        }else{
-            if(isset($this->skeys[$skey]['value'])){
+        } else {
+            if (isset($this->skeys[$skey]['value'])) {
                 return $this->skeys[$skey]['value'];
-            }else{
+            } else {
                 return "";
             }
         }
@@ -343,17 +355,16 @@ class Setting extends Common
         }
 
 
-        if($skey == 'shop_name'){
-            if($value == ''){
+        if ($skey == 'shop_name') {
+            if ($value == '') {
                 $result['msg'] = "平台名称不能为空";
                 return $result;
             }
         }
 
-        if($skey == 'shop_mobile'){
-            if($value != ''){
-                if(!isMobile($value))
-                {
+        if ($skey == 'shop_mobile') {
+            if ($value != '') {
+                if (!isMobile($value)) {
                     $result['msg'] = '联系方式号码格式错误';
                     return $result;
                 }
@@ -369,11 +380,11 @@ class Setting extends Common
     public function getAll()
     {
         $list = $this->select();
-        foreach($this->skeys as $k => $v){
-            foreach($list as $info){
-                if($info['skey'] == $k){
-                    if(isjson( $info['value'])){
-                        $info['value'] = json_decode($info['value'],true);
+        foreach ($this->skeys as $k => $v) {
+            foreach ($list as $info) {
+                if ($info['skey'] == $k) {
+                    if (isjson($info['value'])) {
+                        $info['value'] = json_decode($info['value'], true);
                     }
                     $this->skeys[$k]['value'] = $info['value'];
                     break;
@@ -385,15 +396,15 @@ class Setting extends Common
 
     /**
      * 返回layui的table所需要的格式
-     * @author sin
      * @param $post
      * @return mixed
+     * @author sin
      */
     public function tableData($post)
     {
-        if(isset($post['limit'])){
+        if (isset($post['limit'])) {
             $limit = $post['limit'];
-        }else{
+        } else {
             $limit = config('paginate.list_rows');
         }
         $tableWhere = $this->tableWhere($post);
@@ -410,21 +421,20 @@ class Setting extends Common
     }
 
 
-
     /**
      * 根据输入的查询条件，返回所需要的where
-     * @author sin
      * @param $post
      * @return mixed
+     * @author sin
      */
     protected function tableWhere($post)
     {
         $where = [];
-        if(isset($post['skey']) && $post['skey'] != ""){
+        if (isset($post['skey']) && $post['skey'] != "") {
             $where[] = ['skey', 'eq', $post['skey']];
         }
-        if(isset($post['value']) && $post['value'] != ""){
-            $where[] = ['value', 'like', '%'.$post['value'].'%'];
+        if (isset($post['value']) && $post['value'] != "") {
+            $where[] = ['value', 'like', '%' . $post['value'] . '%'];
         }
         $result['where'] = $where;
         $result['field'] = "*";
@@ -434,16 +444,16 @@ class Setting extends Common
 
     /**
      * 根据查询结果，格式化数据
-     * @author sin
      * @param $list
      * @return mixed
+     * @author sin
      */
     protected function tableFormat($list)
     {
-        foreach($list as $k => $v){
-            if(isset($this->skeys[$v['skey']])){
+        foreach ($list as $k => $v) {
+            if (isset($this->skeys[$v['skey']])) {
                 $list[$k]['key_name'] = $this->skeys[$v['skey']]['name'];
-            }else{
+            } else {
                 $list[$k]['key_name'] = "";
             }
 
