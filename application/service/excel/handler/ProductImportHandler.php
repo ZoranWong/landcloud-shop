@@ -55,10 +55,9 @@ class ProductImportHandler extends BaseHandler
             if(!empty($record['intro'])) {
                 $intro = Upload::getPrefixFiles($record['intro']);
                 if($intro && count($intro) > 0){
-                    $goods['intro'] = "<img src='{$intro[0]}'>";
-                }else{
-                    $goods['intro'] = $record['intro'];
+                    $record['intro'] = "<img src='{$intro[0]}'>";
                 }
+                $goods['intro'] = "<div class='gooods-intro'>{$record['intro']}</div>";
             }
 
             if (!empty($record['brand_name'])) {
