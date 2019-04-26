@@ -947,6 +947,17 @@ class User extends Common
             return $return;
         }
 
+        // ERP_USER_ID强制输入
+        if (empty($data['erp_manage_id'])) {
+            $return['msg'] = '销售经理ERP用户ID必填';
+            return $return;
+        }
+
+        // ERP_USER_NAME强制输入
+        if (empty($data['erp_manage_name'])) {
+            $return['msg'] = '销售经理ERP用户姓名必填';
+            return $return;
+        }
 
         $time = time();
         $newData['username'] = null;
@@ -965,8 +976,8 @@ class User extends Common
         $newData['pid'] = 0;
         $newData['grade'] = $data['grade'];
         $newData['erp_user_id'] = $data['erp_user_id'];
-//        $newData['erp_manage_id'] = 1;
-//        $newData['erp_manage_name'] = 'hlj';
+        $newData['erp_manage_id'] = $data['erp_manage_id'];
+        $newData['erp_manage_name'] = $data['erp_manage_name'];
 
         $result = $this->save($newData);
         $return['data'] = $this->getLastInsID();
