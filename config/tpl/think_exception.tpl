@@ -410,7 +410,7 @@
     <?php } ?>
 
     <div class="copyright">
-        <a title="官方网站" href="https://www.jihainet.com">河南吉海网络科技有限公司</a>
+        <a title="官方网站" href="https://www.ztes.com">兴软</a>
         <span>{ 致力于为客户创造有价值的产品 }</span>
     </div>
     <?php if(\think\facade\App::isDebug()) { ?>
