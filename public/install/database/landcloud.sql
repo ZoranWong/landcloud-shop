@@ -782,7 +782,7 @@ CREATE TABLE `lc_images` (
   `name` varchar(50) DEFAULT NULL COMMENT '图片名称',
   `url` varchar(255) DEFAULT NULL COMMENT '绝对地址',
   `path` varchar(255) DEFAULT NULL COMMENT '物理地址',
-  `type` enum('web','local') DEFAULT 'local' COMMENT '存储引擎',
+  `type` enum('web','local', 'Aliyun') DEFAULT 'local' COMMENT '存储引擎',
   `ctime` bigint(12) unsigned DEFAULT NULL COMMENT '创建时间',
   `isdel` bigint(12) unsigned DEFAULT NULL COMMENT '删除标志 有数据代表删除',
   PRIMARY KEY (`id`) USING BTREE,

@@ -139,7 +139,7 @@ class Local
      */
     public function getUrl($path)
     {
-        return $path;
+        return getRealUrl($path);
     }
 
     /**

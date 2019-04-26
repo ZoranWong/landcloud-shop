@@ -210,7 +210,7 @@ class User extends Api
             ->find();
         if ($userInfo !== false) {
             if ($userInfo['erp_user_id']) {
-                $balance = LabGicApiService::getUserBalance($userInfo['erp_user_id']);
+                $balance = LabGicApiService::userBalance($userInfo['erp_user_id']);
                 if($balance){
                     $userInfo['balance']  = $balance;
                 }

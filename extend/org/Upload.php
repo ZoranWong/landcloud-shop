@@ -12,6 +12,7 @@ namespace org;
 
 use org\upload\driver\Aliyun;
 
+
 class Upload
 {
     /**
@@ -136,9 +137,11 @@ class Upload
 
     /**
      * 上传文件
-     * @param 文件信息数组 $files ，通常是 $_FILES数组
+     * @param string $path
+     * @param string $files ，通常是 $_FILES数组
+     * @return array|bool
      */
-    public function upload($files = '')
+    public function upload($path = '', $files = '')
     {
         if ('' === $files) {
             $files = $_FILES;
@@ -147,6 +150,8 @@ class Upload
             $this->error = '没有上传的文件！';
             return false;
         }
+        $this->savePath = trim($this->savePath ?:'',  DIRECTORY_SEPARATOR).
+            DIRECTORY_SEPARATOR.trim($path, DIRECTORY_SEPARATOR);
 
         /* 检测上传根目录 */
         if (!$this->uploader->checkRootPath($this->rootPath)) {
@@ -235,6 +240,7 @@ class Upload
             if ($this->uploader->save($file, $this->replace)) {
                 unset($file['error'], $file['tmp_name']);
                 $info[$key] = $file;
+                $this->path = trim($this->savePath, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.trim($savename, DIRECTORY_SEPARATOR);
             } else {
                 $this->error = $this->uploader->getError();
             }
@@ -473,4 +479,7 @@ class Upload
         return $this->uploader->getPrefixFiles($prefix, $count);
     }
 
+    public function getUrl($path){
+        return $this->uploader->getUrl($path);
+    }
 }
