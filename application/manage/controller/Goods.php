@@ -677,15 +677,16 @@ class Goods extends Manage
         $this->assign('open_spec', '0');
         $this->assign('data', $goods['data']);
         $this->assign('products', $goods['data']['products']);
-        $this->assign('tags', $goods['data']['keywords'] ?: '[]');
+        $this->assign('tags', json_encode($goods['data']['keywords'] ?: []));
         if ($goods['data']['spes_desc'] != '') {
             $this->assign('open_spec', '1');
         } else {
             $this->assign('open_spec', '0');
         }
         //类型
-        $goodsTypeModel = new GoodsType();
+//        $goodsTypeModel = new GoodsType();
         $res = $this->getEditSpec($goods['data']['goods_type_id'], $goods['data']);
+//        var_dump($res);exit;
         $this->assign('spec_html', $res['data']);
         $goodsCatModel = new GoodsCat();
         $catids = $goodsCatModel->getCatIdsByLastId($goods['data']['goods_cat_id']);
@@ -965,80 +966,19 @@ class Goods extends Manage
             'msg' => '获取成功',
             'data' => '',
         ];
-        if (!$type_id) {
-            return $result;
-        }
+
+//        if (!$type_id) {
+//            return $result;
+//        }
 
         $spes_desc = unserialize($goods['spes_desc']);
         $this->assign('goods', $goods);
         $goodsTypeModel = new GoodsType();
         $res = $goodsTypeModel->getTypeValue($type_id);
 
-        $html = '';
+//        $html = '';
 
-        if ($res['status'] == true) {
-
-            $this->assign('typeInfo', $res['data']);
-            if (!$res['data']['spec']->isEmpty()) {
-                $spec = [];
-                foreach ($res['data']['spec']->toArray() as $key => $val) {
-                    $spec[$key]['name'] = $val['spec']['name'];
-                    $spec[$key]['specValue'] = $val['spec']['getSpecValue'];
-                    if ($spes_desc) {
-                        foreach ((array)$spec[$key]['specValue'] as $vkey => $vval) {
-                            $spec[$key]['specValue'][$vkey]['isSelected'] = 'false';
-                            foreach ($spes_desc as $gk => $gv) {
-                                foreach ($gv as $v) {
-                                    if ($v == $vval['value']) {
-                                        $spec[$key]['specValue'][$vkey]['isSelected'] = 'true';
-                                    }
-                                }
-
-                            }
-
-                        }
-                    }
-
-                }
-                $this->assign('spec', $spec);
-            }
-            if ($res['data']['spec']->isEmpty()) {
-                $this->assign('canOpenSpec', 'false');
-            } else {
-                $this->assign('canOpenSpec', 'true');
-            }
-
-            //获取参数信息
-            $goodsTypeParamsModel = new GoodsTypeParams();
-            $typeParams = $goodsTypeParamsModel->getRelParams($type_id);
-            $this->assign('typeParams', $typeParams);
-            //解析参数信息
-            $params = [];
-            if ($goods['params']) {
-                $params = unserialize($goods['params']);
-            }
-            $this->assign('goodsParams', $params);
-            $items = [];
-            if ($spes_desc) {
-                $specValue = [];
-                $total = count($spes_desc);
-                foreach ($spes_desc as $key => $val) {
-                    $this->spec[] = $key;
-                }
-                $items = $this->getSkuItem($spes_desc, -1);
-                //循环货品
-                foreach ($goods['products'] as $product) {
-                    foreach ($items as $key => $ispec) {
-                        if ($ispec['spec_name'] == $product['spes_desc']) {
-                            $items[$key] = array_merge((array)$ispec, (array)$product);
-                            $items[$key]['product_id'] = $product['id'];
-                        }
-                    }
-                }
-            } else {
-                $this->assign('product', $goods['products'][0]);
-            }
-            $this->assign('items', $items);
+        if (true) {
             $this->assignPriceLevels($goods['id']);
             $this->assignRelationGoods($goods['id']);
             $this->assign('goodsId', $goods['id']);
