@@ -53,7 +53,8 @@
         width: 190px;;
     }
 </style>
-<form onkeydown="if(event.keyCode==13)return false;" class="layui-form seller-alone-form" action="{:url('goods/doAdd')}" method="post" lay-filter="goodsForm">
+<form onkeydown="if(event.keyCode==13)return false;" class="layui-form seller-alone-form" action="{:url('goods/doAdd')}"
+      method="post" lay-filter="goodsForm">
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>基础信息</legend>
     </fieldset>
@@ -67,26 +68,32 @@
     </div>
 
     <!--<div class="layui-form-item">-->
-        <!--<label class="layui-form-label"><i class="required-color">*</i>商品类型：</label>-->
-        <!--<div class="layui-input-inline" id="goods_type_view">-->
-            <!--<select name="goods_type_id" id="goods_type_id" required lay-verify="required" lay-filter="goods_type_id">-->
-                <!--<option value="">请选择类型</option>-->
-                <!--{if condition="count($typeList)>0"}-->
-                <!--{volist name="typeList" id="vo"}-->
-                <!--<option value="{$vo.id}">{$vo.name}</option>-->
-                <!--{/volist}-->
-                <!--{/if}-->
-            <!--</select>-->
-        <!--</div>-->
-        <!--<div class="layui-form-mid layui-word-aux">-->
-            <!--<a href="javascript:void(0);" class="add-type">添加类型</a>-->
-        <!--</div>-->
+    <!--<label class="layui-form-label"><i class="required-color">*</i>商品类型：</label>-->
+    <!--<div class="layui-input-inline" id="goods_type_view">-->
+    <!--<select name="goods_type_id" id="goods_type_id" required lay-verify="required" lay-filter="goods_type_id">-->
+    <!--<option value="">请选择类型</option>-->
+    <!--{if condition="count($typeList)>0"}-->
+    <!--{volist name="typeList" id="vo"}-->
+    <!--<option value="{$vo.id}">{$vo.name}</option>-->
+    <!--{/volist}-->
+    <!--{/if}-->
+    <!--</select>-->
+    <!--</div>-->
+    <!--<div class="layui-form-mid layui-word-aux">-->
+    <!--<a href="javascript:void(0);" class="add-type">添加类型</a>-->
+    <!--</div>-->
     <!--</div>-->
     <div class="layui-form-item">
         <label class="layui-form-label"><i class="required-color">*</i>商品名称：</label>
         <div class="layui-input-block">
             <input type="text" name="goods[name]" required lay-verify="required" autocomplete="off"
                    placeholder="请输入商品名称，最多可输入200个汉字" class="layui-input ">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品英文名称：</label>
+        <div class="layui-input-block">
+            <input type="text" name="goods[en_name]" autocomplete="off" placeholder="请输入商品英文名称" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -133,7 +140,6 @@
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label"><i class="required-color">*</i>商品图片：</label>
-
         <div class="layui-upload" id="imgs">
             <button type="button" class="layui-btn" id="goods_img" lay-filter="goods_img" onclick="upImage()">上传图片
             </button>
@@ -142,9 +148,8 @@
                 <div class="layui-upload-list" id="img_preview"></div>
             </blockquote>
         </div>
-
-
     </div>
+
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>销售信息</legend>
     </fieldset>
@@ -165,6 +170,19 @@
             <label class="layui-form-label">市场价：</label>
             <div class="layui-input-inline">
                 <input type="text" name="goods[mktprice]" placeholder="￥" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">优惠价：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="goods[preferential_price]" placeholder="￥" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">促销价：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="goods[promotion_price]" placeholder="￥" autocomplete="off" class="layui-input">
             </div>
         </div>
 
@@ -212,6 +230,27 @@
         <label class="layui-form-label">重量：</label>
         <div class="layui-input-inline">
             <input type="text" name="goods[weight]" lay-verify="title" autocomplete="off" placeholder="请输入商品重量，单位（克）"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">长度：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="goods[length]" lay-verify="title" autocomplete="off" placeholder="请输入商品长度，单位(毫米)"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">宽度：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="goods[width]" lay-verify="title" autocomplete="off" placeholder="请输入商品宽度，单位(毫米)"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">高度：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="goods[height]" lay-verify="title" autocomplete="off" placeholder="请输入商品高度，单位(毫米)"
                    class="layui-input">
         </div>
     </div>
