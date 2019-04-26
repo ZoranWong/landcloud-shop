@@ -6,7 +6,7 @@
 
 return [
     //用户
-    'user'    => [
+    'user' => [
         'code' => 'User',
         'method' => [
             'login' => [
@@ -277,9 +277,9 @@ return [
     'coupon' => [
         'code' => 'Coupon',
         'method' => [
-            'couponlist' =>[
-               'code' => 'couponList',
-               'is_login' => false
+            'couponlist' => [
+                'code' => 'couponList',
+                'is_login' => false
             ],
             'coupondetail' => [
                 'code' => 'couponDetail',
@@ -307,13 +307,31 @@ return [
                 'code' => 'noticeList',
                 'is_login' => false
             ],
-            'noticeType' =>[
+            'noticeType' => [
                 'code' => 'noticeType',
                 'is_login' => false
             ],
             'noticeInfo' => [
                 'code' => 'noticeInfo',
                 'is_login' => false
+            ]
+        ]
+    ],
+    // 工单
+    'workOrder' => [
+        'code' => 'WorkOrder',
+        'method' => [
+            'workOrderList' => [
+                'code' => 'workOrderList',
+                'is_login' => true
+            ],
+            'initWorkOrder' => [
+                'code' => 'initWorkOrder',
+                'is_login' => true
+            ],
+            'workOrderDetail' => [
+                'code' => 'workOrderDetail',
+                'is_login' => true
             ]
         ]
     ],
@@ -412,7 +430,7 @@ return [
                 'code' => 'aftersalesList',
                 'is_login' => true
             ],
-            'aftersalesinfo'=> [
+            'aftersalesinfo' => [
                 'code' => 'aftersalesInfo',
                 'is_login' => true,
             ],
@@ -514,7 +532,7 @@ return [
     //商户门店列表
     'store' => [
         'code' => 'Store',
-        'method'    =>  [
+        'method' => [
             'getdefaultstore' => [
                 'code' => 'getDefaultStore',
                 'is_login' => false
@@ -561,14 +579,14 @@ return [
     //团购&秒杀
     'group' => [
         'code' => 'Group',
-        'method'    =>  [
+        'method' => [
             'getlist' => [
                 'code' => 'getList',
                 'is_login' => false
             ],
-            'getgoodsdetial'=>[
-                'code'=>'getGoodsDetial',
-                'is_login'=>false
+            'getgoodsdetial' => [
+                'code' => 'getGoodsDetial',
+                'is_login' => false
             ]
         ]
     ],
@@ -585,15 +603,15 @@ return [
     ],
 
     // 表单
-    'form'=>[
-        'code'=>'Form',
-        'method'=>[
-            'getformdetial'=>[
-                'code'=>'getFormDetial',
+    'form' => [
+        'code' => 'Form',
+        'method' => [
+            'getformdetial' => [
+                'code' => 'getFormDetial',
                 'is_login' => false
             ],
-            'addsubmit'=>[
-                'code'=>'addSubmit',
+            'addsubmit' => [
+                'code' => 'addSubmit',
                 'is_login' => false
             ],
 

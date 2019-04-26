@@ -131,10 +131,9 @@ class Operation extends Common
         //根据菜单取菜单on的样式
         $onMenu = [];//$this->getMenuNode($parent_menu_id, $controllerName, $actionName);       采用iframe架构后，不需要有菜单on的状态了，故此这里先注释掉。
 
-//        if(cache('?manage_operation_'.$manage_id)){
-//            $list = cache('manage_operation_'.$manage_id);
-//            //var_dump($list);exit();
-//        }else{
+        if (cache('?manage_operation_' . $manage_id)) {
+            $list = cache('manage_operation_' . $manage_id);
+        } else {
             $manageModel = new Manage();
             $manageRoleRel = new ManageRoleRel();
 
@@ -170,7 +169,7 @@ class Operation extends Common
             //存储
             cache('manage_operation_'.$manage_id,$list,3600);
 
-//        }
+        }
 
         $re = $this->createTree($list,$parent_menu_id,"parent_menu_id",$onMenu);        //构建菜单树
 
