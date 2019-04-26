@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'default_image' => 'https://b2c.jihainet.com/static/images/default.png',
+    'default_image' => 'http://lan.ztes.com/static/images/default.png',
     'upload_path' => ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'uploads',
     //上传文件限制5M
     'upload_filesize' => 5242880,
