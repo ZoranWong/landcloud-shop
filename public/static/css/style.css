@@ -93,7 +93,7 @@
 }
 */
 .seller-form,.layui-table-box, .layui-table-view,.seller-alone-form{
-	background-color: #fff;	
+    background-color: #fff;
 }
 .seller-form{
 	padding: 10px 10px 0 10px;
@@ -191,8 +191,8 @@
 	padding: 8px 13px;
 }
 .warning-msg{
-	
-}	
+
+}
 .warning-msg-content{
 	background-color: #FFFFCC;
 	border: 1px solid #FFFF33;
@@ -403,7 +403,7 @@
     background-color: #FF7159 !important;
 }
 .layui-btn{
-    /*background-color: #FF7159 !important;*/
+    background-color: #FF7159 !important;
 }
 .layui-laypage .layui-laypage-curr .layui-laypage-em{
     background-color: #FF7159 !important;
