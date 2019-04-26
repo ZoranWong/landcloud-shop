@@ -144,8 +144,9 @@ class User extends Common
 
 
         //判断是否是用户名登陆
-        $userInfo = $this->where(array('username|mobile' => $data['mobile'], 'password' => $this->enPassword($data['password'], $userInfo->ctime)))->find();
-        if ($userInfo) {
+//        $userInfo = $this->where(array('username|mobile' => $data['mobile'], 'password' => $this->enPassword($data['password'], $userInfo->ctime)))->find();
+        $userInfo = $this->where(array('username|mobile' => $data['mobile']))->find();
+        if ($userInfo && $data['password'] === decrypt($userInfo->password)) {
             $result = $this->setSession($userInfo, $loginType, $platform);            //根据登陆类型，去存session，或者是返回user_token
         } else {
             //写失败次数到session里
