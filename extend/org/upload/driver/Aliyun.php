@@ -117,6 +117,12 @@ class Aliyun
         return $this->error;
     }
 
+    /**
+     * @param string $prefix
+     * @param int $maxKeys
+     * @return array
+     * @throws OssException
+     */
     public function getPrefixFiles(string $prefix, int $maxKeys = 20)
     {
         $options = array(

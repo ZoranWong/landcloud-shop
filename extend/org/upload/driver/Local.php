@@ -114,6 +114,33 @@ class Local
         }
     }
 
+    public function getPrefixFiles(string $prefix, int $maxKeys = 20)
+    {
+        $options = array(
+            'prefix' => $prefix,
+            'max-keys' => $maxKeys,
+        );
+        $list = dir($prefix);
+//        $list = $list->getObjectList();
+        $paths = [];
+        while(($item = $list->read())) {
+            $paths[] = trim($prefix, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.trim($item, DIRECTORY_SEPARATOR);
+        }
+        return $paths;
+    }
+
+    /**
+     * Get resource url.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function getUrl($path)
+    {
+        return $path;
+    }
+
     /**
      * 获取最后一次上传错误信息
      * @return string 错误信息

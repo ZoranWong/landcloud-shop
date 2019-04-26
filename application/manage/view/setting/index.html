@@ -533,17 +533,17 @@
                         </div>
                         <div class="layui-form-mid layui-word-aux">图片保存方式</div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">绑定域名：</label>
-                        <div class="layui-input-inline seller-inline-5">
-                            <input type="text" name="image_storage_params[domain]"
-                                   value="{if $data['image_storage_params']['value']}{$data['image_storage_params']['value']['domain']}{/if}"
-                                   lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
-                        </div>
-                        <div class="layui-form-mid layui-word-aux">
-                            图片分离时使用，使用阿里云OSS时也尽量绑定域名，例如：https://image.jihainet.com
-                        </div>
-                    </div>
+                    <!--<div class="layui-form-item">-->
+                        <!--<label class="layui-form-label">绑定域名：</label>-->
+                        <!--<div class="layui-input-inline seller-inline-5">-->
+                            <!--<input type="text" name="image_storage_params[domain]"-->
+                                   <!--value="{if $data['image_storage_params']['value']}{$data['image_storage_params']['value']['domain']}{/if}"-->
+                                   <!--lay-verify="title" autocomplete="off" placeholder="" class="layui-input">-->
+                        <!--</div>-->
+                        <!--<div class="layui-form-mid layui-word-aux">-->
+                            <!--图片分离时使用，使用阿里云OSS时也尽量绑定域名，例如：https://image.jihainet.com-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="image_storage_type ">
                         <div class="item Aliyun" {if condition="$data['image_storage_type']['value'] eq 'Aliyun' " }
                              style="display: block" {
