@@ -150,6 +150,7 @@ class Upload
             $this->error = '没有上传的文件！';
             return false;
         }
+
         $this->savePath = trim($this->savePath ?:'',  DIRECTORY_SEPARATOR).
             DIRECTORY_SEPARATOR.trim($path, DIRECTORY_SEPARATOR);
 
