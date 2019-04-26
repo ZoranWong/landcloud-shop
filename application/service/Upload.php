@@ -82,7 +82,7 @@ class Upload extends OUpload
     public static function __callStatic($name, $arguments)
     {
         // TODO: Implement __callStatic() method.
-        if(!self::instance){
+        if(!self::$instance){
             self::$instance = new static();
         }
 
@@ -94,6 +94,9 @@ class Upload extends OUpload
      */
     public static function getInstance(): Upload
     {
+        if(!self::$instance){
+            self::$instance = new static();
+        }
         return self::$instance;
     }
 

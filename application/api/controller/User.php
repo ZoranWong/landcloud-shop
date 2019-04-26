@@ -1,5 +1,7 @@
 <?php
+
 namespace app\api\controller;
+
 use app\common\controller\Api;
 use app\common\model\Area;
 use app\common\model\Balance;
@@ -15,6 +17,7 @@ use app\common\model\GoodsBrowsing;
 use app\common\model\GoodsCollection;
 use app\common\model\UserWx;
 use app\common\model\BillPayments;
+use app\service\LabGicApiService;
 use org\Curl;
 use think\facade\Cache;
 use think\facade\Request;
@@ -28,10 +31,10 @@ class User extends Api
      */
     public function login()
     {
-        $platform = input('param.platform',1);
+        $platform = input('param.platform', 1);
         $userModel = new UserModel();
         $data = input('param.');
-        return $userModel->toLogin($data, 2,$platform);
+        return $userModel->toLogin($data, 2, $platform);
     }
 
 
@@ -47,10 +50,10 @@ class User extends Api
      */
     public function smsLogin()
     {
-        $platform = input('param.platform',1);
+        $platform = input('param.platform', 1);
         $userModel = new UserModel();
         $data = input('param.');
-        return $userModel->smsLogin($data, 2,$platform);
+        return $userModel->smsLogin($data, 2, $platform);
     }
 
 
@@ -66,7 +69,7 @@ class User extends Api
             'msg' => ''
         ];
 
-        if(!input("?param.code")){
+        if (!input("?param.code")) {
             $result['msg'] = 'code参数缺失';
             return $result;
         }
@@ -87,41 +90,37 @@ class User extends Api
             'msg' => ''
         ];
 
-        if(!input("?param.open_id"))
-        {
+        if (!input("?param.open_id")) {
             $result['msg'] = 'open_id';
             return $result;
         }
-        if(!input("?param.iv"))
-        {
+        if (!input("?param.iv")) {
             $result['msg'] = 'iv参数缺失';
             return $result;
         }
-        if(!input("?param.edata"))
-        {
+        if (!input("?param.edata")) {
             //加密的encryptedData数据，这是个加密的字符串
             $result['msg'] = '加密参数缺失';
             return $result;
         }
         //$pid = input('param.pid',0);
         $userWxModel = new UserWx();
-        $re = $userWxModel->updateWxInfo(input('param.open_id'),input('param.edata'),input('param.iv'));
+        $re = $userWxModel->updateWxInfo(input('param.open_id'), input('param.edata'), input('param.iv'));
 
-        if(!$re['status'])
-        {
+        if (!$re['status']) {
             return $re;
         }
-        if($re['data']['user_id'] == 0){
+        if ($re['data']['user_id'] == 0) {
             //未绑定用户，需要先绑定手机号码
             $result['status'] = true;
             $result['data'] = ['user_wx_id' => $re['data']['id']];
             return $result;
-        }else{
+        } else {
             //绑定好手机号码了，去登陆,去取user_token
             $userTokenModel = new UserToken();
-            $re = $userTokenModel->setToken($re['data']['user_id'],2);
-            if($re['status']){
-                $re['data'] = ['token'=>$re['data']];
+            $re = $userTokenModel->setToken($re['data']['user_id'], 2);
+            if ($re['status']) {
+                $re['data'] = ['token' => $re['data']];
             }
             return $re;
         }
@@ -140,23 +139,21 @@ class User extends Api
             'msg' => '成功'
         ];
         $userModel = new UserModel();
-        if(!input("?param.mobile"))
-        {
+        if (!input("?param.mobile")) {
             $result['msg'] = '请输入手机号码';
             return $result;
         }
         //code的值可以为loign，reg，veri
-        if(!input("?param.code"))
-        {
+        if (!input("?param.code")) {
             $result['msg'] = '缺少核心参数';
             return $result;
         }
         $code = input('param.code');
         $type = input('param.type');
-        if($type == 'bind'){ //绑定会员，这个if迟早要拿掉，绑定的话，也发送login状态就行
+        if ($type == 'bind') { //绑定会员，这个if迟早要拿掉，绑定的话，也发送login状态就行
             $code = 'login';
         }
-        return $userModel->sms(input('param.mobile'),$code);
+        return $userModel->sms(input('param.mobile'), $code);
     }
 
 
@@ -171,8 +168,7 @@ class User extends Api
             'data' => [],
             'msg' => ''
         ];
-        if(!input("?param.token"))
-        {
+        if (!input("?param.token")) {
             $result['msg'] = '请输入token';
             return $result;
         }
@@ -189,7 +185,7 @@ class User extends Api
     {
         $userModel = new UserModel();
         $data = input('post.');
-        return $userModel->smsLogin($data,2);
+        return $userModel->smsLogin($data, 2);
     }
 
 
@@ -209,16 +205,19 @@ class User extends Api
         ];
         $userModel = new UserModel();
         $userInfo = $userModel
-            ->field('id,username,mobile,sex,birthday,avatar,nickname,balance,point,status')
-            ->where(array('id'=>$this->userId))
+            ->field('id,username,mobile,sex,birthday,avatar,nickname,balance,point,status, erp_user_id')
+            ->where(array('id' => $this->userId))
             ->find();
-        if($userInfo !== false)
-        {
+        if ($userInfo !== false) {
+            if ($userInfo['erp_user_id']) {
+                $balance = LabGicApiService::getUserBalance($userInfo['erp_user_id']);
+                if($balance){
+                    $userInfo['balance']  = $balance;
+                }
+            }
             $result['data'] = $userInfo;
             $result['status'] = true;
-        }
-        else
-        {
+        } else {
             $result['msg'] = '未找到此用户';
         }
         return $result;
@@ -236,13 +235,11 @@ class User extends Api
             'data' => input('param.'),
             'msg' => '保存失败'
         ];
-        if(!input("?param.avatar"))
-        {
+        if (!input("?param.avatar")) {
             return error_code(11003);
         }
         $userModel = new UserModel();
-        if($userModel->changeAvatar($this->userId,input('param.avatar')))
-        {
+        if ($userModel->changeAvatar($this->userId, input('param.avatar'))) {
             $result['status'] = true;
             $result['data']['avatar'] = input('param.avatar');
             $result['msg'] = '保存成功';
@@ -257,11 +254,11 @@ class User extends Api
      */
     public function editInfo()
     {
-        $sex = input('param.sex','');
-        $birthday = input('param.birthday','');
-        $nickname = input('param.nickname','');
+        $sex = input('param.sex', '');
+        $birthday = input('param.birthday', '');
+        $nickname = input('param.nickname', '');
         $userModel = new UserModel();
-        return $userModel->editInfo($this->userId,$sex,$birthday,$nickname);
+        return $userModel->editInfo($this->userId, $sex, $birthday, $nickname);
     }
 
 
@@ -276,8 +273,7 @@ class User extends Api
             'data' => [],
             'msg' => ''
         ];
-        if(!input("?param.goods_id"))
-        {
+        if (!input("?param.goods_id")) {
             $result['msg'] = '请输入goods_id';
             return $result;
         }
@@ -300,13 +296,12 @@ class User extends Api
             'data' => [],
             'msg' => ''
         ];
-        if(!input("?param.goods_ids"))
-        {
+        if (!input("?param.goods_ids")) {
             $result['msg'] = '请输入ids';
             return $result;
         }
         $goodsBrowsingModel = new GoodsBrowsing();
-        return $goodsBrowsingModel->toDel($this->userId,input("param.goods_ids"));
+        return $goodsBrowsingModel->toDel($this->userId, input("param.goods_ids"));
     }
 
 
@@ -319,24 +314,18 @@ class User extends Api
      */
     public function goodsBrowsing()
     {
-        if(input("?param.limit"))
-        {
+        if (input("?param.limit")) {
             $limit = input("param.limit");
-        }
-        else
-        {
+        } else {
             $limit = config('jshop.page_limit');
         }
-        if(input("?param.page"))
-        {
+        if (input("?param.page")) {
             $page = input("param.page");
-        }
-        else
-        {
+        } else {
             $page = 1;
         }
         $goodsBrowsingModel = new GoodsBrowsing();
-        return $goodsBrowsingModel->getList($this->userId, $page , $limit);
+        return $goodsBrowsingModel->getList($this->userId, $page, $limit);
     }
 
 
@@ -354,8 +343,7 @@ class User extends Api
             'data' => [],
             'msg' => ''
         ];
-        if(!input("?param.goods_id"))
-        {
+        if (!input("?param.goods_id")) {
             $result['msg'] = '请输入goods_id';
             return $result;
         }
@@ -373,24 +361,18 @@ class User extends Api
      */
     public function goodsCollectionList()
     {
-        if(input("?param.limit"))
-        {
+        if (input("?param.limit")) {
             $limit = input("param.limit");
-        }
-        else
-        {
+        } else {
             $limit = config('jshop.page_limit');
         }
-        if(input("?param.page"))
-        {
+        if (input("?param.page")) {
             $page = input("param.page");
-        }
-        else
-        {
+        } else {
             $page = 1;
         }
         $goodsCollectionModel = new GoodsCollection();
-        return $goodsCollectionModel->getList($this->userId,$page , $limit);
+        return $goodsCollectionModel->getList($this->userId, $page, $limit);
     }
 
 
@@ -421,16 +403,13 @@ class User extends Api
         //存储收货地址
         $model = new UserShip();
         $result = $model->saveShip($data);
-        if($result !== false)
-        {
+        if ($result !== false) {
             $return_data = array(
                 'status' => true,
                 'msg' => '存储收货地址成功',
                 'data' => $result
             );
-        }
-        else
-        {
+        } else {
             $return_data = array(
                 'status' => false,
                 'msg' => '存储收货地址失败',
@@ -458,16 +437,13 @@ class User extends Api
         $data['is_def'] = input('param.is_def');
         $model = new UserShip();
         $result = $model->vueSaveShip($data);
-        if($result)
-        {
+        if ($result) {
             $return_data = [
                 'status' => true,
                 'msg' => '存储收货地址成功',
                 'data' => $result
             ];
-        }
-        else
-        {
+        } else {
             $return_data = [
                 'status' => false,
                 'msg' => '存储收货地址失败',
@@ -489,18 +465,15 @@ class User extends Api
     {
         $id = input('param.id');
         $model = new UserShip();
-        $result = $model->getShipById($id,$this->userId);
-        if($result)
-        {
+        $result = $model->getShipById($id, $this->userId);
+        if ($result) {
             $result['area_name'] = get_area($result['area_id']);
             $res = [
                 'status' => true,
                 'msg' => '获取成功',
                 'data' => $result
             ];
-        }
-        else
-        {
+        } else {
             $res = [
                 'status' => false,
                 'msg' => '该收货地址不存在',
@@ -529,16 +502,13 @@ class User extends Api
 
         $model = new UserShip();
         $result = $model->editShip($data, $this->userId);
-        if($result)
-        {
+        if ($result) {
             $res = [
                 'status' => true,
                 'msg' => '保存成功',
                 'data' => ''
             ];
-        }
-        else
-        {
+        } else {
             $res = [
                 'status' => false,
                 'msg' => '保存失败',
@@ -559,8 +529,7 @@ class User extends Api
      */
     public function removeShip()
     {
-        if(!input('param.id'))
-        {
+        if (!input('param.id')) {
             return error_code(10051);
         }
         $model = new UserShip();
@@ -578,12 +547,11 @@ class User extends Api
      */
     public function setDefShip()
     {
-        if(!input('param.id'))
-        {
+        if (!input('param.id')) {
             return error_code(10051);
         }
         $model = new UserShip();
-        return $model->setDefaultShip(input('param.id'),$this->userId);
+        return $model->setDefaultShip(input('param.id'), $this->userId);
     }
 
 
@@ -599,16 +567,13 @@ class User extends Api
         $user_id = $this->userId;
         $model = new UserShip();
         $list = $model->getUserShip($user_id);
-        if($list)
-        {
+        if ($list) {
             $return_data = array(
                 'status' => true,
                 'msg' => '获取用户收货地址成功',
                 'data' => $list
             );
-        }
-        else
-        {
+        } else {
             $return_data = array(
                 'status' => true,
                 'msg' => '用户暂无收货地址',
@@ -645,16 +610,13 @@ class User extends Api
         $postal_code = input('postal_code');
         $model = new Area();
         $area_id = $model->getThreeAreaId($county_name, $city_name, $province_name, $postal_code);
-        if($area_id)
-        {
+        if ($area_id) {
             $res = [
                 'status' => true,
                 'msg' => '获取成功',
                 'data' => $area_id
             ];
-        }
-        else
-        {
+        } else {
             $res = [
                 'status' => false,
                 'msg' => '获取失败',
@@ -671,33 +633,27 @@ class User extends Api
      */
     public function pay()
     {
-        if(!input("?param.ids"))
-        {
+        if (!input("?param.ids")) {
             return error_code(13100);
         }
-        if(!input("?param.payment_code"))
-        {
+        if (!input("?param.payment_code")) {
             return error_code(10055);
         }
-        if(!input("?param.payment_type"))
-        {
+        if (!input("?param.payment_type")) {
             return error_code(10051);
         }
 
         //支付的时候，有一些特殊的参数需要传递到支付里面，这里就是干这个事情的,key=>value格式的一维数组
         $data = input('param.');
-        if(!isset($data['params']))
-        {
+        if (!isset($data['params'])) {
             $params = [];
-        }
-        else
-        {
+        } else {
             $params = $data['params'];
         }
 
         $billPaymentsModel = new BillPayments();
         //生成支付单,并发起支付
-        return $billPaymentsModel->pay(input('param.ids'),input('param.payment_code'),$this->userId,input('param.payment_type'),$params);
+        return $billPaymentsModel->pay(input('param.ids'), input('param.payment_code'), $this->userId, input('param.payment_type'), $params);
     }
 
 
@@ -710,13 +666,11 @@ class User extends Api
      */
     public function orderEvaluate()
     {
-        if(!input('items/a'))
-        {
+        if (!input('items/a')) {
             //缺少评价商品信息
             return error_code(13400);
         }
-        if(!input('order_id'))
-        {
+        if (!input('order_id')) {
             //没有order_id
             return error_code(13401);
         }
@@ -811,7 +765,6 @@ class User extends Api
         $userModel = new UserModel();
         return $userModel->getUserPoint($user_id, $order_money);
     }
-
 
 
     /**
@@ -1056,7 +1009,8 @@ class User extends Api
      * 获取信任登录内容，标题，图标，名称，跳转地址
      * @return array
      */
-    public function getTrustLogin(){
+    public function getTrustLogin()
+    {
         $data = [
             'status' => true,
             'msg' => '获取成功',
@@ -1064,22 +1018,20 @@ class User extends Api
         ];
         #$jshopHost = Container::get('request')->domain();
         #$jshopHost = 'http://b2c.jihainet.com';
-        $url = input('url/s','');//前台地址
-        $uuid = input('uuid/s','');//前台用户信息，记录是同一个用户
-        if(!$url){
+        $url = input('url/s', '');//前台地址
+        $uuid = input('uuid/s', '');//前台用户信息，记录是同一个用户
+        if (!$url) {
             $url = Container::get('request')->domain();
         }
-        $params['url'] = $url.'/wap/index.html#/author';
+        $params['url'] = $url . '/wap/index.html#/author';
         $params['uuid'] = $uuid;
-        if(!$params['url']||!$uuid)
-        {
+        if (!$params['url'] || !$uuid) {
             $data['status'] = false;
             $data['msg'] = '获取失败';
             return $data;
         }
-        if(checkAddons('trustlogin'))
-        {
-            $data['data'] = Hook('trustlogin',$params);
+        if (checkAddons('trustlogin')) {
+            $data['data'] = Hook('trustlogin', $params);
         }
         return $data;
     }
@@ -1102,49 +1054,41 @@ class User extends Api
         $params['code'] = input('code');
         $params['type'] = input('type');
         $params['state'] = input('state');
-        $params['uuid'] = input('uuid/s','');
-        if(!$params['code'] || !$params['type'] ||! $params['state'])
-        {
+        $params['uuid'] = input('uuid/s', '');
+        if (!$params['code'] || !$params['type'] || !$params['state']) {
             $returnData['msg'] = '关键参数丢失';
             return $returnData;
         }
         $data = [];
         //此处钩子只能取第一个插件的返回值
-        if(checkAddons('trustcallback'))
-        {
+        if (checkAddons('trustcallback')) {
             $data = Hook('trustcallback', $params);
         }
 
-        if(isset($data[0]['status']) && !$data[0]['status'])
-        {
+        if (isset($data[0]['status']) && !$data[0]['status']) {
             return $returnData;
         }
 
         $user = $data[0]['data'];
         $userWxModel = new UserWx();
-        if(isset($user['unionId']) && $user['unionId'])
-        {
+        if (isset($user['unionId']) && $user['unionId']) {
             //有这个unionid的时候，用这个判断
             $where['unionid'] = $user['unionId'];
-        }
-        elseif(isset($user['openid']) && $user['openid'])
-        {
+        } elseif (isset($user['openid']) && $user['openid']) {
             //有这个openid的时候，先用unionid，再用这个判断
             $where['openid'] = $user['openid'];
         }
         $wxInfo = $userWxModel->where($where)->find();
-        if($wxInfo)
-        {
+        if ($wxInfo) {
             //存在第三方账号，检查是否存在会员，存在的话，直接登录，不存在则绑定手机号
-            if($wxInfo['user_id'])
-            {
+            if ($wxInfo['user_id']) {
                 $where['type'] = $userWxModel::TYPE_OFFICIAL;
-                $h5WxInfo      = $userWxModel->where($where)->find();
+                $h5WxInfo = $userWxModel->where($where)->find();
                 if (!$h5WxInfo) {
                     //插入公众号授权信息
                     $user['user_id'] = $wxInfo['user_id'];
-                    $user['type']    = $userWxModel::TYPE_OFFICIAL;
-                    $res             = $userWxModel->toAddWx($user);
+                    $user['type'] = $userWxModel::TYPE_OFFICIAL;
+                    $res = $userWxModel->toAddWx($user);
                     if (!$res['status']) {
                         $returnData['msg'] = $res['msg'];
                         return $returnData;
@@ -1152,17 +1096,14 @@ class User extends Api
                 }
                 //直接登录
                 $userModel = new UserModel();
-                $userInfo = $userModel->where(array('id'=>$wxInfo['user_id']))->find();
-                if(!$userInfo)
-                {
+                $userInfo = $userModel->where(array('id' => $wxInfo['user_id']))->find();
+                if (!$userInfo) {
                     $result['msg'] = '没有找到此账号';
                     return $result;
                 }
-                return $userModel->setSession($userInfo,2,1);
-            }
-            else
-            {
-                Cache::set('user_wx_'.$params['uuid'],json_encode($wxInfo));
+                return $userModel->setSession($userInfo, 2, 1);
+            } else {
+                Cache::set('user_wx_' . $params['uuid'], json_encode($wxInfo));
                 $returnData['msg'] = '请绑定手机号';
                 $returnData['status'] = true;
                 $returnData['data'] = [
@@ -1170,17 +1111,14 @@ class User extends Api
                 ];
                 return $returnData;
             }
-        }
-        else
-        {
+        } else {
             //不存在第三方账号,先插入第三方账号，然后跳转绑定手机号页面
             $res = $userWxModel->toAddWx($user);
-            if(!$res['status'])
-            {
+            if (!$res['status']) {
                 $returnData['msg'] = $res['msg'];
                 return $returnData;
             }
-            Cache::set('user_wx_'.$params['uuid'],json_encode($res['data']));
+            Cache::set('user_wx_' . $params['uuid'], json_encode($res['data']));
 
             $returnData['msg'] = '保存成功，请绑定手机号';
             $returnData['status'] = true;
@@ -1265,15 +1203,13 @@ class User extends Api
         $return['data']['money'] = 0;
         $balanceModel = new Balance();
         $balance = $balanceModel->getInviteCommission($this->userId);
-        if($balance['status'])
-        {
+        if ($balance['status']) {
             $return['data']['money'] = $balance['data'];
         }
         //是否有上级
         $userInfo = $userModel->get($this->userId);
         $is_superior = false;
-        if($userInfo['pid'] && $userInfo['pid'] != 0)
-        {
+        if ($userInfo['pid'] && $userInfo['pid'] != 0) {
             $is_superior = true;
         }
         $return['data']['is_superior'] = $is_superior;
@@ -1323,12 +1259,13 @@ class User extends Api
             'data' => []
         ];
         $area = config('jshop.area_list');
-        if(!file_exists($area)){
+        if (!file_exists($area)) {
             $return['status'] = false;
             $return['msg'] = '地址库不存在，请重新生成';
             return $return;
         }
         $data = file_get_contents($area);
-        echo $data;exit();
+        echo $data;
+        exit();
     }
 }

@@ -27,6 +27,20 @@ class LabGicApiService
         $this->http = new Client();
     }
 
+    public static function getInstance()
+    {
+        if(!self::$instance){
+            self::$instance = new static();
+        }
+        return self::$instance;
+    }
+
+    public static function __callStatic($name, $arguments)
+    {
+        // TODO: Implement __callStatic() method.
+        return call_user_func([self::getInstance(), $name], $arguments);
+    }
+
     public function getUserBalance($id)
     {
         $method = '/api/api/GetCurrCreditSP';

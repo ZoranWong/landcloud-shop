@@ -61,6 +61,7 @@ class Upload
      */
     private $uploader;
 
+    protected $exts = [];
     /**
      * 构造方法，用于构造上传实例
      * @param array $config 配置
@@ -82,10 +83,7 @@ class Upload
             $this->config['mimes'] = array_map('strtolower', $this->mimes);
         }
         if (!empty($this->config['exts'])) {
-            if (is_string($this->exts)) {
-                $this->config['exts'] = explode(',', $this->exts);
-            }
-            $this->config['exts'] = array_map('strtolower', $this->exts);
+            $this->exts = array_map('strtolower', $this->config['exts']);
         }
     }
 
