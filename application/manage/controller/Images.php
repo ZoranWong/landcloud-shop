@@ -40,8 +40,6 @@ class Images extends Manage
                 'extensions' => 'jpg,jpeg,png,gif,bmp4'
             ],
         ];
-
-        $image_extensions = explode(',', 'jpg,jpeg,png,gif,bmp4');
         if (Request::isPost()) {
             $all_allowed_exts = array();
             foreach ($filetypes as $mfiletype) {

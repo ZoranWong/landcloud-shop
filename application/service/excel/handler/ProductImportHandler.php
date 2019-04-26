@@ -9,6 +9,7 @@ use app\common\model\GoodsImages as GoodsImagesModel;
 use app\common\model\Images as ImagesModel;
 use app\common\validate\Goods as GoodsValidator;
 use app\service\excel\BaseHandler;
+use app\service\Upload;
 use think\facade\Log;
 
 class ProductImportHandler extends BaseHandler
@@ -19,6 +20,14 @@ class ProductImportHandler extends BaseHandler
         return Goods::class;
     }
 
+    /**
+     * @param array $importData
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
     public function parseToModel(array $importData)
     {
         $message = [];
@@ -40,9 +49,14 @@ class ProductImportHandler extends BaseHandler
             $goods['bn'] = $record['bn'];
             $goods['brief'] = $record['brief'];
             $paths = [];
-//            if (!empty($record['image_url_prefix'])) {
-//                $paths = $upload->getPrefixFiles($record['image_url_prefix']);
-//            }
+            if (!empty($record['image_url_prefix'])) {
+                $paths = Upload::getPrefixFiles($record['image_url_prefix']);
+            }
+            if(!empty($record['intro'])) {
+                $intro = Upload::getPrefixFiles($record['intro']);
+                $goods['intro'] = "<img src='{$intro[0]}'>";
+            }
+
             if (!empty($record['brand_name'])) {
                 $brand_id = model('common/Brand')->getInfoByName($record['brand_name'], true);
                 $goods['brand_id'] = $brand_id;

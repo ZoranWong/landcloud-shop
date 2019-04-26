@@ -920,7 +920,7 @@ class Goods extends Common implements Excelable
             ['id' => 'cat_name', 'desc' => '产品分类'],
             ['id' => 'bn', 'desc' => '商品编号|货号', 'modify' => 'convertString'],
             ['id' => 'brief', 'desc' => '产品简介'],
-            ['id' => 'image_url_prefix', 'desc' => '产品图片前缀'],
+            ['id' => 'image_url_prefix', 'desc' => '产品图片'],
             ['id' => 'brand_name', 'desc' => '品牌名称'],
             ['id' => 'weight', 'desc' => '产品重量'],
             ['id' => 'length', 'desc' => '产品长度'],
@@ -932,6 +932,7 @@ class Goods extends Common implements Excelable
             ['id' => 'preferential_price', 'desc' => '优惠价格'],
             ['id' => 'promotion_price', 'desc' => '促销价格'],
             ['id' => 'keywords', 'desc' => '搜索关键字'],
+            ['id' => 'intro', 'desc' => '详情'],
             ['id' => 'remark', 'desc' => '备注']
         ];
     }

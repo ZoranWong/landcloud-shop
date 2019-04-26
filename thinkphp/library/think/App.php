@@ -133,7 +133,7 @@ class App extends Container
     /**
      * 绑定模块或者控制器
      * @access public
-     * @param string $bind
+     * @param  string $bind
      * @return $this
      */
     public function bind($bind)
@@ -145,7 +145,7 @@ class App extends Container
     /**
      * 设置应用类库目录
      * @access public
-     * @param string $path 路径
+     * @param  string $path 路径
      * @return $this
      */
     public function path($path)
@@ -167,13 +167,13 @@ class App extends Container
         }
 
         $this->initialized = true;
-        $this->beginTime = microtime(true);
-        $this->beginMem = memory_get_usage();
+        $this->beginTime   = microtime(true);
+        $this->beginMem    = memory_get_usage();
 
-        $this->rootPath = dirname($this->appPath) . DIRECTORY_SEPARATOR;
+        $this->rootPath    = dirname($this->appPath) . DIRECTORY_SEPARATOR;
         $this->runtimePath = $this->rootPath . 'runtime' . DIRECTORY_SEPARATOR;
-        $this->routePath = $this->rootPath . 'route' . DIRECTORY_SEPARATOR;
-        $this->configPath = $this->rootPath . 'config' . DIRECTORY_SEPARATOR;
+        $this->routePath   = $this->rootPath . 'route' . DIRECTORY_SEPARATOR;
+        $this->configPath  = $this->rootPath . 'config' . DIRECTORY_SEPARATOR;
 
         static::setInstance($this);
 
@@ -186,14 +186,14 @@ class App extends Container
 
         // 设置路径环境变量
         $this->env->set([
-            'think_path' => $this->thinkPath,
-            'root_path' => $this->rootPath,
-            'app_path' => $this->appPath,
-            'config_path' => $this->configPath,
-            'route_path' => $this->routePath,
+            'think_path'   => $this->thinkPath,
+            'root_path'    => $this->rootPath,
+            'app_path'     => $this->appPath,
+            'config_path'  => $this->configPath,
+            'route_path'   => $this->routePath,
             'runtime_path' => $this->runtimePath,
-            'extend_path' => $this->rootPath . 'extend' . DIRECTORY_SEPARATOR,
-            'vendor_path' => $this->rootPath . 'vendor' . DIRECTORY_SEPARATOR,
+            'extend_path'  => $this->rootPath . 'extend' . DIRECTORY_SEPARATOR,
+            'vendor_path'  => $this->rootPath . 'vendor' . DIRECTORY_SEPARATOR,
         ]);
 
         // 加载环境变量配置文件
@@ -262,14 +262,14 @@ class App extends Container
     /**
      * 初始化应用或模块
      * @access public
-     * @param string $module 模块名
+     * @param  string $module 模块名
      * @return void
      */
     public function init($module = '')
     {
         // 定位模块目录
         $module = $module ? $module . DIRECTORY_SEPARATOR : '';
-        $path = $this->appPath . $module;
+        $path   = $this->appPath . $module;
 
         // 加载初始化文件
         if (is_file($path . 'init.php')) {
@@ -425,7 +425,7 @@ class App extends Container
             $data = null;
         } catch (HttpResponseException $exception) {
             $dispatch = null;
-            $data = $exception->getResponse();
+            $data     = $exception->getResponse();
         }
 
         $this->middleware->add(function (Request $request, $next) use ($dispatch, $data) {
@@ -443,7 +443,7 @@ class App extends Container
     protected function getRouteCacheKey()
     {
         if ($this->config->get('route_check_cache_key')) {
-            $closure = $this->config->get('route_check_cache_key');
+            $closure  = $this->config->get('route_check_cache_key');
             $routeKey = $closure($this->request);
         } else {
             $routeKey = md5($this->request->baseUrl(true) . ':' . $this->request->method());
@@ -474,10 +474,10 @@ class App extends Container
     /**
      * 设置当前地址的请求缓存
      * @access public
-     * @param string $key 缓存标识，支持变量规则 ，例如 item/:name/:id
-     * @param mixed $expire 缓存有效期
-     * @param array $except 缓存排除
-     * @param string $tag 缓存标签
+     * @param  string $key 缓存标识，支持变量规则 ，例如 item/:name/:id
+     * @param  mixed  $expire 缓存有效期
+     * @param  array  $except 缓存排除
+     * @param  string $tag    缓存标签
      * @return void
      */
     public function checkRequestCache($key, $expire = null, $except = [], $tag = null)
@@ -508,7 +508,7 @@ class App extends Container
     /**
      * 设置当前请求的调度信息
      * @access public
-     * @param Dispatch $dispatch 调度信息
+     * @param  Dispatch  $dispatch 调度信息
      * @return $this
      */
     public function dispatch(Dispatch $dispatch)
@@ -520,8 +520,8 @@ class App extends Container
     /**
      * 记录调试信息
      * @access public
-     * @param mixed $msg 调试信息
-     * @param string $type 信息类型
+     * @param  mixed  $msg  调试信息
+     * @param  string $type 信息类型
      * @return void
      */
     public function log($msg, $type = 'info')
@@ -532,7 +532,7 @@ class App extends Container
     /**
      * 获取配置参数 为空则获取所有配置
      * @access public
-     * @param string $name 配置参数名（支持二级配置 .号分割）
+     * @param  string    $name 配置参数名（支持二级配置 .号分割）
      * @return mixed
      */
     public function config($name = '')
@@ -585,7 +585,7 @@ class App extends Container
         // 检测路由缓存
         if (!$this->appDebug && $this->config->get('route_check_cache')) {
             $routeKey = $this->getRouteCacheKey();
-            $option = $this->config->get('route_cache_option');
+            $option   = $this->config->get('route_cache_option');
 
             if ($option && $this->cache->connect($option)->has($routeKey)) {
                 return $this->cache->connect($option)->get($routeKey);
@@ -621,7 +621,7 @@ class App extends Container
     /**
      * 设置应用的路由检测机制
      * @access public
-     * @param bool $must 是否强制检测路由
+     * @param  bool $must  是否强制检测路由
      * @return $this
      */
     public function routeMust($must = false)
@@ -633,15 +633,15 @@ class App extends Container
     /**
      * 解析模块和类名
      * @access protected
-     * @param string $name 资源地址
-     * @param string $layer 验证层名称
-     * @param bool $appendSuffix 是否添加类名后缀
+     * @param  string $name         资源地址
+     * @param  string $layer        验证层名称
+     * @param  bool   $appendSuffix 是否添加类名后缀
      * @return array
      */
     protected function parseModuleAndClass($name, $layer, $appendSuffix)
     {
         if (false !== strpos($name, '\\')) {
-            $class = $name;
+            $class  = $name;
             $module = $this->request->module();
         } else {
             if (strpos($name, '/')) {
@@ -659,10 +659,10 @@ class App extends Container
     /**
      * 实例化应用类库
      * @access public
-     * @param string $name 类名称
-     * @param string $layer 业务层名称
-     * @param bool $appendSuffix 是否添加类名后缀
-     * @param string $common 公共模块名
+     * @param  string $name         类名称
+     * @param  string $layer        业务层名称
+     * @param  bool   $appendSuffix 是否添加类名后缀
+     * @param  string $common       公共模块名
      * @return object
      * @throws ClassNotFoundException
      */
@@ -695,10 +695,10 @@ class App extends Container
     /**
      * 实例化（分层）模型
      * @access public
-     * @param string $name Model名称
-     * @param string $layer 业务层名称
-     * @param bool $appendSuffix 是否添加类名后缀
-     * @param string $common 公共模块名
+     * @param  string $name         Model名称
+     * @param  string $layer        业务层名称
+     * @param  bool   $appendSuffix 是否添加类名后缀
+     * @param  string $common       公共模块名
      * @return Model
      * @throws ClassNotFoundException
      */
@@ -710,16 +710,17 @@ class App extends Container
     /**
      * 实例化（分层）控制器 格式：[模块名/]控制器名
      * @access public
-     * @param string $name 资源地址
-     * @param string $layer 控制层名称
-     * @param bool $appendSuffix 是否添加类名后缀
-     * @param string $empty 空控制器名称
+     * @param  string $name              资源地址
+     * @param  string $layer             控制层名称
+     * @param  bool   $appendSuffix      是否添加类名后缀
+     * @param  string $empty             空控制器名称
      * @return object
      * @throws ClassNotFoundException
      */
     public function controller($name, $layer = 'controller', $appendSuffix = false, $empty = '')
     {
         list($module, $class) = $this->parseModuleAndClass($name, $layer, $appendSuffix);
+
         if (class_exists($class)) {
             return $this->make($class, true);
         } elseif ($empty && class_exists($emptyClass = $this->parseClass($module, $layer, $empty, $appendSuffix))) {
@@ -732,10 +733,10 @@ class App extends Container
     /**
      * 实例化验证类 格式：[模块名/]验证器名
      * @access public
-     * @param string $name 资源地址
-     * @param string $layer 验证层名称
-     * @param bool $appendSuffix 是否添加类名后缀
-     * @param string $common 公共模块名
+     * @param  string $name         资源地址
+     * @param  string $layer        验证层名称
+     * @param  bool   $appendSuffix 是否添加类名后缀
+     * @param  string $common       公共模块名
      * @return Validate
      * @throws ClassNotFoundException
      */
@@ -753,8 +754,8 @@ class App extends Container
     /**
      * 数据库初始化
      * @access public
-     * @param mixed $config 数据库配置
-     * @param bool|string $name 连接标识 true 强制重新连接
+     * @param  mixed         $config 数据库配置
+     * @param  bool|string   $name 连接标识 true 强制重新连接
      * @return \think\db\Query
      */
     public function db($config = [], $name = false)
@@ -765,19 +766,19 @@ class App extends Container
     /**
      * 远程调用模块的操作方法 参数格式 [模块/控制器/]操作
      * @access public
-     * @param string $url 调用地址
-     * @param string|array $vars 调用参数 支持字符串和数组
-     * @param string $layer 要调用的控制层名称
-     * @param bool $appendSuffix 是否添加类名后缀
+     * @param  string       $url          调用地址
+     * @param  string|array $vars         调用参数 支持字符串和数组
+     * @param  string       $layer        要调用的控制层名称
+     * @param  bool         $appendSuffix 是否添加类名后缀
      * @return mixed
      * @throws ClassNotFoundException
      */
     public function action($url, $vars = [], $layer = 'controller', $appendSuffix = false)
     {
-        $info = pathinfo($url);
+        $info   = pathinfo($url);
         $action = $info['basename'];
         $module = '.' != $info['dirname'] ? $info['dirname'] : $this->request->controller();
-        $class = $this->controller($module, $layer, $appendSuffix);
+        $class  = $this->controller($module, $layer, $appendSuffix);
 
         if (is_scalar($vars)) {
             if (strpos($vars, '=')) {
@@ -793,18 +794,18 @@ class App extends Container
     /**
      * 解析应用类的类名
      * @access public
-     * @param string $module 模块名
-     * @param string $layer 层名 controller model ...
-     * @param string $name 类名
-     * @param bool $appendSuffix
+     * @param  string $module 模块名
+     * @param  string $layer  层名 controller model ...
+     * @param  string $name   类名
+     * @param  bool   $appendSuffix
      * @return string
      */
     public function parseClass($module, $layer, $name, $appendSuffix = false)
     {
-        $name = str_replace(['/', '.'], '\\', $name);
+        $name  = str_replace(['/', '.'], '\\', $name);
         $array = explode('\\', $name);
         $class = Loader::parseName(array_pop($array), 1) . ($this->suffix || $appendSuffix ? ucfirst($layer) : '');
-        $path = $array ? implode('\\', $array) . '\\' : '';
+        $path  = $array ? implode('\\', $array) . '\\' : '';
 
         return $this->namespace . '\\' . ($module ? $module . '\\' : '') . $layer . '\\' . $path . $class;
     }
@@ -842,7 +843,7 @@ class App extends Container
     /**
      * 设置模块路径
      * @access public
-     * @param string $path 路径
+     * @param  string $path 路径
      * @return void
      */
     public function setModulePath($path)
@@ -938,7 +939,7 @@ class App extends Container
     /**
      * 设置应用类库命名空间
      * @access public
-     * @param string $namespace 命名空间名称
+     * @param  string $namespace 命名空间名称
      * @return $this
      */
     public function setNamespace($namespace)

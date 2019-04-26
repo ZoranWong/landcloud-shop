@@ -465,6 +465,11 @@ class Upload
         return $name;
     }
 
+    /**
+     * @param string $prefix
+     * @param int $count
+     * @return array
+     */
     public function getPrefixFiles(string $prefix, int $count = 100): array
     {
         return $this->uploader->getPrefixFiles($prefix, $count);
