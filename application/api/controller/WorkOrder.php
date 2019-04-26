@@ -74,4 +74,48 @@ class WorkOrder extends Api
         }
         return $result;
     }
+
+    // 工单回复
+    public function reply()
+    {
+        $result = [
+            'status' => true,
+            'msg' => '回复成功',
+            'data' => null,
+        ];
+        $data = [
+            'work_order_id' => input('param.id/d'),
+            'content' => input('param.content'),
+            'is_reply' => 0,
+            'ctime' => time()
+        ];
+        $workOrderModel = new WorkOrderModel();
+        /** @var WorkOrderModel $workOrder */
+        $workOrder = $workOrderModel->findOrFail($data['work_order_id']);
+        $workOrder->comments()->save($data);
+        $result['data'] = $workOrderModel->with('comments.manage')->find($data['work_order_id']);
+        return $result;
+    }
+
+    // 工单确认 工单结束
+    public function confirm()
+    {
+        $result = [
+            'status' => true,
+            'msg' => '确认成功，工单已结束',
+            'data' => null,
+        ];
+        $workOrderModel = new WorkOrderModel();
+        /** @var WorkOrderModel $workOrder */
+        $workOrder = $workOrderModel->findOrFail(input('param.id/d'));
+        $workOrder->isUpdate(true)->save(['status' => WorkOrderModel::STATUS_PROCESSED]);
+        $workOrder->comments()->save([
+            'work_order_id' => $workOrder->id,
+            'content' => '已确认结束工单',
+            'is_reply' => 1,
+            'ctime' => time()
+        ]);
+        $result['data'] = $workOrderModel->with('comments.manage')->find($workOrder->id);
+        return $result;
+    }
 }

@@ -332,6 +332,14 @@ return [
             'workOrderDetail' => [
                 'code' => 'workOrderDetail',
                 'is_login' => true
+            ],
+            'reply' => [
+                'code' => 'reply',
+                'is_login' => true
+            ],
+            'confirm' => [
+                'code' => 'confirm',
+                'is_login' => true
             ]
         ]
     ],
