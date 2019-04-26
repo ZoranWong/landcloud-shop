@@ -8,6 +8,7 @@
 // +----------------------------------------------------------------------
 namespace app\Manage\controller;
 
+use app\service\Upload;
 use Request;
 use app\common\controller\Manage;
 use app\common\model\Images as imageModel;
@@ -34,65 +35,18 @@ class Images extends Manage
      */
     function uploadImage()
     {
-        $filetypes = [
-            'image' => [
-                'title' => 'Image files',
-                'extensions' => 'jpg,jpeg,png,gif,bmp4'
-            ],
-        ];
         if (Request::isPost()) {
-            $all_allowed_exts = array();
-            foreach ($filetypes as $mfiletype) {
-                array_push($all_allowed_exts, $mfiletype['extensions']);
-            }
-
-            $all_allowed_exts = implode(',', $all_allowed_exts);
-            $all_allowed_exts = explode(',', $all_allowed_exts);
-            $all_allowed_exts = array_unique($all_allowed_exts);
-            $upload_max_filesize = config('jshop.upload_filesize');
-            $upload_max_filesize = empty($upload_max_filesize) ? 5242880 : $upload_max_filesize;//默认5M
-
-            if (isset($_FILES['upfile'])) {
-                $file_extension = get_file_extension($_FILES['upfile']['name']);
-                $savepath = '/static/uploads/images/' . get_hash_dir($_FILES['upfile']['name']);
-            } else {
-                $file_extension = get_file_extension($_FILES['file']['name']);
-                $savepath = '/static/uploads/images/' . get_hash_dir($_FILES['file']['name']);
-            }
-
-            //上传处理类
-            $config = array(
-                'rootPath' => ROOT_PATH . DIRECTORY_SEPARATOR . 'public',
-                'savePath' => $savepath,
-                'maxSize' => $upload_max_filesize,
-                'saveName' => array(
-                    'uniqid',
-                    ''
-                ),
-                'exts' => $all_allowed_exts,
-                'autoSub' => false,
-            );
-
-            $image_storage = config('jshop.image_storage');
-            if (!$image_storage) {
-                $image_storage = [
-                    'type' => 'Local',
-                ];
-            }
-            //增加后台设置，如果设置则用后台设置的
-            if (getSetting('image_storage_params')) {
-                $image_storage = array_merge(['type' => getSetting('image_storage_type')], getSetting('image_storage_params'));
-            }
-            $upload = new \org\Upload($config, $image_storage['type'], $image_storage);
+            $upload = Upload::getInstance();
             $info = $upload->upload();
-
-
+            $imageStorage = $upload->imageStorage;
+            $savepath = $upload->path;
+            $type = $upload->type;
             if ($info) {
                 $first = array_shift($info);
                 $url = getRealUrl($savepath . $first['savename']);
                 $preview_url = $url;
                 $iData['id'] = md5(get_hash($first['name']));
-                $iData['type'] = $image_storage['type'];
+                $iData['type'] = $imageStorage['type'];
                 $iData['name'] = $first['name'];
                 $iData['url'] = $url;
                 $iData['ctime'] = time();
