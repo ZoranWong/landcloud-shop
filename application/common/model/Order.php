@@ -358,7 +358,7 @@ class Order extends Common
         $page = $input['page'] ? $input['page'] : 1;
         $limit = $input['limit'] ? $input['limit'] : 20;
 
-        $data = $this::with('items.delivery')->where($where)
+        $data = $this::with('items,delivery')->where($where)
             ->order('ctime desc')
             ->page($page, $limit)
             ->select();
