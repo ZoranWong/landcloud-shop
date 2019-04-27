@@ -206,12 +206,11 @@ class User extends Api
         ];
         $userModel = new UserModel();
         $userInfo = $userModel
-            ->with(['userShips'])
-            ->field('id,username,mobile,sex,birthday,avatar,nickname,balance,point,status, erp_user_id')
+            ->with(['userShips', 'sellerManager'])
+            ->field('id,username,mobile,sex,birthday,avatar,nickname,balance,point,status, erp_user_id, erp_manage_id')
             ->where(array('id' => $this->userId))
             ->find();
 
-        var_dump(Manage::select());
 
         if ($userInfo !== false) {
             if ($userInfo['erp_user_id']) {
