@@ -219,6 +219,7 @@ class User extends Api
                     $userInfo['balance']  = $balance;
                 }
             }
+            $userInfo['payment_amount'] = \app\common\model\Order::where(['user_id'=> $userInfo['id'], 'status' => 2])->sum('order_pmt');
             $result['data'] = $userInfo;
             $result['status'] = true;
         } else {
