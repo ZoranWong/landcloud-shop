@@ -211,7 +211,7 @@ class User extends Api
             ->where(array('id' => $this->userId))
             ->find();
 
-        var_dump(Manage::get());
+        var_dump(Manage::select());
 
         if ($userInfo !== false) {
             if ($userInfo['erp_user_id']) {
