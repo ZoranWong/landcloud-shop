@@ -67,17 +67,29 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">头像：</label>
+            <label class="layui-form-label"><i class="required-color">*</i>ERP 用户ID：</label>
             <div class="layui-input-inline">
-                {Jshop:image id="avatar" name="avatar" value="$info.avatar"}
+                <input type="text" name="erp_user_id" required lay-verify="required" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="required-color">*</i>销售经理ERP ID：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="erp_manage_id" required lay-verify="required" class="layui-input">
             </div>
         </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label" style="width: 100px">邀请人修改：</label>
-            <div class="layui-input-inline" >
-                <input type="text" name="p_mobile" class="layui-input" value="{$info.p_mobile}" placeholder="请输入邀请人的手机号码" >
+            <label class="layui-form-label"><i class="required-color">*</i>销售经历ERP姓名：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="erp_manage_name" required lay-verify="required" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">头像：</label>
+            <div class="layui-input-inline">
+                {Jshop:image id="avatar" name="avatar"}
             </div>
         </div>
     </div>

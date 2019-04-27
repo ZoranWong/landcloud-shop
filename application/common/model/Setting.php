@@ -174,11 +174,11 @@ class Setting extends Common
         ],
         'wx_principal_name' => [
             'name' => '主体信息',
-            'value' => '河南吉海网络科技有限公司',
+            'value' => '兴软科技',
         ],
         'wx_signature' => [
             'name' => '简介',
-            'value' => 'Jshop小程序是一款标准B2C商城小程序',
+            'value' => '蓝杰柯销售商城',
         ],
         //小程序logo
         'wx_head_img' => [

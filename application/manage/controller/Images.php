@@ -36,21 +36,22 @@ class Images extends Manage
     function uploadImage()
     {
         if (Request::isPost()) {
+            $type = \think\facade\Request::post('type');
+            $path = "/uploads";
             $upload = Upload::getInstance();
-            $info = $upload->upload();
+            $info = $upload->upload($path);
             $imageStorage = $upload->imageStorage;
             $savepath = $upload->path;
-            $type = $upload->type;
             if ($info) {
                 $first = array_shift($info);
-                $url = getRealUrl($savepath . $first['savename']);
+                $url = Upload::url($savepath);
                 $preview_url = $url;
                 $iData['id'] = md5(get_hash($first['name']));
                 $iData['type'] = $imageStorage['type'];
                 $iData['name'] = $first['name'];
                 $iData['url'] = $url;
                 $iData['ctime'] = time();
-                $iData['path'] = ROOT_PATH . DIRECTORY_SEPARATOR . 'public' . $savepath . $first['savename'];
+                $iData['path'] = $savepath;
                 $image_model = new imageModel();
                 if ($image_model->save($iData)) {
 

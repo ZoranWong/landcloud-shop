@@ -10,6 +10,7 @@
 namespace app\common\model;
 
 use app\service\excel\Excelable;
+use app\service\LabGicApiService;
 use think\Db;
 
 
@@ -210,6 +211,15 @@ class Goods extends Common implements Excelable
             ->order($order)
             ->page($page, $limit)
             ->select();
+        $ids = [];
+        foreach ($list as &$item) {
+            $ids[] = $item['erp_goods_id'];
+        }
+        $pStocks = LabGicApiService::productsStock($ids);
+
+        foreach ($list as &$item) {
+            $item['stock'] = $pStocks[$item['erp_goods_id']];
+        }
         $total = $this
             ->field($fields)
             ->where($where)
@@ -222,9 +232,6 @@ class Goods extends Common implements Excelable
                 if ($goods['status']) {
                     $list[$key] = $goods['data'];
                 }
-//                $image_url = _sImage($value['image_id']);
-//                $list[$key]['image_url'] = $image_url;
-//                $list[$key]['label_ids'] = getLabel($value['label_ids']);
                 $list[$key]['comments_count'] = $gcModel->getCommentCount($value['id']);
             }
 

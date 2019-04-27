@@ -872,6 +872,17 @@ class User extends Common
 //    }
 
 
+    public function sellerManager()
+    {
+        return $this->belongsTo(Manage::class, 'erp_manage_id', 'erp_manage_id');
+    }
+
+    public function userShips()
+    {
+        return $this->hasMany(UserShip::class, 'user_id', 'id');
+    }
+
+
     /**
      * 修改邀请人
      * @param $id

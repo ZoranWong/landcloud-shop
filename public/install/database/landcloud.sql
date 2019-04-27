@@ -782,7 +782,7 @@ CREATE TABLE `lc_images` (
   `name` varchar(50) DEFAULT NULL COMMENT '图片名称',
   `url` varchar(255) DEFAULT NULL COMMENT '绝对地址',
   `path` varchar(255) DEFAULT NULL COMMENT '物理地址',
-  `type` enum('web','local') DEFAULT 'local' COMMENT '存储引擎',
+  `type` enum('web','local', 'Aliyun') DEFAULT 'local' COMMENT '存储引擎',
   `ctime` bigint(12) unsigned DEFAULT NULL COMMENT '创建时间',
   `isdel` bigint(12) unsigned DEFAULT NULL COMMENT '删除标志 有数据代表删除',
   PRIMARY KEY (`id`) USING BTREE,
@@ -871,7 +871,7 @@ COMMIT;
 DROP TABLE IF EXISTS `lc_manage`;
 CREATE TABLE `lc_manage` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `erp_manage_id` int(10) unsigned not null comment '用户ERP的ID',
+  `erp_manage_id` varchar(64) unsigned not null comment '用户ERP的ID',
   `username` varchar(20) DEFAULT NULL COMMENT '用户名',
   `password` varchar(255) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
   `mobile` char(15) DEFAULT NULL COMMENT '手机号',
@@ -1425,7 +1425,7 @@ DROP TABLE IF EXISTS `lc_user_ship`;
 CREATE TABLE `lc_user_ship` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned DEFAULT NULL COMMENT '用户id 关联user.id',
-  `erp_user_id` int(10) unsigned default null comment '用户ERP中ID',
+  `erp_user_id` varchar(64) unsigned default null comment '用户ERP中ID',
   `area_id` int(10) unsigned DEFAULT NULL COMMENT '收货地区ID',
   `address` varchar(200) DEFAULT NULL COMMENT '收货详细地址',
   `name` varchar(50) DEFAULT NULL COMMENT '收货人姓名',

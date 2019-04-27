@@ -1,2 +1,2 @@
-window.host = 'http://shop.cc';
+window.host = 'http://lan.ztes.com';
 window.entId = '';

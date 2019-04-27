@@ -40,10 +40,8 @@ class Upload extends OUpload
         $uploadMaxFilesize = empty($uploadMaxFilesize) ? 5242880 : $uploadMaxFilesize;//默认5M
 
         if (isset($_FILES['upfile'])) {
-            $file_extension = get_file_extension($_FILES['upfile']['name']);
             $savepath = '/static/uploads/images/' . get_hash_dir($_FILES['upfile']['name']);
         } else {
-            $file_extension = get_file_extension($_FILES['file']['name']);
             $savepath = '/static/uploads/images/' . get_hash_dir($_FILES['file']['name']);
         }
         $this->path = $savepath;
@@ -82,11 +80,12 @@ class Upload extends OUpload
     public static function __callStatic($name, $arguments)
     {
         // TODO: Implement __callStatic() method.
-        if(!self::instance){
+        if(!self::$instance){
             self::$instance = new static();
         }
+        $method = "get".ucfirst($name);
 
-        return call_user_func([self::$instance, $name], $arguments);
+        return call_user_func_array([self::$instance, $method], $arguments);
     }
 
     /**
@@ -94,6 +93,9 @@ class Upload extends OUpload
      */
     public static function getInstance(): Upload
     {
+        if(!self::$instance){
+            self::$instance = new static();
+        }
         return self::$instance;
     }
 
