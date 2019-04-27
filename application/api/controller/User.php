@@ -6,6 +6,7 @@ use app\common\controller\Api;
 use app\common\model\Area;
 use app\common\model\Balance;
 use app\common\model\GoodsComment;
+use app\common\model\Manage;
 use app\common\model\Setting;
 use app\common\model\UserBankcards;
 use app\common\model\UserPointLog;
@@ -205,10 +206,12 @@ class User extends Api
         ];
         $userModel = new UserModel();
         $userInfo = $userModel
-            ->with(['userShips', 'sellerManager'])
+            ->with(['userShips'])
             ->field('id,username,mobile,sex,birthday,avatar,nickname,balance,point,status, erp_user_id')
             ->where(array('id' => $this->userId))
             ->find();
+
+        var_dump(Manage::get());
 
         if ($userInfo !== false) {
             if ($userInfo['erp_user_id']) {
