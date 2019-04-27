@@ -18,6 +18,7 @@ class Images extends Api
         {
             $first = array_shift($info);
             $url = $upload->getUrl($savepath);
+            var_dump($url);
             $iData['id'] = md5(get_hash($first['name']));
             $iData['type'] = $imageStorage['type'];
             $iData['name'] = strlen($first['name'])>50?substr($first['name'], 0, 50):$first['name'];
