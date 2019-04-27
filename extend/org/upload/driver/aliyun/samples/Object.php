@@ -230,7 +230,7 @@ function listAllObjects($ossClient, $bucket)
             'max-keys' => $maxkeys,
             'marker' => $nextMarker,
         );
-        var_dump($options);
+//        var_dump($options);
         try {
             $listObjectInfo = $ossClient->listObjects($bucket, $options);
         } catch (OssException $e) {
