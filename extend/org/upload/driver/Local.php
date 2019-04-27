@@ -41,6 +41,7 @@ class Local
     public function checkRootPath($rootpath)
     {
         $rootpath = $rootpath ?: './static/uploads/images';
+        var_dump(is_dir($rootpath), is_writable($rootpath));
         if (!(is_dir($rootpath) && is_writable($rootpath))) {
             $this->error = '上传根目录不存在！请尝试手动创建:' . $rootpath;
             return false;
