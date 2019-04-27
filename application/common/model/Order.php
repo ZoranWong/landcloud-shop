@@ -1,7 +1,7 @@
 <?php
 namespace app\common\model;
-use think\model\concern\SoftDelete;
 use think\Db;
+use think\model\concern\SoftDelete;
 
 /**
  * 订单主表
@@ -381,7 +381,7 @@ class Order extends Common
             ->order('ctime desc')
             ->page($page, $limit)
             ->select();
-        
+
         $count = $this->where($where)
             ->count();
         return array('data' => $data, 'count' => $count);
@@ -771,6 +771,8 @@ class Order extends Common
         {
             //待发货
             return self::ALL_PENDING_DELIVERY;
+        } elseif ($status == self::ORDER_STATUS_NORMAL && $pay_status === self::PAY_STATUS_YES && $ship_status == self::SHIP_STATUS_PARTIAL_YES) {
+            return self::ALL_PENDING_RECEIPT;
         }
         elseif ($status == self::ORDER_STATUS_NORMAL && $ship_status == self::SHIP_STATUS_YES && $confirm == self::RECEIPT_NOT_CONFIRMED)
         {
