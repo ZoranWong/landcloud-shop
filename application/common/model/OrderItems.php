@@ -1,4 +1,5 @@
 <?php
+
 namespace app\common\model;
 
 /**
@@ -23,8 +24,7 @@ class OrderItems extends Common
      */
     public function ship($order_id, $ship_data)
     {
-        foreach($ship_data as $k=>$v)
-        {
+        foreach ($ship_data as $k => $v) {
             $this->where('order_id', 'eq', $order_id)
                 ->where('id', $v[0])
                 ->setInc('sendnums', $v[1]);
@@ -45,16 +45,18 @@ class OrderItems extends Common
     {
         $return = 'all';
         $data = $this->where('order_id', 'eq', $order_id)->select();
-        foreach($data as $k=>$v)
-        {
-            if($v['nums'] != $v['sendnums'])
-            {
+        foreach ($data as $k => $v) {
+            if ($v['nums'] != $v['sendnums']) {
                 $return = 'section';
             }
         }
         return $return;
     }
 
-
+    public function delivery()
+    {
+//        return $this->belongsToMany(BillDelivery::class, BillDeliveryItems::class, 'delivery_id', 'order_items_id');
+        return $this->belongsToMany(BillDelivery::class, 'bill_delivery_items', 'delivery_id', 'order_items_id');
+    }
 
 }
