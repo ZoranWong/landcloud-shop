@@ -10,8 +10,9 @@ class Images extends Api
 {
     public function upload()
     {
+        $path = "/uploads";
         $upload = Upload::getInstance();
-        $info = $upload->upload();
+        $info = $upload->upload($path);
         $savepath = $upload->path;
         $imageStorage = $upload->imageStorage;
         if($info)
