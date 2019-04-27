@@ -365,7 +365,7 @@ class Order extends Common
 
         $count = $this->where($where)
             ->count();
-            var_dump($data);
+            // var_dump($data);
         return array('data' => $data, 'count' => $count);
     }
 
