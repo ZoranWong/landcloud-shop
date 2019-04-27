@@ -13,6 +13,9 @@ namespace org;
 use org\upload\driver\Aliyun;
 
 
+/**
+ * @property multitype|string savePath
+ */
 class Upload
 {
     /**
@@ -236,6 +239,7 @@ class Upload
                     continue;
                 }
             }
+            var_dump($this->savePath);
 
             /* 保存文件 并记录保存成功的文件 */
             if ($this->uploader->save($file, $this->replace)) {
