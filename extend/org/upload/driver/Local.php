@@ -19,6 +19,10 @@ class Local
      */
     private $rootPath;
 
+    protected $savePath;
+
+    protected $path;
+
     /**
      * 本地上传错误信息
      * @var string
@@ -77,7 +81,7 @@ class Local
      * @param  boolean $replace 同名文件是否覆盖
      * @return boolean          保存状态，true-成功，false-失败
      */
-    public function save($file, $replace = true)
+    public function save($file,  $replace = true)
     {
         $filename = $this->rootPath . $file['savepath'] . $file['savename'];
 
