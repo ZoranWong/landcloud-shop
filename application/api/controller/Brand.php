@@ -54,6 +54,10 @@ class Brand extends Api
 
             $list = $brandModel->field($field)->order($order)->page($page, $limit)->select();
 
+            foreach ($limit as &$item) {
+                $item['logo'] = _sImage($item['logo']);
+            }
+
             $count = $brandModel->field($field)->count();
         }
 
