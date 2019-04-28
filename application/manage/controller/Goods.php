@@ -142,6 +142,9 @@ class Goods extends Manage
     protected function syncPriceLevels($goodsId)
     {
         $levels = \think\facade\Request::post('levels') ?: \think\facade\Request::put('levels');
+        if (!isset($levels)) {
+            return true;
+        }
         return GoodsPriceLevels::sync($goodsId, $levels);
     }
 
@@ -677,6 +680,7 @@ class Goods extends Manage
         $this->assign('open_spec', '0');
         $this->assign('data', $goods['data']);
         $this->assign('products', $goods['data']['products']);
+        $this->assign('product', $goods['data']['products'][0]);
         $this->assign('tags', json_encode($goods['data']['keywords'] ?: []));
         if ($goods['data']['spes_desc'] != '') {
             $this->assign('open_spec', '1');
