@@ -545,4 +545,9 @@ class GoodsCat extends Common
             return $id;
         }
     }
+
+    public function brands()
+    {
+        return $this->belongsToMany(Brand::class, 'goods_category_brand', 'brand_id', 'goods_cat_id');
+    }
 }

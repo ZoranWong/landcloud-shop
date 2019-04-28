@@ -8,8 +8,9 @@
 // +----------------------------------------------------------------------
 namespace app\api\controller;
 
-use app\common\model\Brand as BrandModel;
 use app\common\controller\Api;
+use app\common\model\Brand as BrandModel;
+use app\common\model\GoodsCat as GoodsCatModel;
 
 class Brand extends Api
 {
@@ -34,13 +35,28 @@ class Brand extends Api
 
         $order = input('param.order', 'sort asc');
         $page = input('param.page', 1);
-        $limit = input('param.limit', 10);
+        $limit = input('param.limit', PAGE_SIZE);
 
-        $brandModel = new BrandModel;
+        $categoryId = input('param.category_id');
 
-        $list = $brandModel->field($field)->order($order)->page($page, $limit)->select();
 
-        $count  = $brandModel->field($field)->count();
+        if ($categoryId) {
+            $goodsCatModel = new GoodsCatModel();
+
+            $goodsCat = $goodsCatModel->with('brands')->where(['id' => $categoryId])->find();
+
+            $list = $goodsCat->brands;
+
+            $count = count($list);
+
+        } else {
+            $brandModel = new BrandModel;
+
+            $list = $brandModel->field($field)->order($order)->page($page, $limit)->select();
+
+            $count = $brandModel->field($field)->count();
+        }
+
 
         if (!$list->isEmpty()) {
             foreach ((array)$list as &$v) {

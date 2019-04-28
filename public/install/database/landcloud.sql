@@ -1024,6 +1024,7 @@ CREATE TABLE `lc_order` (
   `user_id` int(10) unsigned DEFAULT NULL COMMENT '用户ID 关联user.id',
   `seller_id` int(10) unsigned DEFAULT NULL COMMENT '店铺ID 关联seller.id',
   `confirm` tinyint(1) unsigned DEFAULT '1' COMMENT '售后状态 1=未确认收货 2=已确认收货',
+  `confirm` tinyint(1) unsigned DEFAULT '1' COMMENT '售后状态 1=未确认收货 2=已确认收货',
   `confirm_time` bigint(12) unsigned DEFAULT NULL COMMENT '确认收货时间',
   `store_id` int(10) unsigned DEFAULT '0' COMMENT '自提门店ID，0就是不门店自提',
   `ship_area_id` int(10) unsigned DEFAULT '0' COMMENT '收货地区ID',
@@ -1675,3 +1676,12 @@ CREATE TABLE `lc_work_order_comment` (
   `ctime` bigint(12) NOT NULL COMMENT '跟单时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COMMENT='服务工单跟单表';
+
+// 产品品牌与产品分类关联表
+drop table if exists `lc_goods_category_brand`;
+create table `lc_goods_category_brand`(
+    `id` int(10) not null AUTO_INCREMENT,
+    `brand_id` int(10) not null comment '品牌id',
+    `goods_cat_id` int(10) not null comment '产品分类id',
+    primary key (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COMMENT='产品品牌与产品分类关联表';
