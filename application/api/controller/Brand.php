@@ -42,10 +42,13 @@ class Brand extends Api
 
         if ($categoryId) {
             $goodsCatModel = new GoodsCatModel();
+            $brandModel = new BrandModel();
 
             $goodsCat = $goodsCatModel->with('brands')->where(['id' => $categoryId])->find();
 
             $list = $goodsCat->brands;
+
+            $list = $brandModel->tableFormat($list);
 
             $count = count($list);
 
@@ -53,10 +56,6 @@ class Brand extends Api
             $brandModel = new BrandModel;
 
             $list = $brandModel->field($field)->order($order)->page($page, $limit)->select();
-
-            foreach ($limit as &$item) {
-                $item['logo'] = _sImage($item['logo']);
-            }
 
             $count = $brandModel->field($field)->count();
         }

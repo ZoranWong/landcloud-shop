@@ -136,7 +136,7 @@ class Brand extends Common
      *
      * @return mixed
      */
-    protected function tableFormat($list)
+    public function tableFormat($list)
     {
         foreach ($list as &$val) {
             $val['logo'] = _sImage($val['logo']);
