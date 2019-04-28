@@ -5,24 +5,22 @@ namespace app\api\controller;
 use app\common\controller\Api;
 use app\common\model\Area;
 use app\common\model\Balance;
+use app\common\model\BillPayments;
+use app\common\model\GoodsBrowsing;
+use app\common\model\GoodsCollection;
 use app\common\model\GoodsComment;
-use app\common\model\Manage;
 use app\common\model\Setting;
+use app\common\model\User as UserModel;
 use app\common\model\UserBankcards;
 use app\common\model\UserPointLog;
 use app\common\model\UserShip;
 use app\common\model\UserTocash;
 use app\common\model\UserToken;
-use app\common\model\User as UserModel;
-use app\common\model\GoodsBrowsing;
-use app\common\model\GoodsCollection;
 use app\common\model\UserWx;
-use app\common\model\BillPayments;
 use app\service\LabGicApiService;
-use org\Curl;
+use think\Container;
 use think\facade\Cache;
 use think\facade\Request;
-use think\Container;
 
 class User extends Api
 {
@@ -215,11 +213,11 @@ class User extends Api
         if ($userInfo !== false) {
             if ($userInfo['erp_user_id']) {
                 $balance = LabGicApiService::userBalance($userInfo['erp_user_id']);
-                if($balance){
-                    $userInfo['balance']  = $balance;
+                if ($balance) {
+                    $userInfo['balance'] = $balance;
                 }
             }
-            $userInfo['payment_amount'] = \app\common\model\Order::where(['user_id'=> $userInfo['id'], 'status' => 2])->sum('order_pmt');
+            $userInfo['payment_amount'] = \app\common\model\Order::where(['user_id' => $userInfo['id'], 'status' => 2])->sum('order_pmt');
             $result['data'] = $userInfo;
             $result['status'] = true;
         } else {

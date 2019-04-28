@@ -508,7 +508,7 @@ class User extends Common
         //修改密码验证原密码
         if (isset($data['password']) && !empty($data['password'])) {
             $user = $this->getUserInfo($data['user_id']);
-            if ($user['password'] !== decrypt($user['password'])) {
+            if ($data['password'] !== decrypt($user['password'])) {
                 $result['status'] = false;
                 $result['msg'] = '原密码不正确!';
                 return $result;
@@ -554,7 +554,8 @@ class User extends Common
         ];
 
         $res_pwd = $this->save([
-            'password' => $this->enPassword($newPwd, $this->where('id', $user_id)->value('ctime'))
+//            'password' => $this->enPassword($newPwd, $this->where('id', $user_id)->value('ctime'))
+            'password' => encrypt($newPwd)
         ], ['id' => $user_id]);
 
         if (!$res_pwd) {
