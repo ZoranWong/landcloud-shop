@@ -75,7 +75,7 @@ class Order extends Common
      */
     public function delivery()
     {
-        return $this->hasMany('BillDelivery');
+        return $this->hasMany('BillDelivery', 'order_id', 'order_id');
     }
 
     /**
@@ -365,6 +365,7 @@ class Order extends Common
 
         $count = $this->where($where)
             ->count();
+            // var_dump($data);
         return array('data' => $data, 'count' => $count);
     }
 

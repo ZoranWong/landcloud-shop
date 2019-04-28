@@ -13,6 +13,9 @@ namespace org;
 use org\upload\driver\Aliyun;
 
 
+/**
+ * @property multitype|string savePath
+ */
 class Upload
 {
     /**
