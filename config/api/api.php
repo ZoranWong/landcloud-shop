@@ -485,6 +485,10 @@ return [
                 'code' => 'getList',
                 'is_login' => false
             ],
+            'search' => [
+                'code' => 'getListByKeyword',
+                'is_login' => false
+            ],
             'getdetial' => [
                 'code' => 'getDetial',
                 'is_login' => false

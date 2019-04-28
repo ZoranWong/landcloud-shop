@@ -3,12 +3,12 @@
 namespace app\api\controller;
 
 use app\common\controller\Api;
+use app\common\model\Brand;
+use app\common\model\Goods as GoodsModel;
 use app\common\model\GoodsCat;
 use app\common\model\GoodsComment;
-use think\facade\Request;
-use app\common\model\Goods as GoodsModel;
 use app\common\model\Products;
-use app\common\model\Brand;
+use think\facade\Request;
 
 /***
  * 商品相关接口
@@ -25,7 +25,7 @@ class Goods extends Api
     private $goodsAllowedFields = [
         'id', 'bn', 'name', 'brief', 'price', 'costprice', 'mktprice', 'image_id', 'goods_cat_id', 'goods_type_id', 'brand_id'
         , 'is_nomal_virtual', 'marketable', 'stock', 'freeze_stock', 'weight', 'unit', 'intro', 'spes_desc', 'comments_count', 'view_count', 'buy_count', 'uptime'
-        , 'downtime', 'sort', 'is_hot', 'is_recommend', 'ctime', 'utime', 'products', 'params'
+        , 'downtime', 'sort', 'is_hot', 'is_recommend', 'ctime', 'utime', 'products', 'params', 'preferential_price', 'promotion_price', 'erp_goods_id'
     ];
     //货品允许字段
     private $productAllowedFields = [
@@ -101,11 +101,14 @@ class Goods extends Api
         ];
         $field = input('field', '*');
         $page = input('page/d', 1);
-        $limit = input('limit/d');
+        $limit = input('limit/d', PAGE_SIZE);
         $order = input('order', 'sort asc');
 
         if (input('?param.where')) {
-            $postWhere = json_decode(input('param.where'), true);
+            $postWhere = request()->param('where');
+            if (is_string($postWhere)) {
+                $postWhere = json_decode($postWhere, true);
+            }
             //判断商品搜索,
             if (isset($postWhere['search_name']) && $postWhere['search_name']) {
                 $where[] = ['name|bn|brief', 'LIKE', '%' . $postWhere['search_name'] . '%'];
@@ -136,6 +139,9 @@ class Goods extends Api
             if (isset($postWhere['hot'])) {
                 $where[] = ['is_hot', 'eq', '1'];
             }
+            if (isset($postWhere['keyword'])) {
+
+            }
         }
         $goodsModel = new GoodsModel();
         $where[] = ['marketable', 'eq', $goodsModel::MARKETABLE_UP];
@@ -159,6 +165,50 @@ class Goods extends Api
 
         }
 
+        if ($returnGoods['status']) {
+            $return_data ['msg'] = '查询成功';
+            $return_data ['data']['list'] = $returnGoods['data'];
+            $return_data ['data']['total_page'] = $returnGoods['total'];
+        }
+
+        $return_data['data']['page'] = $page;
+        $return_data['data']['limit'] = $limit;
+        $return_data['data']['where'] = $where;
+        $return_data['data']['order'] = $order;
+
+        return $return_data;
+    }
+
+    public function getListByKeyword()
+    {
+        $return_data = [
+            'status' => false,
+            'msg' => '查询失败',
+            'data' => []
+        ];
+
+        $keyword = input('keyword', '');
+        $field = input('field', '*');
+        $page = input('page/d', 1);
+        $limit = input('limit/d', PAGE_SIZE);
+        $order = input('order', 'sort asc');
+
+        $return_data = $this->allowedField($field);
+        if (!$return_data['status']) {
+            return $return_data;
+        }
+        $return_data = $this->allowedOrder($order);
+        if (!$return_data['status']) {
+            return $return_data;
+        }
+
+        $goodsModel = new GoodsModel();
+
+        $where = function ($query) use ($keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%')
+                ->whereOr('erp_goods_id', $keyword);
+        };
+        $returnGoods = $goodsModel->getList($field, $where, $order, $page, $limit);
         if ($returnGoods['status']) {
             $return_data ['msg'] = '查询成功';
             $return_data ['data']['list'] = $returnGoods['data'];
