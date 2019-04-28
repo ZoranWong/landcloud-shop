@@ -1,0 +1,108 @@
+<div style="padding:30px" class="layui-form layui-form-pane">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类名称：</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" id="name" required lay-verify="required" autocomplete="off"
+                   class="layui-input" value="{$goodsCat.name}" disabled>
+            <input type="hidden" name="id" id="id" value="{$goodsCat.id}">
+        </div>
+
+        <table id="brands" lay-filter="brands"></table>
+    </div>
+
+    <button class="layui-btn layui-btn-fluid edit-save-btn" lay-submit lay-filter="brands-relate">保存</button>
+</div>
+
+<script>
+    //渲染表单
+    layui.use(['form', 'table'], function () {
+        var form = layui.form, table = layui.table;
+        form.render();
+        let brands = {$brands};
+
+        table.render({
+            elem: '#brands', //指定原始表格元素选择器（推荐id选择器）
+            height: 'full-220',
+            cellMinWidth: '80',
+            page: 'true',
+            limit: '20',
+            id: 'brands',
+            url: "{:url('brand/index')}",
+            cols: [[ //标题栏
+                {type: 'numbers'},
+                {field: 'name', title: '品牌名', width: 200, align: 'center'},
+                {
+                    field: 'logo', title: 'LOGO', align: 'center', width: 120, templet: function (data) {
+                        return '<a href="javascript:void(0);" onclick=viewImage("' + data.logo + '")><image style="max-width:30px;max-height:30px;" src="' + data.logo + '"/></a>';
+                    }
+                },
+                {field: 'utime', sort: true, title: '更新时间', align: 'center', width: 200},
+                {field: 'sort', sort: true, title: '排序', align: 'center', width: 100},
+                {title: '操作', toolbar: '#brandBar'}
+            ]]
+        });
+
+        Array.prototype.indexOf = function (val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) return i;
+            }
+            return -1;
+        };
+
+        Array.prototype.remove = function (val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+                this.splice(index, 1);
+            }
+        };
+
+        //监听工具条
+        table.on('tool(brands)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            if (layEvent === 'unbind') { //删除
+                brands.remove(data.id);
+                $aElement = $('#' + data.id);
+                $aElement.attr('lay-event', 'bind');
+                $aElement.addClass('layui-btn-danger');
+                $aElement.text('关联');
+                console.log(brands);
+            } else if (layEvent === 'bind') { //编辑
+                brands.push(data.id);
+                $aElement = $('#' + data.id);
+                $aElement.attr('lay-event', 'unbind');
+                $aElement.removeClass('layui-btn-danger');
+                $aElement.text('取消关联');
+                console.log(brands);
+            }
+        });
+
+        form.on('submit(brands-relate)', function (data) {
+            let param = Object.assign({}, data.field, {brands: brands});
+            console.log(param);
+            JsPost("{:url('categories/bindBrands')}", Object.assign({}, data.field, {brands: JSON.stringify(brands)}), function (res) {
+                if (res.status) {
+                    layer.msg(res.msg, {time: 1300}, function () {
+                        // table.reload('brands');
+                    });
+                } else {
+                    layer.msg(res.msg, {time: 1300});
+                }
+            })
+        });
+    });
+</script>
+
+<script type="text/html" id="brandBar">
+    {{# let brands = {$brands}; let bind = false;}}
+    {{# for(let i = 0;i< brands.length;i++) {
+    if(brands[i] === d.id) {
+    }}
+    <a class="layui-btn layui-btn-xs" lay-event="unbind" id="{{d.id}}" data-id="{{d.id}}">取消关联</a>
+    {{# bind = true; break; } }}
+    {{#}}}
+    {{# if(!bind) { }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" id="{{d.id}}" lay-event="bind" data-id="{{d.id}}">关联</a>
+    {{# } }}
+</script>

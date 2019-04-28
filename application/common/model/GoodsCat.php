@@ -236,9 +236,11 @@ class GoodsCat extends Common
         if ($type == self::TOP_CLASS) {
             $html .= '<a class="layui-btn layui-btn-primary layui-btn-xs add-class" data-id="' . $id . '">添加</a>';
             $html .= '<a class="layui-btn layui-btn-xs edit-class" data-id="' . $id . '">编辑</a>';
+            $html .= '<a class="layui-btn layui-btn-primary layui-btn-xs relate-brand" data-id="' . $id . '">关联品牌</a>';
             $html .= '<a class="layui-btn layui-btn-danger layui-btn-xs del-class" data-id="' . $id . '">删除</a>';
         } elseif ($type == self::SUB_CLASS) {
             $html .= '<a class="layui-btn layui-btn-xs edit-class" data-id="' . $id . '">编辑</a>';
+            $html .= '<a class="layui-btn layui-btn-primary layui-btn-xs relate-brand" data-id="' . $id . '">关联品牌</a>';
             $html .= '<a class="layui-btn layui-btn-danger layui-btn-xs del-class" data-id="' . $id . '">删除</a>';
         }
         return $html;

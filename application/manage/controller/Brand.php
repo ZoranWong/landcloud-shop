@@ -22,8 +22,7 @@ class Brand extends Manage
      */
     public function index()
     {
-        if(Request::isAjax())
-        {
+        if (Request::isAjax()) {
             $brandModel = new BrandsModel();
             return $brandModel->tableData(input('param.'));
         }
@@ -38,8 +37,7 @@ class Brand extends Manage
     public function add()
     {
         $this->view->engine->layout(false);
-        if(Request::isPost())
-        {
+        if (Request::isPost()) {
             $brandModel = new BrandsModel();
             return $brandModel->addData(input('param.'));
         }
@@ -58,15 +56,14 @@ class Brand extends Manage
     {
         $this->view->engine->layout(false);
         $brandModel = new BrandsModel();
-        if(Request::isPost())
-        {
+        if (Request::isPost()) {
             return $brandModel->saveData(input('param.'));
         }
-        $data = $brandModel->where('id',input('param.id/d'))->find();
+        $data = $brandModel->where('id', input('param.id/d'))->find();
         if (!$data) {
             return error_code(10002);
         }
-        return $this->fetch('edit',['data' => $data]);
+        return $this->fetch('edit', ['data' => $data]);
     }
 
 
@@ -80,7 +77,9 @@ class Brand extends Manage
         $result = [
             'status' => false,
             'msg' => '删除失败',
-            'data' => []
+            'data' => [],
+            'count' => 0,
+            'code' => 0
         ];
         $brandModel = new BrandsModel();
         if ($brandModel::destroy(input('param.id/d'))) {
@@ -95,17 +94,19 @@ class Brand extends Manage
      */
     public function getAll()
     {
-        $result     = [
+        $result = [
             'status' => false,
-            'msg'    => '获取失败',
-            'data'   => [],
+            'msg' => '获取失败',
+            'data' => [],
+            'code' => 1
         ];
         $brandModel = new BrandsModel();
-        $brandList  = $brandModel->field('id,name,sort')->where([])->order('sort asc')->select();
+        $brandList = $brandModel->field('id,name,sort')->where([])->order('sort asc')->select();
         if (!$brandList->isEmpty()) {
-            $result['data']   = $brandList->toArray();
+            $result['data'] = $brandList->toArray();
             $result['status'] = true;
-            $result['msg']    = '获取成功';
+            $result['msg'] = '获取成功';
+            $result['count'] = count($brandList);
         }
         return $result;
     }
