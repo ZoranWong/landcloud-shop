@@ -9,3 +9,5 @@ define('NO', '否');
 define('IMPORT_MAX_ROWS', 100);
 
 define('PAGE_SIZE', 15);
+
+define('ORDER_NO_PREFIX', 'SD');
