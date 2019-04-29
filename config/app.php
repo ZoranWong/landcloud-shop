@@ -49,7 +49,7 @@ return [
     'controller_suffix' => false,
 
     // 默认模块名
-    'default_module' => 'b2c',
+    'default_module' => 'manage',
     // 禁止访问模块
     'deny_module_list' => ['common', 'crontab', 'job'],
     // 默认控制器名
