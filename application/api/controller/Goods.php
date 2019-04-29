@@ -8,6 +8,7 @@ use app\common\model\Goods as GoodsModel;
 use app\common\model\GoodsCat;
 use app\common\model\GoodsComment;
 use app\common\model\Products;
+use think\db\Query;
 use think\facade\Request;
 
 /***
@@ -204,9 +205,10 @@ class Goods extends Api
 
         $goodsModel = new GoodsModel();
 
-        $where = function ($query) use ($keyword) {
+        $where = function (Query $query) use ($keyword) {
             $query->where('name', 'like', '%' . $keyword . '%')
-                ->whereOr('erp_goods_id', $keyword);
+                ->whereOr('erp_goods_id', $keyword)
+                ->whereOrRaw('json_contains(keywords->\'$[*]\',\'"' . $keyword . '"\',\'$\')');
         };
         $returnGoods = $goodsModel->getList($field, $where, $order, $page, $limit);
         if ($returnGoods['status']) {
