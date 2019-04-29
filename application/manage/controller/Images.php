@@ -35,6 +35,7 @@ class Images extends Manage
      */
     function uploadImage()
     {
+        \think\Request::class;
         if (Request::isPost()) {
             $type = \think\facade\Request::post('type');
             $path = "/uploads";
