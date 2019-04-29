@@ -111,7 +111,7 @@ if (!function_exists('get_flow_no')) {
                 $flow_no = str_pad($i . '', $length, '0', STR_PAD_RIGHT);
                 $flow_no_list[] = $flow_no;
             }
-            cache("{$type}_flow_no_{$date}", $flow_no_list);
+            cache("{$type}_flow_no_{$date}", $flow_no_list, 3600 * 24);
         }
 
         $flow_no_list = cache("{$type}_flow_no_{$date}");
