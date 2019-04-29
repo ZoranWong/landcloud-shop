@@ -63,42 +63,42 @@ function get_client_broswer()
     return false;
 }
 
-if (!function_exists('make_random_string')) {
-    function make_random_string()
-    {
-        function fx($string)
-        {
-            $count = strlen($string);
-            $final = mt_rand(0, 9);
-            for ($i = 0; $i < $count; $i++) {
-                $final += hexdec($string[$i]) * mt_rand(0, 9) * mt_rand(0, 9);
-            }
-            $final = substr(base_convert($final, 10, 32), 0, 3);
-            $suffixCount = 3 - strlen($final);
-            switch ($suffixCount) {
-                case 1:
-                    $final .= mt_rand(0, 9);
-                    break;
-                case 2:
-                    $final .= mt_rand(0, 9) . mt_rand(0, 9);
-                    break;
-            }
-            return $final;
-        }
-
-        $str = strtolower(md5(time()));
-
-        $count = ceil(strlen($str) / 8);
-
-        $final = '';
-        for ($i = 0; $i < $count; $i++) {
-            $index = $i * 8;
-            $substr = substr($str, $index, 8);
-            $final .= fx($substr);
-        }
-        return $final;
-    }
-}
+//if (!function_exists('make_random_string')) {
+//    function make_random_string()
+//    {
+//        function fx($string)
+//        {
+//            $count = strlen($string);
+//            $final = mt_rand(0, 9);
+//            for ($i = 0; $i < $count; $i++) {
+//                $final += hexdec($string[$i]) * mt_rand(0, 9) * mt_rand(0, 9);
+//            }
+//            $final = substr(base_convert($final, 10, 32), 0, 3);
+//            $suffixCount = 3 - strlen($final);
+//            switch ($suffixCount) {
+//                case 1:
+//                    $final .= mt_rand(0, 9);
+//                    break;
+//                case 2:
+//                    $final .= mt_rand(0, 9) . mt_rand(0, 9);
+//                    break;
+//            }
+//            return $final;
+//        }
+//
+//        $str = strtolower(md5(time()));
+//
+//        $count = ceil(strlen($str) / 8);
+//
+//        $final = '';
+//        for ($i = 0; $i < $count; $i++) {
+//            $index = $i * 8;
+//            $substr = substr($str, $index, 8);
+//            $final .= fx($substr);
+//        }
+//        return $final;
+//    }
+//}
 
 if (!function_exists('get_flow_no')) {
     function get_flow_no($type = 'order', $length = 6)
@@ -106,9 +106,20 @@ if (!function_exists('get_flow_no')) {
         $date = date('Ymd');
         $max = pow(10, $length);
         if (!cache("?{$type}_flow_no_{$date}")) {
+            function fx($string)
+            {
+                $count = strlen($string);
+                $temp = 0;
+                for ($i = 0; $i < $count; $i++) {
+                    $temp += $string[$i] * ($i + 1);
+                }
+                return $temp % 10;
+            }
+
             $flow_no_list = [];
             for ($i = 1; $i < $max; $i++) {
-                $flow_no = str_pad($i . '', $length, '0', STR_PAD_RIGHT);
+                $flow_no = str_pad($i . '', $length, '0', STR_PAD_RIGHT) . mt_rand(0, 9);
+                $flow_no .= fx($flow_no);
                 $flow_no_list[] = $flow_no;
             }
             cache("{$type}_flow_no_{$date}", $flow_no_list, 3600 * 24);
