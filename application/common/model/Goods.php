@@ -10,8 +10,8 @@
 namespace app\common\model;
 
 use app\service\excel\Excelable;
-use app\service\LabGicApiService;
 use think\Db;
+use think\Exception;
 
 
 /**
@@ -226,11 +226,11 @@ class Goods extends Common implements Excelable
         foreach ($list as &$item) {
             $ids[] = $item['erp_goods_id'];
         }
-        $pStocks = LabGicApiService::productsStock($ids);
+//        $pStocks = LabGicApiService::productsStock($ids);
 
-        foreach ($list as &$item) {
-            $item['stock'] = $pStocks[$item['erp_goods_id']];
-        }
+//        foreach ($list as &$item) {
+//            $item['stock'] = $pStocks[$item['erp_goods_id']];
+//        }
         $total = $this
             ->field($fields)
             ->where($where)
@@ -243,7 +243,7 @@ class Goods extends Common implements Excelable
                 if ($goods['status']) {
                     $list[$key] = $goods['data'];
                 }
-                $list[$key]['comments_count'] = $gcModel->getCommentCount($value['id']);
+//                $list[$key]['comments_count'] = $gcModel->getCommentCount($value['id']);
             }
 
             $result['data'] = $list->toArray();
@@ -287,18 +287,18 @@ class Goods extends Common implements Excelable
             }
             $preModel = substr($preModel, 0, -1);
         }
-        $list = $this::with($preModel)->field($fields)->where(['id' => $gid])->find();
+        try {
+            $list = $this::with($preModel)->field($fields)->where(['id' => $gid])->find();
+            echo '商品id' . $gid;
+        } catch (Exception $exception) {
+            echo '商品id' . $gid;
+            exit;
+        }
         if ($list) {
-            //$list = $list->toArray();
-            //$list['products'] = $this->products($list['id']);
-
             if (isset($list['image_id'])) {
                 $image_url = _sImage($list['image_id']);
                 $list['image_url'] = $image_url;
             }
-//            if($list['products']){
-//                $list['default']   = $list['products'][0];
-//            }
             if (isset($list['label_ids'])) {
                 $list['label_ids'] = getLabel($list['label_ids']);
             } else {
@@ -1071,6 +1071,11 @@ class Goods extends Common implements Excelable
     public function priceLevels()
     {
         return $this->hasMany('GoodsPriceLevels', 'goods_id', 'id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(GoodsComment::class, 'goods_id', 'id');
     }
 
 }
