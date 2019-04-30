@@ -1,14 +1,16 @@
 <style type="text/css">
-    .spec_image{
+    .spec_image {
         display: inline-block;
     }
-    .spec_image_item{
+
+    .spec_image_item {
         position: relative;
         display: inline-block;
     }
-    .del-img{
+
+    .del-img {
         position: absolute;
-        background-color: rgba(0,0,0,.5);
+        background-color: rgba(0, 0, 0, .5);
         color: #fff;
         width: 13px;
         height: 13px;
@@ -21,74 +23,82 @@
         top: -6px;
     }
 </style>
-<div id="no_spec" {if condition="$items"}style="display:none;"{else/}{/if}>
-    <div class="layui-form-item">
-        <label class="layui-form-label">销售价：</label>
-        <div class="layui-input-inline">
-            <input type="hidden" name="product[id]" value="{$product.id}">
-            <input type="text" name="goods[price]" value="{$product.price}" placeholder="￥" autocomplete="off" class="layui-input">
-        </div>
+<div id="no_spec" {if condition="$items" }style="display:none;" {else/}{/if}>
+<div class="layui-form-item">
+    <label class="layui-form-label">销售价：</label>
+    <div class="layui-input-inline">
+        <input type="hidden" name="goods[id]" value="{$goods.id}">
+        <input type="text" name="goods[price]" value="{$goods.price}" placeholder="￥" autocomplete="off"
+               class="layui-input">
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">成本价：</label>
-        <div class="layui-input-inline">
-            <input type="text" name="goods[costprice]" value="{$product.costprice}" placeholder="￥" autocomplete="off" class="layui-input">
-        </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">市场价：</label>
+    <div class="layui-input-inline">
+        <input type="text" name="goods[mktprice]" value="{$goods.mktprice}" placeholder="￥" autocomplete="off"
+               class="layui-input">
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">市场价：</label>
-        <div class="layui-input-inline">
-            <input type="text" name="goods[mktprice]" value="{$product.mktprice}" placeholder="￥" autocomplete="off" class="layui-input">
-        </div>
-    </div>
+</div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">货号：</label>
-        <div class="layui-input-inline">
-            <input type="text" name="goods[sn]" value="{$product.sn}" lay-verify="title" autocomplete="off" placeholder="请输入货号" class="layui-input">
-        </div>
+<div class="layui-form-item">
+    <label class="layui-form-label">优惠价：</label>
+    <div class="layui-input-inline">
+        <input type="text" name="goods[preferential_price]" value="{$goods.preferential_price}" placeholder="￥"
+               autocomplete="off"
+               class="layui-input">
     </div>
+</div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">库存：</label>
-        <div class="layui-input-inline">
-            <input type="text" name="goods[stock]" value="{$product.stock}"   autocomplete="off" placeholder="请输入商品库存" class="layui-input">
-        </div>
+<div class="layui-form-item">
+    <label class="layui-form-label">促销价：</label>
+    <div class="layui-input-inline">
+        <input type="text" name="goods[promotion_price]" value="{$goods.promotion_price}" placeholder="￥"
+               autocomplete="off"
+               class="layui-input">
     </div>
-    <div class="layui-form-item">
-        <div class="layui-form-label">多级价格：</div>
-        <div class="layui-input-block">{include file="../application/manage/view/goods/goodsPriceLevels.html"}</div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label">库存：</label>
+    <div class="layui-input-inline">
+        <input type="text" name="goods[stock]" value="{$goods.stock}" autocomplete="off" placeholder="请输入商品库存"
+               class="layui-input">
     </div>
-    <div class="layui-form-item">
-        <div class="layui-form-label">关联产品：</div>
-        <div class="layui-input-block">{include file="../application/manage/view/goods/goodsSelector.html"}</div>
-    </div>
+</div>
+<div class="layui-form-item">
+    <div class="layui-form-label">多级价格：</div>
+    <div class="layui-input-block">{include file="../application/manage/view/goods/goodsPriceLevels.html"}</div>
+</div>
+<div class="layui-form-item">
+    <div class="layui-form-label">关联产品：</div>
+    <div class="layui-input-block">{include file="../application/manage/view/goods/goodsSelector.html"}</div>
+</div>
 
 
 </div>
 
 <script>
-    layui.use('form', function(){
+    layui.use('form', function () {
         var form = layui.form;
         form.render();
-        form.on('checkbox(isdefalut)', function(data){
-            if(data.elem.checked){
+        form.on('checkbox(isdefalut)', function (data) {
+            if (data.elem.checked) {
                 var checkedName = $(data.elem).attr("name");
-                $(".isdefalut").each(function (i,dom) {
+                $(".isdefalut").each(function (i, dom) {
                     var name = $(dom).attr("name");
-                    if(name != checkedName){
-                        $(dom).attr("checked",false);
-                        $(dom).attr("value","0");
+                    if (name != checkedName) {
+                        $(dom).attr("checked", false);
+                        $(dom).attr("value", "0");
                         $("#more_spec .layui-form-checkbox").removeClass('layui-form-checked');
-                    }else {
+                    } else {
                         $(dom).attr("checked", true);
-                        $(dom).attr("value","1");
+                        $(dom).attr("value", "1");
                     }
                 });
                 $(data.othis).addClass("layui-form-checked");
-            }else{
-                $(dom).attr("checked",false);
-                $(dom).attr("value","0");
+            } else {
+                $(dom).attr("checked", false);
+                $(dom).attr("value", "0");
                 $("#more_spec .layui-form-checkbox").removeClass('layui-form-checked');
             }
         });
