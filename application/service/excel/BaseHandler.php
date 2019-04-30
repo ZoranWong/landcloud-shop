@@ -64,8 +64,8 @@ abstract class BaseHandler
 
             $sheetData = importDataFromExcel($file['file_path']);
 
-            $sheetHeader = $sheetData[0];
-            unset($sheetData[0]);
+            $sheetHeader = $sheetData[1];
+            unset($sheetData[1]);
 
             $fields = $this->extractFields($sheetHeader);
 

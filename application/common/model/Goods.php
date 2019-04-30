@@ -39,6 +39,17 @@ class Goods extends Common implements Excelable
         'keywords' => 'array'
     ];
 
+    const TYPE_PRICE_SALE = 'sale';
+    const TYPE_PRICE_MARKET = 'market';
+    const TYPE_PRICE_PREFERENTIAL = 'preferential';
+    const TYPE_PRICE_PROMOTION = 'promotion';
+    const TYPE_PRICES = [
+        self::TYPE_PRICE_SALE => 1,
+        self::TYPE_PRICE_MARKET => 2,
+        self::TYPE_PRICE_PREFERENTIAL => 3,
+        self::TYPE_PRICE_PROMOTION => 4
+    ];
+
     public function tableData($post, $isPage = true)
     {
         if (isset($post['limit'])) {
@@ -934,8 +945,8 @@ class Goods extends Common implements Excelable
             ['id' => 'width', 'desc' => '产品宽度'],
             ['id' => 'height', 'desc' => '产品高度'],
             ['id' => 'unit', 'desc' => '产品单位'],
-            ['id' => 'market_price', 'desc' => '市场价格'],
-            ['id' => 'sale_price', 'desc' => '销售价格'],
+            ['id' => 'mktprice', 'desc' => '市场价格'],
+            ['id' => 'price', 'desc' => '销售价格'],
             ['id' => 'preferential_price', 'desc' => '优惠价格'],
             ['id' => 'promotion_price', 'desc' => '促销价格'],
             ['id' => 'keywords', 'desc' => '搜索关键字'],

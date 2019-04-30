@@ -236,13 +236,18 @@
                     }
                 },
                 {
-                    field: 'costprice', width: 100, title: '成本价', align: 'center', templet: function (data) {
-                        return '￥' + data.costprice
+                    field: 'mktprice', width: 100, title: '市场价', align: 'center', templet: function (data) {
+                        return '￥' + data.mktprice
                     }
                 },
                 {
-                    field: 'mktprice', width: 100, title: '市场价', align: 'center', templet: function (data) {
-                        return '￥' + data.mktprice
+                    field: 'promotion_price', width: 100, title: '优惠价', align: 'center', templet: function (data) {
+                        return '￥' + data.preferential_price
+                    }
+                },
+                {
+                    field: 'promotion_price', width: 100, title: '促销价', align: 'center', templet: function (data) {
+                        return '￥' + data.promotion_price
                     }
                 },
                 {field: 'cat_name', width: 150, title: '分类', align: 'center'},

@@ -1094,8 +1094,36 @@ if (!function_exists('importDataFromExcel')) {
         }
         $phpExcel = $excelReader->load($filePath);
         $sheet = $phpExcel->getSheet(0);
-        return $sheet->toArray();
+        $res = array();
+        $columnCount = 0;
+        foreach ($sheet->getRowIterator(1) as $row) {
+            $tmp = array();
+            foreach ($row->getCellIterator() as $cell) {
+                $value = $cell->getFormattedValue();
+                if ($value) {
+                    $tmp[] = $value;
+                    $columnCount++;
+                } else {
+                    break;
+                }
+            }
+            $res[$row->getRowIndex()] = $tmp;
+            break;
+        }
+        foreach ($sheet->getRowIterator(2) as $row) {
+            $tmp = array();
+            $index = 0;
+            foreach ($row->getCellIterator() as $cell) {
+                $tmp[] = $cell->getFormattedValue();
+                if (++$index === $columnCount) {
+                    break;
+                }
+            }
+            $res[$row->getRowIndex()] = $tmp;
+        }
+        return $res;
     }
+
 }
 
 if (!function_exists('encrypt')) {

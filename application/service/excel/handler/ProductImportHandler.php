@@ -33,8 +33,6 @@ class ProductImportHandler extends BaseHandler
         $message = [];
         $goodsModel = new GoodsModel();
 
-//        $upload = new Upload();
-
         $imagesModel = new ImagesModel();
         $goodsImagesModel = new GoodsImagesModel();
 
@@ -52,9 +50,9 @@ class ProductImportHandler extends BaseHandler
             if (!empty($record['image_url_prefix'])) {
                 $paths = Upload::getPrefixFiles($record['image_url_prefix']);
             }
-            if(!empty($record['intro'])) {
+            if (!empty($record['intro'])) {
                 $intro = Upload::getPrefixFiles($record['intro']);
-                if($intro && count($intro) > 0){
+                if ($intro && count($intro) > 0) {
                     $record['intro'] = "<img src='{$intro[0]}'>";
                 }
                 $goods['intro'] = "<div class='gooods-intro'>{$record['intro']}</div>";
@@ -64,15 +62,15 @@ class ProductImportHandler extends BaseHandler
                 $brand_id = model('common/Brand')->getInfoByName($record['brand_name'], true);
                 $goods['brand_id'] = $brand_id;
             }
-            $goods['weight'] = $record['weight'];
-            $goods['length'] = $record['length'];
-            $goods['width'] = $record['width'];
-            $goods['height'] = $record['height'];
+            $goods['weight'] = (double)$record['weight'];
+            $goods['length'] = (double)$record['length'];
+            $goods['width'] = (double)$record['width'];
+            $goods['height'] = (double)$record['height'];
             $goods['unit'] = $record['unit'];
-            $goods['mktprice'] = $record['market_price'];
-            $goods['price'] = $record['sale_price'];
-            $goods['preferential_price'] = $record['preferential_price'];
-            $goods['promotion_price'] = $record['promotion_price'];
+            $goods['mktprice'] = (double)$record['mktprice'];
+            $goods['price'] = (double)$record['price'];
+            $goods['preferential_price'] = (double)$record['preferential_price'];
+            $goods['promotion_price'] = (double)$record['promotion_price'];
             if (!empty($record['keywords'])) {
                 $goods['keywords'] = explode('|', $record['keywords']);
             }
@@ -89,7 +87,7 @@ class ProductImportHandler extends BaseHandler
                 $goodsModel->startTrans();
                 $goodsData = $goodsModel->field('id')->where(['erp_goods_id' => $goods['erp_goods_id']])->find();
                 if ($goodsData && isset($goodsData['id']) && $goodsData['id'] !== '') {
-                    $res = $goodsModel->updateGoods($goodsData['id'], $goods);
+                    $res = $goodsData->isUpdate(true)->save($goods);
                     if ($res === false) {
                         Log::warning("产品导入失败：产品ERP编码-{$goods['bn']} 产品名称-{$goods['name']}");
                     }
