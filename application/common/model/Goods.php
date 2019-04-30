@@ -274,7 +274,7 @@ class Goods extends Common implements Excelable
         $productsModel = new Products();
         $preModel = '';
         if ($fields == '*') {
-            $preModel = 'brand,goodsCat';
+            $preModel = 'brand,goodsCat,relateGoods';
         } else {
 
             if (stripos($fields, 'brand_id') !== false) {
@@ -286,13 +286,7 @@ class Goods extends Common implements Excelable
             }
             $preModel = substr($preModel, 0, -1);
         }
-//        try {
-            $list = $this::with($preModel)->field($fields)->where(['id' => $gid])->find();
-//            echo '商品id' . $gid;
-//        } catch (Exception $exception) {
-//            echo '商品id' . $gid;
-//            exit;
-//        }
+        $list = $this::with($preModel)->field($fields)->where(['id' => $gid])->find();
         if ($list) {
             if (isset($list['image_id'])) {
                 $image_url = _sImage($list['image_id']);
@@ -340,6 +334,11 @@ class Goods extends Common implements Excelable
             //获取当前登录是否收藏
 
             $list['isfav'] = $this->getFav($list['id'], $user_id);
+
+            foreach ($list->relate_goods as &$relate_good) {
+                $image_url = _sImage($relate_good['image_id']);
+                $relate_good['image_url'] = $image_url;
+            }
             $result['data'] = $list;
 
             //图片处理
@@ -1075,6 +1074,11 @@ class Goods extends Common implements Excelable
     public function comments()
     {
         return $this->hasMany(GoodsComment::class, 'goods_id', 'id');
+    }
+
+    public function relateGoods()
+    {
+        return $this->belongsToMany(Goods::class, 'relation_goods', 'relation_goods_id', 'main_goods_id');
     }
 
 }
