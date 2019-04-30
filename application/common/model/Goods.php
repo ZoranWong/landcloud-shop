@@ -11,7 +11,6 @@ namespace app\common\model;
 
 use app\service\excel\Excelable;
 use think\Db;
-use think\Exception;
 
 
 /**
@@ -287,13 +286,13 @@ class Goods extends Common implements Excelable
             }
             $preModel = substr($preModel, 0, -1);
         }
-        try {
+//        try {
             $list = $this::with($preModel)->field($fields)->where(['id' => $gid])->find();
-            echo '商品id' . $gid;
-        } catch (Exception $exception) {
-            echo '商品id' . $gid;
-            exit;
-        }
+//            echo '商品id' . $gid;
+//        } catch (Exception $exception) {
+//            echo '商品id' . $gid;
+//            exit;
+//        }
         if ($list) {
             if (isset($list['image_id'])) {
                 $image_url = _sImage($list['image_id']);
