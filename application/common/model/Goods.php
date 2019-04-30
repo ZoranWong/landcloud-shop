@@ -242,7 +242,7 @@ class Goods extends Common implements Excelable
                 if ($goods['status']) {
                     $list[$key] = $goods['data'];
                 }
-//                $list[$key]['comments_count'] = $gcModel->getCommentCount($value['id']);
+                $list[$key]['comments_count'] = $gcModel->getCommentCount($value['id']);
             }
 
             $result['data'] = $list->toArray();
