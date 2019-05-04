@@ -192,6 +192,8 @@ class Cart extends Common
         foreach ($needExcludeGoods as $needExcludeGoodId) {
             unset($list[$needExcludeGoodId]);
         }
+        $list = array_values($list);
+
         $data['list'] = $list;
         $result['data'] = $data;
         $result['status'] = true;
