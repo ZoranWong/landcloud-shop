@@ -242,6 +242,7 @@ class Goods extends Api
         $goods_id = input('id/d', 0);//商品ID
         $token = input('token', '');//token值 会员登录后传
         if (!$goods_id) {
+            $return_data['msg'] = '缺少商品ID参数';
             return $return_data;
         }
         $field = input('field', '*');

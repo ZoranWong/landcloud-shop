@@ -23,7 +23,7 @@ class Cart extends Common
      */
     public function products()
     {
-        return $this->hasOne('Products', 'id','product_id');
+        return $this->hasOne('Products', 'id', 'product_id');
     }
 
     /**
@@ -37,7 +37,7 @@ class Cart extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function add($user_id,$product_id,$nums,$type)
+    public function add($user_id, $product_id, $nums, $type)
     {
         $result = [
             'status' => false,
@@ -45,8 +45,8 @@ class Cart extends Common
             'msg' => ''
         ];
         $productsModel = new Products();
-        $productInfo = $productsModel->getProductInfo($product_id,false);           //第二个参数是不算促销信息,否则促销信息就算重复了
-        if(!$productInfo['status']){
+        $productInfo = $productsModel->getProductInfo($product_id, false);           //第二个参数是不算促销信息,否则促销信息就算重复了
+        if (!$productInfo['status']) {
             return $productInfo;
 
         }
@@ -57,16 +57,14 @@ class Cart extends Common
 
         $cat_info = $this->where($where)->find();
 
-        if($cat_info)
-        {
-            if($type == 1){
+        if ($cat_info) {
+            if ($type == 1) {
                 $cat_info->nums = $nums + $cat_info['nums'];
-            }else{
-                $cat_info->nums =  $nums;
+            } else {
+                $cat_info->nums = $nums;
             }
 
-            if($cat_info->nums > $canBuyNum)
-            {
+            if ($cat_info->nums > $canBuyNum) {
                 $result['msg'] = '库存不足';
                 return $result;
             }
@@ -74,11 +72,8 @@ class Cart extends Common
 
             $result['data'] = $cat_info->id;
 
-        }
-        else
-        {
-            if($nums > $canBuyNum)
-            {
+        } else {
+            if ($nums > $canBuyNum) {
                 $result['msg'] = '库存不足';
                 return $result;
             }
@@ -104,7 +99,7 @@ class Cart extends Common
     public function del($user_id, $ids = "")
     {
         $where[] = array('user_id', 'eq', $user_id);
-        if($ids != ""){
+        if ($ids != "") {
             $where[] = array('id', 'in', $ids);
         }
 
@@ -131,40 +126,71 @@ class Cart extends Common
             'msg' => ''
         );
         $where[] = ['user_id', 'eq', $userId];
-        if($id != '' && $display == '')
-        {
+        if ($id != '' && $display == '') {
             $where[] = ['id', 'in', $id];
         }
 
-        $list = $this->where($where)->select()->toArray();
+        $query = $this->where($where)->order('id', 'desc');
+        $list = $query->column('*', 'product_id');
+        $cartGoodsIds = array_keys($list);
+        $needExcludeGoods = array();
 
-        $productsModel = new Products();
+//        $productsModel = new Products();
         $goodsModel = new Goods();
-        foreach($list as $k => $v){
-            //如果没有此商品，就在购物车里删掉
-            $productInfo = $productsModel->getProductInfo($v['product_id'],false,$userId);           //第二个参数是不算促销信息,否则促销信息就算重复了
-            if(!$productInfo['status']){
+        foreach ($list as $k => $v) {
+//            //如果没有此商品，就在购物车里删掉
+//            $productInfo = $productsModel->getProductInfo($v['product_id'], false, $userId);
+//            //第二个参数是不算促销信息,否则促销信息就算重复了
+//            if (!$productInfo['status']) {
+//                unset($list[$k]);
+////                $this::destroy($v['id']);
+//                continue;
+//            }
+//
+//            $goodsWeight = $goodsModel->getWeight($v['product_id']);
+//            $list[$k]['weight'] = $goodsWeight;
+//
+//            $list[$k]['products'] = $productInfo['data'];
+
+            $goodsInfo = $goodsModel->getGoodsDetial($v['product_id']);
+            if (!$goodsInfo['status']) {
                 unset($list[$k]);
                 $this::destroy($v['id']);
                 continue;
             }
-            $goodsWeight = $goodsModel->getWeight($v['product_id']);
-            $list[$k]['weight'] = $goodsWeight;
+            $list[$k]['detail'] = $goodsInfo['data'];
 
-            $list[$k]['products'] = $productInfo['data'];
+            if (isset($list[$k]['detail']['relate_goods']) && count($list[$k]['detail']['relate_goods'])) {
+                $relateGoods = $list[$k]['detail']['relate_goods'];
+                foreach ($relateGoods as $relateGood) {
+                    if ($relateGood['pivot']['required'] && in_array($relateGood['id'], $cartGoodsIds)) {
+                        if ($list[$relateGood['id']]['nums'] > 1) {
+                            $list[$relateGood['id']]['nums'] -= 1;
+                            $list[$k]['set'][] = $relateGood;
+                        } else {
+                            $list[$k]['set'][] = $relateGood;
+                            $needExcludeGoods[] = $relateGood['id'];
+                        }
+                    }
+                }
+            }
+
             //如果传过来了购物车数据，就算指定的购物车的数据，否则，就算全部购物车的数据
-            if($id != ''){
-                $array_ids = explode(',',$id);
-                if(in_array($v['id'],$array_ids)){
+            if ($id != '') {
+                $array_ids = explode(',', $id);
+                if (in_array($v['id'], $array_ids)) {
                     $list[$k]['is_select'] = true;
-                }else{
+                } else {
                     $list[$k]['is_select'] = false;
                 }
-            }else{
+            } else {
                 $list[$k]['is_select'] = true;
             }
             //判断商品是否已收藏
-            $list[$k]['isCollection'] = model('common/GoodsCollection')->check($v['user_id'],$list[$k]['products']['goods_id']);
+            $list[$k]['isCollection'] = model('common/GoodsCollection')->check($v['user_id'], $list[$k]['products']['goods_id']);
+        }
+        foreach ($needExcludeGoods as $needExcludeGoodId) {
+            unset($list[$needExcludeGoodId]);
         }
         $data['list'] = $list;
         $result['data'] = $data;
@@ -192,7 +218,7 @@ class Cart extends Common
             'data' => [
                 'user_id' => $userId,
                 'list' => [],
-                'goods_amount' =>0,         //商品总金额
+                'goods_amount' => 0,         //商品总金额
                 'amount' => 0,              //总金额
                 'order_pmt' => 0,           //订单促销金额            单纯的订单促销的金额
                 'goods_pmt' => 0,           //商品促销金额            所有的商品促销的总计
@@ -207,43 +233,40 @@ class Cart extends Common
             'msg' => ""
         ];
         $cartList = $this->getList($userId, $id, $display);
-        if(!$cartList['status']){
+        if (!$cartList['status']) {
             $result['msg'] = $cartList['msg'];
             return $result;
-        }else{
+        } else {
             $result['data']['list'] = $cartList['data']['list'];
         }
         //算订单总金额
-        foreach($result['data']['list']as $k=>$v){
+        foreach ($result['data']['list'] as $k => $v) {
             //库存不足不计算金额不可以选择
-            if($v['nums'] > $v['products']['stock'])
-            {
+            if ($v['nums'] > $v['products']['stock']) {
                 $result['data']['list'][$k]['is_select'] = false;
                 $v['is_select'] = false;
             }
 
             //单条商品总价
-            $result['data']['list'][$k]['products']['amount'] = $v['nums']*$v['products']['price'];
+            $result['data']['list'][$k]['products']['amount'] = $v['nums'] * $v['products']['price'];
 
-            if($v['is_select']){
+            if ($v['is_select']) {
                 //算订单总商品价格
                 $result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
                 //算订单总价格
                 $result['data']['amount'] += $result['data']['list'][$k]['products']['amount'];
                 //计算总重量
-                $result['data']['weight'] += $v['weight']*$v['nums'];
+                $result['data']['weight'] += $v['weight'] * $v['nums'];
             }
         }
 
         //echo json_encode($result['data']['list']);exit;
 
         //运费判断
-        if($receipt_type == 1)
-        {
-            if($area_id)
-            {
+        if ($receipt_type == 1) {
+            if ($area_id) {
                 $shipModel = new Ship();
-                $result['data']['cost_freight'] = $shipModel->getShipCost($area_id, $result['data']['weight'],$result['data']['goods_amount']);
+                $result['data']['cost_freight'] = $shipModel->getShipCost($area_id, $result['data']['weight'], $result['data']['goods_amount']);
                 $result['data']['amount'] += $result['data']['cost_freight'];
             }
         }
@@ -253,25 +276,23 @@ class Cart extends Common
         $result['data'] = $promotionModel->toPromotion($result['data']);
 
         //加入有优惠券，判断优惠券是否可用
-        if($coupon_code != ""){
+        if ($coupon_code != "") {
             $couponModel = new Coupon();
-            $couponInfo = $couponModel->codeToInfo($coupon_code,true);
-            if(!$couponInfo['status']){
+            $couponInfo = $couponModel->codeToInfo($coupon_code, true);
+            if (!$couponInfo['status']) {
                 return $couponInfo;
             }
-            $re = $promotionModel->toCoupon($result['data'],$couponInfo['data']);
-            if(!$re['status']){
+            $re = $promotionModel->toCoupon($result['data'], $couponInfo['data']);
+            if (!$re['status']) {
                 return $re;       //优惠券不符合使用规则，后期会把不符合的原因写出来
             }
         }
 
-        if($point != 0)
-        {
+        if ($point != 0) {
             //判断用户是否有这么多积分
             $userModel = new User();
             $oPoint = $userModel->getUserPoint($userId);
-            if($oPoint['data'] < $point)
-            {
+            if ($oPoint['data'] < $point) {
                 $result['msg'] = '积分不足，无法使用积分';
                 return $result;
             }
@@ -279,18 +300,17 @@ class Cart extends Common
             //判断积分值多少钱
             $settingModel = new Setting();
             $orders_point_proportion = $settingModel->getValue('orders_point_proportion'); //订单积分使用比例
-            $max_point_deducted_money = $result['data']['amount']*($orders_point_proportion/100); //最大积分抵扣的钱
+            $max_point_deducted_money = $result['data']['amount'] * ($orders_point_proportion / 100); //最大积分抵扣的钱
             $point_discounted_proportion = $settingModel->getValue('point_discounted_proportion'); //积分兑换比例
-            $point_deducted_money = (int)$point/(int)$point_discounted_proportion; //积分可以抵扣的钱
-            if($max_point_deducted_money < $point_deducted_money)
-            {
-                $result['msg'] = '积分抵扣超过订单总金额的'.$orders_point_proportion.'%，积分无法正常使用！';
+            $point_deducted_money = (int)$point / (int)$point_discounted_proportion; //积分可以抵扣的钱
+            if ($max_point_deducted_money < $point_deducted_money) {
+                $result['msg'] = '积分抵扣超过订单总金额的' . $orders_point_proportion . '%，积分无法正常使用！';
                 return $result;
             }
 
             $result['data']['point'] = $point;
             $result['data']['point_money'] = $point_deducted_money;
-            $result['data']['amount'] = $result['data']['amount']-$point_deducted_money;
+            $result['data']['amount'] = $result['data']['amount'] - $point_deducted_money;
         }
 
         $result['status'] = true;
@@ -313,16 +333,13 @@ class Cart extends Common
         $where[] = ['id', 'eq', $input['id']];
         $where[] = ['user_id', 'eq', $input['user_id']];
         $res = $this->where($where)
-            ->update(['nums'=>$input['nums']]);
+            ->update(['nums' => $input['nums']]);
 
         $result['data'] = $res;
-        if($res !== false)
-        {
+        if ($res !== false) {
             $result['status'] = true;
             $result['msg'] = '设置成功';
-        }
-        else
-        {
+        } else {
             $result['msg'] = '设置失败';
         }
         return $result;

@@ -10,6 +10,7 @@
 namespace app\common\model;
 
 use app\service\excel\Excelable;
+use app\service\LabGicApiService;
 use think\Db;
 
 
@@ -225,11 +226,11 @@ class Goods extends Common implements Excelable
         foreach ($list as &$item) {
             $ids[] = $item['erp_goods_id'];
         }
-//        $pStocks = LabGicApiService::productsStock($ids);
+        $pStocks = LabGicApiService::productsStock($ids);
 
-//        foreach ($list as &$item) {
-//            $item['stock'] = $pStocks[$item['erp_goods_id']];
-//        }
+        foreach ($list as &$item) {
+            $item['stock'] = $pStocks[$item['erp_goods_id']];
+        }
         $total = $this
             ->field($fields)
             ->where($where)

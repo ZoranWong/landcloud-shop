@@ -359,6 +359,7 @@ return [
             'getlist' => [
                 'code' => 'getList',
                 'is_login' => true
+//                'is_login' => false
             ],
             'setnums' => [
                 'code' => 'setNums',
@@ -512,7 +513,11 @@ return [
             'getgoodscathotgoods' => [
                 'code' => 'getGoodsCatHotGoods',
                 'is_login' => false
-            ]
+            ],
+            'relateGoods' => [
+                'code' => 'getRelateGoods',
+                'is_login' => false
+            ],
         ]
     ],
 
