@@ -20,9 +20,18 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">商品编号：</label>
+        <label class="layui-form-label">产品ID（ERP U8编号）</label>
         <div class="layui-input-inline">
-            <input type="text" name="bn" lay-verify="title" autocomplete="off" placeholder="请输入商品编号" class="layui-input">
+            <input type="text" name="erp_goods_id" lay-verify="title" autocomplete="off"
+                   placeholder="请输入商品ERP编号" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">ERP商品编号OR货号：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="bn" lay-verify="title" autocomplete="off" placeholder="请输入商品编号 | 货号"
+                   class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -41,13 +50,15 @@
     <div class="layui-form-item">
         <label class="layui-form-label">推荐：</label>
         <div class="layui-input-block">
-            <input type="checkbox" value="1" name="is_recommend" lay-skin="switch" lay-filter="switchTest" title="开关"><div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em></em><i></i></div>
+            <input type="checkbox" value="1" name="is_recommend" lay-skin="switch" lay-filter="switchTest" title="开关">
+            <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em></em><i></i></div>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">热门：</label>
         <div class="layui-input-block">
-            <input type="checkbox"  value="1" name="is_hot" lay-skin="switch" lay-filter="switchTest" title="开关"><div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em></em><i></i></div>
+            <input type="checkbox" value="1" name="is_hot" lay-skin="switch" lay-filter="switchTest" title="开关">
+            <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em></em><i></i></div>
         </div>
     </div>
 </form>
@@ -58,15 +69,15 @@
     <div class="layui-input-inline">
         <select name="last_cat_id">
             <option value="">请选择分类</option>
-            {{#  layui.each(d.list, function(index, item){ }}
+            {{# layui.each(d.list, function(index, item){ }}
             <option value="{{ item.id }}">{{ item.name }}</option>
-            {{#  }); }}
+            {{# }); }}
         </select>
     </div>
 </script>
 
 <script>
-    layui.use(['form','laytpl'], function(){
+    layui.use(['form', 'laytpl'], function () {
         var $ = layui.jquery;
         var form = layui.form;
         var laytpl = layui.laytpl;
@@ -80,8 +91,8 @@
     function getFormData() {
         var formData = $(".advance-goods-search").serializeArray();
         var formDataTemp = {};
-        $.each(formData,function (i,obj) {
-            formDataTemp[obj.name]=obj.value;
+        $.each(formData, function (i, obj) {
+            formDataTemp[obj.name] = obj.value;
         });
         return formDataTemp;
     }
