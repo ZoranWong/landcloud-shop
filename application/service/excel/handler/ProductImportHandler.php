@@ -10,6 +10,7 @@ use app\common\model\Images as ImagesModel;
 use app\common\validate\Goods as GoodsValidator;
 use app\service\excel\BaseHandler;
 use app\service\Upload;
+use think\Exception;
 use think\facade\Log;
 
 class ProductImportHandler extends BaseHandler
@@ -112,9 +113,22 @@ class ProductImportHandler extends BaseHandler
                     if (count($paths)) {
                         $imagesData = [];
                         foreach ($paths as $imagePath) {
-                            $imagesData[] = ['url' => $imagePath, 'path' => $imagePath, 'type' => 'web', 'ctime' => time()];
+                            $image_id = md5(get_hash($imagePath));
+                            $imagesData[] = [
+                                'id' => $image_id,
+                                'name' => $image_id,
+                                'url' => $imagePath, 'type' => 'web', 'ctime' => time()];
                         }
-                        $imagesData = $imagesModel->saveAll($imagesData);
+                        try {
+                            $imagesData = $imagesModel->saveAll($imagesData);
+                            var_dump($imagesData);
+                            exit;
+                        } catch (Exception $exception) {
+                            var_dump($imagesModel->getLastSql());
+                            var_dump($exception->getTraceAsString());
+                            exit;
+                        }
+
 
                         $imgRelData = [];
                         $i = 0;
