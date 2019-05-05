@@ -122,6 +122,9 @@ class Goods extends Common implements Excelable
         if (isset($post['bn']) && $post['bn'] != "") {
             $where[] = ['bn', 'like', '%' . $post['bn'] . '%'];
         }
+        if (isset($post['erp_goods_id']) && $post['erp_goods_id'] !== '') {
+            $where[] = ['erp_goods_id', 'like', "%{$post['erp_goods_id']}%"];
+        }
 
         if (isset($post['last_cat_id']) && $post['last_cat_id'] != "") {
             $where[] = ['goods_cat_id', 'eq', $post['last_cat_id']];
