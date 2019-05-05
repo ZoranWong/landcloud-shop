@@ -1082,4 +1082,9 @@ class Goods extends Common implements Excelable
         return $this->belongsToMany(Goods::class, 'relation_goods', 'relation_goods_id', 'main_goods_id');
     }
 
+    public function goodsImages()
+    {
+        return $this->belongsToMany(Images::class, 'goods_images', 'image_id', 'goods_id');
+    }
+
 }
