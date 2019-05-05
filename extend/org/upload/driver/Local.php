@@ -122,8 +122,6 @@ class Local
 
     public function getPrefixFiles(string $prefix, int $maxKeys = 20)
     {
-        var_dump(1);
-        exit;
         $options = array(
             'prefix' => $prefix,
             'max-keys' => $maxKeys,

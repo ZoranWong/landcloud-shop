@@ -56,8 +56,6 @@ class ProductImportHandler extends BaseHandler
 //                    'bucket' => 'labgic-oss-1', //空间名称
 //                ]))->getPrefixFiles($record['image_url_prefix']);
                 $paths = Upload::prefixFiles($record['image_url_prefix']);
-                var_dump($paths);
-                exit;
             }
             if (!empty($record['intro'])) {
                 $intro = Upload::getPrefixFiles($record['intro']);
@@ -111,18 +109,20 @@ class ProductImportHandler extends BaseHandler
                     Log::warning("产品导入失败：产品ERP编码-{$goods['bn']} 产品名称-{$goods['name']}");
                     continue;
                 } else {
-                    if (count($paths)) {
-                        $imagesData = [];
-                        foreach ($paths as $imagePath) {
-                            $imagesData[] = ['url' => $imagePath, 'path' => $imagePath, 'type' => 'web', 'ctime' => time()];
+                    if (isset($paths) && count($paths)) {
+                        $imgRelData = [];
+                        $i = 0;
+                        foreach ($paths as $val) {
+                            $imgRelData[$i]['goods_id'] = $goods_id;
+                            $imgRelData[$i]['image_id'] = $val;
+                            $imgRelData[$i]['sort'] = $i;
+                            $i++;
                         }
-                        $imagesModel->saveAll($imagesData);
-
-                        $goodsImagesData = [];
-                        foreach ($imagesData as $image) {
-                            $goodsImagesData[] = ['goods_id' => $goods_id, 'image_id' => $image->id];
+                        if (!$goodsImagesModel->batchAdd($imgRelData, $goods_id)) {
+                            $goodsModel->rollback();
+                            Log::info('产品导入失败：图片导入失败');
+                            continue;
                         }
-                        $goodsImagesModel->saveAll($goodsImagesData);
                     }
 
                     $goodsModel->commit();

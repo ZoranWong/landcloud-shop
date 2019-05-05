@@ -125,8 +125,6 @@ class Aliyun
      */
     public function getPrefixFiles(string $prefix, int $maxKeys = 20)
     {
-        var_dump(2);
-        exit;
         $options = array(
             'prefix' => $prefix,
             'max-keys' => $maxKeys,
