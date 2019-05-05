@@ -111,6 +111,23 @@ class ProductImportHandler extends BaseHandler
                     continue;
                 } else {
                     if (count($paths)) {
+//                        $imagesData = [];
+//                        foreach ($paths as $imagePath) {
+//                            $image_id = md5($imagePath . time());
+//                            $imagesData[] = [
+//                                'id' => $image_id,
+//                                'name' => $image_id,
+//                                'url' => $imagePath, 'type' => 'Aliyun', 'ctime' => time()];
+//                        }
+//                        /** @var Goods $goodsData */
+//                        $goodsData = $goodsModel->find($goods_id);
+//                        try {
+//                            $goodsData->goodsImages()->saveAll($imagesData);
+//                        } catch (Exception $exception) {
+//                            var_dump($goodsData->getLastSql());
+//                            exit;
+//                        }
+
                         $imagesData = [];
                         foreach ($paths as $imagePath) {
                             $image_id = md5($imagePath . time());
@@ -119,45 +136,28 @@ class ProductImportHandler extends BaseHandler
                                 'name' => $image_id,
                                 'url' => $imagePath, 'type' => 'Aliyun', 'ctime' => time()];
                         }
-                        /** @var Goods $goodsData */
-                        $goodsData = $goodsModel->find($goods_id);
                         try {
-                            $goodsData->goodsImages()->saveAll($imagesData);
+                            $imagesData = $imagesModel->saveAll($imagesData);
                         } catch (Exception $exception) {
-                            var_dump($goodsData->getLastSql());
-                            exit;
+                            Log::warning("产品导入失败：产品ERP编码-{$goods['bn']} {$imagesModel->getLastSql()}");
+                            $goodsModel->rollback();
+                            continue;
                         }
 
-//                        $imagesData = [];
-//                        foreach ($paths as $imagePath) {
-//                            $image_id = md5(get_hash($imagePath));
-//                            $imagesData[] = [
-//                                'id' => $image_id,
-//                                'name' => $image_id,
-//                                'url' => $imagePath, 'type' => 'web', 'ctime' => time()];
-//                        }
-//                        try {
-//                            $imagesData = $imagesModel->saveAll($imagesData);
-//                        } catch (Exception $exception) {
-//                            Log::warning("产品导入失败：产品ERP编码-{$goods['bn']} {$imagesModel->getLastSql()}");
-//                            $goodsModel->rollback();
-//                            continue;
-//                        }
-//
-//                        $imgRelData = [];
-//                        $i = 0;
-//                        foreach ($imagesData as $val) {
-//                            $imgRelData[$i]['goods_id'] = $goods_id;
-//                            $imgRelData[$i]['image_id'] = $val['id'];
-//                            $imgRelData[$i]['sort'] = $i;
-//                            $i++;
-//                        }
-//
-//                        if (!$goodsImagesModel->batchAdd($imgRelData, $goods_id)) {
-//                            $goodsModel->rollback();
-//                            Log::info('产品导入失败：图片导入失败');
-//                            continue;
-//                        }
+                        $imgRelData = [];
+                        $i = 0;
+                        foreach ($imagesData as $val) {
+                            $imgRelData[$i]['goods_id'] = $goods_id;
+                            $imgRelData[$i]['image_id'] = $val['id'];
+                            $imgRelData[$i]['sort'] = $i;
+                            $i++;
+                        }
+
+                        if (!$goodsImagesModel->batchAdd($imgRelData, $goods_id)) {
+                            $goodsModel->rollback();
+                            Log::info('产品导入失败：图片导入失败');
+                            continue;
+                        }
                     }
 
                     $goodsModel->commit();
