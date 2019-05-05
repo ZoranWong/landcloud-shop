@@ -10,8 +10,8 @@ if (is_file(__DIR__ . '/aliyun/autoload.php')) {
 }
 
 
-use OSS\OssClient;
 use OSS\Core\OssException;
+use OSS\OssClient;
 
 
 class Aliyun
@@ -29,10 +29,10 @@ class Aliyun
     private $error = '';
 
     private $config = [
-        'accessKeyId'     => '', //阿里云accesskeyid，用户AccessKey控制台地址：https://usercenter.console.aliyun.com/#/manage/ak
+        'accessKeyId' => '', //阿里云accesskeyid，用户AccessKey控制台地址：https://usercenter.console.aliyun.com/#/manage/ak
         'accessKeySecret' => '', //访问密钥
-        'endpoint'        => '', //访问域名
-        'bucket'          => '', //空间名称
+        'endpoint' => '', //访问域名
+        'bucket' => '', //空间名称
     ];
 
     /**
@@ -125,6 +125,8 @@ class Aliyun
      */
     public function getPrefixFiles(string $prefix, int $maxKeys = 20)
     {
+        var_dump(2);
+        exit;
         $options = array(
             'prefix' => $prefix,
             'max-keys' => $maxKeys,
@@ -147,7 +149,7 @@ class Aliyun
      */
     public function getUrl($path)
     {
-        return $this->normalizeHost().ltrim($path, '/');
+        return $this->normalizeHost() . ltrim($path, '/');
     }
 
     /**
@@ -157,9 +159,9 @@ class Aliyun
      */
     protected function normalizeHost()
     {
-        $domain = $this->config['bucket'].'.'.$this->config['endpoint'];
+        $domain = $this->config['bucket'] . '.' . $this->config['endpoint'];
         $domain = "https://{$domain}";
-        return rtrim($domain, '/').'/';
+        return rtrim($domain, '/') . '/';
     }
 
 }
