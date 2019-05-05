@@ -10,6 +10,7 @@ use app\common\model\Images as ImagesModel;
 use app\common\validate\Goods as GoodsValidator;
 use app\service\excel\BaseHandler;
 use app\service\Upload;
+use think\Exception;
 use think\facade\Log;
 
 class ProductImportHandler extends BaseHandler
@@ -120,7 +121,12 @@ class ProductImportHandler extends BaseHandler
                         }
                         /** @var Goods $goodsData */
                         $goodsData = $goodsModel->find($goods_id);
-                        $goodsData->goodsImages()->saveAll($imagesData);
+                        try {
+                            $goodsData->goodsImages()->saveAll($imagesData);
+                        } catch (Exception $exception) {
+                            var_dump($goodsData->getLastSql());
+                            exit;
+                        }
 
 //                        $imagesData = [];
 //                        foreach ($paths as $imagePath) {
