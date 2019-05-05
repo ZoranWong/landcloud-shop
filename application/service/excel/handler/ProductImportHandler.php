@@ -117,10 +117,12 @@ class ProductImportHandler extends BaseHandler
                             $imagesData[] = [
                                 'id' => $image_id,
                                 'name' => $image_id,
-                                'url' => $imagePath, 'type' => 'Aliyun', 'ctime' => time()];
+                                'url' => $imagePath,
+                                'type' => 'Aliyun',
+                                'ctime' => time()];
                         }
                         try {
-                            $imagesData = $imagesModel->saveAll($imagesData)->column('id');
+                            $imagesData = $imagesModel->isUpdate(false)->saveAll($imagesData)->column('id');
                         } catch (Exception $exception) {
                             Log::warning("产品导入失败：产品ERP编码-{$goods['bn']} {$imagesModel->getLastSql()}");
                             $goodsModel->rollback();
@@ -135,6 +137,8 @@ class ProductImportHandler extends BaseHandler
                             var_dump($goodsData->getLastSql());
                             exit;
                         }
+                        var_dump($goodsData->goodsImages);
+                        exit;
                     }
 
                     $goodsModel->commit();
