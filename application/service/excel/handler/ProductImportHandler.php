@@ -113,7 +113,7 @@ class ProductImportHandler extends BaseHandler
                     if (count($paths)) {
                         $imagesData = [];
                         foreach ($paths as $imagePath) {
-                            $image_id = md5($imagePath);
+                            $image_id = md5($imagePath . time());
                             $imagesData[] = [
                                 'id' => $image_id,
                                 'name' => $image_id,
