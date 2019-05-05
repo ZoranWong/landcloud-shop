@@ -491,6 +491,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      */
     protected function checkBeforeSave($data, $where)
     {
+
         if (!empty($data)) {
             // 数据对象赋值
             foreach ($data as $key => $value) {

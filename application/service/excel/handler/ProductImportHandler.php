@@ -109,21 +109,44 @@ class ProductImportHandler extends BaseHandler
                     Log::warning("产品导入失败：产品ERP编码-{$goods['bn']} 产品名称-{$goods['name']}");
                     continue;
                 } else {
-                    if (isset($paths) && count($paths)) {
+                    if (count($paths)) {
+                        $imagesData = [];
+                        foreach ($paths as $imagePath) {
+                            $imagesData[] = ['url' => $imagePath, 'path' => $imagePath, 'type' => 'web', 'ctime' => time()];
+                        }
+                        $imagesData = $imagesModel->saveAll($imagesData);
+
                         $imgRelData = [];
                         $i = 0;
-                        foreach ($paths as $val) {
+                        foreach ($imagesData as $val) {
                             $imgRelData[$i]['goods_id'] = $goods_id;
-                            $imgRelData[$i]['image_id'] = $val;
+                            $imgRelData[$i]['image_id'] = $val['id'];
                             $imgRelData[$i]['sort'] = $i;
                             $i++;
                         }
+
                         if (!$goodsImagesModel->batchAdd($imgRelData, $goods_id)) {
                             $goodsModel->rollback();
                             Log::info('产品导入失败：图片导入失败');
                             continue;
                         }
                     }
+
+//                    if (isset($paths) && count($paths)) {
+//                        $imgRelData = [];
+//                        $i = 0;
+//                        foreach ($paths as $val) {
+//                            $imgRelData[$i]['goods_id'] = $goods_id;
+//                            $imgRelData[$i]['image_id'] = $val;
+//                            $imgRelData[$i]['sort'] = $i;
+//                            $i++;
+//                        }
+//                        if (!$goodsImagesModel->batchAdd($imgRelData, $goods_id)) {
+//                            $goodsModel->rollback();
+//                            Log::info('产品导入失败：图片导入失败');
+//                            continue;
+//                        }
+//                    }
 
                     $goodsModel->commit();
                     Log::info("产品导入成功：产品ERP编码-{$goods['bn']} 产品名称-{$goods['name']}");

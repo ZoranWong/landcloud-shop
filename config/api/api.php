@@ -417,7 +417,8 @@ return [
             ],
             'getlist' => [
                 'code' => 'getList',
-                'is_login' => true
+//                'is_login' => true
+                'is_login' => false
             ],
             'create' => [
                 'code' => 'create',
