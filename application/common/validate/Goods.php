@@ -20,7 +20,7 @@ class Goods extends Validate
         'costprice' => 'float',
         'mktprice' => 'float',
         'price' => 'float',
-        'image_id' => 'require',
+//        'image_id' => 'require',
         'goods_cat_id' => 'require|number',
         'goods_type_id' => 'require|number',
         'brand_id' => 'number',
