@@ -113,11 +113,11 @@ class ProductImportHandler extends BaseHandler
                     if (count($paths)) {
                         $imagesData = [];
                         foreach ($paths as $imagePath) {
-                            $image_id = md5(get_hash($imagePath));
+                            $image_id = md5($imagePath);
                             $imagesData[] = [
                                 'id' => $image_id,
                                 'name' => $image_id,
-                                'url' => $imagePath, 'type' => 'web', 'ctime' => time()];
+                                'url' => $imagePath, 'type' => 'Aliyun', 'ctime' => time()];
                         }
                         /** @var Goods $goodsData */
                         $goodsData = $goodsModel->find($goods_id);
