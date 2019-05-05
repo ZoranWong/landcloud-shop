@@ -138,6 +138,7 @@ class ProductImportHandler extends BaseHandler
                         }
                         try {
                             $imagesData = $imagesModel->saveAll($imagesData);
+                            $imagesModel->insertAll($imagesData);
                         } catch (Exception $exception) {
                             Log::warning("产品导入失败：产品ERP编码-{$goods['bn']} {$imagesModel->getLastSql()}");
                             $goodsModel->rollback();
