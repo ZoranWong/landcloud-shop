@@ -137,19 +137,20 @@ class ProductImportHandler extends BaseHandler
                                 'url' => $imagePath, 'type' => 'Aliyun', 'ctime' => time()];
                         }
                         try {
-                            $imagesModel->insertAll($imagesData);
-//                            $imagesData = $imagesModel->saveAll($imagesData);
+//                            $imagesModel->insertAll($imagesData);
+                            $imagesData = $imagesModel->saveAll($imagesData);
                         } catch (Exception $exception) {
                             Log::warning("产品导入失败：产品ERP编码-{$goods['bn']} {$imagesModel->getLastSql()}");
                             $goodsModel->rollback();
                             continue;
                         }
 
-                        $imagesData = $imagesModel->whereIn('url', $paths)->column('id');
+//                        $imagesData = $imagesModel->whereIn('url', $paths)->column('id');
                         /** @var Goods $goodsData */
                         $goodsData = $goodsModel->find($goods_id);
                         try {
-                            $goodsData->goodsImages()->sync($imagesData);
+//                            $goodsData->goodsImages()->sync($imagesData);
+                            $goodsData->goodsImages()->save($imagesData);
                         } catch (Exception $exception) {
                             var_dump($goodsData->getLastSql());
                             exit;
