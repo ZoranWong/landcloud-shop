@@ -10,7 +10,6 @@ use app\common\model\Images as ImagesModel;
 use app\common\validate\Goods as GoodsValidator;
 use app\service\excel\BaseHandler;
 use app\service\Upload;
-use think\Exception;
 use think\facade\Log;
 
 class ProductImportHandler extends BaseHandler
@@ -119,13 +118,13 @@ class ProductImportHandler extends BaseHandler
                                 'name' => $image_id,
                                 'url' => $imagePath, 'type' => 'web', 'ctime' => time()];
                         }
-                        try {
+//                        try {
                             $imagesData = $imagesModel->saveAll($imagesData);
-                        } catch (Exception $exception) {
-                            Log::warning("产品导入失败：产品ERP编码-{$goods['bn']} {$imagesModel->getLastSql()}");
-                            $goodsModel->rollback();
-                            continue;
-                        }
+//                        } catch (Exception $exception) {
+//                            Log::warning("产品导入失败：产品ERP编码-{$goods['bn']} {$imagesModel->getLastSql()}");
+//                            $goodsModel->rollback();
+//                            continue;
+//                        }
 
 
                         $imgRelData = [];
