@@ -205,7 +205,7 @@ class Goods extends Common implements Excelable
      * Email:1457529125@qq.com
      * Date: 2018-01-29 16:33
      */
-    public function getList($fields = '*', $where = [], $order = 'id desc', $page = 1, $limit = 10)
+    public function getList($from = 'manage', $fields = '*', $where = [], $order = 'id desc', $page = 1, $limit = 10)
     {
         $result = [
             'status' => true,
@@ -221,11 +221,14 @@ class Goods extends Common implements Excelable
             }
             $fields = implode(',', $tmpData);
         }
-        $list = $this
+        $query = $this
             ->field($fields)
             ->where($where)
-            ->whereNull('isdel')
-            ->order($order)
+            ->whereNull('isdel');
+        if ($from === 'api') {
+            $query = $query->where('marketable', '=', 1);
+        }
+        $list = $query->order($order)
             ->page($page, $limit)
             ->select();
         $ids = [];
