@@ -9,6 +9,8 @@
 
 namespace app\common\model;
 
+use app\common\model\Goods as GoodsModel;
+
 /**
  * 购物车
  * Class Cart
@@ -51,6 +53,13 @@ class Cart extends Common
 //
 //        }
 //        $canBuyNum = $productInfo['data']['stock'];
+
+        $goodsModel = new GoodsModel();
+        $goods = $goodsModel->find($product_id);
+        if (is_null($goods) || !($goods instanceof GoodsModel)) {
+            $result['msg'] = "没有找到ID为{$product_id}的商品";
+            return $result;
+        }
 
         $where[] = array('product_id', 'eq', $product_id);
         $where[] = array('user_id', 'eq', $user_id);

@@ -131,6 +131,7 @@ class ProductImportHandler extends BaseHandler
 
                         /** @var Goods $goodsData */
                         $goodsData = $goodsModel->find($goods_id);
+                        $goodsData->isUpdate(true)->save(['image_id' => $imagesData[0]]);
                         $goodsData->goodsImages()->sync($imagesData);
                     }
 

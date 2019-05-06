@@ -359,7 +359,6 @@ return [
             'getlist' => [
                 'code' => 'getList',
                 'is_login' => true
-//                'is_login' => false
             ],
             'setnums' => [
                 'code' => 'setNums',
