@@ -168,6 +168,7 @@ class Cart extends Api
             foreach ($user->carts as $cart) {
                 $num += $cart['nums'];
             }
+            $result['data'] = $num;
         }
 
         return $result;

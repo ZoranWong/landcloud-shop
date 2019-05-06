@@ -59,7 +59,9 @@ class Goods extends Common implements Excelable
         }
         $tableWhere = $this->tableWhere($post);
         $query = $this::with('defaultImage,brand,goodsCat,goodsType')
-            ->field($tableWhere['field'])->where($tableWhere['where'])->whereOr($tableWhere['whereOr'])->order($tableWhere['order']);
+            ->field($tableWhere['field'])->whereNull('isdel')->whereOr(function ($query) use ($tableWhere) {
+                $query->where($tableWhere['where'])->whereOr($tableWhere['whereOr']);
+            })->order($tableWhere['order']);
 
         if ($isPage) {
             $list = $query->paginate($limit);
@@ -222,6 +224,7 @@ class Goods extends Common implements Excelable
         $list = $this
             ->field($fields)
             ->where($where)
+            ->whereNull('isdel')
             ->order($order)
             ->page($page, $limit)
             ->select();
@@ -655,7 +658,8 @@ class Goods extends Common implements Excelable
 
         $this->startTrans();
 
-        $res = $this->where(['id' => $goods_id])->delete();
+//        $res = $this->where(['id' => $goods_id])->delete();
+        $res = $this->where(['id' => $goods_id])->setField(['isdel' => time(), 'marketable' => self::MARKETABLE_DOWN]);
         if (!$res) {
             $this->rollback();
             $result['msg'] = '商品删除失败';

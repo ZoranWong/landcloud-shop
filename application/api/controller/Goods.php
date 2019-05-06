@@ -250,8 +250,16 @@ class Goods extends Api
         $goodsModel = new GoodsModel();
         $returnGoods = $goodsModel->getGoodsDetial($goods_id, $field, $token);
         if ($returnGoods['status']) {
-            $return_data ['msg'] = '查询成功';
-            $return_data ['data'] = $returnGoods['data'];
+            if ($return_data['data']['isdel']) {
+                $return_data['msg'] = '产品已失效';
+                $return_data['status'] = false;
+            } elseif ($returnGoods['data']['marketable']) {
+                $return_data['msg'] = '产品已下架';
+                $return_data['status'] = false;
+            } else {
+                $return_data['msg'] = '查询成功';
+                $return_data['data'] = $returnGoods['data'];
+            }
         } else {
             $return_data['msg'] = $returnGoods['msg'];
             $return_data['status'] = false;
