@@ -16,6 +16,7 @@ class Cart extends Api
 {
     /**
      * 单个加入购物车
+     * 需要同时保证必选关联产品的添加
      * @return array
      */
     public function add()

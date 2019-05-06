@@ -10,6 +10,7 @@
 namespace app\common\model;
 
 use app\common\model\Goods as GoodsModel;
+use think\Exception;
 
 /**
  * 购物车
@@ -46,16 +47,9 @@ class Cart extends Common
             'data' => '',
             'msg' => ''
         ];
-//        $productsModel = new Products();
-//        $productInfo = $productsModel->getProductInfo($product_id, false);           //第二个参数是不算促销信息,否则促销信息就算重复了
-//        if (!$productInfo['status']) {
-//            return $productInfo;
-//
-//        }
-//        $canBuyNum = $productInfo['data']['stock'];
 
         $goodsModel = new GoodsModel();
-        $goods = $goodsModel->find($product_id);
+        $goods = $goodsModel->with('relateGoods')->find($product_id);
         if (is_null($goods) || !($goods instanceof GoodsModel)) {
             $result['msg'] = "没有找到ID为{$product_id}的商品";
             return $result;
@@ -64,39 +58,46 @@ class Cart extends Common
         $where[] = array('product_id', 'eq', $product_id);
         $where[] = array('user_id', 'eq', $user_id);
 
-        $cat_info = $this->where($where)->find();
+        $this->startTrans();
 
-        if ($cat_info) {
-            if ($type == 1) {
-                $cat_info->nums = $nums + $cat_info['nums'];
+        try {
+            $cartInfo = $this->where($where)->find();
+
+            if ($cartInfo) {
+                if ($type == 1) {
+                    $cartInfo->nums = $nums + $cartInfo['nums'];
+                } else {
+                    $cartInfo->nums = $nums;
+                }
+                $cartInfo->save();
+                $result['data'] = $cartInfo;
             } else {
-                $cat_info->nums = $nums;
+                $data['product_id'] = $product_id;
+                $data['nums'] = $nums;
+                $data['user_id'] = $user_id;
+                $cartInfo = $this->create($data);
+                $result['data'] = $cartInfo;
             }
 
-//            if ($cat_info->nums > $canBuyNum) {
-//                $result['msg'] = '库存不足';
-//                return $result;
-//            }
-            $cat_info->save();
+            if (!empty($goods->relateGoods)) {
+                $userCartGoodsIds = $this->where('user_id', $user_id)->column('product_id');
+                $relateGoodsIds = $goods->relateGoods()->column('lc_goods.id');
+                $needAddGoodsIds = array_diff($relateGoodsIds, $userCartGoodsIds);
+                $data = [];
+                foreach ($needAddGoodsIds as $item) {
+                    $data[] = ['user_id' => $user_id, 'product_id' => $item, 'nums' => 1];
+                }
+                $this->saveAll($data, false);
+            }
 
-//            $result['data'] = $cat_info->id;
-            $result['data'] = $cat_info;
+            $this->commit();
 
-        } else {
-//            if ($nums > $canBuyNum) {
-//                $result['msg'] = '库存不足';
-//                return $result;
-//            }
-
-            $data['product_id'] = $product_id;
-            $data['nums'] = $nums;
-            $data['user_id'] = $user_id;
-//            $result['data'] = $this->insertGetId($data);
-            $data['id'] = $this->insertGetId($data);
-            $result['data'] = $data;
+            $result['msg'] = '加入成功';
+            $result['status'] = true;
+        } catch (Exception $exception) {
+            $this->rollback();
+            $result['msg'] = $exception->getMessage();
         }
-        $result['msg'] = '加入成功';
-        $result['status'] = true;
 
         return $result;
     }
