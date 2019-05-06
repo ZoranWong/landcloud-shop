@@ -253,7 +253,7 @@ class Goods extends Api
             if ($return_data['data']['isdel']) {
                 $return_data['msg'] = '产品已失效';
                 $return_data['status'] = false;
-            } elseif ($returnGoods['data']['marketable']) {
+            } elseif ($returnGoods['data']['marketable'] == 2) {
                 $return_data['msg'] = '产品已下架';
                 $return_data['status'] = false;
             } else {
