@@ -276,7 +276,7 @@ class Goods extends Common implements Excelable
             'data' => [],
             'msg' => ''
         ];
-        $productsModel = new Products();
+//        $productsModel = new Products();
         $preModel = '';
         if ($fields == '*') {
             $preModel = 'brand,goodsCat,relateGoods';
@@ -303,17 +303,17 @@ class Goods extends Common implements Excelable
                 $list['label_ids'] = [];
             }
             //取默认货品
-            $default_product = $productsModel->where(['goods_id' => $gid, 'is_defalut' => $productsModel::DEFALUT_YES])->find();
-            if (!$default_product) {
-                return error_code(10000);
-            }
+//            $default_product = $productsModel->where(['goods_id' => $gid, 'is_defalut' => $productsModel::DEFALUT_YES])->find();
+//            if (!$default_product) {
+//                return error_code(10000);
+//            }
             $user_id = getUserIdByToken($token);//获取user_id
-            $product_info = $productsModel->getProductInfo($default_product['id'], true, $user_id);
-            if (!$product_info['status']) {
-                return $product_info;
-            }
-            $list['product'] = $product_info['data'];
-            $list['price'] = $list['product']['price'];
+//            $product_info = $productsModel->getProductInfo($default_product['id'], true, $user_id);
+//            if (!$product_info['status']) {
+//                return $product_info;
+//            }
+//            $list['product'] = $product_info['data'];
+//            $list['price'] = $list['product']['price'];
             if ($list['spes_desc']) {
                 $list['spes_desc'] = unserialize($list['spes_desc']);
             }
