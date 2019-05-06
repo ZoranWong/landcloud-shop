@@ -249,7 +249,8 @@ class Goods extends Common implements Excelable
                 $list[$key]['comments_count'] = $gcModel->getCommentCount($value['id']);
             }
 
-            $result['data'] = $list->toArray();
+//            $result['data'] = $list->toArray();
+            $result['data'] = $this->tableFormat($list);
         }
         $result['total'] = ceil($total / $limit);
 
