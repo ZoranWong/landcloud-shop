@@ -161,7 +161,7 @@ class Goods extends Api
         $page_limit = config('jshop.page_limit');
         $limit = $limit ? $limit : $page_limit;
 
-        $returnGoods = $goodsModel->getList($field, $where, $order, $page, $limit);
+        $returnGoods = $goodsModel->getList('api', $field, $where, $order, $page, $limit);
         foreach ($returnGoods['data'] as $goods) {
 
         }
@@ -210,7 +210,7 @@ class Goods extends Api
                 ->whereOr('erp_goods_id', $keyword)
                 ->whereOrRaw('json_contains(keywords->\'$[*]\',\'"' . $keyword . '"\',\'$\')');
         };
-        $returnGoods = $goodsModel->getList($field, $where, $order, $page, $limit);
+        $returnGoods = $goodsModel->getList('api', $field, $where, $order, $page, $limit);
         if ($returnGoods['status']) {
             $return_data ['msg'] = '查询成功';
             $return_data ['data']['list'] = $returnGoods['data'];
