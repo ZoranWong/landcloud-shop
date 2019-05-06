@@ -44,13 +44,13 @@ class Cart extends Common
             'data' => '',
             'msg' => ''
         ];
-        $productsModel = new Products();
-        $productInfo = $productsModel->getProductInfo($product_id, false);           //第二个参数是不算促销信息,否则促销信息就算重复了
-        if (!$productInfo['status']) {
-            return $productInfo;
-
-        }
-        $canBuyNum = $productInfo['data']['stock'];
+//        $productsModel = new Products();
+//        $productInfo = $productsModel->getProductInfo($product_id, false);           //第二个参数是不算促销信息,否则促销信息就算重复了
+//        if (!$productInfo['status']) {
+//            return $productInfo;
+//
+//        }
+//        $canBuyNum = $productInfo['data']['stock'];
 
         $where[] = array('product_id', 'eq', $product_id);
         $where[] = array('user_id', 'eq', $user_id);
@@ -64,25 +64,27 @@ class Cart extends Common
                 $cat_info->nums = $nums;
             }
 
-            if ($cat_info->nums > $canBuyNum) {
-                $result['msg'] = '库存不足';
-                return $result;
-            }
+//            if ($cat_info->nums > $canBuyNum) {
+//                $result['msg'] = '库存不足';
+//                return $result;
+//            }
             $cat_info->save();
 
-            $result['data'] = $cat_info->id;
+//            $result['data'] = $cat_info->id;
+            $result['data'] = $cat_info;
 
         } else {
-            if ($nums > $canBuyNum) {
-                $result['msg'] = '库存不足';
-                return $result;
-            }
+//            if ($nums > $canBuyNum) {
+//                $result['msg'] = '库存不足';
+//                return $result;
+//            }
 
             $data['product_id'] = $product_id;
             $data['nums'] = $nums;
             $data['user_id'] = $user_id;
-            $result['data'] = $this->insertGetId($data);
-
+//            $result['data'] = $this->insertGetId($data);
+            $data['id'] = $this->insertGetId($data);
+            $result['data'] = $data;
         }
         $result['msg'] = '加入成功';
         $result['status'] = true;

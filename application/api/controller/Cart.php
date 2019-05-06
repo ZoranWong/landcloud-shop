@@ -40,7 +40,6 @@ class Cart extends Api
 
 
         return model('common/Cart')->add($this->userId, input('product_id'), input('nums'), $type);
-
     }
 
 
