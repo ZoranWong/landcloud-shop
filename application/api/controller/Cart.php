@@ -3,7 +3,8 @@
 namespace app\api\controller;
 
 use app\common\controller\Api;
-use app\common\model\Cart as Model;
+use app\common\model\Cart as CartModel;
+use app\common\model\User as UserModel;
 use think\facade\Request;
 
 /**
@@ -71,6 +72,15 @@ class Cart extends Api
         return $return_data;
     }
 
+    /**
+     * 批量删除购物车（如失效产品，下架产品）
+     * 需要删除关联的产品
+     */
+    public function batchDel()
+    {
+
+    }
+
 
     /**
      * 获取购物车列表
@@ -81,7 +91,7 @@ class Cart extends Api
      */
     public function getList()
     {
-        $model = new Model();
+        $model = new CartModel();
         $ids = Request::param('ids', '');
         $display = Request::param('display', '');
         $area_id = Request::param('area_id', false);
@@ -119,28 +129,46 @@ class Cart extends Api
      *  获取购物车数量
      * @return array
      */
+//    public function getNumber()
+//    {
+//        $result = [
+//            'status' => true,
+//            'msg' => '获取成功',
+//            'data' => []
+//        ];
+//
+//        $model = new Model();
+//        $where[] = ['user_id', 'eq', $this->userId];
+//        $vclass = getSetting('virtual_card_class');
+//        if ($vclass) {
+//            $where[] = ['g.goods_cat_id', 'neq', $vclass];
+//        }
+//
+//        $cartNums = $model->alias('c')
+//            ->where($where)
+//            ->join('products p', 'p.id = c.product_id')
+//            ->join('goods g', 'g.id = p.goods_id')
+//            ->sum('nums');
+//
+//        $result['data'] = $cartNums;
+//
+//        return $result;
+//    }
     public function getNumber()
     {
         $result = [
             'status' => true,
             'msg' => '获取成功',
-            'data' => []
+            'data' => 0
         ];
 
-        $model = new Model();
-        $where[] = ['user_id', 'eq', $this->userId];
-        $vclass = getSetting('virtual_card_class');
-        if ($vclass) {
-            $where[] = ['g.goods_cat_id', 'neq', $vclass];
+        $user = UserModel::with('carts')->find($this->userId);
+        if (!empty($user->carts)) {
+            $num = 0;
+            foreach ($user->carts as $cart) {
+                $num += $cart['nums'];
+            }
         }
-
-        $cartNums = $model->alias('c')
-            ->where($where)
-            ->join('products p', 'p.id = c.product_id')
-            ->join('goods g', 'g.id = p.goods_id')
-            ->sum('nums');
-
-        $result['data'] = $cartNums;
 
         return $result;
     }
