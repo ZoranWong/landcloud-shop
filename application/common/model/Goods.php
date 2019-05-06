@@ -293,10 +293,8 @@ class Goods extends Common implements Excelable
         }
         $list = $this::with($preModel)->field($fields)->where(['id' => $gid])->find();
         if ($list) {
-            if (isset($list['image_id'])) {
-                $image_url = _sImage($list['image_id']);
-                $list['image_url'] = $image_url;
-            }
+            $image_url = _sImage($list['image_id']);
+            $list['image_url'] = $image_url;
             if (isset($list['label_ids'])) {
                 $list['label_ids'] = getLabel($list['label_ids']);
             } else {
