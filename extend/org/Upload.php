@@ -66,6 +66,7 @@ class Upload
     private $uploader;
 
     protected $exts = [];
+
     /**
      * 构造方法，用于构造上传实例
      * @param array $config 配置
@@ -154,8 +155,8 @@ class Upload
             return false;
         }
 
-        $this->savePath = trim($this->savePath ?:'',  DIRECTORY_SEPARATOR).
-            DIRECTORY_SEPARATOR.trim($path, DIRECTORY_SEPARATOR);
+        $this->savePath = trim($this->savePath ?: '', DIRECTORY_SEPARATOR) .
+            DIRECTORY_SEPARATOR . trim($path, DIRECTORY_SEPARATOR);
 
         /* 检测上传根目录 */
         if (!$this->uploader->checkRootPath($this->rootPath)) {
@@ -244,7 +245,7 @@ class Upload
             if ($this->uploader->save($file, $this->replace)) {
                 unset($file['error'], $file['tmp_name']);
                 $info[$key] = $file;
-                $this->path = trim($this->savePath, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.trim($savename, DIRECTORY_SEPARATOR);
+                $this->path = trim($this->savePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . trim($savename, DIRECTORY_SEPARATOR);
             } else {
                 $this->error = $this->uploader->getError();
             }
@@ -483,7 +484,8 @@ class Upload
         return $this->uploader->getPrefixFiles($prefix, $count);
     }
 
-    public function getUrl($path){
+    public function getUrl($path)
+    {
         return $this->uploader->getUrl($path);
     }
 }

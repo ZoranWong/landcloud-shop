@@ -10,6 +10,7 @@ use app\common\model\Images as ImagesModel;
 use app\common\validate\Goods as GoodsValidator;
 use app\service\excel\BaseHandler;
 use app\service\Upload;
+use think\Exception;
 use think\facade\Log;
 
 class ProductImportHandler extends BaseHandler
@@ -48,7 +49,14 @@ class ProductImportHandler extends BaseHandler
             $goods['brief'] = $record['brief'];
             $paths = [];
             if (!empty($record['image_url_prefix'])) {
-                $paths = Upload::getPrefixFiles($record['image_url_prefix']);
+//                $paths = Upload::getPrefixFiles($record['image_url_prefix']);
+//                $paths = (new Upload([], 'aliyun', [
+//                    'accessKeyId' => 'LTAIlPzA6EbMNFpj', //阿里云accesskeyid，用户AccessKey控制台地址：https://usercenter.console.aliyun.com/#/manage/ak
+//                    'accessKeySecret' => '9FF5OwhjnfMTYzCXPgt4CxttuwK8rx', //访问密钥
+//                    'endpoint' => 'oss-cn-hangzhou.aliyuncs.com', //访问域名
+//                    'bucket' => 'labgic-oss-1', //空间名称
+//                ]))->getPrefixFiles($record['image_url_prefix']);
+                $paths = Upload::prefixFiles($record['image_url_prefix']);
             }
             if (!empty($record['intro'])) {
                 $intro = Upload::getPrefixFiles($record['intro']);
@@ -105,15 +113,25 @@ class ProductImportHandler extends BaseHandler
                     if (count($paths)) {
                         $imagesData = [];
                         foreach ($paths as $imagePath) {
-                            $imagesData[] = ['url' => $imagePath, 'path' => $imagePath, 'type' => 'web', 'ctime' => time()];
+                            $image_id = md5($imagePath . time());
+                            $imagesData[] = [
+                                'id' => $image_id,
+                                'name' => $image_id,
+                                'url' => $imagePath,
+                                'type' => 'Aliyun',
+                                'ctime' => time()];
                         }
-                        $imagesModel->saveAll($imagesData);
+                        try {
+                            $imagesData = $imagesModel->saveAll($imagesData, false)->column('id');
+                        } catch (Exception $exception) {
+                            Log::warning("产品导入失败：产品ERP编码-{$goods['bn']} {$imagesModel->getLastSql()}");
+                            $goodsModel->rollback();
+                            continue;
+                        }
 
-                        $goodsImagesData = [];
-                        foreach ($imagesData as $image) {
-                            $goodsImagesData[] = ['goods_id' => $goods_id, 'image_id' => $image->id];
-                        }
-                        $goodsImagesModel->saveAll($goodsImagesData);
+                        /** @var Goods $goodsData */
+                        $goodsData = $goodsModel->find($goods_id);
+                        $goodsData->goodsImages()->sync($imagesData);
                     }
 
                     $goodsModel->commit();

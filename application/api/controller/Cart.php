@@ -1,8 +1,10 @@
 <?php
+
 namespace app\api\controller;
+
 use app\common\controller\Api;
-use think\facade\Request;
 use app\common\model\Cart as Model;
+use think\facade\Request;
 
 /**
  * 购物车
@@ -24,22 +26,20 @@ class Cart extends Api
             'msg' => ''
         ];
 
-        if(!input("?param.product_id")){
+        if (!input("?param.product_id")) {
             $result['msg'] = '请输入货品id';
             return $result;
         }
-        if(!input("?param.nums")){
+        if (!input("?param.nums")) {
             $result['msg'] = '请输入货品数量';
             return $result;
         }
 
 
-        $type = input('param.type',1);          //1是累加，2是覆盖
+        $type = input('param.type', 1);          //1是累加，2是覆盖
 
 
-
-
-        return model('common/Cart')->add($this->userId,input('product_id'),input('nums'),$type);
+        return model('common/Cart')->add($this->userId, input('product_id'), input('nums'), $type);
 
     }
 
@@ -51,20 +51,17 @@ class Cart extends Api
      */
     public function del()
     {
-        $ids = input('param.ids',"");
+        $ids = input('param.ids', "");
         $user_id = $this->userId;
 
-        $result = model('common/Cart')->del($user_id,$ids);
-        if($result)
-        {
+        $result = model('common/Cart')->del($user_id, $ids);
+        if ($result) {
             $return_data = array(
                 'status' => true,
                 'msg' => '移除购物车成功',
                 'data' => $result
             );
-        }
-        else
-        {
+        } else {
             $return_data = array(
                 'status' => false,
                 'msg' => '移除购物车失败',
@@ -92,6 +89,7 @@ class Cart extends Api
         $coupon_code = Request::param('coupon_code', '');
         $receipt_type = Request::param('receipt_type', 1);
         $result = $model->info($this->userId, $ids, $display, $area_id, $point, $coupon_code, $receipt_type);
+//        $result = $model->info(13, $ids, $display, $area_id, $point, $coupon_code, $receipt_type);
         return $result;
     }
 
@@ -105,15 +103,14 @@ class Cart extends Api
         $input['user_id'] = $this->userId;
         $input['id'] = input('id');
         $input['nums'] = input('nums', 1);
-        if($input['nums'] <= 0)
-        {
+        if ($input['nums'] <= 0) {
             $input['nums'] = 1;
         }
         $result = model('common/Cart')->setNums($input);
-        if(!$result['status']){
+        if (!$result['status']) {
             return $result;
         }
-        return model('common/Cart')->info($this->userId,  input('param.ids',""));
+        return model('common/Cart')->info($this->userId, input('param.ids', ""));
 
     }
 
@@ -134,8 +131,7 @@ class Cart extends Api
         $model = new Model();
         $where[] = ['user_id', 'eq', $this->userId];
         $vclass = getSetting('virtual_card_class');
-        if($vclass)
-        {
+        if ($vclass) {
             $where[] = ['g.goods_cat_id', 'neq', $vclass];
         }
 

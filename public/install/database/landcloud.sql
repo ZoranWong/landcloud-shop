@@ -1019,7 +1019,7 @@ CREATE TABLE `lc_order` (
   `payment_code` varchar(20) DEFAULT NULL COMMENT '支付方式代码',
   `payment_time` bigint(12) DEFAULT NULL COMMENT '支付时间',
   `logistics_id` varchar(20) DEFAULT NULL COMMENT '配送方式ID 关联ship.id',
-  `logistics_name` varchar(50) DEFAULT NULL COMMENT '配送方式名称',
+  `logistics_name` varchar(50) DEFAULT NULL COMMENT '配送 方式名称',
   `cost_freight` decimal(6,2) unsigned DEFAULT '0.00' COMMENT '配送费用',
   `user_id` int(10) unsigned DEFAULT NULL COMMENT '用户ID 关联user.id',
   `seller_id` int(10) unsigned DEFAULT NULL COMMENT '店铺ID 关联seller.id',

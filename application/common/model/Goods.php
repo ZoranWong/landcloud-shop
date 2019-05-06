@@ -10,6 +10,7 @@
 namespace app\common\model;
 
 use app\service\excel\Excelable;
+use app\service\LabGicApiService;
 use think\Db;
 
 
@@ -121,6 +122,9 @@ class Goods extends Common implements Excelable
         if (isset($post['bn']) && $post['bn'] != "") {
             $where[] = ['bn', 'like', '%' . $post['bn'] . '%'];
         }
+        if (isset($post['erp_goods_id']) && $post['erp_goods_id'] !== '') {
+            $where[] = ['erp_goods_id', 'like', "%{$post['erp_goods_id']}%"];
+        }
 
         if (isset($post['last_cat_id']) && $post['last_cat_id'] != "") {
             $where[] = ['goods_cat_id', 'eq', $post['last_cat_id']];
@@ -225,11 +229,11 @@ class Goods extends Common implements Excelable
         foreach ($list as &$item) {
             $ids[] = $item['erp_goods_id'];
         }
-//        $pStocks = LabGicApiService::productsStock($ids);
+        $pStocks = LabGicApiService::productsStock($ids);
 
-//        foreach ($list as &$item) {
-//            $item['stock'] = $pStocks[$item['erp_goods_id']];
-//        }
+        foreach ($list as &$item) {
+            $item['stock'] = $pStocks[$item['erp_goods_id']];
+        }
         $total = $this
             ->field($fields)
             ->where($where)
@@ -1079,6 +1083,11 @@ class Goods extends Common implements Excelable
     public function relateGoods()
     {
         return $this->belongsToMany(Goods::class, 'relation_goods', 'relation_goods_id', 'main_goods_id');
+    }
+
+    public function goodsImages()
+    {
+        return $this->belongsToMany(Images::class, 'goods_images', 'image_id', 'goods_id');
     }
 
 }

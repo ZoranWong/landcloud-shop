@@ -130,22 +130,51 @@ class Cart extends Common
             $where[] = ['id', 'in', $id];
         }
 
-        $list = $this->where($where)->select()->toArray();
+        $query = $this->where($where)->order('id', 'desc');
+        $list = $query->column('*', 'product_id');
+        $cartGoodsIds = array_keys($list);
+        $needExcludeGoods = array();
 
-        $productsModel = new Products();
+//        $productsModel = new Products();
         $goodsModel = new Goods();
         foreach ($list as $k => $v) {
-            //如果没有此商品，就在购物车里删掉
-            $productInfo = $productsModel->getProductInfo($v['product_id'], false, $userId);           //第二个参数是不算促销信息,否则促销信息就算重复了
-            if (!$productInfo['status']) {
+//            //如果没有此商品，就在购物车里删掉
+//            $productInfo = $productsModel->getProductInfo($v['product_id'], false, $userId);
+//            //第二个参数是不算促销信息,否则促销信息就算重复了
+//            if (!$productInfo['status']) {
+//                unset($list[$k]);
+////                $this::destroy($v['id']);
+//                continue;
+//            }
+//
+//            $goodsWeight = $goodsModel->getWeight($v['product_id']);
+//            $list[$k]['weight'] = $goodsWeight;
+//
+//            $list[$k]['products'] = $productInfo['data'];
+
+            $goodsInfo = $goodsModel->getGoodsDetial($v['product_id']);
+            if (!$goodsInfo['status']) {
                 unset($list[$k]);
                 $this::destroy($v['id']);
                 continue;
             }
-            $goodsWeight = $goodsModel->getWeight($v['product_id']);
-            $list[$k]['weight'] = $goodsWeight;
+            $list[$k]['detail'] = $goodsInfo['data'];
 
-            $list[$k]['products'] = $productInfo['data'];
+            if (isset($list[$k]['detail']['relate_goods']) && count($list[$k]['detail']['relate_goods'])) {
+                $relateGoods = $list[$k]['detail']['relate_goods'];
+                foreach ($relateGoods as $relateGood) {
+                    if ($relateGood['pivot']['required'] && in_array($relateGood['id'], $cartGoodsIds)) {
+                        if ($list[$relateGood['id']]['nums'] > 1) {
+                            $list[$relateGood['id']]['nums'] -= 1;
+                            $list[$k]['set'][] = $relateGood;
+                        } else {
+                            $list[$k]['set'][] = $relateGood;
+                            $needExcludeGoods[] = $relateGood['id'];
+                        }
+                    }
+                }
+            }
+
             //如果传过来了购物车数据，就算指定的购物车的数据，否则，就算全部购物车的数据
             if ($id != '') {
                 $array_ids = explode(',', $id);
@@ -160,6 +189,11 @@ class Cart extends Common
             //判断商品是否已收藏
             $list[$k]['isCollection'] = model('common/GoodsCollection')->check($v['user_id'], $list[$k]['products']['goods_id']);
         }
+        foreach ($needExcludeGoods as $needExcludeGoodId) {
+            unset($list[$needExcludeGoodId]);
+        }
+        $list = array_values($list);
+
         $data['list'] = $list;
         $result['data'] = $data;
         $result['status'] = true;
