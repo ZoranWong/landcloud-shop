@@ -29,7 +29,7 @@ return [
     'manage_login_fail_num' => 5,       //管理员登陆失败次数，如果超过这个次数，会显示图片验证码，防止暴力破解
     'tocash_money_low' => '100',       //最低提现金额
     'authorization_url' => 'http://www.ztes.com', //授权查询地址
-    'product' => '蓝杰柯销售商城',//产品名称
+    'product' => '兰杰柯销售商城',//产品名称
     'version' => 'v2.0.1',    //版本号
     'sms_password' => '',  //短信密码，会覆盖项目配置里的此参数，为了保密密码
     'image_storage' => [
