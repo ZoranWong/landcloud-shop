@@ -80,14 +80,21 @@ class Cart extends Common
             }
 
             if (!empty($goods->relateGoods)) {
-                $userCartGoodsIds = $this->where('user_id', $user_id)->column('product_id');
-                $relateGoodsIds = $goods->relateGoods()->column('lc_goods.id');
+                $userCarts = $this->where('user_id', $user_id)->column('id', 'product_id');
+                $userCartGoodsIds = array_keys($userCarts);
+                $relateGoodsIds = $goods->relateGoods(true)->column('lc_goods.id');
                 $needAddGoodsIds = array_diff($relateGoodsIds, $userCartGoodsIds);
+                $needUpdateGoodsIds = array_intersect($relateGoodsIds, $userCartGoodsIds);
                 $data = [];
                 foreach ($needAddGoodsIds as $item) {
-                    $data[] = ['user_id' => $user_id, 'product_id' => $item, 'nums' => 1];
+                    $data[] = ['user_id' => $user_id, 'product_id' => $item, 'nums' => $cartInfo['nums']];
                 }
                 $this->saveAll($data, false);
+                $needUpdateCarts = [];
+                foreach ($needUpdateGoodsIds as $needUpdateGoodsId) {
+                    $needUpdateCarts[] = $userCarts[$needUpdateGoodsId];
+                }
+                $this->whereIn('id', $needUpdateCarts)->setInc('nums', $nums);
             }
 
             $this->commit();

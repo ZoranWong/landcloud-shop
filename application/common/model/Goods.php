@@ -1080,9 +1080,13 @@ class Goods extends Common implements Excelable
         return $this->hasMany(GoodsComment::class, 'goods_id', 'id');
     }
 
-    public function relateGoods()
+    public function relateGoods(bool $required = false)
     {
-        return $this->belongsToMany(Goods::class, 'relation_goods', 'relation_goods_id', 'main_goods_id');
+        $query = $this->belongsToMany(Goods::class, 'relation_goods', 'relation_goods_id', 'main_goods_id');
+        if ($required) {
+            $query = $query->wherePivot('required', '=', 1);
+        }
+        return $query;
     }
 
     public function goodsImages()
