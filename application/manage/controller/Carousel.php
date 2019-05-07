@@ -1,17 +1,11 @@
 <?php
-// +----------------------------------------------------------------------
-// | JSHOP [ 小程序商城 ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2018 http://jihainet.com All rights reserved.
-// +----------------------------------------------------------------------
-// | Author: tianyu <tianyu@jihainet.com>
-// +----------------------------------------------------------------------
+
 namespace app\Manage\controller;
 
 use app\common\controller\Manage;
+use app\common\model\Article;
 use app\common\model\Carousel as CarouselModel;
 use app\common\model\CarouselSeat;
-use app\common\model\Article;
 use app\common\model\Form;
 use app\common\model\Goods;
 use think\facade\Request;

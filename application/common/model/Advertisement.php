@@ -1,14 +1,7 @@
 <?php
-// +----------------------------------------------------------------------
-// | JSHOP [ 小程序商城 ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2018 http://jihainet.com All rights reserved.
-// +----------------------------------------------------------------------
-// | Author: tianyu <tianyu@jihainet.com>
-// +----------------------------------------------------------------------
+
 namespace app\common\model;
 
-use app\common\model\AdvertPosition;
 use think\Validate;
 
 class Advertisement extends Common
