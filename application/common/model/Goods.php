@@ -241,7 +241,6 @@ class Goods extends Common implements Excelable
         $total = $this
             ->field($fields)
             ->where($where)
-            ->order('ctime', 'desc')
             ->count();
 
         if (!$list->isEmpty()) {

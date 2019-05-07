@@ -62,8 +62,8 @@ class Brand extends Api
 
 
         if (!$list->isEmpty()) {
-            foreach ((array)$list as &$v) {
-                $v['logo'] = _sImage($v['logo']);
+            foreach ($list as &$v) {
+                $v['logo_url'] = _sImage($v['logo']);
             }
         }
 
