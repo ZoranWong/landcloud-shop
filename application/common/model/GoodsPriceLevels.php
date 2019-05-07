@@ -50,4 +50,9 @@ class GoodsPriceLevels extends Common implements Excelable
         }
         return $result;
     }
+
+    public function areaInfo()
+    {
+        return $this->belongsTo(Area::class, 'area', 'id');
+    }
 }

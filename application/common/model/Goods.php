@@ -282,7 +282,7 @@ class Goods extends Common implements Excelable
         ];
         $preModel = '';
         if ($fields == '*') {
-            $preModel = 'brand,goodsCat,relateGoods';
+            $preModel = 'brand,goodsCat,relateGoods,priceLevels.areaInfo';
         } else {
 
             if (stripos($fields, 'brand_id') !== false) {
@@ -1064,7 +1064,7 @@ class Goods extends Common implements Excelable
 
     public function priceLevels()
     {
-        return $this->hasMany('GoodsPriceLevels', 'goods_id', 'id');
+        return $this->hasMany(GoodsPriceLevels::class, 'goods_id', 'id');
     }
 
     public function comments()
@@ -1085,5 +1085,4 @@ class Goods extends Common implements Excelable
     {
         return $this->belongsToMany(Images::class, 'goods_images', 'image_id', 'goods_id');
     }
-
 }
