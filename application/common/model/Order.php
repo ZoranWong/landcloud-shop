@@ -882,9 +882,9 @@ class Order extends Common
                 $itemModel = new OrderItems();
                 $goods = $itemModel->field('product_id, nums')->where($w)->select();
                 $goodsModel = new Goods();
-                foreach ($goods as $v) {
-                    $goodsModel->changeStock($v['product_id'], 'cancel', $v['nums']);
-                }
+//                foreach ($goods as $v) {
+//                    $goodsModel->changeStock($v['product_id'], 'cancel', $v['nums']);
+//                }
                 $result = true;
                 Db::commit();
             } catch (\Exception $e) {
@@ -1254,11 +1254,11 @@ class Order extends Common
             foreach ($orderInfo['data']['items'] as $k => $v) {
                 $orderInfo['data']['items'][$k]['order_id'] = $order['order_id'];
                 //更改库存
-                $sflag = $goodsModel->changeStock($v['product_id'], 'order', $v['nums']);
-                if (!$sflag['status']) {
-                    Db::rollback();
-                    return $sflag;
-                }
+//                $sflag = $goodsModel->changeStock($v['product_id'], 'order', $v['nums']);
+//                if (!$sflag['status']) {
+//                    Db::rollback();
+//                    return $sflag;
+//                }
             }
             $orderItemsModel = new OrderItems();
             $orderItemsModel->saveAll($orderInfo['data']['items']);
