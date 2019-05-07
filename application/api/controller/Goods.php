@@ -161,7 +161,7 @@ class Goods extends Api
         $page_limit = config('jshop.page_limit');
         $limit = $limit ? $limit : $page_limit;
 
-        $returnGoods = $goodsModel->getList($field, $where, $order, $page, $limit);
+        $returnGoods = $goodsModel->getList('api', $field, $where, $order, $page, $limit);
         foreach ($returnGoods['data'] as $goods) {
 
         }
@@ -210,7 +210,7 @@ class Goods extends Api
                 ->whereOr('erp_goods_id', $keyword)
                 ->whereOrRaw('json_contains(keywords->\'$[*]\',\'"' . $keyword . '"\',\'$\')');
         };
-        $returnGoods = $goodsModel->getList($field, $where, $order, $page, $limit);
+        $returnGoods = $goodsModel->getList('api', $field, $where, $order, $page, $limit);
         if ($returnGoods['status']) {
             $return_data ['msg'] = '查询成功';
             $return_data ['data']['list'] = $returnGoods['data'];
@@ -242,6 +242,7 @@ class Goods extends Api
         $goods_id = input('id/d', 0);//商品ID
         $token = input('token', '');//token值 会员登录后传
         if (!$goods_id) {
+            $return_data['msg'] = '缺少商品ID参数';
             return $return_data;
         }
         $field = input('field', '*');
@@ -249,8 +250,16 @@ class Goods extends Api
         $goodsModel = new GoodsModel();
         $returnGoods = $goodsModel->getGoodsDetial($goods_id, $field, $token);
         if ($returnGoods['status']) {
-            $return_data ['msg'] = '查询成功';
-            $return_data ['data'] = $returnGoods['data'];
+            if ($return_data['data']['isdel']) {
+                $return_data['msg'] = '产品已失效';
+                $return_data['status'] = false;
+            } elseif ($returnGoods['data']['marketable'] == 2) {
+                $return_data['msg'] = '产品已下架';
+                $return_data['status'] = false;
+            } else {
+                $return_data['msg'] = '查询成功';
+                $return_data['data'] = $returnGoods['data'];
+            }
         } else {
             $return_data['msg'] = $returnGoods['msg'];
             $return_data['status'] = false;

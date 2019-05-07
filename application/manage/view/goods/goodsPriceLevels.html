@@ -1,6 +1,6 @@
 <div class="goods-price-level-template">
     <div class="add-level-btn">
-        <button type = "button" class="layui-btn layui-btn-sm add-price-level">
+        <button type="button" class="layui-btn layui-btn-sm add-price-level">
             <i class="layui-icon">&#xe608;</i>添加梯度价格
         </button>
     </div>
@@ -18,36 +18,50 @@
 
             var tableRender = table.render({
                 elem: '#priceLevels'
-                ,height: 312
-                ,width: 736
-                ,page: true //开启分页
-                ,cols: [[ //表头
-                    {field: 'area', title: '区域', merge: true, width: 164, templet: function (data) {
+                , height: 312
+                , width: 736
+                , page: true //开启分页
+                , cols: [[ //表头
+                    {
+                        field: 'area', title: '区域', merge: true, width: 164, templet: function (data) {
 
                             var options = `<option value="">不限地区</option>`;
                             areas.forEach(function (area) {
-                                options += `<option value="${area['name']}" ${data['area'] === area['name'] ? 'selected' : ''}>${area["name"]}</option>`;
+                                options += `<option value="${area['id']}" ${data['area'] == area['id'] ? 'selected' : ''}>${area["name"]}</option>`;
                             })
                             return `<select style="height: 124px; overflow: auto;" name="levels[${data['LAY_TABLE_INDEX']}][area]" data-index = "${data['LAY_TABLE_INDEX']}" data-key = "area">${options}</select>`;
-                        }}
-                    ,{field: 'name', title: '规格',  width: 164, templet: function (data, index) {
-                        console.log(data, index);
+                        }
+                    }
+                    , {
+                        field: 'name', title: '规格', width: 164, templet: function (data, index) {
+                            console.log(data, index);
                             return `<input name="levels[${data['LAY_TABLE_INDEX']}][name]" type="text" class="level-input spec-name-input layui-input" value="${data['name']}" data-index = "${data['LAY_TABLE_INDEX']}"
                                 data-key = "name"/>`;
-                        }}
-                    ,{field: 'goods_num', title: '产品数量', width:124, templet: function (data) {
-                                return `<input name="levels[${data['LAY_TABLE_INDEX']}][buy_num]" type="number" class="spec-name-input layui-input" value="${data['buy_num']}"/>`;
-                            }}
-                    ,{field: 'price', title: '产品价格', width: 124, templet: function (data) {
-                                return `<input name="levels[${data['LAY_TABLE_INDEX']}][price]" type="number" placeholder="￥" autocomplete="off"  class="spec-name-input layui-input" value="${data['price']}"/>`;
-                            }}
-                    ,{field: 'level', title: '梯度', width: 80, templet: function (data) {
-                                return `<input name="levels[${data['LAY_TABLE_INDEX']}][level]" type = 'number' class="spec-name-input layui-input" value="${data['level']}"/>`;
-                            }}
-                    ,{field: 'opt', title: '操作', width: 80, templet: function (data) {return `<a class="delete-level layui-btn layui-btn-danger layui-btn-xs del-class" data-level = "${data['LAY_TABLE_INDEX']}">删除</a>`;}}
+                        }
+                    }
+                    , {
+                        field: 'goods_num', title: '产品数量', width: 124, templet: function (data) {
+                            return `<input name="levels[${data['LAY_TABLE_INDEX']}][buy_num]" type="number" class="spec-name-input layui-input" value="${data['buy_num']}"/>`;
+                        }
+                    }
+                    , {
+                        field: 'price', title: '产品价格', width: 124, templet: function (data) {
+                            return `<input name="levels[${data['LAY_TABLE_INDEX']}][price]" type="number" placeholder="￥" autocomplete="off"  class="spec-name-input layui-input" value="${data['price']}"/>`;
+                        }
+                    }
+                    , {
+                        field: 'level', title: '梯度', width: 80, templet: function (data) {
+                            return `<input name="levels[${data['LAY_TABLE_INDEX']}][level]" type = 'number' class="spec-name-input layui-input" value="${data['level']}"/>`;
+                        }
+                    }
+                    , {
+                        field: 'opt', title: '操作', width: 80, templet: function (data) {
+                            return `<a class="delete-level layui-btn layui-btn-danger layui-btn-xs del-class" data-level = "${data['LAY_TABLE_INDEX']}">删除</a>`;
+                        }
+                    }
                 ]]
-                ,data: levels
-                ,done(){
+                , data: levels
+                , done() {
                     //tableMerge.render(this);
                 }
             });
@@ -74,7 +88,7 @@
                     }, function () {
                         levels.forEach(function (item, index) {
 
-                            if(index === level) {
+                            if (index === level) {
                                 levels.splice(index, 1);
                             }
                             tableRender.reload({
@@ -89,7 +103,7 @@
                 );
 
             });
-            $(document).on( 'change', 'input.level-input', function () {
+            $(document).on('change', 'input.level-input', function () {
                 var key = $(this).data('key');
                 var index = $(this).data('index');
                 levels[index][key] = $(this).val();
@@ -98,7 +112,7 @@
     });
 </script>
 <style>
-    .goods-price-level-template .layui-table-cell{
+    .goods-price-level-template .layui-table-cell {
         height: auto !important;
         line-height: inherit !important;
         overflow: initial !important;

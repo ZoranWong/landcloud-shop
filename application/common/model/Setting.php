@@ -178,7 +178,7 @@ class Setting extends Common
         ],
         'wx_signature' => [
             'name' => '简介',
-            'value' => '蓝杰柯销售商城',
+            'value' => '兰杰柯销售商城',
         ],
         //小程序logo
         'wx_head_img' => [

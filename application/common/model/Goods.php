@@ -39,6 +39,17 @@ class Goods extends Common implements Excelable
         'keywords' => 'array'
     ];
 
+    const TYPE_PRICE_SALE = 'sale';
+    const TYPE_PRICE_MARKET = 'market';
+    const TYPE_PRICE_PREFERENTIAL = 'preferential';
+    const TYPE_PRICE_PROMOTION = 'promotion';
+    const TYPE_PRICES = [
+        self::TYPE_PRICE_SALE => 1,
+        self::TYPE_PRICE_MARKET => 2,
+        self::TYPE_PRICE_PREFERENTIAL => 3,
+        self::TYPE_PRICE_PROMOTION => 4
+    ];
+
     public function tableData($post, $isPage = true)
     {
         if (isset($post['limit'])) {
@@ -48,7 +59,9 @@ class Goods extends Common implements Excelable
         }
         $tableWhere = $this->tableWhere($post);
         $query = $this::with('defaultImage,brand,goodsCat,goodsType')
-            ->field($tableWhere['field'])->where($tableWhere['where'])->whereOr($tableWhere['whereOr'])->order($tableWhere['order']);
+            ->field($tableWhere['field'])->whereNull('isdel')->where(function ($query) use ($tableWhere) {
+                $query->where($tableWhere['where'])->whereOr($tableWhere['whereOr']);
+            })->order($tableWhere['order']);
 
         if ($isPage) {
             $list = $query->paginate($limit);
@@ -111,6 +124,9 @@ class Goods extends Common implements Excelable
         if (isset($post['bn']) && $post['bn'] != "") {
             $where[] = ['bn', 'like', '%' . $post['bn'] . '%'];
         }
+        if (isset($post['erp_goods_id']) && $post['erp_goods_id'] !== '') {
+            $where[] = ['erp_goods_id', 'like', "%{$post['erp_goods_id']}%"];
+        }
 
         if (isset($post['last_cat_id']) && $post['last_cat_id'] != "") {
             $where[] = ['goods_cat_id', 'eq', $post['last_cat_id']];
@@ -125,10 +141,8 @@ class Goods extends Common implements Excelable
                 $where[] = ['goods_cat_id', 'in', $catIds];
             }
         }
-
         $result['where'] = $where;
         $result['whereOr'] = $whereOr;
-
         $result['field'] = "*";
         $result['order'] = ['id' => 'desc'];
         return $result;
@@ -189,7 +203,7 @@ class Goods extends Common implements Excelable
      * Email:1457529125@qq.com
      * Date: 2018-01-29 16:33
      */
-    public function getList($fields = '*', $where = [], $order = 'id desc', $page = 1, $limit = 10)
+    public function getList($from = 'manage', $fields = '*', $where = [], $order = 'id desc', $page = 1, $limit = 10)
     {
         $result = [
             'status' => true,
@@ -205,10 +219,14 @@ class Goods extends Common implements Excelable
             }
             $fields = implode(',', $tmpData);
         }
-        $list = $this
+        $query = $this
             ->field($fields)
             ->where($where)
-            ->order($order)
+            ->whereNull('isdel');
+        if ($from === 'api') {
+            $query = $query->where('marketable', '=', 1);
+        }
+        $list = $query->order($order)
             ->page($page, $limit)
             ->select();
         $ids = [];
@@ -235,7 +253,8 @@ class Goods extends Common implements Excelable
                 $list[$key]['comments_count'] = $gcModel->getCommentCount($value['id']);
             }
 
-            $result['data'] = $list->toArray();
+//            $result['data'] = $list->toArray();
+            $result['data'] = $this->tableFormat($list);
         }
         $result['total'] = ceil($total / $limit);
 
@@ -261,10 +280,9 @@ class Goods extends Common implements Excelable
             'data' => [],
             'msg' => ''
         ];
-        $productsModel = new Products();
         $preModel = '';
         if ($fields == '*') {
-            $preModel = 'brand,goodsCat';
+            $preModel = 'brand,goodsCat,relateGoods,priceLevels.areaInfo';
         } else {
 
             if (stripos($fields, 'brand_id') !== false) {
@@ -278,33 +296,14 @@ class Goods extends Common implements Excelable
         }
         $list = $this::with($preModel)->field($fields)->where(['id' => $gid])->find();
         if ($list) {
-            //$list = $list->toArray();
-            //$list['products'] = $this->products($list['id']);
-
-            if (isset($list['image_id'])) {
-                $image_url = _sImage($list['image_id']);
-                $list['image_url'] = $image_url;
-            }
-//            if($list['products']){
-//                $list['default']   = $list['products'][0];
-//            }
+            $image_url = _sImage($list['image_id']);
+            $list['image_url'] = $image_url;
             if (isset($list['label_ids'])) {
                 $list['label_ids'] = getLabel($list['label_ids']);
             } else {
                 $list['label_ids'] = [];
             }
-            //取默认货品
-            $default_product = $productsModel->where(['goods_id' => $gid, 'is_defalut' => $productsModel::DEFALUT_YES])->find();
-            if (!$default_product) {
-                return error_code(10000);
-            }
             $user_id = getUserIdByToken($token);//获取user_id
-            $product_info = $productsModel->getProductInfo($default_product['id'], true, $user_id);
-            if (!$product_info['status']) {
-                return $product_info;
-            }
-            $list['product'] = $product_info['data'];
-            $list['price'] = $list['product']['price'];
             if ($list['spes_desc']) {
                 $list['spes_desc'] = unserialize($list['spes_desc']);
             }
@@ -330,6 +329,11 @@ class Goods extends Common implements Excelable
             //获取当前登录是否收藏
 
             $list['isfav'] = $this->getFav($list['id'], $user_id);
+
+            foreach ($list->relate_goods as &$relate_good) {
+                $image_url = _sImage($relate_good['image_id']);
+                $relate_good['image_url'] = $image_url;
+            }
             $result['data'] = $list;
 
             //图片处理
@@ -643,7 +647,8 @@ class Goods extends Common implements Excelable
 
         $this->startTrans();
 
-        $res = $this->where(['id' => $goods_id])->delete();
+//        $res = $this->where(['id' => $goods_id])->delete();
+        $res = $this->where(['id' => $goods_id])->setField(['isdel' => time(), 'marketable' => self::MARKETABLE_DOWN]);
         if (!$res) {
             $this->rollback();
             $result['msg'] = '商品删除失败';
@@ -934,8 +939,8 @@ class Goods extends Common implements Excelable
             ['id' => 'width', 'desc' => '产品宽度'],
             ['id' => 'height', 'desc' => '产品高度'],
             ['id' => 'unit', 'desc' => '产品单位'],
-            ['id' => 'market_price', 'desc' => '市场价格'],
-            ['id' => 'sale_price', 'desc' => '销售价格'],
+            ['id' => 'mktprice', 'desc' => '市场价格'],
+            ['id' => 'price', 'desc' => '销售价格'],
             ['id' => 'preferential_price', 'desc' => '优惠价格'],
             ['id' => 'promotion_price', 'desc' => '促销价格'],
             ['id' => 'keywords', 'desc' => '搜索关键字'],
@@ -1059,7 +1064,25 @@ class Goods extends Common implements Excelable
 
     public function priceLevels()
     {
-        return $this->hasMany('GoodsPriceLevels', 'goods_id', 'id');
+        return $this->hasMany(GoodsPriceLevels::class, 'goods_id', 'id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(GoodsComment::class, 'goods_id', 'id');
+    }
+
+    public function relateGoods(bool $required = false)
+    {
+        $query = $this->belongsToMany(Goods::class, 'relation_goods', 'relation_goods_id', 'main_goods_id');
+        if ($required) {
+            $query = $query->wherePivot('required', '=', 1);
+        }
+        return $query;
+    }
+
+    public function goodsImages()
+    {
+        return $this->belongsToMany(Images::class, 'goods_images', 'image_id', 'goods_id');
+    }
 }

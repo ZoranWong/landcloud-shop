@@ -416,7 +416,8 @@ return [
             ],
             'getlist' => [
                 'code' => 'getList',
-                'is_login' => true
+//                'is_login' => true
+                'is_login' => false
             ],
             'create' => [
                 'code' => 'create',
@@ -512,7 +513,11 @@ return [
             'getgoodscathotgoods' => [
                 'code' => 'getGoodsCatHotGoods',
                 'is_login' => false
-            ]
+            ],
+            'relateGoods' => [
+                'code' => 'getRelateGoods',
+                'is_login' => false
+            ],
         ]
     ],
 

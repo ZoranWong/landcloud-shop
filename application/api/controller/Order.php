@@ -4,7 +4,6 @@ namespace app\api\controller;
 
 use app\common\controller\Api;
 use app\common\model\BillAftersales;
-use app\common\model\BillPayments;
 use app\common\model\BillDelivery;
 use app\common\model\BillReship;
 use app\common\model\InvoiceRecord;
@@ -150,7 +149,8 @@ class Order extends Api
             'source' => input('source'),
             'page' => input('page'),
             'limit' => input('limit'),
-            'user_id' => $this->userId
+//            'user_id' => $this->userId
+            'user_id' => 13
         );
         $model = new orderModel();
         $data = $model->getListFromApi($input);
