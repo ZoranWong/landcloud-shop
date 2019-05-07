@@ -3,6 +3,7 @@
 namespace app\common\model;
 
 use think\Db;
+use think\facade\Log;
 use think\model\concern\SoftDelete;
 
 /**
@@ -1341,6 +1342,7 @@ class Order extends Common
         if (!$cartList['status']) {
             return $cartList;
         }
+        Log::debug('----------- order list ---------------', $cartList['data']['list']);
         foreach ($cartList['data']['list'] as $v) {
             $item['goods_id'] = $v['products']['goods_id'];
             $item['product_id'] = $v['products']['id'];
