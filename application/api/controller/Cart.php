@@ -98,7 +98,8 @@ class Cart extends Api
         $point = Request::param('point', 0);
         $coupon_code = Request::param('coupon_code', '');
         $receipt_type = Request::param('receipt_type', 1);
-        $result = $model->info($this->userId, $ids, $display, $area_id, $point, $coupon_code, $receipt_type);
+        $area = Request::param('area', null);
+        $result = $model->info($this->userId, $ids, $display, $area_id, $point, $coupon_code, $receipt_type, $area);
         return $result;
     }
 

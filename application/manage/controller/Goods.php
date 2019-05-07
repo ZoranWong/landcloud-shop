@@ -690,7 +690,6 @@ class Goods extends Manage
         //类型
 //        $goodsTypeModel = new GoodsType();
         $res = $this->getEditSpec($goods['data']['goods_type_id'], $goods['data']);
-//        var_dump($res);exit;
         $this->assign('spec_html', $res['data']);
         $goodsCatModel = new GoodsCat();
         $catids = $goodsCatModel->getCatIdsByLastId($goods['data']['goods_cat_id']);

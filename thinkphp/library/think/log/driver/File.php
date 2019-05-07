@@ -66,7 +66,7 @@ class File
 
             foreach ($val as $msg) {
                 if (!is_string($msg)) {
-                    $msg = var_export($msg, true);
+//                    $msg = var_export($msg, true);
                 }
 
                 $info[$type][] = $this->config['json'] ? $msg : '[ ' . $type . ' ] ' . $msg;

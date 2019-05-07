@@ -2,6 +2,7 @@
 
 namespace app\common\model;
 
+use app\common\model\Cart as CartModel;
 use think\model\concern\SoftDelete;
 use think\Validate;
 
@@ -1291,6 +1292,11 @@ class User extends Common
     public function grade()
     {
         return $this->hasOne("UserGrade", 'id', 'grade')->bind(['grade_name' => 'name']);
+    }
+
+    public function carts()
+    {
+        return $this->hasMany(CartModel::class, 'user_id', 'id');
     }
 
 }

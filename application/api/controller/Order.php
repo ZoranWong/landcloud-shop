@@ -149,8 +149,8 @@ class Order extends Api
             'source' => input('source'),
             'page' => input('page'),
             'limit' => input('limit'),
-//            'user_id' => $this->userId
-            'user_id' => 13
+            'user_id' => $this->userId
+//            'user_id' => 13
         );
         $model = new orderModel();
         $data = $model->getListFromApi($input);
