@@ -158,7 +158,7 @@ class Goods extends Api
         }
 
 
-        $page_limit = config('jshop.page_limit');
+        $page_limit = config('labgic.page_limit');
         $limit = $limit ? $limit : $page_limit;
 
         $returnGoods = $goodsModel->getList('api', $field, $where, $order, $page, $limit);
