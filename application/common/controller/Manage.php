@@ -51,8 +51,8 @@ class Manage extends Base
             }
         }
 
-        $jshopHost = Container::get('request')->domain();
-        $this->assign('jshopHost', $jshopHost);
+        $labgicHost = Container::get('request')->domain();
+        $this->assign('labgicHost', $labgicHost);
         //店铺名称
         $shop_name = getSetting('shop_name');
         $this->assign('shop_name', $shop_name);

@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------
-// | JSHOP [ 小程序商城 ]
+// | labgic [ 小程序商城 ]
 // +----------------------------------------------------------------------
 // | Copyright (c) 2018 http://jihainet.com All rights reserved.
 // +----------------------------------------------------------------------
@@ -94,7 +94,7 @@ class Ietask extends Manage
     {
 //        $tplName = input('tplName', 'goods');
 //
-//        $filePath = config('jshop.' . $tplName . '_import_template');
+//        $filePath = config('labgic.' . $tplName . '_import_template');
 //
 //        if (!file_exists($filePath)) { //检查文件是否存在
 //            echo '404';
@@ -146,7 +146,7 @@ class Ietask extends Manage
         $savepath = ROOT_PATH . 'public' . DS . 'uploads' . get_hash_dir($file->getInfo('name'));
 
         /** @var File $info */
-        $info = $file->validate(['size' => config('jshop.upload_filesize'), 'ext' => [FILE_CSV, FILE_XLS, FILE_XLSX]])->move($savepath);
+        $info = $file->validate(['size' => config('labgic.upload_filesize'), 'ext' => [FILE_CSV, FILE_XLS, FILE_XLSX]])->move($savepath);
 
         if ($info) {
             $params = [

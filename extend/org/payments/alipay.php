@@ -66,7 +66,7 @@ class alipay implements Payment
 
 
         //业务参数
-        $ydata["subject"] = 'jshopgoods';          //商品名称,此处用商户名称代替
+        $ydata["subject"] = 'labgicgoods';          //商品名称,此处用商户名称代替
         $ydata["out_trade_no"] = $paymentInfo['payment_id'];     //平台订单号
         $ydata["total_amount"] = $paymentInfo['money'];          //总金额，精确到小数点两位
         $ydata["product_code"] = $product_code;

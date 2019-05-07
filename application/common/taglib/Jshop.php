@@ -63,7 +63,7 @@ class Jshop extends TagLib
         $id       = !empty($tag['id']) ? $tag['id'] : '_editor';
         $name     = !empty($tag['name']) ? $tag['name'] : '';
         $style    = !empty($tag['style']) ? $tag['style'] : '';
-        $value    = !empty($tag['value']) ? $tag['value'] : config('jshop.default_image'); //todo 默认图片
+        $value    = !empty($tag['value']) ? $tag['value'] : config('labgic.default_image'); //todo 默认图片
         $type     = !empty($tag['type']) ? $tag['type'] : '';
         $num      = !empty($tag['num']) ? $tag['num'] : 1;
         $width    = !empty($tag['width']) ? $tag['width'] : '90px';

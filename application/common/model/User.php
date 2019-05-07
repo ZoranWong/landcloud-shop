@@ -74,7 +74,7 @@ class User extends Common
 //        if(!isset($data['avatar'])){
 //
 //            $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
-//            $data['avatar'] =$http_type . $_SERVER['HTTP_HOST'].config('jshop.default_image');
+//            $data['avatar'] =$http_type . $_SERVER['HTTP_HOST'].config('labgic.default_image');
 //        }
 //        if(!isset($data['nickname'])){
 //            $data['nickname'] = format_mobile($data['mobile']);
@@ -126,7 +126,7 @@ class User extends Common
         }
         //校验验证码
         if (session('?login_fail_num')) {
-            if (session('login_fail_num') >= config('jshop.login_fail_num')) {
+            if (session('login_fail_num') >= config('labgic.login_fail_num')) {
                 if (!isset($data['captcha']) || $data['captcha'] == '') {
                     return error_code(10013);
                 }
@@ -216,7 +216,7 @@ class User extends Common
                 $userData['avatar'] = $data['avatar'];
             } else {
                 $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
-//                $userData['avatar'] = config('jshop.default_image');
+//                $userData['avatar'] = config('labgic.default_image');
                 $userData['avatar'] = _sImage('');
             }
             if (isset($data['nickname'])) {

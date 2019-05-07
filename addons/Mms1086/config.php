@@ -14,6 +14,6 @@ return [
     ],
     'sms_prefix'=>[
         'title'=>'短信签名',
-        'value'=>'jshop',
+        'value'=>'labgic',
     ]
 ];

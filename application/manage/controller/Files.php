@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------
-// | JSHOP [ 小程序商城 ]
+// | labgic [ 小程序商城 ]
 // +----------------------------------------------------------------------
 // | Copyright (c) 2018 http://jihainet.com All rights reserved.
 // +----------------------------------------------------------------------
@@ -28,7 +28,7 @@ class Files extends Manage
         // 获取表单上传文件 例如上传了001.jpg
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
-        $maxSize = config('jshop.file_size');
+        $maxSize = config('labgic.file_size');
         $savepath = '/static/uploads/video';
 
         $filePath = ROOT_PATH.'public'.$savepath;
