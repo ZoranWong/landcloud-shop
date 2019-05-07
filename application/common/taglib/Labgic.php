@@ -12,7 +12,7 @@ use app\common\model\GoodsCat;
 use think\template\TagLib;
 
 
-class Jshop extends TagLib
+class Labgic extends TagLib
 {
 
     /**
