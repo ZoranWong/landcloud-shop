@@ -1452,9 +1452,9 @@ class Order extends Common
                 $itemModel = new OrderItems();
                 $goods = $itemModel->field('product_id, nums')->where($w)->select();
                 $goodsModel = new Goods();
-                foreach ($goods as $vv) {
-                    $goodsModel->changeStock($vv['product_id'], 'cancel', $vv['nums']);
-                }
+//                foreach ($goods as $vv) {
+//                    $goodsModel->changeStock($vv['product_id'], 'cancel', $vv['nums']);
+//                }
                 Db::commit();
             } catch (\Exception $e) {
                 Db::rollback();
