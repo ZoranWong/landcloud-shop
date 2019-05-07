@@ -30,7 +30,7 @@ return [
     'taglib_begin' => '{',
     // 标签库标签结束标记
     'taglib_end'   => '}',
-    'taglib_pre_load' => 'app\\common\\taglib\\labgic',
+    'taglib_pre_load' => 'app\\common\\taglib\\Labgic',
     'tpl_replace_string'  =>  [
         '__STATIC__'        => '/static/',
         '__STATIC_CSS__'    => '/static/css/',
