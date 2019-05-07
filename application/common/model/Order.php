@@ -1346,7 +1346,7 @@ class Order extends Common
         foreach ($cartList['data']['list'] as $v) {
             $item['goods_id'] = $v['detail']['id'];
             $item['product_id'] = $v['detail']['id'];
-            $item['sn'] = $v['detail']['sn'];
+            //$item['sn'] = $v['detail']['sn'];
             $item['bn'] = $v['detail']['bn'];
             $item['name'] = $v['detail']['name'];
             $item['price'] = $v['detail']['price'];
