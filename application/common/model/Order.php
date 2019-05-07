@@ -1344,28 +1344,29 @@ class Order extends Common
         }
         Log::debug('----------- order list ---------------', $cartList['data']['list']);
         foreach ($cartList['data']['list'] as $v) {
-            $item['goods_id'] = $v['products']['goods_id'];
-            $item['product_id'] = $v['products']['id'];
-            $item['sn'] = $v['products']['sn'];
-            $item['bn'] = $v['products']['bn'];
-            $item['name'] = $v['products']['name'];
-            $item['price'] = $v['products']['price'];
-            $item['costprice'] = $v['products']['costprice'];
-            $item['mktprice'] = $v['products']['mktprice'];
-            $item['image_url'] = get_goods_info($v['products']['goods_id'], 'image_id');
+            $item['goods_id'] = $v['detail']['id'];
+            $item['product_id'] = $v['detail']['id'];
+            $item['sn'] = $v['detail']['sn'];
+            $item['bn'] = $v['detail']['bn'];
+            $item['name'] = $v['detail']['name'];
+            $item['price'] = $v['detail']['price'];
+            $item['costprice'] = $v['detail']['costprice'];
+            $item['mktprice'] = $v['detail']['mktprice'];
+            $item['image_url'] = $v['detail']['image_url'];
             $item['nums'] = $v['nums'];
-            $item['amount'] = $v['products']['amount'];
-            $item['promotion_amount'] = isset($v['products']['promotion_amount']) ? $v['products']['promotion_amount'] : 0;
+            $item['amount'] = $v['amount'];
+            $item['promotion_amount'] = isset($v['detail']['promotion_amount']) ? $v['detail']['promotion_amount'] : 0;
             $item['weight'] = $v['weight'];
             $item['sendnums'] = 0;
-            $item['addon'] = $v['products']['spes_desc'];
-            if (isset($v['products']['promotion_list'])) {
-                $promotion_list = [];
-                foreach ($v['products']['promotion_list'] as $k => $v) {
-                    $promotion_list[$k] = $v['name'];
-                }
-                $item['promotion_list'] = json_encode($promotion_list);
-            }
+//            $item['addon'] = $v['products']['spes_desc'];
+            $item['addon'] = null;
+//            if (isset($v['products']['promotion_list'])) {
+//                $promotion_list = [];
+//                foreach ($v['products']['promotion_list'] as $k => $v) {
+//                    $promotion_list[$k] = $v['name'];
+//                }
+//                $item['promotion_list'] = json_encode($promotion_list);
+//            }
             $cartList['data']['items'][] = $item;
         }
         //unset($cartList['data']['list']);
