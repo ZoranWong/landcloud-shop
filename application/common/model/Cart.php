@@ -150,6 +150,7 @@ class Cart extends Common
         }
 
         $query = $this->where($where)->order('id', 'desc');
+        $token = input('token', '');//token值 会员登录后传
         $list = $query->column('*', 'product_id');
         $cartGoodsIds = array_keys($list);
         $needExcludeGoods = array();
@@ -171,7 +172,7 @@ class Cart extends Common
 //
 //            $list[$k]['products'] = $productInfo['data'];
 
-            $goodsInfo = $goodsModel->getGoodsDetial($v['product_id']);
+            $goodsInfo = $goodsModel->getGoodsDetial($v['product_id'], '*', $token);
             if (!$goodsInfo['status']) {
                 unset($list[$k]);
                 $this::destroy($v['id']);
