@@ -1359,7 +1359,7 @@ class Order extends Common
             $item['weight'] = $v['weight'];
             $item['sendnums'] = 0;
 //            $item['addon'] = $v['products']['spes_desc'];
-            $item['addon'] = '';
+            $item['addon'] = '[]';
             $item['promotion_list'] = '[]';
 //            if (isset($v['products']['promotion_list'])) {
 //                $promotion_list = [];
