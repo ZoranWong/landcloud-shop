@@ -84,7 +84,7 @@ class ProductImportHandler extends BaseHandler
             }
             $goods['remark'] = $record['remark'];
             $goods['marketable'] = 1;
-            $goods['is_del'] = null;
+            $goods['isdel'] = null;
             $goods['ctime'] = time();
             $goods['utime'] = time();
 
