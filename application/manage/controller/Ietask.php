@@ -58,7 +58,6 @@ class Ietask extends Manage
         $where = [];
 
         if ($filter) {
-            //$where = json_decode($filter,true);
             $where = convertUrlQuery($filter);
         }
 

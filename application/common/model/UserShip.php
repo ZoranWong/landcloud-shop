@@ -358,4 +358,9 @@ class UserShip extends Common implements Excelable
     {
         return $this->belongsTo(Area::class, 'area_id', 'id');
     }
+
+    public static function exportHeader()
+    {
+        // TODO: Implement exportHeader() method.
+    }
 }

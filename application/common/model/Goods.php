@@ -11,6 +11,7 @@ namespace app\common\model;
 
 use app\service\excel\Excelable;
 use app\service\LabGicApiService;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use think\Db;
 
 
@@ -950,6 +951,35 @@ class Goods extends Common implements Excelable
             ['id' => 'keywords', 'desc' => '搜索关键字'],
             ['id' => 'intro', 'desc' => '详情'],
             ['id' => 'remark', 'desc' => '备注']
+        ];
+    }
+
+
+    public static function exportHeader()
+    {
+        return [
+            ['field' => 'erp_goods_id', 'desc' => 'U8 商品编号', 'type' => DataType::TYPE_STRING],
+            ['field' => 'bn', 'desc' => '商品编号', 'type' => DataType::TYPE_STRING],
+            ['field' => 'name', 'desc' => '商品名称', 'type' => null],
+            ['field' => 'en_name', 'desc' => '英文名称', 'type' => null],
+            ['field' => 'image', 'desc' => '商品主图', 'type' => null],
+            ['field' => 'album', 'desc' => '商品图册', 'type' => null],
+            ['field' => 'brief', 'desc' => '商品简介', 'type' => null],
+            ['field' => 'intro', 'desc' => '商品详情', 'type' => null],
+            ['field' => 'category', 'desc' => '分类', 'type' => null],
+            ['field' => 'type', 'desc' => '类型', 'type' => null],
+            ['field' => 'brand', 'desc' => '品牌', 'type' => null],
+            ['field' => 'weight', 'desc' => '重量', 'type' => null],
+            ['field' => 'length', 'desc' => '长度', 'type' => null],
+            ['field' => 'width', 'desc' => '宽度', 'type' => null],
+            ['field' => 'height', 'desc' => '高度', 'type' => null],
+            ['field' => 'unit', 'desc' => '产品单位', 'type' => null],
+            ['field' => 'price', 'desc' => '销售价格', 'type' => null],
+            ['field' => 'mktprice', 'desc' => '市场价格', 'type' => null],
+            ['field' => 'preferential_price', 'desc' => '优惠价格', 'type' => null],
+            ['field' => 'promotion_price', 'desc' => '促销价格', 'type' => null],
+            ['field' => 'keywords', 'desc' => '关键字', 'type' => DataType::TYPE_STRING],
+            ['field' => 'remark', 'desc' => '备注', 'type' => null]
         ];
     }
 

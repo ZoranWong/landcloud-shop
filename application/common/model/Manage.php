@@ -280,4 +280,9 @@ class Manage extends Common implements Excelable
             ['id' => 'nickname', 'desc' => '昵称']
         ];
     }
+
+    public static function exportHeader()
+    {
+        // TODO: Implement exportHeader() method.
+    }
 }

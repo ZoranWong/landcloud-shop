@@ -534,4 +534,9 @@ class Area extends Common implements Excelable
 
         return $areas;
     }
+
+    public static function exportHeader()
+    {
+        // TODO: Implement exportHeader() method.
+    }
 }

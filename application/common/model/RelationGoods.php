@@ -50,4 +50,9 @@ class RelationGoods extends Common implements Excelable
         }
         return $result;
     }
+
+    public static function exportHeader()
+    {
+        // TODO: Implement exportHeader() method.
+    }
 }

@@ -45,8 +45,10 @@ class Ietask extends Common
         if ($this->save($data)) {
             $exportData['task_id'] = $this->id;
             $exportData['params'] = $data['params'];
-            $jobClass = 'app\job\export\\' . $job . '@exec';
-            $queueRes = \think\Queue::push($jobClass, $exportData);//加入导出队列
+//            $jobClass = 'app\job\export\\' . $job . '@exec';
+            $job = ucwords($job);
+            $jobClass = "app\\service\\excel\\export\\{$job}Exporter@export";
+            $queueRes = \think\Queue::push($jobClass, ['type' => $job, 'exportData' => $exportData]);//加入导出队列
             return $queueRes;
         } else {
             return false;

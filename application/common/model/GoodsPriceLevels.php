@@ -55,4 +55,9 @@ class GoodsPriceLevels extends Common implements Excelable
     {
         return $this->belongsTo(Area::class, 'area', 'id');
     }
+
+    public static function exportHeader()
+    {
+        // TODO: Implement exportHeader() method.
+    }
 }
