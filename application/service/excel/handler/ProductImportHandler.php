@@ -83,6 +83,8 @@ class ProductImportHandler extends BaseHandler
                 $goods['keywords'] = explode('|', $record['keywords']);
             }
             $goods['remark'] = $record['remark'];
+            $goods['marketable'] = 1;
+            $goods['is_del'] = null;
             $goods['ctime'] = time();
             $goods['utime'] = time();
 
