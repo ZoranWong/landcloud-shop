@@ -14,7 +14,7 @@ abstract class BaseGenerator
     const START_COLUMN = 65;//字母A
     const START_ROW = 1;
 
-    public $basePath = ROOT_PATH . 'public' . DS . 'static' . DS . 'file';// 文件存放根目录
+    public $basePath = ROOT_PATH . 'public' . DS . 'static' . DS . 'uploads' . DS . 'file';// 文件存放根目录
 
     abstract public function model(): string;
 
