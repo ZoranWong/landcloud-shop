@@ -58,8 +58,13 @@ class Goods extends Common implements Excelable
             $limit = config('paginate.list_rows');
         }
         $tableWhere = $this->tableWhere($post);
+//        $query = $this::with('defaultImage,brand,goodsCat,goodsType')
+//            ->field($tableWhere['field'])->whereNull('isdel')->where(function ($query) use ($tableWhere) {
+//                $query->where($tableWhere['where'])->whereOr($tableWhere['whereOr']);
+//            })->order($tableWhere['order']);
+
         $query = $this::with('defaultImage,brand,goodsCat,goodsType')
-            ->field($tableWhere['field'])->whereNull('isdel')->where(function ($query) use ($tableWhere) {
+            ->field($tableWhere['field'])->where(function ($query) use ($tableWhere) {
                 $query->where($tableWhere['where'])->whereOr($tableWhere['whereOr']);
             })->order($tableWhere['order']);
 
@@ -253,7 +258,6 @@ class Goods extends Common implements Excelable
                 $list[$key]['comments_count'] = $gcModel->getCommentCount($value['id']);
             }
 
-//            $result['data'] = $list->toArray();
             $result['data'] = $this->tableFormat($list);
         }
         $result['total'] = ceil($total / $limit);
