@@ -149,8 +149,8 @@ class Order extends Api
             'source' => input('source'),
             'page' => input('page'),
             'limit' => input('limit'),
-//            'user_id' => $this->userId
-            'user_id' => 13
+            'user_id' => $this->userId
+//            'user_id' => 13
         );
         $model = new orderModel();
         $data = $model->getListFromApi($input);
@@ -318,7 +318,7 @@ class Order extends Api
     {
         $data = [
             'page' => input('page/d', 1),
-            'limit' => input('limit/d', config('jshop.page_limit')),
+            'limit' => input('limit/d', config('labgic.page_limit')),
             'user_id' => $this->userId,
         ];
         $asModel = new BillAftersales();

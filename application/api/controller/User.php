@@ -320,7 +320,7 @@ class User extends Api
         if (input("?param.limit")) {
             $limit = input("param.limit");
         } else {
-            $limit = config('jshop.page_limit');
+            $limit = config('labgic.page_limit');
         }
         if (input("?param.page")) {
             $page = input("param.page");
@@ -367,7 +367,7 @@ class User extends Api
         if (input("?param.limit")) {
             $limit = input("param.limit");
         } else {
-            $limit = config('jshop.page_limit');
+            $limit = config('labgic.page_limit');
         }
         if (input("?param.page")) {
             $page = input("param.page");
@@ -937,7 +937,7 @@ class User extends Api
     public function userBalance()
     {
         $page = Request::param('page', 1);
-        $limit = Request::param('limit', config('jshop.page_limit'));
+        $limit = Request::param('limit', config('labgic.page_limit'));
         $order = Request::param('order', 'ctime desc');
         $type = Request::param('type', 0);
         $balanceModel = new Balance();
@@ -955,7 +955,7 @@ class User extends Api
     public function recommend()
     {
         $page = input('param.page', 1);
-        $limit = input('param.limit', config('jshop.page_limit'));
+        $limit = input('param.limit', config('labgic.page_limit'));
         $userModel = new UserModel();
         return $userModel->recommendList($this->userId, $page, $limit);
     }
@@ -1001,7 +1001,7 @@ class User extends Api
     public function cashList()
     {
         $page = input('param.page', 1);
-        $limit = input('param.limit', config('jshop.page_limit'));
+        $limit = input('param.limit', config('labgic.page_limit'));
         $type = input('param.type', '');
         $userToCashModel = new UserTocash();
         return $userToCashModel->userToCashList($this->userId, $page, $limit, $type);
@@ -1261,7 +1261,7 @@ class User extends Api
             'msg' => '获取成功',
             'data' => []
         ];
-        $area = config('jshop.area_list');
+        $area = config('labgic.area_list');
         if (!file_exists($area)) {
             $return['status'] = false;
             $return['msg'] = '地址库不存在，请重新生成';

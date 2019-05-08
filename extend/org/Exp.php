@@ -21,8 +21,8 @@ class Exp{
 
     public function __construct()
     {
-        $this->key       = config('jshop.api_express.key');
-        $this->customer = config('jshop.api_express.customer');
+        $this->key       = config('labgic.api_express.key');
+        $this->customer = config('labgic.api_express.customer');
 
         if (getSetting('kuaidi100_customer') && getSetting('kuaidi100_key')) {
             $this->customer = getSetting('kuaidi100_customer');

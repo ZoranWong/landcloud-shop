@@ -125,7 +125,7 @@
         <div class="layui-form-item layui-upload video" {if condition="$form.head_type neq 3"}style="display: none;"{/if}>
             <label class="layui-form-label">视频封面：</label>
             <div class="layui-input-inline seller-inline-4">
-                {Jshop:image id='video_cover' name="video_cover" value="$head_type_value[1]"/}
+                {Labgic:image id='video_cover' name="video_cover" value="$head_type_value[1]"/}
                 <div class="layui-form-mid layui-word-aux">
                     图标尺寸建议：377px*177px
                 </div>
@@ -222,7 +222,7 @@
                             </td>
                             <td class="field_value">
                                 {if condition="$item.type == 'goods'"}
-                                    {Jshop:sellergoods value="$item.value" num="1" name="field[value]" key="$item.id" type="checkbox"/}
+                                    {Labgic:sellergoods value="$item.value" num="1" name="field[value]" key="$item.id" type="checkbox"/}
                                 {else}
                                 <input type="text" name="field[value][{$item.id}]" required  value="{$item.value}" placeholder="空格分割"
                                        autocomplete="off" class="layui-input  sm-input">
@@ -391,7 +391,7 @@
 </script>
 
 <div id="selectgoods" style="display: none;">
-    {Jshop:sellergoods value="$goods.goods_id" num="1" name="field[value][]" type="checkbox"/}
+    {Labgic:sellergoods value="$goods.goods_id" num="1" name="field[value][]" type="checkbox"/}
 </div>
 
 <script type="text/javascript">

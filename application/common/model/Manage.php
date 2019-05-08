@@ -159,7 +159,7 @@ class Manage extends Common implements Excelable
 
         //校验验证码
         if (session('?manage_login_fail_num')) {
-            if (session('manage_login_fail_num') >= config('jshop.manage_login_fail_num')) {
+            if (session('manage_login_fail_num') >= config('labgic.manage_login_fail_num')) {
                 if (!isset($data['captcha']) || $data['captcha'] == '') {
                     return error_code(10013);
                 }

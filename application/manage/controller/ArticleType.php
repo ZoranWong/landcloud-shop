@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\Manage\controller;
 
 use app\common\controller\Manage;

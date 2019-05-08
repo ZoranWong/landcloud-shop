@@ -36,7 +36,7 @@ class Upload extends OUpload
         $allAllowedExts = implode(',', $allAllowedExts);
         $allAllowedExts = explode(',', $allAllowedExts);
         $allAllowedExts = array_unique($allAllowedExts);
-        $uploadMaxFilesize = config('jshop.upload_filesize');
+        $uploadMaxFilesize = config('labgic.upload_filesize');
         $uploadMaxFilesize = empty($uploadMaxFilesize) ? 5242880 : $uploadMaxFilesize;//默认5M
 
         if (isset($_FILES['upfile'])) {
@@ -58,7 +58,7 @@ class Upload extends OUpload
             'autoSub' => false,
         );
 
-        $this->imageStorage = config('jshop.image_storage');
+        $this->imageStorage = config('labgic.image_storage');
         if (!$this->imageStorage) {
             $this->imageStorage = [
                 'type' => 'Local',

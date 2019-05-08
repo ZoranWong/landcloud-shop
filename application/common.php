@@ -263,7 +263,7 @@ function _sImage($image_id = '', $type = 's')
     if (!$image_id) {
         $image_id = getSetting('shop_default_image');//系统默认图片
         if (!$image_id) {
-            return config('jshop.default_image');//默认图片
+            return config('labgic.default_image');//默认图片
         }
     }
 
@@ -282,7 +282,7 @@ function _sImage($image_id = '', $type = 's')
             return request()->domain() . str_replace("\\", "/", $image['url']);
         }
     } else {
-        return config('jshop.default_image');//默认图片
+        return config('labgic.default_image');//默认图片
     }
 }
 
@@ -298,8 +298,8 @@ function getRealUrl($url = '')
         if (isset($storage_params['domain']) && $storage_params['domain']) {
             return $storage_params['domain'] . $url;
         }
-        if (config('jshop.image_storage.domain')) {
-            return config('jshop.image_storage.domain') . $url;
+        if (config('labgic.image_storage.domain')) {
+            return config('labgic.image_storage.domain') . $url;
         }
         return request()->domain() . $url;
     }

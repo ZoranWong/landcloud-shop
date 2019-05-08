@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------
-// | JSHOP [ 小程序商城 ]
+// | labgic [ 小程序商城 ]
 // +----------------------------------------------------------------------
 // | Copyright (c) 2018 http://jihainet.com All rights reserved.
 // +----------------------------------------------------------------------
@@ -175,9 +175,9 @@ class Administrator extends ManageController
             'data'   => [],
             'status' => false,
         ];
-        $product = config('jshop.product');
-        $version = config('jshop.version');
-        //$url     = config('jshop.authorization_url') . '/b2c/Authorization/verification';
+        $product = config('labgic.product');
+        $version = config('labgic.version');
+        //$url     = config('labgic.authorization_url') . '/b2c/Authorization/verification';
         $domain  = $_SERVER['SERVER_NAME'];
 //        $curl    = new Curl();
 //        $params  = [

@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------
-// | JSHOP [ 小程序商城 ]
+// | labgic [ 小程序商城 ]
 // +----------------------------------------------------------------------
 // | Copyright (c) 2018 http://jihainet.com All rights reserved.
 // +----------------------------------------------------------------------
@@ -169,7 +169,7 @@ class Area extends Manage
      */
     public function geCity(){
         header('content-type:text/html;charset=utf-8');
-        /*$content = file_get_contents('http://www.jshop.com/city.text');
+        /*$content = file_get_contents('http://www.labgic.com/city.text');
         $content = json_decode($content,true);
         foreach($content as $key=>$val){
             $iData['id']=$key;
@@ -295,7 +295,7 @@ class Area extends Manage
             }
         }
         $return['data'] = $areaData;
-        $area = config('jshop.area_list');
+        $area = config('labgic.area_list');
 
         @file_put_contents($area,json_encode($return,JSON_UNESCAPED_UNICODE));
         $return['data'] = '';

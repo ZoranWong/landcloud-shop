@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------
-// | JSHOP [ 小程序商城 ]
+// | labgic [ 小程序商城 ]
 // +----------------------------------------------------------------------
 // | Copyright (c) 2018 http://jihainet.com All rights reserved.
 // +----------------------------------------------------------------------
@@ -11,6 +11,7 @@ namespace app\common\model;
 
 use app\common\model\Goods as GoodsModel;
 use think\Exception;
+use think\model\Collection;
 
 /**
  * 购物车
@@ -221,6 +222,26 @@ class Cart extends Common
         return $result;
     }
 
+    protected function getGoodsAmount($goods, $num, $area = null)
+    {
+        $amount = 0;
+        if($goods['price_levels']) {
+            /** @var Collection $levels**/
+            $levels = $goods['price_levels'];
+            $levels = $levels->where('area', 'eq', $area)->order('buy_num', 'desc')->all();
+            $price = $goods['promotion_price'] > 0 ? ($goods['preferential_price'] > 0 ? ($goods['preferential_price'] < $goods['promotion_price'] ?
+                $goods['preferential_price']: $goods['promotion_price']) : $goods['promotion_price'] ) : $goods['price'];
+            foreach ($levels as $level) {
+                if($num >= $level['buy_num']){
+                    $amount += $level['price'] * (int)($num / $level['buy_num']);
+                    $num = $num % $level['buy_num'];
+                }
+            }
+            $amount += $price*$num;
+        }
+        return $amount;
+    }
+
     /**
      * @param $userId
      * @param string $id
@@ -234,7 +255,7 @@ class Cart extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function info($userId, $id = '', $display = '', $area_id = false, $point = 0, $coupon_code = "", $receipt_type = 1)
+    public function info($userId, $id = '', $display = '', $area_id = false, $point = 0, $coupon_code = "", $receipt_type = 1, $area = null)
     {
         $result = [
             'status' => false,
@@ -265,21 +286,21 @@ class Cart extends Common
         //算订单总金额
         foreach ($result['data']['list'] as $k => $v) {
             //库存不足不计算金额不可以选择
-            if ($v['nums'] > $v['products']['stock']) {
-                $result['data']['list'][$k]['is_select'] = false;
-                $v['is_select'] = false;
-            }
+//            if ($v['nums'] > $v['products']['stock']) {
+//                $result['data']['list'][$k]['is_select'] = false;
+//                $v['is_select'] = false;
+//            }
 
             //单条商品总价
-            $result['data']['list'][$k]['products']['amount'] = $v['nums'] * $v['products']['price'];
+            $result['data']['list'][$k]['amount'] = $this->getGoodsAmount($v['detail'], $v['nums'], $area);
 
             if ($v['is_select']) {
                 //算订单总商品价格
-                $result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
+                //$result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
                 //算订单总价格
-                $result['data']['amount'] += $result['data']['list'][$k]['products']['amount'];
+                $result['data']['amount'] += $result['data']['list'][$k]['amount'];
                 //计算总重量
-                $result['data']['weight'] += $v['weight'] * $v['nums'];
+                //$result['data']['weight'] += $v['weight'] * $v['nums'];
             }
         }
 

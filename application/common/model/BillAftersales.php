@@ -118,7 +118,7 @@ class BillAftersales extends Common
 
 
         //判断图片是否大于系统限定
-        if(count($images) > config('jshop.image_max')){
+        if(count($images) > config('labgic.image_max')){
             return error_code(10006);
         }
 

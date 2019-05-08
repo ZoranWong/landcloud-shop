@@ -3,6 +3,7 @@
 namespace app\common\model;
 
 use think\Db;
+use think\facade\Log;
 use think\model\concern\SoftDelete;
 
 /**
@@ -882,9 +883,9 @@ class Order extends Common
                 $itemModel = new OrderItems();
                 $goods = $itemModel->field('product_id, nums')->where($w)->select();
                 $goodsModel = new Goods();
-                foreach ($goods as $v) {
-                    $goodsModel->changeStock($v['product_id'], 'cancel', $v['nums']);
-                }
+//                foreach ($goods as $v) {
+//                    $goodsModel->changeStock($v['product_id'], 'cancel', $v['nums']);
+//                }
                 $result = true;
                 Db::commit();
             } catch (\Exception $e) {
@@ -1254,11 +1255,11 @@ class Order extends Common
             foreach ($orderInfo['data']['items'] as $k => $v) {
                 $orderInfo['data']['items'][$k]['order_id'] = $order['order_id'];
                 //更改库存
-                $sflag = $goodsModel->changeStock($v['product_id'], 'order', $v['nums']);
-                if (!$sflag['status']) {
-                    Db::rollback();
-                    return $sflag;
-                }
+//                $sflag = $goodsModel->changeStock($v['product_id'], 'order', $v['nums']);
+//                if (!$sflag['status']) {
+//                    Db::rollback();
+//                    return $sflag;
+//                }
             }
             $orderItemsModel = new OrderItems();
             $orderItemsModel->saveAll($orderInfo['data']['items']);
@@ -1341,29 +1342,32 @@ class Order extends Common
         if (!$cartList['status']) {
             return $cartList;
         }
+        Log::debug('----------- order list ---------------', $cartList['data']['list']);
         foreach ($cartList['data']['list'] as $v) {
-            $item['goods_id'] = $v['products']['goods_id'];
-            $item['product_id'] = $v['products']['id'];
-            $item['sn'] = $v['products']['sn'];
-            $item['bn'] = $v['products']['bn'];
-            $item['name'] = $v['products']['name'];
-            $item['price'] = $v['products']['price'];
-            $item['costprice'] = $v['products']['costprice'];
-            $item['mktprice'] = $v['products']['mktprice'];
-            $item['image_url'] = get_goods_info($v['products']['goods_id'], 'image_id');
+            $item['goods_id'] = $v['detail']['id'];
+            $item['product_id'] = $v['detail']['id'];
+            //$item['sn'] = $v['detail']['sn'];
+            $item['bn'] = $v['detail']['bn'];
+            $item['name'] = $v['detail']['name'];
+            $item['price'] = $v['detail']['price'];
+            $item['costprice'] = $v['detail']['costprice'];
+            $item['mktprice'] = $v['detail']['mktprice'];
+            $item['image_url'] = $v['detail']['image_url'];
             $item['nums'] = $v['nums'];
-            $item['amount'] = $v['products']['amount'];
-            $item['promotion_amount'] = isset($v['products']['promotion_amount']) ? $v['products']['promotion_amount'] : 0;
+            $item['amount'] = $v['amount'];
+            $item['promotion_amount'] = isset($v['detail']['promotion_amount']) ? $v['detail']['promotion_amount'] : 0;
             $item['weight'] = $v['weight'];
             $item['sendnums'] = 0;
-            $item['addon'] = $v['products']['spes_desc'];
-            if (isset($v['products']['promotion_list'])) {
-                $promotion_list = [];
-                foreach ($v['products']['promotion_list'] as $k => $v) {
-                    $promotion_list[$k] = $v['name'];
-                }
-                $item['promotion_list'] = json_encode($promotion_list);
-            }
+//            $item['addon'] = $v['products']['spes_desc'];
+            $item['addon'] = '[]';
+            $item['promotion_list'] = '[]';
+//            if (isset($v['products']['promotion_list'])) {
+//                $promotion_list = [];
+//                foreach ($v['products']['promotion_list'] as $k => $v) {
+//                    $promotion_list[$k] = $v['name'];
+//                }
+//                $item['promotion_list'] = json_encode($promotion_list);
+//            }
             $cartList['data']['items'][] = $item;
         }
         //unset($cartList['data']['list']);
@@ -1452,9 +1456,9 @@ class Order extends Common
                 $itemModel = new OrderItems();
                 $goods = $itemModel->field('product_id, nums')->where($w)->select();
                 $goodsModel = new Goods();
-                foreach ($goods as $vv) {
-                    $goodsModel->changeStock($vv['product_id'], 'cancel', $vv['nums']);
-                }
+//                foreach ($goods as $vv) {
+//                    $goodsModel->changeStock($vv['product_id'], 'cancel', $vv['nums']);
+//                }
                 Db::commit();
             } catch (\Exception $e) {
                 Db::rollback();
