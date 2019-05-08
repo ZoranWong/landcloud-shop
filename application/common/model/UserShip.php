@@ -349,10 +349,13 @@ class UserShip extends Common implements Excelable
 
     public function doAdd($data = [])
     {
-        $result = $this->insert($data);
-        if ($result) {
-            return $this->getLastInsID();
-        }
-        return $result;
+        $usershipId = $this->allowField(true)->insertGetId($data);
+
+        return $usershipId ? $usershipId : 0;
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'area_id', 'id');
     }
 }

@@ -337,7 +337,7 @@ class Area extends Common implements Excelable
     {
         $data['info'] = $this->field('id,name,parent_id')->where(array('id' => $id))->find();
         if ($data['info']) {
-            $data['list'] = $this->field('id,name,parent_id')->where(array('parent_id' => $data['info']['parent_id']))->select();
+            $data['list'] = $this->field('id,name,parent_id')->where(array('id' => $data['info']['parent_id']))->select();
             if ($data['info']['parent_id'] != self::PROVINCE_PARENT_ID) {
                 //上面还有节点
                 $pdata = $this->getParentArea($data['info']['parent_id']);

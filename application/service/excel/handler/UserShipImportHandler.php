@@ -5,6 +5,7 @@ namespace app\service\excel\handler;
 use app\common\model\User as UserModel;
 use app\common\model\UserShip as UserShipModel;
 use app\service\excel\BaseHandler;
+use think\Exception;
 use think\facade\Log;
 
 class UserShipImportHandler extends BaseHandler
@@ -22,11 +23,14 @@ class UserShipImportHandler extends BaseHandler
 
         foreach ($importData as $record) {
             $userShip['erp_user_id'] = $record['erp_user_id'];
-            if (!empty($record['erp_user_id'])) {
-                $user = UserModel::where(['erp_user_id' => $record['erp_user_id']])->find();
-                $userShip['user_id'] = $user->id;
+
+            if (empty($record['erp_user_id'])) {
+                continue;
             }
-            $userShip['area_id'] = $record['area_id'];
+
+            $user = UserModel::where(['erp_user_id' => $record['erp_user_id']])->find();
+            $userShip['user_id'] = $user->id;
+            $userShip['area_id'] = (int)$record['area_id'];
             $userShip['address'] = $record['address'];
             $userShip['postal_code'] = $record['postal_code'];
             $userShip['name'] = $record['name'];
@@ -34,8 +38,26 @@ class UserShipImportHandler extends BaseHandler
             $userShip['utime'] = time();
 
             $userShipModel->startTrans();
-            $userShipId = $userShipModel->doAdd($userShip);
-            if (!is_string($userShipId)) {
+
+            $userShipData = $userShipModel->where(['user_id' => $userShip['user_id']])->find();
+
+            if ($userShipData && isset($userShipData['id']) && $userShipData['id'] !== '') {
+                $res = $userShipData->isUpdate(true)->save($userShip);
+                if ($res === false) {
+                    Log::warning("用户地址导入失败：用户ERP_ID 【{$userShip['erp_user_id']}】");
+                }
+                $userShipId = $userShipData['id'];
+            } else {
+                try {
+                    $userShipId = $userShipModel->doAdd($userShip);
+                } catch (Exception $exception) {
+                    var_dump($userShip);
+                    var_dump($userShipModel->getLastSql());
+                    exit;
+                }
+            }
+
+            if (!$userShipId) {
                 $userShipModel->rollback();
                 $message[] = '用户地址导入失败';
                 Log::record("用户地址导入失败：『#{$userShip['erp_user_id']}』{$userShip['name']} {$userShipId}");

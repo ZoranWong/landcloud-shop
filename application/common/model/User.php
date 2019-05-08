@@ -2,6 +2,7 @@
 
 namespace app\common\model;
 
+use app\common\model\Area as AreaModel;
 use app\common\model\Cart as CartModel;
 use think\model\concern\SoftDelete;
 use think\Validate;
@@ -1216,16 +1217,28 @@ class User extends Common
         $tableWhere = $this->tableWhere($post);
         $list = [];
         if ($isPage) {
-            $list = $this->with('grade')->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->paginate($limit);
+            $list = $this->with('grade,shipAddress')->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->paginate($limit);
             $data = $this->tableFormat($list->getCollection());         //返回的数据格式化，并渲染成table所需要的最终的显示数据类型
             $re['count'] = $list->total();
         } else {
-            $list = $this->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->select();
+            $list = $this->with('shipAddress')->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->select();
+            $data = [];
             if (!$list->isEmpty()) {
                 $data = $this->tableFormat($list->toArray());
             }
             $re['count'] = count($list);
         }
+
+        $areaModel = new AreaModel();
+        foreach ($data as &$user) {
+            $areaList = $areaModel->getArea($user['ship_address']['area_id']);
+            $address = '';
+            foreach ($areaList as $area) {
+                $address .= $area['info']['name'] . '-';
+            }
+            $user['ship_address']['address'] = $address . $user['ship_address']['address'];
+        }
+
         $re['code'] = 0;
         $re['msg'] = '';
 
@@ -1299,4 +1312,8 @@ class User extends Common
         return $this->hasMany(CartModel::class, 'user_id', 'id');
     }
 
+    public function shipAddress()
+    {
+        return $this->hasOne(UserShip::class, 'user_id', 'id');
+    }
 }
