@@ -72,13 +72,15 @@
         <div class="layui-inline">
             <label class="layui-form-label"><i class="required-color">*</i>ERP 用户ID：</label>
             <div class="layui-input-inline">
-                <input type="text" name="erp_user_id" required lay-verify="required" class="layui-input">
+                <input type="text" name="erp_user_id" value="{$info.erp_user_id}" required lay-verify="required"
+                       class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label"><i class="required-color">*</i>销售经理ERP ID：</label>
             <div class="layui-input-inline">
-                <input type="text" name="erp_manage_id" required lay-verify="required" class="layui-input">
+                <input type="text" name="erp_manage_id" required lay-verify="required" value="{$info.erp_manage_id}"
+                       class="layui-input">
             </div>
         </div>
     </div>
@@ -86,7 +88,8 @@
         <div class="layui-inline">
             <label class="layui-form-label"><i class="required-color">*</i>销售经理ERP姓名：</label>
             <div class="layui-input-inline">
-                <input type="text" name="erp_manage_name" required lay-verify="required" class="layui-input">
+                <input type="text" name="erp_manage_name" required lay-verify="required" value="{$info.erp_manage_name}"
+                       class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
