@@ -1078,6 +1078,9 @@ class User extends Common
         $newData['status'] = $data['status'];
         $newData['pid'] = $data['pid'];
         $newData['grade'] = $data['grade'];
+        $newData['erp_user_id'] = $data['erp_user_id'];
+        $newData['erp_manage_id'] = $data['erp_manage_id'];
+        $newData['erp_manage_name'] = $data['erp_manage_name'];
         $result = $this->save($newData, $where);
         $return['data'] = $result;
 
