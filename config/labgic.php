@@ -25,8 +25,8 @@ return [
         'customer' => ''
     ],
 
-    'login_fail_num' => 3,       //登陆失败次数，如果每天登陆失败次数超过次数字，就会显示图片验证码
-    'manage_login_fail_num' => 5,       //管理员登陆失败次数，如果超过这个次数，会显示图片验证码，防止暴力破解
+    'login_fail_num' => 3,       //登录失败次数，如果每天登录失败次数超过次数字，就会显示图片验证码
+    'manage_login_fail_num' => 5,       //管理员登录失败次数，如果超过这个次数，会显示图片验证码，防止暴力破解
     'tocash_money_low' => '100',       //最低提现金额
     'authorization_url' => 'http://www.ztes.com', //授权查询地址
     'product' => '兰杰柯销售商城',//产品名称

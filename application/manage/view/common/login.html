@@ -82,7 +82,7 @@
                     data: data.field,
                     success: function(data) {
                         if (data.status) {
-                            layer.msg('登陆成功，跳转中...');
+                            layer.msg('登录成功，跳转中...');
                             setTimeout("window.location.href='" + data.data + "'; ", 1500);
                         } else {
                             if (data.data == '10013' || data.data == '10012') {

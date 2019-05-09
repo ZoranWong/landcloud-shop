@@ -8,15 +8,13 @@
 // +----------------------------------------------------------------------
 
 /**
- * 此控制器不用api校验，不需要token登陆，就是单纯的标准的接口数据,用于取一些通用的信息
+ * 此控制器不用api校验，不需要token登录，就是单纯的标准的接口数据,用于取一些通用的信息
  */
 
 namespace app\api\controller;
 
-use app\common\model\Area;
-
 use app\common\controller\Base;
-
+use app\common\model\Area;
 use app\common\model\Seller;
 
 class Common extends Base
@@ -51,7 +49,7 @@ class Common extends Base
     }
 
     /**
-     * 获取验证码，如果登陆失败次数太多，就需要验证码了
+     * 获取验证码，如果登录失败次数太多，就需要验证码了
      * @return string
      */
     public function verify()

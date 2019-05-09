@@ -1,8 +1,6 @@
 <?php
 namespace app\common\model;
 
-use think\Db;
-
 class UserWx extends Common
 {
     protected $autoWriteTimestamp = true;
@@ -14,7 +12,7 @@ class UserWx extends Common
     const TYPE_OFFICIAL = 2;            //类型2，微信公众号
 
 
-    //微信小程序登陆第一步，需要现在后台微信配置 小程序配置里面配置好参数
+    //微信小程序登录第一步，需要现在后台微信配置 小程序配置里面配置好参数
     public function codeToInfo($code){
         //根据code取openid和session_key
         $wx = new \org\Wx();
@@ -49,7 +47,7 @@ class UserWx extends Common
         return $result;
     }
 
-    //微信小程序登陆第二步，根据微信端传过来的值解析用户数据,更新user_wx表
+    //微信小程序登录第二步，根据微信端传过来的值解析用户数据,更新user_wx表
     public function updateWxInfo($id,$edata,$iv){
         $info = $this->where(['id'=>$id])->find();
         if(!$info){
@@ -96,7 +94,7 @@ class UserWx extends Common
     }
 
 
-    //微信第三登陆根据微信的信息，创建用户,但是没有登陆，没有手机号码，等他手机号码传过来后再登陆
+    //微信第三登录根据微信的信息，创建用户,但是没有登录，没有手机号码，等他手机号码传过来后再登录
     public function toAddWx($params)
     {
         $result = [

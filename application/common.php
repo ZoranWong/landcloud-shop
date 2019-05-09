@@ -313,7 +313,7 @@ function format_mobile($mobile)
     return substr($mobile, 0, 5) . "****" . substr($mobile, 9, 2);
 }
 
-//如果没有登陆的情况下，记录来源url，并跳转到登陆页面
+//如果没有登录的情况下，记录来源url，并跳转到登录页面
 function redirect_url()
 {
     if (cookie('?redirect_url')) {

@@ -46,7 +46,7 @@ class User extends Common
     /**
      * (废弃)注册添加用户,此接口废弃掉了，建议使用smsLogin方法
      * @param array $data 新建用户的数据数组
-     * @param int $loginType 登陆类型，1网页登陆，存session，2接口登陆，返回token
+     * @param int $loginType 登录类型，1网页登录，存session，2接口登录，返回token
      *
      */
 //    public function toAdd($data, $loginType=1)
@@ -108,8 +108,8 @@ class User extends Common
 //    }
 
     /**
-     * 用户账户密码登陆
-     * @param array $data 用户登陆信息
+     * 用户账户密码登录
+     * @param array $data 用户登录信息
      * @param int $loginType 1就是默认的，存session，2就是返回user_token
      * @param int $platform 平台id，主要和session有关系 1就是默认的平台，，2就是微信小程序平台，当需要放回user_token的时候，会用到此字段
      *
@@ -145,11 +145,11 @@ class User extends Common
         }
 
 
-        //判断是否是用户名登陆
+        //判断是否是用户名登录
 //        $userInfo = $this->where(array('username|mobile' => $data['mobile'], 'password' => $this->enPassword($data['password'], $userInfo->ctime)))->find();
         $userInfo = $this->where(array('username|mobile' => $data['mobile']))->find();
         if ($userInfo && $data['password'] === decrypt($userInfo->password)) {
-            $result = $this->setSession($userInfo, $loginType, $platform);            //根据登陆类型，去存session，或者是返回user_token
+            $result = $this->setSession($userInfo, $loginType, $platform);            //根据登录类型，去存session，或者是返回user_token
         } else {
             //写失败次数到session里
             if (session('?login_fail_num')) {
@@ -166,9 +166,9 @@ class User extends Common
     }
 
     /**
-     * 手机短信验证码登陆，同时兼有手机短信注册的功能，还有第三方账户绑定的功能
+     * 手机短信验证码登录，同时兼有手机短信注册的功能，还有第三方账户绑定的功能
      * @param $data
-     * @param int $loginType 登陆类型，1网页登陆，存session，2接口登陆，返回token
+     * @param int $loginType 登录类型，1网页登录，存session，2接口登录，返回token
      * @param int $platform
      * @return array
      */
@@ -188,7 +188,7 @@ class User extends Common
             return $result;
         }
 
-        //判断是否是用户名登陆
+        //判断是否是用户名登录
         $smsModel = new Sms();
         $userWxModel = new UserWx();
         if (!$smsModel->check($data['mobile'], $data['code'], 'login')) {
@@ -201,7 +201,7 @@ class User extends Common
             //没有此用户，创建此用户
             $userData['mobile'] = $data['mobile'];
 
-            //判断是否是小程序里的微信登陆，如果是，就查出来记录，取他的头像和昵称
+            //判断是否是小程序里的微信登录，如果是，就查出来记录，取他的头像和昵称
             if (isset($data['user_wx_id'])) {
                 $user_wx_info = $userWxModel->where(['id' => $data['user_wx_id']])->find();
                 if ($user_wx_info) {
@@ -260,12 +260,12 @@ class User extends Common
                 return error_code(11019);
             }
         }
-        //判断是否是小程序里的微信登陆，如果是，就给他绑定微信账号
+        //判断是否是小程序里的微信登录，如果是，就给他绑定微信账号
         if (isset($data['user_wx_id'])) {
             $userWxModel->save(['user_id' => $userInfo['id']], ['id' => $data['user_wx_id']]);
         }
 
-        $result = $this->setSession($userInfo, $loginType, $platform);            //根据登陆类型，去存session，或者是返回user_token
+        $result = $this->setSession($userInfo, $loginType, $platform);            //根据登录类型，去存session，或者是返回user_token
 
 
         return $result;
@@ -274,7 +274,7 @@ class User extends Common
     }
 
     /**
-     * 登陆注册的时候，发送短信验证码
+     * 登录注册的时候，发送短信验证码
      */
     public function sms($mobile, $code)
     {
@@ -288,10 +288,10 @@ class User extends Common
         if ($code == 'reg') {
             //注册
             if ($userInfo) {
-                $result['msg'] = '此账号已经注册过，请直接登陆';
+                $result['msg'] = '此账号已经注册过，请直接登录';
                 return $result;
             }
-            $code = 'login';        //手机短信注册和手机短信登陆是一个接口，所以，在这要换算成login，详见smsLogin方法
+            $code = 'login';        //手机短信注册和手机短信登录是一个接口，所以，在这要换算成login，详见smsLogin方法
 
             //判断账号状态
 //            if($userInfo->status != self::STATUS_NORMAL) {
@@ -299,7 +299,7 @@ class User extends Common
 //                return $result;
 //            }
         } elseif ($code == 'login') {
-            //登陆
+            //登录
         } elseif ($code === 'veri') {
             // 找回密码
         } else {
@@ -318,8 +318,8 @@ class User extends Common
      * User:tianyu
      * @param $userInfo
      * @param $data
-     * @param $loginType            登陆类型1是存session，主要是商户端的登陆和网页版本的登陆,2就是token
-     * @param int $platform 1就是普通的登陆，主要是vue登陆，2就是小程序登陆，写这个是为了保证h5端和小程序端可以同时保持登陆状态
+     * @param $loginType            登录类型1是存session，主要是商户端的登录和网页版本的登录,2就是token
+     * @param int $platform 1就是普通的登录，主要是vue登录，2就是小程序登录，写这个是为了保证h5端和小程序端可以同时保持登录状态
      * @param int $type 1的话就是登录,2的话就是更新
      * @return array
      */
@@ -825,7 +825,7 @@ class User extends Common
     /**
      * （废弃，请用smsLogin方法）绑定用户
      * @param array $data 新建用户的数据数组
-     * @param int $loginType 登陆类型，1网页登陆，存session，2接口登陆，返回token
+     * @param int $loginType 登录类型，1网页登录，存session，2接口登录，返回token
      * @return array|null|\PDOStatement|string|\think\Model
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException

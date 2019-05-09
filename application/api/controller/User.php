@@ -25,7 +25,7 @@ use think\facade\Request;
 class User extends Api
 {
     /**
-     * 登陆
+     * 登录
      * @return array
      */
     public function login()
@@ -38,12 +38,12 @@ class User extends Api
 
 
     /**
-     * 短信验证码登陆，手机短信验证注册账号
+     * 短信验证码登录，手机短信验证注册账号
      * mobile       手机号码，必填
      * code         手机验证码，必填
      * invitecode   邀请码，推荐人的邀请码 选填
      * password     注册的时候，可以传密码 选填
-     * user_wx_id   第三方登录，微信公众号里的登陆，微信小程序登陆等需要绑定账户的时候，要传这个参数，这是第一次的时候需要这样绑定，以后就不需要了  选填
+     * user_wx_id   第三方登录，微信公众号里的登录，微信小程序登录等需要绑定账户的时候，要传这个参数，这是第一次的时候需要这样绑定，以后就不需要了  选填
      *
      * @return array
      */
@@ -57,7 +57,7 @@ class User extends Api
 
 
     /**
-     * 微信小程序创建用户，不登陆，只是保存登录态
+     * 微信小程序创建用户，不登录，只是保存登录态
      * @return array
      */
     public function wxappLogin1()
@@ -115,7 +115,7 @@ class User extends Api
             $result['data'] = ['user_wx_id' => $re['data']['id']];
             return $result;
         } else {
-            //绑定好手机号码了，去登陆,去取user_token
+            //绑定好手机号码了，去登录,去取user_token
             $userTokenModel = new UserToken();
             $re = $userTokenModel->setToken($re['data']['user_id'], 2);
             if ($re['status']) {
@@ -127,7 +127,7 @@ class User extends Api
 
 
     /**
-     * 发送登陆注册短信，type为1注册，为2登陆
+     * 发送登录注册短信，type为1注册，为2登录
      * @return array|mixed
      */
     public function sms()

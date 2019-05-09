@@ -333,7 +333,7 @@ class wechatpay implements Payment
 
         $userWxInfo = $userWxModel->where(['type'=>$type,'user_id'=>$user_id])->find();
         if(!$userWxInfo){
-            $result['msg'] = "请用户先进行微信登陆或绑定";
+            $result['msg'] = "请用户先进行微信登录或绑定";
             return $result;
         }
         $result['data'] = $userWxInfo['openid'];

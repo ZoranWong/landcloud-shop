@@ -141,8 +141,8 @@ class Manage extends Common implements Excelable
     }
 
     /**
-     * 管理员登陆
-     * @param array $data 用户登陆信息
+     * 管理员登录
+     * @param array $data 用户登录信息
      *
      */
     public function toLogin($data)
@@ -182,7 +182,7 @@ class Manage extends Common implements Excelable
             return $result;
         }
 
-        //判断是否是用户名登陆
+        //判断是否是用户名登录
 //        $userInfo = $this->where(array('username|mobile' => $data['mobile'], 'password' => $this->enPassword($data['password'], $userInfo->ctime)))->find();
         $userInfo = $this->where(['username|mobile' => $data['mobile']])->find();
         if ($userInfo && $data['password'] === decrypt($userInfo->password)) {

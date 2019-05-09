@@ -16,7 +16,7 @@ class Sms extends Common
             'check' => true
         ],
         'login' => [
-            'name' => '用户登陆',
+            'name' => '用户登录',
             'check' => true
         ],
         'veri' => [
@@ -34,7 +34,7 @@ class Sms extends Common
         }
 
 
-        //如果是登陆注册等的短信，增加校验
+        //如果是登录注册等的短信，增加校验
         if($code == 'reg' || $code == 'login' || $code== 'veri'){
             $where[] = ['mobile', 'eq', $mobile];
             $where[] = ['code', 'eq', $code];
@@ -105,7 +105,7 @@ class Sms extends Common
                 $msg = "您正在注册账号，验证码是".$params['code']."，请勿告诉他人。";
                 break;
             case 'login':
-                $msg = "您正在登陆账号，验证码是".$params['code']."，请勿告诉他人。";
+                $msg = "您正在登录账号，验证码是" . $params['code'] . "，请勿告诉他人。";
                 break;
             case 'veri':
                 $msg = "您的验证码是".$params['code']."，请勿告诉他人。";

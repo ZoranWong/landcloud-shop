@@ -8,19 +8,16 @@
 // +----------------------------------------------------------------------
 namespace app\b2c\controller;
 
-use app\common\model\BillRefund;
-use app\common\model\BillReship;
-use app\common\model\UserLog;
-use app\common\model\Sms;
-use Request;
-use app\common\model\User;
 use app\common\controller\Base;
+use app\common\model\User;
+use app\common\model\UserLog;
+use Request;
 
 class Common extends Base
 {
 
     /**
-     * 用户登陆页面
+     * 用户登录页面
      * @author sin
      */
     public function login()
@@ -47,7 +44,7 @@ class Common extends Base
 
     }
     /**
-     * 用户短信登陆
+     * 用户短信登录
      * @author sin
      */
     public function smsLogin()
@@ -58,7 +55,7 @@ class Common extends Base
             'msg' => ''
         ];
         if (session('?user')) {
-            $result['msg'] = "用户已经登录，请刷新页面，直接登陆";
+            $result['msg'] = "用户已经登录，请刷新页面，直接登录";
             return $result;
         }
         if(!input("?post.mobile")){
@@ -85,7 +82,7 @@ class Common extends Base
 
     }
     /**
-     * 用户注册页面，此页面是通过页面直接登陆注册的，没有走接口，存的是session，暂时没啥用
+     * 用户注册页面，此页面是通过页面直接登录注册的，没有走接口，存的是session，暂时没啥用
      * @author sin
      */
     public function reg()
@@ -139,7 +136,7 @@ class Common extends Base
     }
 
     /**
-     * 发送短信验证码，这里只能发送登陆，注册和短信校验的时候的验证码
+     * 发送短信验证码，这里只能发送登录，注册和短信校验的时候的验证码
      */
     public function sms()
     {

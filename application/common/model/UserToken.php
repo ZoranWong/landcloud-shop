@@ -5,9 +5,9 @@ namespace app\common\model;
 class UserToken extends Common
 {
     /**
-     * 登陆存token
+     * 登录存token
      * @param $user_id
-     * @param int $platform     如果是1，就是前端普通登陆，如果是2就是微信小程序登陆
+     * @param int $platform 如果是1，就是前端普通登录，如果是2就是微信小程序登录
      * @return array
      */
     public function setToken($user_id,$platform=1){

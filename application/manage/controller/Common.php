@@ -32,7 +32,7 @@ class Common extends Base
     }
 
     /**
-     * 用户登陆页面
+     * 用户登录页面
      * @author sin
      */
     public function login()

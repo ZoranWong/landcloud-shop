@@ -6,8 +6,8 @@
 			<div>
 				<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 					<ul class="layui-tab-title">
-						<li class="layui-this">普通登陆</li>
-						<li>手机短信登陆</li>
+                        <li class="layui-this">普通登录</li>
+                        <li>手机短信登录</li>
 					</ul>
 					<div class="layui-tab-content">
 						<div class="layui-tab-item layui-show">
@@ -78,7 +78,7 @@
 <div class="login-content-r"></div>
 		<script>
 			layui.use(['element', 'form'], function() {
-				//手机号码登陆
+                //手机号码登录
 				layui.form.on('submit(sms_login)', function(data) {
 					$.ajax({
 						type: "POST",
@@ -86,7 +86,7 @@
 						data: data.field,
 						success: function(data) {
 							if(data.status) {
-								layer.msg('登陆成功，跳转中...');
+                                layer.msg('登录成功，跳转中...');
 								setTimeout("window.location.href='" + data.data + "'; ", 1500);
 							} else {
 								layer.msg(data.msg);
@@ -95,7 +95,7 @@
 					});
 					return false;
 				});
-				//密码登陆
+                //密码登录
 				layui.form.on('submit(password_login)', function(data) {
 					$.ajax({
 						type: "POST",
@@ -103,7 +103,7 @@
 						data: data.field,
 						success: function(data) {
 							if(data.status) {
-								layer.msg('登陆成功，跳转中...');
+                                layer.msg('登录成功，跳转中...');
 								setTimeout("window.location.href='" + data.data + "'; ", 1500);
 							} else {
                                 if(data.data == '10013' || data.data == '10012'){
