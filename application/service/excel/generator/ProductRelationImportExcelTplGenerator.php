@@ -17,4 +17,9 @@ class ProductRelationImportExcelTplGenerator extends BaseGenerator
     {
         return "产品关联信息导入指导表";
     }
+
+    public function getExportData($params): array
+    {
+        // TODO: Implement getExportData() method.
+    }
 }

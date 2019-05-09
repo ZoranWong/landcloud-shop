@@ -34,7 +34,7 @@ abstract class BaseGenerator
         return [$headers, $keys];
     }
 
-    public function generate($data = [])
+    public function generate($data = null)
     {
         list($headers, $keys) = $this->headers();
 
@@ -43,6 +43,12 @@ abstract class BaseGenerator
         $spreadSheet = new Spreadsheet();
         $sheet = $spreadSheet->getActiveSheet();
 
+        if (is_null($data)) {
+            $data = [];
+        }
+        if (!is_iterable($data)) {
+            $data = [$data];
+        }
         array_unshift($data, $headers);
         if (!is_null($data)) {
             if (!is_iterable($data)) {

@@ -17,4 +17,9 @@ class AdministratorImportExcelTplGenerator extends BaseGenerator
     {
         return "管理员导入指导表";
     }
+
+    public function getExportData($params): array
+    {
+        // TODO: Implement getExportData() method.
+    }
 }

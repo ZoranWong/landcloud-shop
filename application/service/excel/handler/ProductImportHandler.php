@@ -49,13 +49,6 @@ class ProductImportHandler extends BaseHandler
             $goods['brief'] = $record['brief'];
             $paths = [];
             if (!empty($record['image_url_prefix'])) {
-//                $paths = Upload::getPrefixFiles($record['image_url_prefix']);
-//                $paths = (new Upload([], 'aliyun', [
-//                    'accessKeyId' => 'LTAIlPzA6EbMNFpj', //阿里云accesskeyid，用户AccessKey控制台地址：https://usercenter.console.aliyun.com/#/manage/ak
-//                    'accessKeySecret' => '9FF5OwhjnfMTYzCXPgt4CxttuwK8rx', //访问密钥
-//                    'endpoint' => 'oss-cn-hangzhou.aliyuncs.com', //访问域名
-//                    'bucket' => 'labgic-oss-1', //空间名称
-//                ]))->getPrefixFiles($record['image_url_prefix']);
                 $paths = Upload::prefixFiles($record['image_url_prefix']);
             }
             if (!empty($record['intro'])) {
@@ -78,6 +71,7 @@ class ProductImportHandler extends BaseHandler
             $goods['mktprice'] = (double)$record['mktprice'];
             $goods['price'] = (double)$record['price'];
             $goods['preferential_price'] = (double)$record['preferential_price'];
+            $goods['spes_desc'] = (string)$record['spes_desc'];
             $goods['promotion_price'] = (double)$record['promotion_price'];
             if (!empty($record['keywords'])) {
                 $goods['keywords'] = explode('|', $record['keywords']);

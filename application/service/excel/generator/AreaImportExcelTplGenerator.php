@@ -17,4 +17,9 @@ class AreaImportExcelTplGenerator extends BaseGenerator
     {
         return '地区填写指导表';
     }
+
+    public function getExportData($params): array
+    {
+        // TODO: Implement getExportData() method.
+    }
 }
