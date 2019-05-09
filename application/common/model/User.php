@@ -4,6 +4,7 @@ namespace app\common\model;
 
 use app\common\model\Area as AreaModel;
 use app\common\model\Cart as CartModel;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use think\model\concern\SoftDelete;
 use think\Validate;
 
@@ -19,9 +20,20 @@ class User extends Common
     const STATUS_NORMAL = 1;        //用户状态 正常
     const STATUS_DISABLE = 2;       //用户状态 停用
 
+    const STATUS = [
+        self::STATUS_NORMAL => '正常',
+        self::STATUS_DISABLE => '停用'
+    ];
+
     const SEX_BOY = 1;
     const SEX_GIRL = 2;
     const SEX_OTHER = 3;
+
+    const SEX = [
+        self::SEX_BOY => '男',
+        self::SEX_GIRL => '女',
+        self::SEX_OTHER => '未知'
+    ];
 
     //protected $resultSetType = 'collection';
 
@@ -1149,57 +1161,38 @@ class User extends Common
     public static function excelHeader()
     {
         return [
-            [
-                'id' => 'erp_user_id',
-                'desc' => '用户ID'
-            ],
-            [
-                'id' => 'username',
-                'desc' => '用户名'
-            ],
-            [
-                'id' => 'mobile',
-                'desc' => '手机号'
-            ],
-            [
-                'id' => 'password',
-                'desc' => '密码'
-            ],
-            [
-                'id' => 'sex',
-                'desc' => '性别'
-            ],
-            [
-                'id' => 'birthday',
-                'desc' => '生日'
-            ],
-            [
-                'id' => 'avatar',
-                'desc' => '头像'
-            ],
-            [
-                'id' => 'nickname',
-                'desc' => '昵称'
-            ],
-            [
-                'id' => 'status',
-                'desc' => '状态',
-            ],
-            [
-                'id' => 'erp_manage_id',
-                'desc' => '销售代表ID'
-            ],
-            [
-                'id' => 'erp_manage_name',
-                'desc' => '销售代表姓名'
-            ],
-            [
-                'id' => 'company',
-                'desc' => '公司'
-            ]
+            ['id' => 'erp_user_id', 'desc' => '用户ID'],
+            ['id' => 'username', 'desc' => '用户名'],
+            ['id' => 'mobile', 'desc' => '手机号'],
+            ['id' => 'password', 'desc' => '密码'],
+            ['id' => 'sex', 'desc' => '性别'],
+            ['id' => 'birthday', 'desc' => '生日'],
+            ['id' => 'avatar', 'desc' => '头像'],
+            ['id' => 'nickname', 'desc' => '昵称'],
+            ['id' => 'status', 'desc' => '状态',],
+            ['id' => 'erp_manage_id', 'desc' => '销售代表ID'],
+            ['id' => 'erp_manage_name', 'desc' => '销售代表姓名'],
+            ['id' => 'company', 'desc' => '公司']
         ];
     }
 
+    public static function exportHeader()
+    {
+        return [
+            ['field' => 'erp_user_id', 'desc' => 'ERP ID', 'type' => DataType::TYPE_STRING],
+            ['field' => 'username', 'desc' => '用户名'],
+            ['field' => 'mobile', 'desc' => '手机号', 'type' => DataType::TYPE_STRING],
+            ['field' => 'password', 'desc' => '密码', 'type' => DataType::TYPE_STRING],
+            ['field' => 'sex', 'desc' => '性别'],
+            ['field' => 'birthday', 'desc' => '生日'],
+            ['field' => 'avatar', 'desc' => '头像'],
+            ['field' => 'nickname', 'desc' => '昵称'],
+            ['field' => 'status', 'desc' => '状态',],
+            ['field' => 'erp_manage_id', 'desc' => '销售代表ERP ID'],
+            ['field' => 'erp_manage_name', 'desc' => '销售代表姓名'],
+            ['field' => 'company', 'desc' => '公司']
+        ];
+    }
 
     /**
      * 返回layui的table所需要的格式
