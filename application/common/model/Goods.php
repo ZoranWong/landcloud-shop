@@ -309,9 +309,9 @@ class Goods extends Common implements Excelable
                 $list['label_ids'] = [];
             }
             $user_id = getUserIdByToken($token);//获取user_id
-            if ($list['spes_desc']) {
-                $list['spes_desc'] = unserialize($list['spes_desc']);
-            }
+//            if ($list['spes_desc']) {
+//                $list['spes_desc'] = unserialize($list['spes_desc']);
+//            }
             //取出图片集
             $imagesModel = new GoodsImages();
             $images = $imagesModel->where(['goods_id' => $list['id']])->order('sort asc')->select();
