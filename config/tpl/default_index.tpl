@@ -15,7 +15,7 @@ class Index{$suffix}
 )
 <
 /
-h1 > < p > 赛思铁克< br
+h1 > < p > 兴软< br
 
 /
 > < span style
