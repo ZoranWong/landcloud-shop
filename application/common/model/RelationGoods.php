@@ -10,6 +10,7 @@ namespace app\common\model;
 
 
 use app\service\excel\Excelable;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
 class RelationGoods extends Common implements Excelable
 {
@@ -53,6 +54,10 @@ class RelationGoods extends Common implements Excelable
 
     public static function exportHeader()
     {
-        // TODO: Implement exportHeader() method.
+        return [
+            ['field' => 'erp_goods_id', 'desc' => 'ERP U8编号', 'type' => DataType::TYPE_STRING],
+            ['field' => 'erp_relation_goods_id', 'desc' => '关联产品ERP U8编号', 'type' => DataType::TYPE_STRING],
+            ['field' => 'required', 'desc' => '必须']
+        ];
     }
 }

@@ -174,7 +174,7 @@ class Setting extends Common
         ],
         'wx_principal_name' => [
             'name' => '主体信息',
-            'value' => '兴软科技',
+            'value' => '赛思铁克科技',
         ],
         'wx_signature' => [
             'name' => '简介',

@@ -18,13 +18,13 @@
         <div class="layui-inline">
             <label class="layui-form-label">密码：</label>
             <div class="layui-input-inline">
-                <input type="password" name="password" class="layui-input" placeholder="为空时不修改密码" >
+                <input type="password" name="password" class="layui-input" placeholder="为空时不修改密码">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">确认密码：</label>
             <div class="layui-input-inline">
-                <input type="password" name="repassword" class="layui-input"  placeholder="请与密码保持一致" >
+                <input type="password" name="repassword" class="layui-input" placeholder="请与密码保持一致">
             </div>
         </div>
     </div>
@@ -32,8 +32,8 @@
         <div class="layui-inline">
             <label class="layui-form-label">性别：</label>
             <div class="layui-input-inline">
-                <input type="radio" name="sex" value="1" title="男" {if $info.sex == 1}checked="checked"{/if}>
-                <input type="radio" name="sex" value="2" title="女" {if $info.sex == 2}checked="checked"{/if}>
+                <input type="radio" name="sex" value="1" title="男" {if $info.sex== 1}checked="checked" {/if}>
+                <input type="radio" name="sex" value="2" title="女" {if $info.sex== 2}checked="checked" {/if}>
             </div>
         </div>
         <div class="layui-inline">
@@ -47,10 +47,11 @@
         <div class="layui-inline">
             <label class="layui-form-label">等级：</label>
             <div class="layui-input-inline">
-                <select name="grade" >
+                <select name="grade">
                     <option value="">请选择</option>
                     {foreach $grade as $k=>$v}
-                    <option value="{$v.id}" {if $v.id == $info.grade}selected="selected"{/if}>{$v.name}</option>
+                    <option value="{$v.id}" {if $v.id== $info.grade}selected="selected" {
+                    /if}>{$v.name}</option>
                     {/foreach}
                 </select>
             </div>
@@ -59,8 +60,10 @@
             <label class="layui-form-label">状态：</label>
             <div class="layui-input-inline">
                 <select name="status" id="status">
-                    <option value="1" {if $info.status == 1}selected="selected"{/if}>可用</option>
-                    <option value="2" {if $info.status == 2}selected="selected"{/if}>停用</option>
+                    <option value="1" {if $info.status== 1}selected="selected" {
+                    /if}>可用</option>
+                    <option value="2" {if $info.status== 2}selected="selected" {
+                    /if}>停用</option>
                 </select>
             </div>
         </div>
@@ -81,7 +84,7 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label"><i class="required-color">*</i>销售经历ERP姓名：</label>
+            <label class="layui-form-label"><i class="required-color">*</i>销售经理ERP姓名：</label>
             <div class="layui-input-inline">
                 <input type="text" name="erp_manage_name" required lay-verify="required" class="layui-input">
             </div>
