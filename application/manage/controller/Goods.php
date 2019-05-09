@@ -1231,7 +1231,9 @@ class Goods extends Manage
         if ($search) {
             $query->where(function ($query) use ($search) {
                 /**@var Query $query * */
-                $query->where('name', 'like', "%{$search}%");
+                $query->where('name', 'like', "%{$search}%")
+                    ->whereOr('erp_goods_id', 'like', "%{$search}%")
+                    ->whereOr('bn', 'like', "%{$search}%");
             });
         }
         $relationGoods = $goodsId ? RelationGoods::where('main_goods_id', 'eq', $goodsId)->select() : null;

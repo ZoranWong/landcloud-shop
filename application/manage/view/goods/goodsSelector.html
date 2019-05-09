@@ -30,8 +30,11 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">商品名称：</label>
                     <div class="layui-input-inline seller-inline-4">
-                        <input id = "" type="text" name="name" lay-verify="title" placeholder="请输入商品名称" autocomplete="off"
+                        <input id = "" type="text" name="search" lay-verify="title" placeholder="请输入商品名称" autocomplete="off"
                                class="layui-input">
+                        <button class="layui-btn layui-btn-sm" id="goodsSearch" lay-submit lay-filter="goods-search"><i
+                                class="iconfont icon-shaixuan"></i>搜索
+                        </button>
                     </div>
                 </div>
             </div>
@@ -91,6 +94,16 @@
             ]]
         });
 
+        layui.form.on('submit(goods-search)', function (data) {
+            var tempfilter = $.extend({}, filter, data.field);//合并tab筛选和普通搜索
+            table.reload({
+                where: tempfilter
+                , page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
     });
 
 
