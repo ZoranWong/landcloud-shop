@@ -17,4 +17,9 @@ class ProductPriceLevelImportExcelTplGenerator extends BaseGenerator
     {
         return "产品价格梯度导入指导表";
     }
+
+    public function getExportData($params): array
+    {
+        // TODO: Implement getExportData() method.
+    }
 }

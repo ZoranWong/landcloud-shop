@@ -16,4 +16,9 @@ class UserImportExcelTplGenerator extends BaseGenerator
     {
         return '用户导入指导表';
     }
+
+    public function getExportData($params): array
+    {
+        // TODO: Implement getExportData() method.
+    }
 }
