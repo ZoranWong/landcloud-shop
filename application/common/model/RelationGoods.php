@@ -60,4 +60,9 @@ class RelationGoods extends Common implements Excelable
             ['field' => 'required', 'desc' => '必须']
         ];
     }
+
+    public function goods()
+    {
+        return $this->belongsTo(Goods::class, 'relation_goods_id', 'id');
+    }
 }
