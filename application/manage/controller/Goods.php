@@ -361,6 +361,7 @@ class Goods extends Manage
         }
 //        var_dump(input('post.goods.erp_goods_id'));exit;
         $data['goods']['is_hot'] = input('post.goods.is_hot', '2');
+        $data['goods']['spec_desc'] = input('post.spec_desc', '');
         $open_spec = input('post.open_spec', 0);
         $specdesc = input('post.spec/a', []);
         if ($specdesc && $open_spec) {
