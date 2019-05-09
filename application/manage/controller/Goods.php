@@ -379,8 +379,6 @@ class Goods extends Manage
                 }
             }
             $data['goods']['spes_desc'] = serialize($specdesc);
-        } else {
-            $data['goods']['spes_desc'] = '';
         }
 
         //商品参数处理
