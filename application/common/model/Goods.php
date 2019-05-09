@@ -944,6 +944,7 @@ class Goods extends Common implements Excelable
             ['id' => 'width', 'desc' => '产品宽度'],
             ['id' => 'height', 'desc' => '产品高度'],
             ['id' => 'unit', 'desc' => '产品单位'],
+            ['id' => 'spes_desc', 'desc' => '规格'],
             ['id' => 'mktprice', 'desc' => '市场价格'],
             ['id' => 'price', 'desc' => '销售价格'],
             ['id' => 'preferential_price', 'desc' => '优惠价格'],
