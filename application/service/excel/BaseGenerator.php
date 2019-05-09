@@ -115,7 +115,11 @@ abstract class BaseGenerator
                 foreach ($exportData as $key => $item) {
                     for ($i = 0; $i < $count; $i++) {     //数字转字母从65开始：
                         $column = strtoupper(chr($i + self::START_COLUMN));
-                        $sheet->setCellValue($column . ($key + self::START_ROW), isset($item[$keys[$i]['field']]) ? $item[$keys[$i]['field']] : $item[$i]);
+                        if (isset($item[$keys[$i]['type']])) {
+                            $sheet->setCellValueExplicit($column . ($key + self::START_ROW), isset($item[$keys[$i]['field']]) ? $item[$keys[$i]['field']] : $item[$i], $item[$keys[$i]['type']]);
+                        } else {
+                            $sheet->setCellValue($column . ($key + self::START_ROW), isset($item[$keys[$i]['field']]) ? $item[$keys[$i]['field']] : $item[$i]);
+                        }
                         $spreadSheet->getActiveSheet()->getColumnDimension($column)->setWidth(20); //固定列宽
                     }
                 }
