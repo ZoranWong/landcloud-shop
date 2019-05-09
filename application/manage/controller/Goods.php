@@ -683,11 +683,11 @@ class Goods extends Manage
         $this->assign('products', $goods['data']['products']);
         $this->assign('product', $goods['data']['products'][0]);
         $this->assign('tags', json_encode($goods['data']['keywords'] ?: []));
-        if ($goods['data']['spes_desc'] != '') {
-            $this->assign('open_spec', '1');
-        } else {
-            $this->assign('open_spec', '0');
-        }
+//        if ($goods['data']['spes_desc'] != '') {
+//            $this->assign('open_spec', '1');
+//        } else {
+//            $this->assign('open_spec', '0');
+//        }
         //类型
 //        $goodsTypeModel = new GoodsType();
         $res = $this->getEditSpec($goods['data']['goods_type_id'], $goods['data']);
@@ -976,7 +976,7 @@ class Goods extends Manage
 //            return $result;
 //        }
 
-        $spes_desc = unserialize($goods['spes_desc']);
+        //$spes_desc = unserialize($goods['spes_desc']);
         $this->assign('goods', $goods);
         $goodsTypeModel = new GoodsType();
         $res = $goodsTypeModel->getTypeValue($type_id);
