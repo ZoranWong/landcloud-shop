@@ -741,7 +741,7 @@ class Goods extends Manage
             return $result;
         }
         $data = $checkData['data'];
-        Log::debug('----------- goods data ----------', $data);
+        Log::debug('----------- goods data ----------'. json_encode($data));
         //验证商品数据
         $goodsModel = new goodsModel();
         $productsModel = new Products();
