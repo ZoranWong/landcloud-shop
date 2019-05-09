@@ -25,6 +25,7 @@ use app\common\validate\Products as ProductsValidate;
 use Request;
 use think\Db;
 use think\db\Query;
+use think\facade\Log;
 
 /***
  * 商品
@@ -740,6 +741,7 @@ class Goods extends Manage
             return $result;
         }
         $data = $checkData['data'];
+        Log::debug('----------- goods data ----------', $data);
         //验证商品数据
         $goodsModel = new goodsModel();
         $productsModel = new Products();
