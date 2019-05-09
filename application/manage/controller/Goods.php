@@ -25,6 +25,7 @@ use app\common\validate\Products as ProductsValidate;
 use Request;
 use think\Db;
 use think\db\Query;
+use think\facade\Log;
 
 /***
  * 商品
@@ -361,6 +362,8 @@ class Goods extends Manage
         }
 //        var_dump(input('post.goods.erp_goods_id'));exit;
         $data['goods']['is_hot'] = input('post.goods.is_hot', '2');
+        $data['goods']['spes_desc'] = input('post.goods.spes_desc', '');
+        Log::debug('--------spes_desc---------'.input('post.goods.spes_desc', ''));
         $open_spec = input('post.open_spec', 0);
         $specdesc = input('post.spec/a', []);
         if ($specdesc && $open_spec) {
@@ -376,8 +379,6 @@ class Goods extends Manage
                 }
             }
             $data['goods']['spes_desc'] = serialize($specdesc);
-        } else {
-            $data['goods']['spes_desc'] = '';
         }
 
         //商品参数处理
@@ -682,11 +683,11 @@ class Goods extends Manage
         $this->assign('products', $goods['data']['products']);
         $this->assign('product', $goods['data']['products'][0]);
         $this->assign('tags', json_encode($goods['data']['keywords'] ?: []));
-        if ($goods['data']['spes_desc'] != '') {
-            $this->assign('open_spec', '1');
-        } else {
-            $this->assign('open_spec', '0');
-        }
+//        if ($goods['data']['spes_desc'] != '') {
+//            $this->assign('open_spec', '1');
+//        } else {
+//            $this->assign('open_spec', '0');
+//        }
         //类型
 //        $goodsTypeModel = new GoodsType();
         $res = $this->getEditSpec($goods['data']['goods_type_id'], $goods['data']);
@@ -739,6 +740,7 @@ class Goods extends Manage
             return $result;
         }
         $data = $checkData['data'];
+        Log::debug('----------- goods data ----------'. json_encode($data));
         //验证商品数据
         $goodsModel = new goodsModel();
         $productsModel = new Products();
@@ -974,7 +976,7 @@ class Goods extends Manage
 //            return $result;
 //        }
 
-        $spes_desc = unserialize($goods['spes_desc']);
+        //$spes_desc = unserialize($goods['spes_desc']);
         $this->assign('goods', $goods);
         $goodsTypeModel = new GoodsType();
         $res = $goodsTypeModel->getTypeValue($type_id);
