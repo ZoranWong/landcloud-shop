@@ -47,7 +47,8 @@
             url: "{:url('administrator/index')}?_ajax=1",
             id: 'userTable',
             cols: [[
-                {type: 'numbers'},
+                {type: 'numbers', title: '#'},
+                {field: 'erp_manage_id', width: 100, title: 'ERP ID'},
                 {field: 'username', width: 100, title: '账号'},
                 {field: 'mobile', title: '手机号码'},
                 {field: 'nickname', title: '昵称'},
