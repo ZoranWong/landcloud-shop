@@ -1081,6 +1081,7 @@ class User extends Common
         $newData['erp_user_id'] = $data['erp_user_id'];
         $newData['erp_manage_id'] = $data['erp_manage_id'];
         $newData['erp_manage_name'] = $data['erp_manage_name'];
+        $newData['return_day'] = $data['return_day'] ?: 1;
         $result = $this->save($newData, $where);
         $return['data'] = $result;
 

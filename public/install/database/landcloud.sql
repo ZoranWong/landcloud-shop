@@ -1348,6 +1348,7 @@ CREATE TABLE `lc_user` (
   `erp_user_id` varchar (64) not null comment '用户erp系统id',
   `erp_manage_id` varchar (64) not null comment '销售经理erp系统id',
   `erp_manage_name` varchar(20) not null comment '销售经理erp系统name',
+  `return_day` int(11) default null comment '回款日';
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户表';
 
