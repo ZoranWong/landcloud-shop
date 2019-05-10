@@ -13,7 +13,7 @@ class UserLog extends Common
     const USER_EDIT = 4;    //用户编辑信息
 
 
-    //总后台的登陆记录
+    //总后台的登录记录
     public function getList( $user_id, $limit = 10 )
     {
         $where = [];

@@ -49,7 +49,7 @@
 				</div>
 				<div class="login-b">
 					已有账号？
-					<a href="{:url('b2c/common/login')}">立即登陆</a>
+                    <a href="{:url('b2c/common/login')}">立即登录</a>
 				</div>
 			</div>
 		</div>
@@ -58,7 +58,7 @@
 <div class="login-content-r"></div>
 		<script>
 			layui.use(['element', 'form'], function() {
-				//手机号码登陆
+                //手机号码登录
 				layui.form.on('submit(reg)', function(data) {
 					$.ajax({
 						type: "POST",

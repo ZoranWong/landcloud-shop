@@ -22,7 +22,7 @@ class Manage extends Base
     protected function initialize()
     {
         parent::initialize();
-        //没有登陆，请先登录
+        //没有登录，请先登录
         if (!session('?manage')) {
             cookie('redirect_url', Container::get('request')->url(), 3600);
             $this->redirect('manage/common/login');

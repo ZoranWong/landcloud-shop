@@ -13,6 +13,7 @@ class Wechat extends Base
     public function index()
     {
         header("Content-type: text/html; charset=utf-8");
-        echo '兴软科技欢迎您~';exit();
+        echo '兴软科技欢迎您~';
+        exit();
     }
 }

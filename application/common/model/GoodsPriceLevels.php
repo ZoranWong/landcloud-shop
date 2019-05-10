@@ -10,6 +10,7 @@ namespace app\common\model;
 
 
 use app\service\excel\Excelable;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
 class GoodsPriceLevels extends Common implements Excelable
 {
@@ -58,6 +59,14 @@ class GoodsPriceLevels extends Common implements Excelable
 
     public static function exportHeader()
     {
-        // TODO: Implement exportHeader() method.
+        return [
+            ['field' => 'erp_goods_id', 'desc' => 'ERP U8编号', 'type' => DataType::TYPE_STRING],
+            ['field' => 'area_id', 'desc' => '区域代码', 'type' => DataType::TYPE_NUMERIC],
+            ['field' => 'area', 'desc' => '区域', 'type' => DataType::TYPE_STRING],
+            ['field' => 'level', 'desc' => '梯度', 'type' => DataType::TYPE_NUMERIC],
+            ['field' => 'name', 'desc' => '规格', 'type' => DataType::TYPE_STRING],
+            ['field' => 'buy_num', 'desc' => '购买数量', 'type' => DataType::TYPE_STRING],
+            ['field' => 'price', 'desc' => '价格', 'type' => DataType::TYPE_STRING],
+        ];
     }
 }

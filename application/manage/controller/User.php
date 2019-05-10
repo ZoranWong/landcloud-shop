@@ -5,9 +5,9 @@ namespace app\Manage\controller;
 use app\common\controller\Manage;
 use app\common\model\Balance;
 use app\common\model\GoodsComment;
+use app\common\model\User as UserModel;
 use app\common\model\UserGrade;
 use app\common\model\UserLog;
-use app\common\model\User as UserModel;
 use app\common\model\UserPointLog;
 use think\facade\Request;
 
@@ -77,7 +77,7 @@ class User extends Manage
     }
 
 
-    //取当前店铺的所有用户的登陆退出消息,现在是绑定死一个用户，以后可能有多个用户
+    //取当前店铺的所有用户的登录退出消息,现在是绑定死一个用户，以后可能有多个用户
     public function userLogList()
     {
         $userLogModel = new UserLog();

@@ -50,7 +50,7 @@ class Index extends Api
             return error_code(14004);
         }
 
-        //判断是否需要登陆
+        //判断是否需要登录
         if($api[$method[0]]['method'][$method[1]]['is_login']){
             if(!input('?param.token')){
                 return error_code(14006);

@@ -3,19 +3,35 @@
         <label class="layui-form-label"><i class="required-color">*</i>用户名：</label>
         {if $manageInfo}
         <div class="layui-form-mid">
-            <input type="hidden" name="id" value="{$manageInfo.id}" />
+            <input type="hidden" name="id" value="{$manageInfo.id}"/>
             {$manageInfo.username}({$manageInfo.username})
         </div>
         {else /}
-            <div class="layui-input-inline seller-inline-6">
-                <input name="username" value="{$data.username}" lay-verify="required" placeholder="请输入用户名" class="layui-input" type="text">
-            </div>
+        <div class="layui-input-inline seller-inline-6">
+            <input name="username" value="{$data.username}" lay-verify="required" placeholder="请输入用户名"
+                   class="layui-input" type="text">
+        </div>
         {/if}
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"><i class="required-color">*</i>昵称</label>
+        <div class="layui-input-inline seller-inline-6">
+            <input name="nickname" value="{$manageInfo.nickname}" lay-verify="required" placeholder="请输入昵称"
+                   class="layui-input" type="text">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"><i class="required-color">*</i>ERP ID</label>
+        <div class="layui-input-inline seller-inline-6">
+            <input name="erp_manage_id" value="{$manageInfo.erp_manage_id}" lay-verify="required"
+                   placeholder="请输入ERP ID" class="layui-input" type="text">
+        </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label"><i class="required-color">*</i>手机号码：</label>
         <div class="layui-input-inline seller-inline-6">
-            <input name="mobile" value="{$manageInfo.mobile}" lay-verify="phone" placeholder="请输入管理员手机号码" class="layui-input" type="text">
+            <input name="mobile" value="{$manageInfo.mobile}" lay-verify="phone" placeholder="请输入管理员手机号码"
+                   class="layui-input" type="text">
         </div>
     </div>
     <div class="layui-form-item">
@@ -35,13 +51,14 @@
         <label class="layui-form-label">角色：</label>
         <div class="layui-input-inline seller-inline-6">
             {volist name="roleList" id="vo"}
-                <input type="checkbox" name="role_id[{$vo.id}]" lay-skin="primary" title="{$vo.name}" {if isset($vo['checked']) && $vo['checked']}checked=""{/if} >
+            <input type="checkbox" name="role_id[{$vo.id}]" lay-skin="primary" title="{$vo.name}" {if isset($vo['checked'])
+            && $vo['checked']}checked=""{/if} >
             {/volist}
         </div>
     </div>
 </form>
 <script>
-    layui.use('form', function(){
+    layui.use('form', function () {
         layui.form.render();
     });
 </script>
