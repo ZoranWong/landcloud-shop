@@ -1176,7 +1176,8 @@ class User extends Common
             ['id' => 'status', 'desc' => '状态',],
             ['id' => 'erp_manage_id', 'desc' => '销售代表ID'],
             ['id' => 'erp_manage_name', 'desc' => '销售代表姓名'],
-            ['id' => 'company', 'desc' => '公司']
+            ['id' => 'company', 'desc' => '公司'],
+            ['id' => 'return_day', 'desc' => '回款日(数字,默认1号)']
         ];
     }
 
@@ -1194,7 +1195,8 @@ class User extends Common
             ['field' => 'status', 'desc' => '状态',],
             ['field' => 'erp_manage_id', 'desc' => '销售代表ERP ID'],
             ['field' => 'erp_manage_name', 'desc' => '销售代表姓名'],
-            ['field' => 'company', 'desc' => '公司']
+            ['field' => 'company', 'desc' => '公司'],
+            ['field' => 'return_day', 'desc' => '回款日', 'type' => DataType::TYPE_NUMERIC]
         ];
     }
 
