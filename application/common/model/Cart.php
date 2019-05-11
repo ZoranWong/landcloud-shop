@@ -226,15 +226,21 @@ class Cart extends Common
             $levels = $levels->where('area', 'eq', $area)->order('buy_num', 'desc')->all();
             $price = $goods['promotion_price'] > 0 ? ($goods['preferential_price'] > 0 ? ($goods['preferential_price'] < $goods['promotion_price'] ?
                 $goods['preferential_price'] : $goods['promotion_price']) : $goods['promotion_price']) : $goods['price'];
+            $priceStruct = [];
             foreach ($levels as $level) {
                 if ($num >= $level['buy_num']) {
-                    $amount += $level['price'] * (int)($num / $level['buy_num']);
+                    $n = (int)($num / $level['buy_num']);
+                    $amount += $level['price'] * $n;
                     $num = $num % $level['buy_num'];
+                    $priceStruct[] = $level;
+                    $level['count'] = $n;
                 }
             }
+            $level0 = ['level' => 0, 'count' => $num];
+            $priceStruct[] = $level0;
             $amount += $price * $num;
         }
-        return $amount;
+        return [$amount, $priceStruct];
     }
 
     /**
@@ -289,8 +295,9 @@ class Cart extends Common
 //            }
 
             //单条商品总价
-            $result['data']['list'][$k]['amount'] = $this->getGoodsAmount($v['detail'], $v['nums'], $area);
-
+           list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $area);
+            $result['data']['list'][$k]['amount'] = $amount;
+            $result['data']['list'][$k]['price_strcut'] = $priceStruct;
             if ($v['is_select']) {
                 //算订单总商品价格
                 //$result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
