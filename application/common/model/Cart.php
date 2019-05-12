@@ -10,8 +10,10 @@
 namespace app\common\model;
 
 use app\common\model\Goods as GoodsModel;
+use think\Db;
 use think\db\Query;
 use think\Exception;
+use think\facade\Log;
 use think\model\Collection;
 
 /**
@@ -223,12 +225,11 @@ class Cart extends Common
         if ($goods['price_levels']) {
             /** @var Collection $levels * */
             $levels = $goods['price_levels'];
-            $levels = $levels->where('area', 'eq', $area)->order('buy_num', 'desc')->all();
+            Log::debug('----------------------- levels ----------------'.json_encode($levels));
+            $levels = $levels->where('area', '=', $area)->order('buy_num', 'desc')->all();
             $price = $goods['promotion_price'] > 0 ? ($goods['preferential_price'] > 0 ? ($goods['preferential_price'] < $goods['promotion_price'] ?
                 $goods['preferential_price'] : $goods['promotion_price']) : $goods['promotion_price']) : $goods['price'];
             $priceStruct = [];
-            var_dump($levels);
-            exit();
             foreach ($levels as $level) {
                 if ($num >= $level['buy_num']) {
                     $n = (int)($num / $level['buy_num']);
