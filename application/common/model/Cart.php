@@ -237,9 +237,10 @@ class Cart extends Common
                     $num = $num % $level['buy_num'];
                     $priceStruct[] = $level;
                     $level['count'] = $n;
+                    $level['pack'] = true;
                 }
             }
-            $level0 = ['level' => 0, 'count' => $num];
+            $level0 = ['pack' => false, 'count' => $num];
             $priceStruct[] = $level0;
             $amount += $price * $num;
         }
