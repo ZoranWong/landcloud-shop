@@ -227,6 +227,8 @@ class Cart extends Common
             $price = $goods['promotion_price'] > 0 ? ($goods['preferential_price'] > 0 ? ($goods['preferential_price'] < $goods['promotion_price'] ?
                 $goods['preferential_price'] : $goods['promotion_price']) : $goods['promotion_price']) : $goods['price'];
             $priceStruct = [];
+            var_dump($levels);
+            exit();
             foreach ($levels as $level) {
                 if ($num >= $level['buy_num']) {
                     $n = (int)($num / $level['buy_num']);
