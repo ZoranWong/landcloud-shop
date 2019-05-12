@@ -113,7 +113,7 @@ class Cart extends Api
     {
         $input['user_id'] = $this->userId;
         $input['id'] = input('id');
-        $input['nums'] = input('nums', 1);
+        $input['nums'] = input('nums', 0);
 //        if ($input['nums'] <= 0) {
 //            $input['nums'] = 1;
 //        }

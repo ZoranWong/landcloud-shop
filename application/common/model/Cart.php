@@ -380,8 +380,14 @@ class Cart extends Common
 
         $where[] = ['id', 'eq', $input['id']];
         $where[] = ['user_id', 'eq', $input['user_id']];
-        $res = $this->where($where)
-            ->update(['nums' => $input['nums']]);
+        $res = [];
+        if($input['nums'] > 0){
+            $res = $this->where($where)
+                ->update(['nums' => $input['nums']]);
+        }else{
+            $this->where($where)->delete();
+        }
+
 
         $result['data'] = $res;
         if ($res !== false) {
