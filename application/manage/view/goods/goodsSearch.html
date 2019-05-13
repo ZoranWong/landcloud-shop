@@ -23,7 +23,7 @@
         <label class="layui-form-label">产品ID（ERP U8编号）</label>
         <div class="layui-input-inline">
             <input type="text" name="erp_goods_id" lay-verify="title" autocomplete="off"
-                   placeholder="请输入商品ERP编号" class="layui-input">
+                   placeholder="请输入商品ERP编号" id = "erp_goods_id" class="layui-input">
         </div>
     </div>
 
@@ -31,13 +31,13 @@
         <label class="layui-form-label">ERP商品编号OR货号：</label>
         <div class="layui-input-inline">
             <input type="text" name="bn" lay-verify="title" autocomplete="off" placeholder="请输入商品编号 | 货号"
-                   class="layui-input">
+                   id = "bn" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">商品品牌：</label>
         <div class="layui-input-inline">
-            <select name="brand_id">
+            <select name="brand_id" id = "brand_id">
                 <option value="">请选择品牌</option>
                 {if condition="count($brandList)>0"}
                 {volist name="brandList" id="vo"}
@@ -50,14 +50,14 @@
     <div class="layui-form-item">
         <label class="layui-form-label">推荐：</label>
         <div class="layui-input-block">
-            <input type="checkbox" value="1" name="is_recommend" lay-skin="switch" lay-filter="switchTest" title="开关">
+            <input type="checkbox" value="1" id = "is_recommend" name="is_recommend" lay-skin="switch" lay-filter="switchTest" title="开关">
             <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em></em><i></i></div>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">热门：</label>
         <div class="layui-input-block">
-            <input type="checkbox" value="1" name="is_hot" lay-skin="switch" lay-filter="switchTest" title="开关">
+            <input type="checkbox" value="1" id = "is_hot" name="is_hot" lay-skin="switch" lay-filter="switchTest" title="开关">
             <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em></em><i></i></div>
         </div>
     </div>
@@ -67,7 +67,7 @@
 <script id="cat_tpl" type="text/html">
 
     <div class="layui-input-inline">
-        <select name="last_cat_id">
+        <select name="last_cat_id" id = "last_cat_id">
             <option value="">请选择分类</option>
             {{# layui.each(d.list, function(index, item){ }}
             <option value="{{ item.id }}">{{ item.name }}</option>

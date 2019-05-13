@@ -635,7 +635,7 @@
                     btn: ['确定', '取消'],
                     success: function(){
                         for (var key in searchData) {
-                            $(`input[name=${key}]`).val(searchData[key]);
+                            $(`.advance-goods-search #${key}[name=${key}]`).val(searchData[key]);
                         }
                     },
                     yes: function (index, layero) {
