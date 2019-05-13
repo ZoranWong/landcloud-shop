@@ -55,6 +55,7 @@ class Goods extends Manage
         $this->assign('statics', $statics);
         if (Request::isAjax()) {
             $filter = input('request.');
+            session('searchData', $filter);
             return $goodsModel->tableData($filter);
         }
 
@@ -1142,6 +1143,7 @@ class Goods extends Manage
     public function goodsSearch()
     {
         $this->_common();
+        $this->assign('searchData', session('searchData'));
         $this->view->engine->layout(false);
         return $this->fetch('goodsSearch');
     }

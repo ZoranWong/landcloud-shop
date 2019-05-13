@@ -8,7 +8,7 @@
             <option value="">请选择商品分类</option>
             {if condition="count($categoryList)>0"}
             {volist name="categoryList" id="vo"}
-            <option value="{$vo.id}">{$vo.name}</option>
+            <option value="{$vo.id}" {$searchData["goods_cat_id"] === $vo.id ? "selected" : ""}>{$vo.name}</option>
             {/volist}
             {/if}
         </select>

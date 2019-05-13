@@ -633,11 +633,6 @@
                     shade: 0,
                     content: html,
                     btn: ['确定', '取消'],
-                    success: function(){
-                        for (var key in searchData) {
-                            $(`.advance-goods-search #${key}[name=${key}]`).val(searchData[key]);
-                        }
-                    },
                     yes: function (index, layero) {
                         searchData = getFormData();
                         var advance = $(".advance-goods-search").serializeArray();
