@@ -98,8 +98,9 @@ class Cart extends Api
         $point = Request::param('point', 0);
         $coupon_code = Request::param('coupon_code', '');
         $receipt_type = Request::param('receipt_type', 1);
-        $area = Request::param('area', null);
-        $result = $model->info($this->userId, $ids, $display, $area_id, $point, $coupon_code, $receipt_type, $area);
+        $area = Request::param('area_id', null);
+        $keyword = Request::param('keyword', null);
+        $result = $model->info($this->userId, $ids, $display, $area_id, $point, $coupon_code, $receipt_type, $area, $keyword);
         return $result;
     }
 
@@ -112,7 +113,7 @@ class Cart extends Api
     {
         $input['user_id'] = $this->userId;
         $input['id'] = input('id');
-        $input['nums'] = input('nums', 1);
+        $input['nums'] = input('nums', 0);
 //        if ($input['nums'] <= 0) {
 //            $input['nums'] = 1;
 //        }

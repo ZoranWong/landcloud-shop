@@ -10,7 +10,10 @@
 namespace app\common\model;
 
 use app\common\model\Goods as GoodsModel;
+use think\Db;
+use think\db\Query;
 use think\Exception;
+use think\facade\Log;
 use think\model\Collection;
 
 /**
@@ -138,7 +141,7 @@ class Cart extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function getList($userId, $id = '', $display = '')
+    public function getList($userId, $id = '', $display = '', $keyword = null)
     {
         $result = array(
             'status' => false,
@@ -150,29 +153,24 @@ class Cart extends Common
             $where[] = ['id', 'in', $id];
         }
 
-        $query = $this->where($where)->order('id', 'desc');
+//        $query = $this->where($where)->order('id', 'desc');
+        $query = $this->where($where)->where(function (Query $query) use ($keyword) {
+            if (!is_null($keyword)) {
+                $query->where('name', 'like', '%' . $keyword . '%')
+                    ->whereOr('erp_goods_id', $keyword)
+                    ->whereOr('bn', $keyword);
+            }
+        })->order('id', 'desc');
+
         $token = input('token', '');//token值 会员登录后传
+
         $list = $query->column('*', 'product_id');
+
         $cartGoodsIds = array_keys($list);
         $needExcludeGoods = array();
 
-//        $productsModel = new Products();
         $goodsModel = new Goods();
         foreach ($list as $k => $v) {
-//            //如果没有此商品，就在购物车里删掉
-//            $productInfo = $productsModel->getProductInfo($v['product_id'], false, $userId);
-//            //第二个参数是不算促销信息,否则促销信息就算重复了
-//            if (!$productInfo['status']) {
-//                unset($list[$k]);
-////                $this::destroy($v['id']);
-//                continue;
-//            }
-//
-//            $goodsWeight = $goodsModel->getWeight($v['product_id']);
-//            $list[$k]['weight'] = $goodsWeight;
-//
-//            $list[$k]['products'] = $productInfo['data'];
-
             $goodsInfo = $goodsModel->getGoodsDetial($v['product_id'], '*', $token);
             if (!$goodsInfo['status']) {
                 unset($list[$k]);
@@ -208,7 +206,6 @@ class Cart extends Common
                 $list[$k]['is_select'] = true;
             }
             //判断商品是否已收藏
-//            $list[$k]['isCollection'] = model('common/GoodsCollection')->check($v['user_id'], $list[$k]['products']['goods_id']);
             $list[$k]['isCollection'] = model('common/GoodsCollection')->check($v['user_id'], $v['product_id']);
         }
         foreach ($needExcludeGoods as $needExcludeGoodId) {
@@ -225,21 +222,29 @@ class Cart extends Common
     protected function getGoodsAmount($goods, $num, $area = null)
     {
         $amount = 0;
-        if($goods['price_levels']) {
-            /** @var Collection $levels**/
+        if ($goods['price_levels']) {
+            /** @var Collection $levels * */
             $levels = $goods['price_levels'];
-            $levels = $levels->where('area', 'eq', $area)->order('buy_num', 'desc')->all();
+            Log::debug('----------------------- levels ----------------'.json_encode($levels));
+            $levels = $levels->where('area', '=', $area)->order('buy_num', 'desc')->all();
             $price = $goods['promotion_price'] > 0 ? ($goods['preferential_price'] > 0 ? ($goods['preferential_price'] < $goods['promotion_price'] ?
-                $goods['preferential_price']: $goods['promotion_price']) : $goods['promotion_price'] ) : $goods['price'];
+                $goods['preferential_price'] : $goods['promotion_price']) : $goods['promotion_price']) : $goods['price'];
+            $priceStruct = [];
             foreach ($levels as $level) {
-                if($num >= $level['buy_num']){
-                    $amount += $level['price'] * (int)($num / $level['buy_num']);
+                if ($num >= $level['buy_num']) {
+                    $n = (int)($num / $level['buy_num']);
+                    $amount += $level['price'] * $n;
                     $num = $num % $level['buy_num'];
+                    $priceStruct[] = $level;
+                    $level['count'] = $n;
+                    $level['pack'] = true;
                 }
             }
-            $amount += $price*$num;
+            $level0 = ['pack' => false, 'count' => $num];
+            $priceStruct[] = $level0;
+            $amount += $price * $num;
         }
-        return $amount;
+        return [$amount, $priceStruct];
     }
 
     /**
@@ -250,12 +255,14 @@ class Cart extends Common
      * @param int $point
      * @param string $coupon_code
      * @param int $receipt_type
+     * @param null $area
+     * @param null $keyword
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function info($userId, $id = '', $display = '', $area_id = false, $point = 0, $coupon_code = "", $receipt_type = 1, $area = null)
+    public function info($userId, $id = '', $display = '', $area_id = false, $point = 0, $coupon_code = "", $receipt_type = 1, $area = null, $keyword = null)
     {
         $result = [
             'status' => false,
@@ -276,7 +283,7 @@ class Cart extends Common
             ],
             'msg' => ""
         ];
-        $cartList = $this->getList($userId, $id, $display);
+        $cartList = $this->getList($userId, $id, $display, $keyword);
         if (!$cartList['status']) {
             $result['msg'] = $cartList['msg'];
             return $result;
@@ -292,8 +299,9 @@ class Cart extends Common
 //            }
 
             //单条商品总价
-            $result['data']['list'][$k]['amount'] = $this->getGoodsAmount($v['detail'], $v['nums'], $area);
-
+           list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $area);
+            $result['data']['list'][$k]['amount'] = $amount;
+            $result['data']['list'][$k]['price_strcut'] = $priceStruct;
             if ($v['is_select']) {
                 //算订单总商品价格
                 //$result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
@@ -376,8 +384,14 @@ class Cart extends Common
 
         $where[] = ['id', 'eq', $input['id']];
         $where[] = ['user_id', 'eq', $input['user_id']];
-        $res = $this->where($where)
-            ->update(['nums' => $input['nums']]);
+        $res = [];
+        if($input['nums'] > 0){
+            $res = $this->where($where)
+                ->update(['nums' => $input['nums']]);
+        }else{
+            $this->where($where)->delete();
+        }
+
 
         $result['data'] = $res;
         if ($res !== false) {

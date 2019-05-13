@@ -64,6 +64,8 @@ class UserImportHandler extends BaseHandler
             $user['erp_manage_id'] = $record['erp_manage_id'];
             $user['erp_manage_name'] = $record['erp_manage_name'];
             $user['company'] = $record['company'];
+            $user['return_day'] = (int)$record['return_day'];
+            $user['return_day'] = $user['return_day'] ?? 1;
             $user['ctime'] = time();
             $user['utime'] = time();
 

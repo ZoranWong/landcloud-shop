@@ -205,7 +205,7 @@ class User extends Api
         $userModel = new UserModel();
         $userInfo = $userModel
             ->with(['userShips', 'sellerManager'])
-            ->field('id,username,mobile,sex,birthday,avatar,nickname,balance,point,status, erp_user_id, erp_manage_id, erp_manage_name')
+            ->field('id,username,mobile,sex,birthday,avatar,nickname,balance,point,status, erp_user_id, erp_manage_id, erp_manage_name,return_day')
             ->where(array('id' => $this->userId))
             ->find();
 
