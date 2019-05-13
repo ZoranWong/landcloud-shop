@@ -92,6 +92,7 @@ class Goods extends Manage
         $categoriesModel = new GoodsCat();
         $categories = $categoriesModel->getAllCat();
         $this->assign('categories', $categories);
+        var_dump($categories);exit();
 
         //品牌
         $brandModel = new Brand();
