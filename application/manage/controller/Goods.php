@@ -89,9 +89,9 @@ class Goods extends Manage
     private function _common()
     {
         //类型
-        $goodsTypeModel = new GoodsType();
-        $typeList = $goodsTypeModel->getAllTypes(0);
-        $this->assign('typeList', $typeList);
+        $categoriesModel = new GoodsCat();
+        $categories = $categoriesModel->getAllCat();
+        $this->assign('categories', $categories);
 
         //品牌
         $brandModel = new Brand();

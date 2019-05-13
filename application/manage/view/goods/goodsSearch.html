@@ -2,7 +2,17 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">商品分类：</label>
-        {Labgic:goodscat id='goods_cat_id' name="goods_cat_id"/}
+        <!--{Labgic:goodscat id='goods_cat_id' name="goods_cat_id"/}-->
+        <div class="layui-input-inline">
+        <select name="goods_cat_id" id="goods_cat_id" lay-filter="goods_cat_id">
+            <option value="">请选择商品分类</option>
+            {if condition="count(categories)>0"}
+            {volist name="categories" id="vo"}
+            <option value="{$vo.id}">{$vo.name}</option>
+            {/volist}
+            {/if}
+        </select>
+        </div>
     </div>
 
     <!--<div class="layui-form-item">-->
