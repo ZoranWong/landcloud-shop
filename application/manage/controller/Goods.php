@@ -91,7 +91,7 @@ class Goods extends Manage
         //类型
         $categoriesModel = new GoodsCat();
         $categories = $categoriesModel->getAllCat();
-        $this->assign('categories', $categories);
+        $this->assign('categoryList', $categories);
 //        var_dump($categories);exit();
 
         //品牌
