@@ -1144,7 +1144,7 @@ class Goods extends Manage
     {
         $this->_common();
         $this->assign('searchData', session('searchData'));
-        var_dump(session('searchData')); exit;
+//        var_dump(session('searchData')); exit;
         $this->view->engine->layout(false);
         return $this->fetch('goodsSearch');
     }

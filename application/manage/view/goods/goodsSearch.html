@@ -4,11 +4,11 @@
         <label class="layui-form-label">商品分类：</label>
         <!--{Labgic:goodscat id='goods_cat_id' name="goods_cat_id"/}-->
         <div class="layui-input-inline">
-        <select name="goods_cat_id" id="goods_cat_id" lay-filter="goods_cat_id">
+        <select name="goods_cat_id" id="goods_cat_id" lay-filter="goods_cat_id" selected-id = "{$searchData.goods_cat_id}">
             <option value="">请选择商品分类</option>
             {if condition="count($categoryList)>0"}
             {volist name="categoryList" id="vo"}
-            <option value="{$vo.id}" {$searchData["goods_cat_id"] === $vo.id ? "selected" : ""}>{$vo.name}</option>
+            <option value="{$vo.id}" {$searchData.goods_cat_id == $vo.id ? "selected" : ""}>{$vo.name}</option>
             {/volist}
             {/if}
         </select>
