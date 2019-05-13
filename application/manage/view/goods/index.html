@@ -249,6 +249,7 @@
             page: 'true',
             limit: '20',
             url: "{:url('Goods/index')}?_ajax=1",
+            where: {$searchData},
             id: 'goodsTable',
             cols: [[
                 {type: 'checkbox', fixed: 'left'},
