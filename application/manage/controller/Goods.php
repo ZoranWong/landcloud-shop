@@ -54,7 +54,7 @@ class Goods extends Manage
         $statics = $goodsModel->staticGoods();
         $this->assign('statics', $statics);
         if (Request::isAjax()) {
-            $filter = input('request.');
+            $filter = input('request.') ?? session('searchData');
             session('searchData', $filter);
             return $goodsModel->tableData($filter);
         }
