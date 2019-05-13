@@ -20,7 +20,7 @@
         <label class="layui-form-label">产品ID（ERP U8编号）</label>
         <div class="layui-input-inline">
             <input type="text" name="erp_goods_id" lay-verify="title" autocomplete="off"
-                   placeholder="请输入商品ERP编号" id = "erp_goods_id" class="layui-input">
+                   placeholder="请输入商品ERP编号" id = "erp_goods_id" class="layui-input" value="{$searchData.erp_goods_id}">
         </div>
     </div>
 
@@ -28,7 +28,7 @@
         <label class="layui-form-label">ERP商品编号OR货号：</label>
         <div class="layui-input-inline">
             <input type="text" name="bn" lay-verify="title" autocomplete="off" placeholder="请输入商品编号 | 货号"
-                   id = "bn" class="layui-input">
+                   id = "bn" class="layui-input" value="{$searchData.bn}">
         </div>
     </div>
     <div class="layui-form-item">
@@ -38,7 +38,7 @@
                 <option value="">请选择品牌</option>
                 {if condition="count($brandList)>0"}
                 {volist name="brandList" id="vo"}
-                <option value="{$vo.id}">{$vo.name}</option>
+                <option value="{$vo.id}" {$searchData.brand_id == $vo.id ? "selected" : ""}>{$vo.name}</option>
                 {/volist}
                 {/if}
             </select>
@@ -47,14 +47,14 @@
     <div class="layui-form-item">
         <label class="layui-form-label">推荐：</label>
         <div class="layui-input-block">
-            <input type="checkbox" value="1" id = "is_recommend" name="is_recommend" lay-skin="switch" lay-filter="switchTest" title="开关">
+            <input type="checkbox" value="{$searchData.is_recommend}" id = "is_recommend" name="is_recommend" lay-skin="switch" lay-filter="switchTest" title="开关">
             <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em></em><i></i></div>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">热门：</label>
         <div class="layui-input-block">
-            <input type="checkbox" value="1" id = "is_hot" name="is_hot" lay-skin="switch" lay-filter="switchTest" title="开关">
+            <input type="checkbox" value="{$searchData.is_hot}" id = "is_hot" name="is_hot" lay-skin="switch" lay-filter="switchTest" title="开关">
             <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em></em><i></i></div>
         </div>
     </div>
@@ -67,7 +67,7 @@
         <select name="last_cat_id" id = "last_cat_id">
             <option value="">请选择分类</option>
             {{# layui.each(d.list, function(index, item){ }}
-            <option value="{{ item.id }}">{{ item.name }}</option>
+            <option value="{{ item.id }}" {$searchData.last_cat_id == $item.id ? "selected" : ""}>{{ item.name }}</option>
             {{# }); }}
         </select>
     </div>
