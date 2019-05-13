@@ -619,7 +619,9 @@
         layui.form.on('button("goods-add")', function (data) {
             return false;
         });
-
+        if(typeof window.searchData === 'undefined'){
+            window.searchData = [];
+        }
         layui.form.on('submit(advance-goods-search)', function (data) {
             JsGet("{:url('goods/goodsSearch')}", function (html) {
                 layer.open({
@@ -631,8 +633,13 @@
                     shade: 0,
                     content: html,
                     btn: ['确定', '取消'],
+                    success: function(){
+                        for (var key in searchData) {
+                            $(`input[name=${key}]`).val(searchData[key]);
+                        }
+                    },
                     yes: function (index, layero) {
-                        var searchData = getFormData();
+                        searchData = getFormData();
                         var advance = $(".advance-goods-search").serializeArray();
                         $.each(advance, function (i, obj) {
                             $(".seller-form").append('<input type="hidden" name="' + obj.name + '" value="' + obj.value + '">');
