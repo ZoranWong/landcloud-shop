@@ -636,7 +636,7 @@
                     success: function(){
                         for (var key in searchData) {
                             if('goods_cat_id' === key){
-                                $(`.advance-goods-search #goods_cat_id select[name=${key}]`).val(searchData[key]);
+                                $(`.advance-goods-search #goods_cat_id select`).val(searchData[key]);
                             }else{
                                 $(`.advance-goods-search #${key}[name=${key}]`).val(searchData[key]);
                             }
