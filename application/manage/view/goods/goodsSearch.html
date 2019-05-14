@@ -47,14 +47,14 @@
     <div class="layui-form-item">
         <label class="layui-form-label">推荐：</label>
         <div class="layui-input-block">
-            <input type="checkbox" value="{$searchData.is_recommend}" id = "is_recommend" name="is_recommend" lay-skin="switch" lay-filter="switchTest" title="开关">
+            <input type="checkbox" value="1" id = "is_recommend" name="is_recommend" lay-skin="switch" lay-filter="switchTest" title="开关" {$searchData.is_recommend ? "checked" : ""}>
             <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em></em><i></i></div>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">热门：</label>
         <div class="layui-input-block">
-            <input type="checkbox" value="{$searchData.is_hot}" id = "is_hot" name="is_hot" lay-skin="switch" lay-filter="switchTest" title="开关">
+            <input type="checkbox" value="1" id = "is_hot" name="is_hot" lay-skin="switch" lay-filter="switchTest" title="开关" {$searchData.is_hot ? "checked" : ""}>
             <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em></em><i></i></div>
         </div>
     </div>
