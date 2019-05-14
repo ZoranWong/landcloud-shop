@@ -147,6 +147,12 @@ class Goods extends Common implements Excelable
                 $where[] = ['goods_cat_id', 'in', $catIds];
             }
         }
+        if (isset($post['is_recommend']) && $post['is_recommend'] != "") {
+            $where[] = ['is_recommend', 'eq', $post['is_recommend']];
+        }
+        if (isset($post['is_hot']) && $post['is_hot'] != "") {
+            $where[] = ['is_hot', 'eq', $post['is_hot']];
+        }
         $result['where'] = $where;
         $result['whereOr'] = $whereOr;
         $result['field'] = "*";
