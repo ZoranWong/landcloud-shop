@@ -207,7 +207,7 @@ class Order extends Common
         $query = $query->field('o.order_id, o.user_id, o.ctime, o.ship_mobile, o.ship_address, o.status, o.pay_status, o.ship_status, o.confirm, o.is_comment, o.order_amount, o.source, o.ship_area_id,o.ship_name, o.mark')
             ->join(config('database.prefix') . 'user u', 'o.user_id = u.id', 'left')
             ->where($where)
-            ->order('ctime desc');
+            ->order('o.ctime desc');
         if ($isPage) {
 
             $data = $query->page($page, $limit)->select();
