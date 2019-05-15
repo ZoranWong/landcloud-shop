@@ -356,11 +356,16 @@ class Order extends Common
             $where[] = array('user_id', 'eq', $input['user_id']);
         }
 
+
         $page = $input['page'] ? $input['page'] : 1;
         $limit = $input['limit'] ? $input['limit'] : 20;
+        $query = $this::with('items,delivery')->where($where);
 
-        $data = $this::with('items,delivery')->where($where)
-            ->order('ctime desc')
+        if (!empty($input['search'])) {
+           $query->whereRaw("(`name` like %{$input['search']}% or `bn` like %{$input['search']}% or `erp_goods_id` like %{$input['search']}%)");
+        }
+
+        $data = $query->order('ctime desc')
             ->page($page, $limit)
             ->select();
 
