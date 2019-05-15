@@ -194,35 +194,28 @@ class Order extends Common
 
         $page = $input['page'] ? $input['page'] : 1;
         $limit = $input['limit'] ? $input['limit'] : 20;
-
+        $query = $this->alias('o');
+        if (!empty($input['search'])) {
+            $query->where(function ($query) use($input){
+                $query->has('items', function($query) use($input){
+                    if(!empty($input['search'])){
+                        $query->whereRaw("(`name` like %{$input['search']}% or `bn` like %{$input['search']}% or `erp_goods_id` like %{$input['search']}%)");
+                    }
+                })->whereOr("order_id", "like", "%{$input['search']}%");
+            });
+        }
+        $query = $query->field('o.order_id, o.user_id, o.ctime, o.ship_mobile, o.ship_address, o.status, o.pay_status, o.ship_status, o.confirm, o.is_comment, o.order_amount, o.source, o.ship_area_id,o.ship_name, o.mark')
+            ->join(config('database.prefix') . 'user u', 'o.user_id = u.id', 'left')
+            ->where($where)
+            ->order('ctime desc');
         if ($isPage) {
 
-            $data = $this->alias('o')
-                ->field('o.order_id, o.user_id, o.ctime, o.ship_mobile, o.ship_address, o.status, o.pay_status, o.ship_status, o.confirm, o.is_comment, o.order_amount, o.source, o.ship_area_id,o.ship_name, o.mark')
-                ->join(config('database.prefix') . 'user u', 'o.user_id = u.id', 'left')
-                ->where($where)
-                ->order('ctime desc')
-                ->page($page, $limit)
-                ->select();
+            $data = $query->page($page, $limit)->select();
 
-
-            $count = $this->alias('o')
-                ->field('o.order_id, o.user_id, o.ctime, o.ship_mobile, o.ship_address, o.status, o.pay_status, o.ship_status, o.confirm, o.is_comment, o.order_amount, o.source, o.ship_area_id,o.ship_name, o.mark')
-                ->join(config('database.prefix') . 'user u', 'o.user_id = u.id', 'left')
-                ->where($where)
-                ->count();
+            $count = $query->count();
         } else {
-            $data = $this->alias('o')
-                ->field('o.order_id, o.user_id, o.ctime, o.ship_mobile, o.ship_address, o.status, o.pay_status, o.ship_status, o.confirm, o.is_comment, o.order_amount, o.source, o.ship_area_id,o.ship_name, o.mark')
-                ->join(config('database.prefix') . 'user u', 'o.user_id = u.id', 'left')
-                ->where($where)
-                ->order('ctime desc')
-                ->select();
-            $count = $this->alias('o')
-                ->field('o.order_id, o.user_id, o.ctime, o.ship_mobile, o.ship_address, o.status, o.pay_status, o.ship_status, o.confirm, o.is_comment, o.order_amount, o.source, o.ship_area_id,o.ship_name, o.mark')
-                ->join(config('database.prefix') . 'user u', 'o.user_id = u.id', 'left')
-                ->where($where)
-                ->count();
+            $data = $query->select();
+            $count = $data->count();
         }
 
         return array('data' => $data, 'count' => $count);
@@ -362,7 +355,6 @@ class Order extends Common
         $query = $this::with('items,delivery')->where($where);
 
         if (!empty($input['search'])) {
-
            $query->where(function ($query) use($input){
                $query->has('items', function($query) use($input){
                    if(!empty($input['search'])){
