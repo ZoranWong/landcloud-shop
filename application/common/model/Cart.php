@@ -233,14 +233,16 @@ class Cart extends Common
             foreach ($levels as $level) {
                 if ($num >= $level['buy_num']) {
                     $n = (int)($num / $level['buy_num']);
-                    $amount += $level['price'] * $n;
+                    $fee = $level['price'] * $n;
+                    $amount += $fee;
                     $num = $num % $level['buy_num'];
                     $priceStruct[] = $level;
                     $level['count'] = $n;
                     $level['pack'] = true;
+                    $level['amount'] = $fee;
                 }
             }
-            $level0 = ['pack' => false, 'count' => $num];
+            $level0 = ['pack' => false, 'count' => $num, 'amount' => $price * $num];
             $priceStruct[] = $level0;
             $amount += $price * $num;
         }
