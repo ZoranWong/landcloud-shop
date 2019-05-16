@@ -249,6 +249,7 @@
             page: 'true',
             limit: '20',
             url: "{:url('Goods/index')}?_ajax=1",
+            where: <?php echo $searchData ? json_encode($searchData) : "{}"?>,
             id: 'goodsTable',
             cols: [[
                 {type: 'checkbox', fixed: 'left'},
@@ -619,7 +620,6 @@
         layui.form.on('button("goods-add")', function (data) {
             return false;
         });
-
         layui.form.on('submit(advance-goods-search)', function (data) {
             JsGet("{:url('goods/goodsSearch')}", function (html) {
                 layer.open({

@@ -194,35 +194,28 @@ class Order extends Common
 
         $page = $input['page'] ? $input['page'] : 1;
         $limit = $input['limit'] ? $input['limit'] : 20;
-
+        $query = $this->alias('o');
+        if (!empty($input['search'])) {
+            $query->where(function ($query) use($input){
+                $query->has('items', function($query) use($input){
+                    if(!empty($input['search'])){
+                        $query->whereRaw("(`name` like %{$input['search']}% or `bn` like %{$input['search']}% or `erp_goods_id` like %{$input['search']}%)");
+                    }
+                })->whereOr("order_id", "like", "%{$input['search']}%");
+            });
+        }
+        $query = $query->field('o.order_id, o.user_id, o.ctime, o.ship_mobile, o.ship_address, o.status, o.pay_status, o.ship_status, o.confirm, o.is_comment, o.order_amount, o.source, o.ship_area_id,o.ship_name, o.mark')
+            ->join(config('database.prefix') . 'user u', 'o.user_id = u.id', 'left')
+            ->where($where)
+            ->order('o.ctime desc');
         if ($isPage) {
 
-            $data = $this->alias('o')
-                ->field('o.order_id, o.user_id, o.ctime, o.ship_mobile, o.ship_address, o.status, o.pay_status, o.ship_status, o.confirm, o.is_comment, o.order_amount, o.source, o.ship_area_id,o.ship_name, o.mark')
-                ->join(config('database.prefix') . 'user u', 'o.user_id = u.id', 'left')
-                ->where($where)
-                ->order('ctime desc')
-                ->page($page, $limit)
-                ->select();
+            $data = $query->page($page, $limit)->select();
 
-
-            $count = $this->alias('o')
-                ->field('o.order_id, o.user_id, o.ctime, o.ship_mobile, o.ship_address, o.status, o.pay_status, o.ship_status, o.confirm, o.is_comment, o.order_amount, o.source, o.ship_area_id,o.ship_name, o.mark')
-                ->join(config('database.prefix') . 'user u', 'o.user_id = u.id', 'left')
-                ->where($where)
-                ->count();
+            $count = $query->count();
         } else {
-            $data = $this->alias('o')
-                ->field('o.order_id, o.user_id, o.ctime, o.ship_mobile, o.ship_address, o.status, o.pay_status, o.ship_status, o.confirm, o.is_comment, o.order_amount, o.source, o.ship_area_id,o.ship_name, o.mark')
-                ->join(config('database.prefix') . 'user u', 'o.user_id = u.id', 'left')
-                ->where($where)
-                ->order('ctime desc')
-                ->select();
-            $count = $this->alias('o')
-                ->field('o.order_id, o.user_id, o.ctime, o.ship_mobile, o.ship_address, o.status, o.pay_status, o.ship_status, o.confirm, o.is_comment, o.order_amount, o.source, o.ship_area_id,o.ship_name, o.mark')
-                ->join(config('database.prefix') . 'user u', 'o.user_id = u.id', 'left')
-                ->where($where)
-                ->count();
+            $data = $query->select();
+            $count = $data->count();
         }
 
         return array('data' => $data, 'count' => $count);
@@ -356,11 +349,22 @@ class Order extends Common
             $where[] = array('user_id', 'eq', $input['user_id']);
         }
 
+
         $page = $input['page'] ? $input['page'] : 1;
         $limit = $input['limit'] ? $input['limit'] : 20;
+        $query = $this::with('items,delivery')->where($where);
 
-        $data = $this::with('items,delivery')->where($where)
-            ->order('ctime desc')
+        if (!empty($input['search'])) {
+           $query->where(function ($query) use($input){
+               $query->has('items', function($query) use($input){
+                   if(!empty($input['search'])){
+                       $query->whereRaw("(`name` like %{$input['search']}% or `bn` like %{$input['search']}% or `erp_goods_id` like %{$input['search']}%)");
+                   }
+               })->whereOr("order_id", "like", "%{$input['search']}%");
+           });
+        }
+
+        $data = $query->order('ctime desc')
             ->page($page, $limit)
             ->select();
 
@@ -1322,6 +1326,33 @@ class Order extends Common
         }
     }
 
+    protected function getGoodsAmount($goods, $num, $area = null)
+    {
+        $amount = 0;
+        if ($goods['price_levels']) {
+            /** @var Collection $levels * */
+            $levels = $goods['price_levels'];
+            $levels = $levels->where('area', 'eq', $area)->order('buy_num', 'desc')->all();
+            $price = $goods['promotion_price'] > 0 ? ($goods['preferential_price'] > 0 ? ($goods['preferential_price'] < $goods['promotion_price'] ?
+                $goods['preferential_price'] : $goods['promotion_price']) : $goods['promotion_price']) : $goods['price'];
+            $priceStruct = [];
+            foreach ($levels as $level) {
+                if ($num >= $level['buy_num']) {
+                    $n = (int)($num / $level['buy_num']);
+                    $amount += $level['price'] * $n;
+                    $num = $num % $level['buy_num'];
+                    $priceStruct[] = $level;
+                    $level['count'] = $n;
+                }
+            }
+            $level0 = ['level' => 0, 'count' => $num];
+            $priceStruct[] = $level0;
+            $amount += $price * $num;
+        }
+        return [$amount, $priceStruct];
+    }
+
+
     /**
      * 订单前执行
      * @param $user_id
@@ -1344,6 +1375,7 @@ class Order extends Common
         }
         Log::debug('----------- order list ---------------', $cartList['data']['list']);
         foreach ($cartList['data']['list'] as $v) {
+            list($amount, $levels) = $this->getGoodsAmount($v, $v['nums'], $area_id);
             $item['goods_id'] = $v['detail']['id'];
             $item['product_id'] = $v['detail']['id'];
             //$item['sn'] = $v['detail']['sn'];
@@ -1354,12 +1386,12 @@ class Order extends Common
             $item['mktprice'] = $v['detail']['mktprice'];
             $item['image_url'] = $v['detail']['image_url'];
             $item['nums'] = $v['nums'];
-            $item['amount'] = $v['amount'];
+            $item['amount'] = $amount;
             $item['promotion_amount'] = isset($v['detail']['promotion_amount']) ? $v['detail']['promotion_amount'] : 0;
             $item['weight'] = $v['weight'];
             $item['sendnums'] = 0;
 //            $item['addon'] = $v['products']['spes_desc'];
-            $item['addon'] = '[]';
+            $item['addon'] = json_encode($levels);
             $item['promotion_list'] = '[]';
 //            if (isset($v['products']['promotion_list'])) {
 //                $promotion_list = [];

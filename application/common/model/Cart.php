@@ -10,8 +10,10 @@
 namespace app\common\model;
 
 use app\common\model\Goods as GoodsModel;
+use think\Db;
 use think\db\Query;
 use think\Exception;
+use think\facade\Log;
 use think\model\Collection;
 
 /**
@@ -223,18 +225,26 @@ class Cart extends Common
         if ($goods['price_levels']) {
             /** @var Collection $levels * */
             $levels = $goods['price_levels'];
-            $levels = $levels->where('area', 'eq', $area)->order('buy_num', 'desc')->all();
+            Log::debug('----------------------- levels ----------------'.json_encode($levels));
+            $levels = $levels->where('area', '=', $area)->order('buy_num', 'desc')->all();
             $price = $goods['promotion_price'] > 0 ? ($goods['preferential_price'] > 0 ? ($goods['preferential_price'] < $goods['promotion_price'] ?
                 $goods['preferential_price'] : $goods['promotion_price']) : $goods['promotion_price']) : $goods['price'];
+            $priceStruct = [];
             foreach ($levels as $level) {
                 if ($num >= $level['buy_num']) {
-                    $amount += $level['price'] * (int)($num / $level['buy_num']);
+                    $n = (int)($num / $level['buy_num']);
+                    $amount += $level['price'] * $n;
                     $num = $num % $level['buy_num'];
+                    $priceStruct[] = $level;
+                    $level['count'] = $n;
+                    $level['pack'] = true;
                 }
             }
+            $level0 = ['pack' => false, 'count' => $num];
+            $priceStruct[] = $level0;
             $amount += $price * $num;
         }
-        return $amount;
+        return [$amount, $priceStruct];
     }
 
     /**
@@ -289,8 +299,9 @@ class Cart extends Common
 //            }
 
             //单条商品总价
-            $result['data']['list'][$k]['amount'] = $this->getGoodsAmount($v['detail'], $v['nums'], $area);
-
+           list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $area);
+            $result['data']['list'][$k]['amount'] = $amount;
+            $result['data']['list'][$k]['price_strcut'] = $priceStruct;
             if ($v['is_select']) {
                 //算订单总商品价格
                 //$result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
@@ -373,8 +384,14 @@ class Cart extends Common
 
         $where[] = ['id', 'eq', $input['id']];
         $where[] = ['user_id', 'eq', $input['user_id']];
-        $res = $this->where($where)
-            ->update(['nums' => $input['nums']]);
+        $res = [];
+        if($input['nums'] > 0){
+            $res = $this->where($where)
+                ->update(['nums' => $input['nums']]);
+        }else{
+            $this->where($where)->delete();
+        }
+
 
         $result['data'] = $res;
         if ($res !== false) {

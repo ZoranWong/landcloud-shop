@@ -53,8 +53,11 @@ class Goods extends Manage
         $goodsModel = new goodsModel();
         $statics = $goodsModel->staticGoods();
         $this->assign('statics', $statics);
+        $this->assign('searchData', session('searchData'));
         if (Request::isAjax()) {
-            $filter = input('request.');
+
+            $filter = input('request.') ?? session('searchData');
+            session('searchData', $filter);
             return $goodsModel->tableData($filter);
         }
 
@@ -89,9 +92,10 @@ class Goods extends Manage
     private function _common()
     {
         //类型
-        $goodsTypeModel = new GoodsType();
-        $typeList = $goodsTypeModel->getAllTypes(0);
-        $this->assign('typeList', $typeList);
+        $categoriesModel = new GoodsCat();
+        $categories = $categoriesModel->getAllCat();
+        $this->assign('categoryList', $categories);
+//        var_dump($categories);exit();
 
         //品牌
         $brandModel = new Brand();
@@ -1141,6 +1145,8 @@ class Goods extends Manage
     public function goodsSearch()
     {
         $this->_common();
+        $this->assign('searchData', session('searchData'));
+//        var_dump(session('searchData')); exit;
         $this->view->engine->layout(false);
         return $this->fetch('goodsSearch');
     }
