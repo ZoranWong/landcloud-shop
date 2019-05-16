@@ -9,6 +9,7 @@
 namespace app\Manage\controller;
 
 use app\common\controller\Manage;
+use app\common\model\GoodsCat;
 use app\common\model\GoodsCat as GoodsCatModel;
 use Request;
 
