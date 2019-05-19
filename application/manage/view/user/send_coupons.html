@@ -41,7 +41,7 @@
             cellMinWidth: '80',
             page: 'true',
             limit: '20',
-            url: "{:url('user/getCoupons')}?_ajax=1",
+            url: "{:url('user/getCoupons')}?_ajax=1&user_id={$info['id']}",
             id: 'userTable',
             cols: [[
                 {type: 'numbers'},
