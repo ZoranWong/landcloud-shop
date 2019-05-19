@@ -105,9 +105,9 @@ class Promotion extends Common
     {
         $conditionModel = new PromotionCondition();
         $where['promotion_id'] = $promotionInfo['id'];
-        $conditionList = $conditionModel->with(['promotionResults'])->has('coupons', function ($query) {
+        $conditionList = $conditionModel->has('coupons', function ($query) {
             $query->where('is_used', 'eq', Coupon::USED_NO);
-        })->whereRaw("`PromotionCondition`.`promotion_id` = {$promotionInfo['id']}")->select();
+        })->with(['promotionResults'])->whereRaw("`PromotionCondition`.`promotion_id` = {$promotionInfo['id']}")->select();
         //循环取出所有的促销条件，有一条不满足，就不行，就返回false
         $key = true;
 
