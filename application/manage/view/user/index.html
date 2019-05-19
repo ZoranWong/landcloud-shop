@@ -229,7 +229,7 @@
                 {field: 'erp_manage_id', title: '销售代表ERP ID'},
                 {field: 'erp_manage_name', title: '销售代表'},
                 {title: '收货信息', toolbar: '#showUserShipInfo'},
-                {field: 'ctime', title: '创建时间', width: 240, fixed: true},
+                {field: 'ctime', title: '创建时间', width: 240},
                 {
                     field: 'option', title: '操作', templet: function (d) {
                         var html = '<a class="layui-btn layui-btn-xs edit" data-id="' + d.id + '">修改</a>';
@@ -237,7 +237,8 @@
                         html += '<span class="layui-btn layui-btn-xs pointEdit" data-id="' + d.id + '">积分修改</span>';
                         html += '<span class="layui-btn layui-btn-xs send-coupon" data-id="' + d.id + '">发放优惠券</span>';
                         return html;
-                    }, align: 'center', width: 200
+                    }, align: 'center', width: 200,
+                    fixed: true
                 }
             ]]
         });
