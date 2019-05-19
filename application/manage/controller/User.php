@@ -380,18 +380,12 @@ class User extends Manage
         ];
         $input = Request::param();
         $coupons = Collection::make(session('send_coupons_'.$input['user_id']) ?? []);
-        if($coupons->where('id', '=', $input['id'])->count()) {
-            $coupons = $coupons->filter(function ($item) use($input){
-                return $input['id'] !== $item['id'];
-            });
-        }
-        $coupons->push($input);
         $list = [];
-        $coupons->map(function ($item) use ($list) {
-            $list[] = $item;
+        $coupons->map(function ($item) use ($list, $input) {
+            $list[] = $input['id'] !== $item['id'] ? $item : $input;
         });
         $result['status'] = session('send_coupons_'.$input['user_id'], $list);
-        $result['data'] = $coupons->toArray();
+        $result['data'] = $list;
         return $result;
 
     }
