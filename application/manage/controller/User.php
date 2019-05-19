@@ -382,7 +382,9 @@ class User extends Manage
         $coupons = Collection::make(session('send_coupons_'.$input['user_id']) ?? []);
         var_dump($coupons->where('id', '=', $input['id'])->count());
         if($coupons->where('id', '=', $input['id'])->count()) {
-            $coupons->where('id', '=', $input['id'])->pop();
+            $coupons = $coupons->filter(function ($item) use($input){
+                return $input['id'] !== $item['id'];
+            });
         }
         $coupons->push($input);
 
