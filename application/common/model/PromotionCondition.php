@@ -357,7 +357,7 @@ class PromotionCondition extends Common
             case self::SOME_GOODS: {
                 $ids = explode(',', $params['goods_id']);
                 $goods = Goods::whereIn('id', $ids)->select();
-                $str = '<ul>';
+                $str = '<ul style="display: block;">';
                 foreach ($goods as $good) {
                     $str .= "<li class='goods-item'>ERP编号：{$good['erp_goods_id']}|产品名称：{$good['name']}</li>";
                 }
