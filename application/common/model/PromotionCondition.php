@@ -404,9 +404,9 @@ class PromotionCondition extends Common
             ->alias('pc')
             ->join(config('database.prefix').'promotion p','p.id = pc.promotion_id')
             ->where($where)->find();
-//        if($info){
-//            $info['params'] = json_decode($info['params'],true);
-//        }
+        if($info && is_string($info['params'])){
+            $info['params'] = json_decode($info['params'],true);
+        }
         return $info;
     }
 
