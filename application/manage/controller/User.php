@@ -355,6 +355,7 @@ class User extends Manage
             $input['name'] = $input['search'];
             unset($input['search']);
         }
+        $input['type'] = [\app\common\model\Promotion::TYPE_COUPON];
         $list = $promotionModel->tableData($input);
         return $list;
     }
