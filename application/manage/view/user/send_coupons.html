@@ -48,7 +48,7 @@
                 {field: 'name', 'title': '优惠券名称'},
                 {field: 'number', title: '发放张数', templet(coupon) {
                     return `<div class="layui-input-inline">
-<input type="number" name = "coupons[${coupon['id']}][number]" class="layui-input"/>
+<input type="number" name = "coupons[${coupon['id']}][number]" min = '0' class="layui-input"/>
 <input type="hidden" name="coupons[${coupon['id']}][id]" value="${coupon['id']}"/>
 </div>`;
                     }}
