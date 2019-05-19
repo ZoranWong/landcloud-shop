@@ -192,7 +192,7 @@
             id: 'userTable',
             cols: [[
                 {type: 'numbers'},
-                {field: 'erp_user_id', 'title': 'ERP ID', width: 100, fixed: true},
+                {field: 'erp_user_id', 'title': 'ERP ID', width: 100, fixed: 'left'},
                 {field: 'mobile', title: '手机号码', width: 150},
                 {field: 'grade_name', title: '等级', width: 150},
                 {field: 'sex', title: '性别'},
@@ -238,7 +238,7 @@
                         html += '<span class="layui-btn layui-btn-xs send-coupon" data-id="' + d.id + '">发放优惠券</span>';
                         return html;
                     }, align: 'center', width: 200,
-                    fixed: true
+                    fixed: 'right'
                 }
             ]]
         });
