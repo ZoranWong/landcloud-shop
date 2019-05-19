@@ -41,29 +41,14 @@
             cellMinWidth: '80',
             page: 'true',
             limit: '20',
-            url: "{:url('user/index')}?_ajax=1",
+            url: "{:url('user/sendCoupons')}?_ajax=1",
             id: 'userTable',
             cols: [[
                 {type: 'numbers', fixed: 'left'},
-                {field: 'erp_user_id', 'title': 'ERP ID', width: 100, fixed: 'left'},
-                {field: 'mobile', title: '手机号码', width: 150},
-                {field: 'grade_name', title: '等级', width: 150},
-                {field: 'sex', title: '性别'},
-                {field: 'return_day', title: '回款日'},
-                {
-                    field: 'avatar', title: '头像',
-                    templet: function (d) {
-                        if (d.avatar) {
-                            return '<a href="javascript:void(0);" onclick=viewImage("' + d.avatar + '")><image style="max-width:30px;max-height:30px;" src="' + d.avatar + '"/></a>';
-                        } else {
-                            return '<a href="javascript:void(0);" onclick=viewImage("<?php echo config('
-                            labgic.default_image
-                            '); ?>")><image style="max-width:30px;max-height:30px;" src="<?php echo config('
-                            labgic.default_image
-                            ');?>"/></a>';
-                        }
-                    }, width: 80
-                }
+                {field: 'name', 'title': '优惠券名称', width: 200},
+                {field: 'number', title: '发放张数', width: 150, templet(coupon) {
+                    return `<div class="layui-input-inline"><input type="number" name = "coupons[${coupon['id']}][number]" class="layui-input"/></div>`;
+                    }}
             ]]
         });
 

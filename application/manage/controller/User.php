@@ -344,7 +344,14 @@ class User extends Manage
         $userModel = new UserModel();
 
         if (Request::isPost()) {
-//            $input = Request::param();
+            $input = Request::param();
+            $promotionModel = new \app\common\model\Promotion();
+            if($input['search']){
+                $input['name'] = $input['search'];
+                unset($input['search']);
+            }
+            $list = $promotionModel->tableData($input);
+            return $list;
         }
 
         $user_id = Request::param('user_id');
