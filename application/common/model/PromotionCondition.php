@@ -2,8 +2,11 @@
 
 namespace app\common\model;
 
+use think\db\Query;
+
 class PromotionCondition extends Common
 {
+    protected $json = ['params'];
     public $code = [
         'GOODS_ALL' => [
             'name' => '所有商品满足条件',
@@ -30,6 +33,21 @@ class PromotionCondition extends Common
             'type' => 'user'
         ]
     ];
+
+
+    /**
+     * @param Query $query
+     * @param int|array $ids
+     * */
+    public function scopeWhereGoodsIn($query, $ids) {
+        $ids = (array) $ids;
+        $query->where('code', 'eq', 'GOODS_IDS')->where(function ($query) use ($ids){
+            /**@var Query $query**/
+            foreach ($ids as $id) {
+                $query->whereOr(['exp', "find_in_set({$id}, 'params->goods_id')"]);
+            }
+        });
+    }
 
 
     /**
@@ -80,7 +98,8 @@ class PromotionCondition extends Common
                         if(!isset($cart['list'][$k]['products']['promotion_list'][$promotionInfo['id']])){
                             $cart['list'][$k]['products']['promotion_list'][$promotionInfo['id']] = [
                                 'name' => $promotionInfo['name'],
-                                'type' => $type
+                                'type' => $type,
+                                'coupons' => $promotionInfo['coupons']
                             ];
                         }
 

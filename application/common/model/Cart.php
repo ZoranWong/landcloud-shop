@@ -345,6 +345,8 @@ class Cart extends Common
             if (!$re['status']) {
                 return $re;       //优惠券不符合使用规则，后期会把不符合的原因写出来
             }
+        } else {
+
         }
 
         if ($point != 0) {

@@ -3,6 +3,7 @@
 namespace app\common\model;
 
 use think\model\concern\SoftDelete;
+use think\model\relation\HasMany;
 
 class Promotion extends Common
 {
@@ -23,6 +24,9 @@ class Promotion extends Common
     const AUTO_RECEIVE_NO = 2;      //不自动领取
 
 
+    public function coupons() : HasMany {
+        return $this->hasMany(Coupon::class, 'promotion_id');
+    }
 
     //购物车的数据传过来，然后去算促销
     public function toPromotion($cart){
@@ -98,7 +102,9 @@ class Promotion extends Common
     private function setPromotion ($promotionInfo,&$cart){
         $conditionModel = new PromotionCondition();
         $where['promotion_id'] = $promotionInfo['id'];
-        $conditionList = $conditionModel->field('*')->where($where)->select();
+        $conditionList = $conditionModel->has('coupons' , function ($query) {
+            $query->where('is_used', 'eq', Coupon::USED_NO);
+        })->where($where)->select();
         //循环取出所有的促销条件，有一条不满足，就不行，就返回false
         $key = true;
 
