@@ -343,7 +343,7 @@ class User extends Manage
         $this->view->engine->layout(false);
         $userModel = new UserModel();
 
-        if (Request::isPost()) {
+        if (Request::isAjax()) {
             $input = Request::param();
             $promotionModel = new \app\common\model\Promotion();
             if($input['search']){
