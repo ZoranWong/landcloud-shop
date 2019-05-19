@@ -345,7 +345,7 @@ class Cart extends Common
                     }
                 }
             }
-            $coupon_code = explode(',', $couponCodes);
+            $coupon_code = implode(',', $couponCodes);
         }
         Log::info('------------ result promotion ----------- ' . $coupon_code);
         //加入有优惠券，判断优惠券是否可用
