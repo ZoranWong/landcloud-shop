@@ -7,6 +7,12 @@ use think\db\Query;
 class PromotionCondition extends Common
 {
     protected $json = ['params'];
+    const ALL_GOODS = 'GOODS_ALL';
+    const SOME_GOODS = 'GOODS_IDS';
+    const GOODS_CATEGORIES = 'GOODS_CATS';
+    const GOODS_BRANDS = 'GOODS_BRANDS';
+    const ORDER_FULL = 'ORDER_FULL';
+    const USER_GRADE = 'USER_GRADE';
     public $code = [
         'GOODS_ALL' => [
             'name' => '所有商品满足条件',
@@ -334,9 +340,58 @@ class PromotionCondition extends Common
             }
             if($v['params']) {
                 $list[$k]['params'] = $v['params'];
+                $list[$k]['params_render'] = $this->conditionRender($v['code'], $v['params']);
             }
         }
         return $list;
+    }
+
+    protected function conditionRender ($code, $params) {
+        switch ($code) {
+            case self::ALL_GOODS: {
+                return '所以商品';
+            }
+            case self::SOME_GOODS: {
+                $ids = explode(',', $params['goods_id']);
+                $goods = Goods::whereIn('id', $ids)->select();
+                $str = '<ul>';
+                foreach ($goods as $good) {
+                    $str .= "<li class='goods-item'>{$goods['erp_goods_id']}|{$goods['name']}</li>";
+                }
+                $str .='</ul>';
+                return $str;
+            }
+            case self::GOODS_CATEGORIES: {
+                $ids = explode(',', $params['cat_id']);
+                $categories = GoodsCat::whereIn('id', $ids)->select();
+                $str = '<ul>';
+                foreach ($categories as $category) {
+                    $str .= "<li class='category-item'>{$category['name']}</li>";
+                }
+                $str .='</ul>';
+                return $str;
+            }
+            case self::GOODS_BRANDS:{
+                $ids = explode(',', $params['brand_id']);
+                $brands = Brand::whereIn('id', $ids)->select();
+                $str = '<ul>';
+                foreach ($brands as $brand) {
+                    $str .= "<li class='brand-item'>{$brand['name']}</li>";
+                }
+                $str .='</ul>';
+                return $str;
+            }
+            case self::USER_GRADE: {
+                $ids = array_keys($params);
+                $users = User::whereIn('id', $ids)->select();
+                $str = '<ul>';
+                foreach ($users as $user) {
+                    $str .= "<li class='user-item'>{$user['nickname']}({$user['mobile']})</li>";
+                }
+                $str .='</ul>';
+                return $str;
+            }
+        }
     }
     //取信息
     public function getInfo($id){
