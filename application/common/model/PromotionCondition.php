@@ -359,7 +359,7 @@ class PromotionCondition extends Common
                 $goods = Goods::whereIn('id', $ids)->select();
                 $str = '<ul>';
                 foreach ($goods as $good) {
-                    $str .= "<li class='goods-item'>{$good['erp_goods_id']}|{$good['name']}</li>";
+                    $str .= "<li class='goods-item'>ERP编号：{$good['erp_goods_id']}|产品名称：{$good['name']}</li>";
                 }
                 $str .='</ul>';
                 return $str;
