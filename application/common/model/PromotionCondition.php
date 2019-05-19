@@ -343,7 +343,7 @@ class PromotionCondition extends Common
             }
             if($v['params']) {
                 $list[$k]['params'] = $v['params'];
-                $list[$k]['params_render'] = $this->conditionRender($v['code'], $v['params']);
+                $list[$k]['params_render'] = $this->conditionRender($v['code'], json_decode($v['params'], true));
             }
         }
         return $list;
