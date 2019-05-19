@@ -76,33 +76,34 @@ class PromotionResult extends Common
                 $conditionModel = new PromotionCondition();
                 foreach ($cart['list'] as $k => $v) {
                     $type = $conditionModel->goods_check($promotionInfo['id'], $v['product_id'], $v['nums']);
-                    Log::debug("------ promotion type {$type} method {$method} -----");
+
                     if ($type == 2) {
                         //到这里就说明此商品信息满足促销商品促销信息的条件，去计算结果
                         //注意，在明细上面，就不细分促销的种类了，都放到一个上面，在订单上面才细分
                         $promotionModel = $this->$method($params, $cart['list'][$k], $promotionInfo);
+                        Log::debug("------ promotion type {$type} method {$method} type1 {$promotionInfo['type']} amount {$promotionModel}----- ");
                         if ($v['is_select']) {
                             //根据具体的促销类型取做对应的操作
                             switch ($promotionInfo['type']) {
-                                case $promotionInfo::TYPE_PROMOTION:
+                                case Promotion::TYPE_PROMOTION:
                                     //设置总的商品促销金额
                                     $cart['goods_pmt'] += $promotionModel;
                                     //设置总的价格
                                     $cart['amount'] -= $promotionModel;
                                     break;
-                                case $promotionInfo::TYPE_COUPON:
+                                case Promotion::TYPE_COUPON:
                                     //优惠券促销金额
                                     $cart['coupon_pmt'] += $promotionModel;
                                     //设置总的价格
                                     $cart['amount'] -= $promotionModel;
                                     break;
-                                case $promotionInfo::TYPE_GROUP:
+                                case Promotion::TYPE_GROUP:
                                     //团购
                                     $cart['goods_pmt'] += $promotionModel;
                                     //设置总的价格
                                     $cart['amount'] -= $promotionModel;
                                     break;
-                                case $promotionInfo::TYPE_SKILL:
+                                case Promotion::TYPE_SKILL:
                                     //秒杀
                                     $cart['goods_pmt'] += $promotionModel;
                                     //设置总的价格
