@@ -76,7 +76,7 @@ class PromotionResult extends Common
                 $conditionModel = new PromotionCondition();
                 foreach ($cart['list'] as $k => $v) {
                     $type = $conditionModel->goods_check($promotionInfo['id'], $v['goods_id'], $v['nums']);
-                    Log::debug("------ promotion type {$type} -----");
+                    Log::debug("------ promotion type {$type} method {$method} -----");
                     if ($type == 2) {
                         //到这里就说明此商品信息满足促销商品促销信息的条件，去计算结果
                         //注意，在明细上面，就不细分促销的种类了，都放到一个上面，在订单上面才细分
