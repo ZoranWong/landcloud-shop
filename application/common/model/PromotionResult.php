@@ -163,7 +163,7 @@ class PromotionResult extends Common
         //总价格修改
         $cart['amount'] = round($cart['amount'] * $params['discount'] * 10) / 100;
         switch ($promotionInfo['type']) {
-            case $promotionInfo::TYPE_PROMOTION:
+            case Promotion::TYPE_PROMOTION:
                 //总促销修改
                 $cart['order_pmt'] += $order_amount - $cart['amount'];
 
@@ -175,7 +175,7 @@ class PromotionResult extends Common
                     ];
                 }
                 break;
-            case $promotionInfo::TYPE_COUPON:
+            case Promotion::TYPE_COUPON:
                 //优惠券促销金额
                 $cart['coupon_pmt'] += $order_amount - $cart['amount'];
                 break;

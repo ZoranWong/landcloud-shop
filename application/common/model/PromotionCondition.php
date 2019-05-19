@@ -174,6 +174,7 @@ class PromotionCondition extends Common
         foreach ($conditionList as $k => $v) {
             if ($this->code[$v['code']]['type'] == 'goods') {
                 $method = 'condition_' . $v['code'];
+                Log::debug("--------------- {$method} ----------------; goods_id = {$goods_id}");
                 $params = json_decode($v['params'], true);
                 $type = $this->$method($params, $goods_id, $nums);
                 if ($type != 2) {
