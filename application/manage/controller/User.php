@@ -9,6 +9,7 @@ use app\common\model\User as UserModel;
 use app\common\model\UserGrade;
 use app\common\model\UserLog;
 use app\common\model\UserPointLog;
+use think\Collection;
 use think\facade\Request;
 
 class User extends Manage
@@ -348,7 +349,8 @@ class User extends Manage
         return $this->fetch('send_coupons');
     }
 
-    public function getCoupons() {
+    public function getCoupons()
+    {
         $input = Request::param();
         $promotionModel = new \app\common\model\Promotion();
         if($input['search']){
@@ -358,6 +360,24 @@ class User extends Manage
         $input['type'] = [\app\common\model\Promotion::TYPE_COUPON];
         $list = $promotionModel->tableData($input);
         return $list;
+    }
+
+    public function sendCouponsUpdate()
+    {
+        $result = [
+            'status' => false,
+            'data' => '',
+            'msg' => ''
+        ];
+        $input = Request::param();
+        $coupons = Collection::make(session('send_coupons_'.$input['user_id'], []));
+        $coupons->where('id', $input['id'])->map(function (&$coupon) use ($input){
+            $coupon['number'] = $input['number'];
+        });
+        $result['status'] = session('send_coupons_'.$input['user_id'], $coupons->toArray());
+
+        return $result;
+
     }
 
 }
