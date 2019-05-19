@@ -73,7 +73,7 @@ class PromotionResult extends Common
             if ($this->code[$resultInfo['code']]['type'] == 'goods') {
                 $conditionModel = new PromotionCondition();
                 foreach ($cart['list'] as $k => $v) {
-                    $type = $conditionModel->goods_check($promotionInfo['id'], $v['products']['goods_id'], $v['nums']);
+                    $type = $conditionModel->goods_check($promotionInfo['id'], $v['goods_id'], $v['nums']);
                     if ($type == 2) {
                         //到这里就说明此商品信息满足促销商品促销信息的条件，去计算结果
                         //注意，在明细上面，就不细分促销的种类了，都放到一个上面，在订单上面才细分
@@ -188,20 +188,20 @@ class PromotionResult extends Common
         $promotionMoney = 0;
 
         //判断极端情况，减的太多，超过商品单价了，那么就最多减到0
-        if ($v['products']['price'] < $params['money']) {
-            $params['money'] = $v['products']['price'];
+        if ($v['price'] < $params['money']) {
+            $params['money'] = $v['price'];
         }
-        $v['products']['price'] -= $params['money'];
+        $v['price'] -= $params['money'];
 
         //此次商品促销一共优惠了多少钱
         $promotionMoney = $v['nums'] * $params['money'];
         //设置商品优惠总金额
-        if (!isset($v['products']['promotion_amount'])) {
-            $v['products']['promotion_amount'] = 0;
+        if (!isset($v['promotion_amount'])) {
+            $v['promotion_amount'] = 0;
         }
-        $v['products']['promotion_amount'] += $promotionMoney;
+        $v['promotion_amount'] += $promotionMoney;
         //设置商品的实际销售金额（单品）
-        $v['products']['amount'] -= $promotionMoney;
+        $v['amount'] -= $promotionMoney;
 
         return $promotionMoney;
     }
@@ -211,18 +211,18 @@ class PromotionResult extends Common
     {
         $promotionMoney = 0;
 
-        $goods_price = $v['products']['price'];
-        $v['products']['price'] = round($v['products']['price'] * $params['discount'] * 10) / 100;
-        $pmoney = $goods_price - $v['products']['price'];        //单品优惠的金额
+        $goods_price = $v['price'];
+        $v['price'] = round($v['price'] * $params['discount'] * 10) / 100;
+        $pmoney = $goods_price - $v['price'];        //单品优惠的金额
 
         $promotionMoney = $v['nums'] * $pmoney;
         //设置商品优惠总金额
-        if (!isset($v['products']['promotion_amount'])) {
-            $v['products']['promotion_amount'] = 0;
+        if (!isset($v['promotion_amount'])) {
+            $v['promotion_amount'] = 0;
         }
-        $v['products']['promotion_amount'] += $promotionMoney;
+        $v['promotion_amount'] += $promotionMoney;
         //设置商品的实际销售总金额
-        $v['products']['amount'] -= $promotionMoney;
+        $v['amount'] -= $promotionMoney;
 
         return $promotionMoney;
     }
@@ -232,23 +232,23 @@ class PromotionResult extends Common
     {
         $promotionMoney = 0;
 
-        if ($v['products']['price'] <= $params['money']) {
+        if ($v['price'] <= $params['money']) {
             return $promotionMoney;
         }
 
-        $goods_price = $v['products']['price'];
-        $v['products']['price'] = round($params['money'] * 100) / 100;
-        $pmoney = $goods_price - $v['products']['price'];        //单品优惠的金额
+        $goods_price = $v['price'];
+        $v['price'] = round($params['money'] * 100) / 100;
+        $pmoney = $goods_price - $v['price'];        //单品优惠的金额
 
         $promotionMoney = $v['nums'] * $pmoney;
 
         //设置商品优惠总金额
-        if (!isset($v['products']['promotion_amount'])) {
-            $v['products']['promotion_amount'] = 0;
+        if (!isset($v['promotion_amount'])) {
+            $v['promotion_amount'] = 0;
         }
-        $v['products']['promotion_amount'] += $promotionMoney;
+        $v['promotion_amount'] += $promotionMoney;
         //设置商品的实际销售总金额
-        $v['products']['amount'] -= $promotionMoney;
+        $v['amount'] -= $promotionMoney;
 
         return $promotionMoney;
     }
@@ -538,13 +538,13 @@ class PromotionResult extends Common
             $promotionMoney = $params['money'] * $times;
         }
         //设置商品优惠总金额
-        if (!isset($v['products']['promotion_amount'])) {
-            $v['products']['promotion_amount'] = 0;
+        if (!isset($v['promotion_amount'])) {
+            $v['promotion_amount'] = 0;
         }
-        $v['products']['promotion_amount'] += $promotionMoney;
+        $v['promotion_amount'] += $promotionMoney;
         //设置商品的实际销售金额（单品）
-        $v['products']['amount'] -= $promotionMoney;
-        $v['products']['amount'] = $v['products']['amount'] > 0 ? $v['products']['amount'] : 0;
+        $v['amount'] -= $promotionMoney;
+        $v['amount'] = $v['amount'] > 0 ? $v['amount'] : 0;
         return $promotionMoney;
     }
 
