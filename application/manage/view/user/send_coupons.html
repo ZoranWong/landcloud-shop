@@ -26,7 +26,7 @@
     <div class="layui-form-item">
         <div class="layui-inline opt-btns">
             <button class="layui-btn layui-btn-normal cancel">取消</button>
-            <button class="layui-btn layui-btn-normal ok">确定</button>
+            <button class="layui-btn layui-btn-normal send-btn">确定</button>
         </div>
     </div>
 </div>
@@ -75,6 +75,22 @@
                     'user_id': `{$info['id']}`,
                     'id': id,
                     number: number
+                },
+                success: function (e) {
+                }
+            });
+        });
+
+        $(document).off('click', '.coupon-selected-form .send-btn');
+        $(document).on('click', '.coupon-selected-form .send-btn', function (e) {
+            let input = $(this);
+            let number = input.val();
+            let id = input.data('id');
+            $.ajax({
+                url: "{:url('manage/user/sentCoupons')}",
+                type: 'post',
+                data: {
+                    'user_id': `{$info['id']}`,
                 },
                 success: function (e) {
                 }
