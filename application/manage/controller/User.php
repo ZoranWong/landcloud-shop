@@ -397,7 +397,7 @@ class User extends Manage
         ];
         $userId = Request::param('user_id');
         $coupons = Collection::make(session('send_coupons_'.$userId ?? []));
-        Db::transaction(function () use ($userId, $coupons, $result){
+        return Db::transaction(function () use ($userId, $coupons, $result){
             $coupons->map(function ($coupon) use ($userId){
                 $model = new \app\common\model\Coupon();
                 $model->addData($userId, $coupon['id'], $coupon['number']);
