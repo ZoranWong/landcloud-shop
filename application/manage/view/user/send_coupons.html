@@ -54,7 +54,7 @@
                     }}
             ]]
         });
-        form.off("submit(coupon-search)");
+        // form.off("submit(coupon-search)");
         form.on("submit(coupon-search)", function (data) {
             layui.table.reload('userTable', {
                 where: data.field
