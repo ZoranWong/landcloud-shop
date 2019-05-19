@@ -29,6 +29,11 @@ class Promotion extends Common
         return $this->hasMany(Coupon::class, 'promotion_id');
     }
 
+    public function promotionResults (): HasMany
+    {
+        return $this->hasMany(PromotionResult::class, 'promotion_id');
+    }
+
     //购物车的数据传过来，然后去算促销
     public function toPromotion($cart)
     {
