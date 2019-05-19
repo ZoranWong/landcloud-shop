@@ -342,22 +342,21 @@ class User extends Manage
     {
         $this->view->engine->layout(false);
         $userModel = new UserModel();
-
-        if (Request::isAjax()) {
-            $input = Request::param();
-            $promotionModel = new \app\common\model\Promotion();
-            if($input['search']){
-                $input['name'] = $input['search'];
-                unset($input['search']);
-            }
-            $list = $promotionModel->tableData($input);
-            return $list;
-        }
-
         $user_id = Request::param('user_id');
         $info = $userModel->getUserInfo($user_id);
         $this->assign('info', $info);
         return $this->fetch('send_coupons');
+    }
+
+    public function getCoupons() {
+        $input = Request::param();
+        $promotionModel = new \app\common\model\Promotion();
+        if($input['search']){
+            $input['name'] = $input['search'];
+            unset($input['search']);
+        }
+        $list = $promotionModel->tableData($input);
+        return $list;
     }
 
 }
