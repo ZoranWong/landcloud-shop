@@ -404,9 +404,11 @@ class User extends Manage
             });
             $result['status'] = true;
             session('send_coupons_'.$userId, []);
+            $result['msg'] = '优惠券发放成功！';
             return $result;
         });
 
+        $result['msg'] = '优惠券发放失败！';
         return $result;
 
     }
