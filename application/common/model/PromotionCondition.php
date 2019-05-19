@@ -7,6 +7,9 @@ use think\db\Query;
 class PromotionCondition extends Common
 {
     protected $json = ['params'];
+    protected $jsonType = [
+        'params' => 'array'
+    ];
     const ALL_GOODS = 'GOODS_ALL';
     const SOME_GOODS = 'GOODS_IDS';
     const GOODS_CATEGORIES = 'GOODS_CATS';
@@ -352,7 +355,6 @@ class PromotionCondition extends Common
                 return '所以商品';
             }
             case self::SOME_GOODS: {
-                var_dump($params);exit;
                 $ids = explode(',', $params['goods_id']);
                 $goods = Goods::whereIn('id', $ids)->select();
                 $str = '<ul>';
