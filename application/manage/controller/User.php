@@ -375,7 +375,7 @@ class User extends Manage
             $coupon['number'] = $input['number'];
         });
         $result['status'] = session('send_coupons_'.$input['user_id'], $coupons->toArray());
-
+        $result['data'] = $coupons->toArray();
         return $result;
 
     }
