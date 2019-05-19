@@ -110,7 +110,7 @@ class PromotionCondition extends Common
             $method = 'condition_' . $conditionInfo['code'];
             $params = json_decode($conditionInfo['params'], true);
             //如果是订单促销就直接去判断促销条件，如果是商品促销，就循环订单明细
-            Log::info('condition code type '.$this->code[$conditionInfo['code']['type']].' method '.$method);
+            Log::info('condition code type '.$this->code[$conditionInfo['code']]['type'].' method '.$method);
             if ($this->code[$conditionInfo['code']]['type'] == 'goods') {
                 $key = false;
                 foreach ($cart['list'] as $k => $v) {
