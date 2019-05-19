@@ -46,7 +46,7 @@ class PromotionCondition extends Common
 
     public function coupons() : HasMany
     {
-        return $this->hasMany(Coupon::class, 'promotion_id');
+        return $this->hasMany(Coupon::class, 'promotion_id', 'promotion_id');
     }
 
 
