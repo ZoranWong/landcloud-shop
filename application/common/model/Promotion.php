@@ -206,6 +206,7 @@ class Promotion extends Common
             if($v['etime']){
                 $list[$k]['etime'] = getTime($v['etime']);
             }
+            $v['params'] = json_encode($v['params']);
 //            if($v['status']){
 //                $list[$k]['status'] = config('params.promotion.status')[$v['status']];
 //            }
