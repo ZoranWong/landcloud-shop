@@ -215,9 +215,9 @@ class PromotionResult extends Common
     {
         $promotionMoney = 0;
 
-        $goods_price = $v['price'];
+        $goods_price = $v['detail']['price'];
 
-        $v['price'] = round($v['price'] * $params['discount'] * 10) / 100;
+        $v['price'] = round($v['detail']['price'] * $params['discount'] * 10) / 100;
         $pmoney = $goods_price - $v['price'];        //单品优惠的金额
         Log::debug("-------- discount {$params['discount']} price {$v['price']} goods_price {$goods_price} --------");
         $promotionMoney = $v['nums'] * $pmoney;
