@@ -10,7 +10,7 @@
             <div class="layui-inline">
                 <input id = "" type="text" name="search" lay-verify="title" placeholder="请输入商品名称" autocomplete="off"
                        class="layui-input">
-                <button class="layui-btn layui-btn-sm" id="couponSearch" lay-submit lay-filter="coupon-search"><i
+                <button class="layui-btn layui-btn-sm coupon-search-btn" id="couponSearch" lay-submit lay-filter="coupon-search"><i
                         class="iconfont icon-shaixuan"></i>搜索
                 </button>
             </div>
@@ -38,5 +38,10 @@
 <style>
     .layui-form-label{
         width: auto !important;
+    }
+    .coupon-search-form .coupon-search-btn {
+        height: 37px;
+        width: 86px;
+        margin-left: 10px;
     }
 </style>
