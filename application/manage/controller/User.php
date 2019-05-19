@@ -338,4 +338,19 @@ class User extends Manage
 
     }
 
+    public function sendCoupons()
+    {
+        $this->view->engine->layout(false);
+        $userModel = new UserModel();
+
+        if (Request::isPost()) {
+//            $input = Request::param();
+        }
+
+        $user_id = Request::param('user_id');
+        $info = $userModel->getUserInfo($user_id);
+        $this->assign('info', $info);
+        return $this->fetch('send_coupons');
+    }
+
 }

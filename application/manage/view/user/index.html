@@ -270,6 +270,26 @@
         });
 
         //积分编辑
+        $(document).on('click', '.send-coupons', function () {
+            var id = $(this).attr('data-id');
+            $.ajax({
+                url: "{:url('manage/user/sendCoupon')}",
+                type: 'get',
+                data: {
+                    'user_id': id
+                },
+                success: function (e) {
+                    layer.open({
+                        type: 1,
+                        title: '优惠券发放',
+                        area: ['720px', '480px'], //宽高
+                        content: e
+                    });
+                }
+            });
+        });
+
+        //积分编辑
         $(document).on('click', '.pointEdit', function () {
             var id = $(this).attr('data-id');
             $.ajax({
