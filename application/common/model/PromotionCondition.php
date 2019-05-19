@@ -356,12 +356,10 @@ class PromotionCondition extends Common
             }
             case self::SOME_GOODS: {
                 $ids = explode(',', $params['goods_id']);
-                var_dump($ids);
                 $goods = Goods::whereIn('id', $ids)->select();
-                var_dump($goods);
                 $str = '<ul>';
                 foreach ($goods as $good) {
-                    $str .= "<li class='goods-item'>{$goods['erp_goods_id']}|{$goods['name']}</li>";
+                    $str .= "<li class='goods-item'>{$good['erp_goods_id']}|{$good['name']}</li>";
                 }
                 $str .='</ul>';
                 return $str;
