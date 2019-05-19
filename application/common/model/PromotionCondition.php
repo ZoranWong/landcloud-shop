@@ -111,7 +111,7 @@ class PromotionCondition extends Common
 
                     if ($type > 0) {
                         if (!isset($cart['list'][$k]['promotion_list'][$promotionInfo['id']])) {
-                            $cart['list'][$k]['products']['promotion_list'][$promotionInfo['id']] = [
+                            $cart['list'][$k]['promotion_list'][$promotionInfo['id']] = [
                                 'name' => $promotionInfo['name'],
                                 'type' => $type,
                                 'coupons' => $promotionInfo['coupons']
@@ -191,8 +191,8 @@ class PromotionCondition extends Common
                 }
                 //商品回滚
                 foreach ($cart['list'] as $k => $v) {
-                    if (isset($cart['list'][$k]['products']['promotion_list'][$promotionInfo['id']])) {
-                        $cart['list'][$k]['products']['promotion_list'][$promotionInfo['id']] = [
+                    if (isset($cart['list'][$k]['promotion_list'][$promotionInfo['id']])) {
+                        $cart['list'][$k]['promotion_list'][$promotionInfo['id']] = [
                             'name' => $promotionInfo['name'],
                             'type' => 1
                         ];
