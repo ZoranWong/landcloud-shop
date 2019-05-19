@@ -333,7 +333,7 @@ class Cart extends Common
         //接下来算订单促销金额
         $promotionModel = new Promotion();
         $result['data'] = $promotionModel->toPromotion($result['data']);
-        Log::info('------------ result promotion ----------- ' . json_encode($result['data']));
+
         if ($coupon_code === "") {
             $list = $result['data']['list'];
             foreach ($list as $item) {
@@ -345,6 +345,7 @@ class Cart extends Common
                 }
             }
         }
+        Log::info('------------ result promotion ----------- ' . $coupon_code);
         //加入有优惠券，判断优惠券是否可用
         if ($coupon_code != "") {
             $couponModel = new Coupon();
@@ -354,7 +355,6 @@ class Cart extends Common
             }
             $re = $promotionModel->toCoupon($result['data'], $couponInfo['data']);
             if (!$re['status']) {
-                $re['msg'] = $coupon_code;
                 return $re;       //优惠券不符合使用规则，后期会把不符合的原因写出来
             }
         } else {
