@@ -92,10 +92,10 @@ class PromotionCondition extends Common
             if($this->code[$conditionInfo['code']]['type'] == 'goods'){
                 $key = false;
                 foreach($cart['list'] as $k => $v){
-                    $type = $this->$method($params,$v['products']['goods_id'],$v['nums']);
+                    $type = $this->$method($params,$v['product_id'],$v['nums']);
 
                     if($type > 0){
-                        if(!isset($cart['list'][$k]['products']['promotion_list'][$promotionInfo['id']])){
+                        if(!isset($cart['list'][$k]['promotion_list'][$promotionInfo['id']])){
                             $cart['list'][$k]['products']['promotion_list'][$promotionInfo['id']] = [
                                 'name' => $promotionInfo['name'],
                                 'type' => $type,
