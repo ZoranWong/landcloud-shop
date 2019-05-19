@@ -381,6 +381,7 @@ class User extends Manage
         }
 
         $result['status'] = session('send_coupons_'.$input['user_id'], $coupons->toArray());
+        var_dump(session('send_coupons_'.$input['user_id']));
         $result['data'] = $coupons->toArray();
         return $result;
 
