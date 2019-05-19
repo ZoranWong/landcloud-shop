@@ -386,10 +386,11 @@ class User extends Manage
             });
         }
         $coupons->push($input);
-        $coupons = $coupons->map(function ($item) {
-            return $item;
+        $list = [];
+        $coupons->map(function ($item) use ($list) {
+            $list[] = $item;
         });
-        $result['status'] = session('send_coupons_'.$input['user_id'], $coupons->toArray());
+        $result['status'] = session('send_coupons_'.$input['user_id'], $list);
         $result['data'] = $coupons->toArray();
         return $result;
 
