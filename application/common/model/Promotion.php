@@ -95,7 +95,7 @@ class Promotion extends Common
                 return error_code(15014);
             }
             if ($this->setPromotion($info, $cart)) {
-                $cart['coupon'][$k] = $v['name'];
+                $cart['coupons'][$k] = $v['name'];
             } else {
                 return error_code(15014);
             }

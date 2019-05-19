@@ -284,7 +284,7 @@ class Cart extends Common
                 'promotion_list' => [],      //促销列表
                 'cost_freight' => 0,        //运费
                 'weight' => 0,               //商品总重
-                'coupon' => [],
+                'coupons' => [],
                 'point' => $point,              //在刚开始一定要校验积分是否可以使用，
                 'point_money' => 0              //在结尾一定要算积分可以抵扣多少金额
             ],
