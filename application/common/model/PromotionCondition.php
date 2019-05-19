@@ -83,7 +83,7 @@ class PromotionCondition extends Common
 
 
     //检查是否满足条件
-    public function check($conditionInfo,&$cart,$promotionInfo)
+    public function check($conditionInfo, &$cart, $promotionInfo)
     {
         if($this->code[$conditionInfo['code']]){
             $method = 'condition_'.$conditionInfo['code'];
@@ -346,9 +346,9 @@ class PromotionCondition extends Common
             ->alias('pc')
             ->join(config('database.prefix').'promotion p','p.id = pc.promotion_id')
             ->where($where)->find();
-        if($info){
-            $info['params'] = json_decode($info['params'],true);
-        }
+//        if($info){
+//            $info['params'] = json_decode($info['params'],true);
+//        }
         return $info;
     }
 
