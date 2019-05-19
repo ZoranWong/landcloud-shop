@@ -104,10 +104,10 @@ class Promotion extends Common
     private function setPromotion($promotionInfo, &$cart)
     {
         $conditionModel = new PromotionCondition();
-        $where['`PromotionCondition`.`promotion_id`'] = $promotionInfo['id'];
+        $where['promotion_id'] = $promotionInfo['id'];
         $conditionList = $conditionModel->has('coupons', function ($query) {
             $query->where('is_used', 'eq', Coupon::USED_NO);
-        })->where($where)->select();
+        })->whereRaw("`PromotionCondition`.`promotion_id = {$promotionInfo['id']}")->select();
         //循环取出所有的促销条件，有一条不满足，就不行，就返回false
         $key = true;
 
