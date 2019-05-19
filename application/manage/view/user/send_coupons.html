@@ -45,8 +45,8 @@
             id: 'userTable',
             cols: [[
                 {type: 'numbers', fixed: 'left'},
-                {field: 'name', 'title': '优惠券名称', width: 200},
-                {field: 'number', title: '发放张数', width: 150, templet(coupon) {
+                {field: 'name', 'title': '优惠券名称'},
+                {field: 'number', title: '发放张数', templet(coupon) {
                     return `<div class="layui-input-inline"><input type="number" name = "coupons[${coupon['id']}][number]" class="layui-input"/></div>`;
                     }}
             ]]
