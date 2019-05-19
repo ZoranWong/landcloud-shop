@@ -357,9 +357,11 @@ class User extends Manage
             $input['name'] = $input['search'];
             unset($input['search']);
         }
+        $userId = $input['user_id'];
+        unset($input['user_id']);
         $input['type'] = [\app\common\model\Promotion::TYPE_COUPON];
         $list = $promotionModel->tableData($input);
-        $coupons = Collection::make(session('send_coupons_'.$input['user_id']) ?? []);
+        $coupons = Collection::make(session('send_coupons_'.$userId ?? []));
         foreach ($list['data'] as &$item) {
             $item['number'] = 0;
             $coupons->where('id', '=', $item['id'])->map(function ($coupon) use($item){
@@ -379,12 +381,10 @@ class User extends Manage
         $input = Request::param();
         $coupons = Collection::make(session('send_coupons_'.$input['user_id']) ?? []);
         if($coupons->where('id', $input['id'])->count()) {
-            $coupons->where('id', $input['id'])->map(function (&$coupon) use ($input){
-                $coupon['number'] = $input['number'];
-            });
-        }else{
-            $coupons->push($input);
+            $coupons->where('id', $input['id'])->pop();
+
         }
+        $coupons->push($input);
 
         $result['status'] = session('send_coupons_'.$input['user_id'], $coupons->toArray());
         $result['data'] = $coupons->toArray();
