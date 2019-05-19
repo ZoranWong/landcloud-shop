@@ -335,15 +335,17 @@ class Cart extends Common
         $result['data'] = $promotionModel->toPromotion($result['data']);
 
         if ($coupon_code === "") {
+            $couponCodes = [];
             $list = $result['data']['list'];
             foreach ($list as $item) {
                 if (isset($item['promotion_list']) && $item['promotion_list']) {
                     foreach ($item['promotion_list'] as $promotion) {
-                        $coupon_code .= ($promotion['coupons'][0]['coupon_code'] . ',');
+                        $couponCodes[] = $promotion['coupons'][0]['coupon_code'];
                         break;
                     }
                 }
             }
+            $coupon_code = explode(',', $couponCodes);
         }
         Log::info('------------ result promotion ----------- ' . $coupon_code);
         //加入有优惠券，判断优惠券是否可用
