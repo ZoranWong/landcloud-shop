@@ -35,6 +35,38 @@
     layui.use('form', function() {
         var form = layui.form;
         form.render();
+        var table = layui.table.render({
+            elem: '#sendCouponsTable',
+            height: 'full-220',
+            cellMinWidth: '80',
+            page: 'true',
+            limit: '20',
+            url: "{:url('user/index')}?_ajax=1",
+            id: 'userTable',
+            cols: [[
+                {type: 'numbers', fixed: 'left'},
+                {field: 'erp_user_id', 'title': 'ERP ID', width: 100, fixed: 'left'},
+                {field: 'mobile', title: '手机号码', width: 150},
+                {field: 'grade_name', title: '等级', width: 150},
+                {field: 'sex', title: '性别'},
+                {field: 'return_day', title: '回款日'},
+                {
+                    field: 'avatar', title: '头像',
+                    templet: function (d) {
+                        if (d.avatar) {
+                            return '<a href="javascript:void(0);" onclick=viewImage("' + d.avatar + '")><image style="max-width:30px;max-height:30px;" src="' + d.avatar + '"/></a>';
+                        } else {
+                            return '<a href="javascript:void(0);" onclick=viewImage("<?php echo config('
+                            labgic.default_image
+                            '); ?>")><image style="max-width:30px;max-height:30px;" src="<?php echo config('
+                            labgic.default_image
+                            ');?>"/></a>';
+                        }
+                    }, width: 80
+                }
+            ]]
+        });
+
     });
 </script>
 <style>
