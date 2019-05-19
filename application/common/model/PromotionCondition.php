@@ -6,10 +6,10 @@ use think\db\Query;
 
 class PromotionCondition extends Common
 {
-    protected $json = ['params'];
-    protected $jsonType = [
-        'params' => 'array'
-    ];
+//    protected $json = ['params'];
+//    protected $jsonType = [
+//        'params' => 'array'
+//    ];
     const ALL_GOODS = 'GOODS_ALL';
     const SOME_GOODS = 'GOODS_IDS';
     const GOODS_CATEGORIES = 'GOODS_CATS';
