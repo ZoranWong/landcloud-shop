@@ -380,9 +380,8 @@ class User extends Manage
         ];
         $input = Request::param();
         $coupons = Collection::make(session('send_coupons_'.$input['user_id']) ?? []);
-        if($coupons->where('id', '=', $input['id'])->count()) {
+        while($coupons->where('id', '=', $input['id'])->count()) {
             $coupons->where('id', '=', $input['id'])->pop();
-
         }
         $coupons->push($input);
 
