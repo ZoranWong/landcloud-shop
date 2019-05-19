@@ -359,6 +359,13 @@ class User extends Manage
         }
         $input['type'] = [\app\common\model\Promotion::TYPE_COUPON];
         $list = $promotionModel->tableData($input);
+        $coupons = Collection::make(session('send_coupons_'.$input['user_id']) ?? []);
+        foreach ($list['data'] as &$item) {
+            $item['number'] = 0;
+            $coupons->where('id', '=', $item['id'])->map(function ($coupon) use($item){
+                $item['number'] = $coupon['number'];
+            });
+        }
         return $list;
     }
 
