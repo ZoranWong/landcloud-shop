@@ -403,6 +403,7 @@ class User extends Manage
                 $model->addData($userId, $coupon['id'], $coupon['number']);
             });
             $result['status'] = true;
+            session('send_coupons_'.$userId, []);
             return $result;
         });
 
