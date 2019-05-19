@@ -333,7 +333,7 @@ class Cart extends Common
         //接下来算订单促销金额
         $promotionModel = new Promotion();
         $result['data'] = $promotionModel->toPromotion($result['data']);
-        Log::info('------------ result promotion -----------', $result['data']);
+        Log::info('------------ result promotion ----------- '. json_encode($result['data']));
         //加入有优惠券，判断优惠券是否可用
         if ($coupon_code != "") {
             $couponModel = new Coupon();
