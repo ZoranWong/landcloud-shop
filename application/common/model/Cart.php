@@ -225,10 +225,10 @@ class Cart extends Common
         if ($goods['price_levels']) {
             /** @var Collection $levels * */
             $levels = $goods['price_levels'];
-            Log::debug('----------------------- levels ----------------'.json_encode($levels));
-            if(!$area){
+            Log::debug('----------------------- levels ----------------' . json_encode($levels));
+            if (!$area) {
                 $levels->where('area', 'in', ['', null]);
-            }else{
+            } else {
                 $levels->where('area', '=', $area);
             }
             $levels = $levels->order('buy_num', 'desc')->all();
@@ -306,7 +306,7 @@ class Cart extends Common
 //            }
 
             //单条商品总价
-           list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $area);
+            list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $area);
             $result['data']['list'][$k]['amount'] = $amount;
             $result['data']['list'][$k]['price_strcut'] = $priceStruct;
             if ($v['is_select']) {
@@ -333,7 +333,16 @@ class Cart extends Common
         //接下来算订单促销金额
         $promotionModel = new Promotion();
         $result['data'] = $promotionModel->toPromotion($result['data']);
-        Log::info('------------ result promotion ----------- '. json_encode($result['data']));
+        Log::info('------------ result promotion ----------- ' . json_encode($result['data']));
+        if ($coupon_code === "") {
+            $list = $result['data']['list'];
+            foreach ($list as $item) {
+                foreach ($item['promotion_list'] as $promotion) {
+                    $coupon_code .=$promotion['coupons'][0]['coupon_code'].',';
+                    break;
+                }
+            }
+        }
         //加入有优惠券，判断优惠券是否可用
         if ($coupon_code != "") {
             $couponModel = new Coupon();
@@ -394,10 +403,10 @@ class Cart extends Common
         $where[] = ['id', 'eq', $input['id']];
         $where[] = ['user_id', 'eq', $input['user_id']];
         $res = [];
-        if($input['nums'] > 0){
+        if ($input['nums'] > 0) {
             $res = $this->where($where)
                 ->update(['nums' => $input['nums']]);
-        }else{
+        } else {
             $this->where($where)->delete();
         }
 
