@@ -93,6 +93,12 @@
                     'user_id': `{$info['id']}`,
                 },
                 success: function (e) {
+                    if (e.status) {
+                        layer.close(window.box);
+                        layer.msg(e.msg, {time: 1300}, function () {
+                            layui.table.reload('userTable');
+                        });
+                    }
                 }
             });
         });
