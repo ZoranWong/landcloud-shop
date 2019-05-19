@@ -273,7 +273,7 @@
         $(document).on('click', '.send-coupons', function () {
             var id = $(this).attr('data-id');
             $.ajax({
-                url: "{:url('manage/user/sendCoupon')}",
+                url: "{:url('manage/user/sendCoupons')}",
                 type: 'get',
                 data: {
                     'user_id': id
