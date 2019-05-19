@@ -10,6 +10,7 @@ use app\common\model\UserGrade;
 use app\common\model\UserLog;
 use app\common\model\UserPointLog;
 use think\Collection;
+use think\Db;
 use think\facade\Request;
 
 class User extends Manage
@@ -383,6 +384,28 @@ class User extends Manage
         $coupons[$input['id']] = $input;
         $result['status'] = session('send_coupons_'.$input['user_id'], $coupons->toArray());
         $result['data'] = $coupons->toArray();
+        return $result;
+
+    }
+
+    public function sentCoupons()
+    {
+        $result = [
+            'status' => false,
+            'data' => '',
+            'msg' => ''
+        ];
+        $userId = Request::param('user_id');
+        $coupons = Collection::make(session('send_coupons_'.$userId ?? []));
+        Db::transaction(function () use ($userId, $coupons, $result){
+            $coupons->map(function ($coupon) use ($userId){
+                $model = new \app\common\model\Coupon();
+                $model->addData($userId, $coupon['id'], $coupon['number']);
+            });
+            $result['status'] = true;
+            return $result;
+        });
+
         return $result;
 
     }

@@ -39,18 +39,23 @@ class Coupon extends Common
      * 用户领取优惠券 插入数据
      * @param $user_id
      * @param $promotion_id
+     * @param int $number
      * @return array
+     * @throws \Exception
      */
-    public function addData($user_id,$promotion_id)
+    public function addData($user_id,$promotion_id, $number = 1)
     {
         $result = ['status'=>false,'msg'=>'领取失败','data'=>'' ];
+        $dataSet = [];
+        for($i = 0; $i < $number; $i ++) {
+            $dataSet[] = [
+                'coupon_code' => $this->generate_promotion_code()[0],
+                'promotion_id' => $promotion_id,
+                'user_id' => $user_id
+            ];
+        }
 
-        $data = [
-            'coupon_code' => $this->generate_promotion_code()[0],
-            'promotion_id' => $promotion_id,
-            'user_id' => $user_id
-        ];
-        if($this->allowField(true)->save($data))
+        if($this->allowField(true)->saveAll($dataSet))
         {
             $result['status'] = true;
             $result['msg'] = '领取成功';
