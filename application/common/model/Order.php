@@ -361,8 +361,11 @@ class Order extends Common
                 ->where('item.name', 'like', "%{$input['search']}%")
                 ->whereOr('item.bn', 'like', "%{$input['search']}%")
                 ->whereOr('g.erp_goods_id', 'like', "%{$input['search']}%")
-                ->whereLike("o.order_id", "%{$input['search']}%", 'or')->buildSql();
-           $query = $query->whereIn('order_id', $sql);
+                ->buildSql();
+               $query = $query->where(function ($query) use($sql, $input){
+                   /**@var Query $query**/
+                   $query->whereIn('order_id', $sql)->whereLike('order_id', "%{$input['search']}%", 'or');
+               });
         }
         $query = $query->with(['items', 'delivery'])->where($where);
 
