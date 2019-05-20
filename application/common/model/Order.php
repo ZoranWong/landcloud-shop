@@ -352,7 +352,7 @@ class Order extends Common
 
         $page = $input['page'] ? $input['page'] : 1;
         $limit = $input['limit'] ? $input['limit'] : 20;
-        $query = $this::where($where);
+        $query = $this;
 
         if (!empty($input['search']) && $input['search']) {
            $query->where(function ($query) use($input){
@@ -363,7 +363,7 @@ class Order extends Common
                })->whereOr("order_id", "like", "%{$input['search']}%");
            });
         }
-        $query = $query->with(['items', 'delivery']);
+        $query = $query->with(['items', 'delivery'])->where($where);
 
         $data = $query->order('ctime desc')
             ->page($page, $limit)
