@@ -112,7 +112,7 @@ class Goods extends Api
             }
             //判断商品搜索,
             if (isset($postWhere['search_name']) && $postWhere['search_name']) {
-                $where[] = ['name|bn|brief', 'LIKE', '%' . $postWhere['search_name'] . '%'];
+                $where[] = ['name|bn|brief|keywords', 'LIKE', '%' . $postWhere['search_name'] . '%'];
             }
             if (isset($postWhere['bn']) && $postWhere['bn']) {
                 $where[] = ['bn', '=', $postWhere['bn']];
@@ -209,7 +209,13 @@ class Goods extends Api
             $query->where('name', 'like', '%' . $keyword . '%')
                 ->whereOr('erp_goods_id', $keyword)
                 ->whereOr('bn', $keyword)
-                ->whereOrRaw('json_contains(keywords->\'$[*]\',\'"' . $keyword . '"\',\'$\')');
+                ->whereOrRaw('json_contains(keywords->\'$[*]\',\'"' . $keyword . '"\',\'$\')')
+                ->whereRaw(`
+                order by case
+    when keywords LIKE "%{$keyword}%" then 1
+    else 2
+end
+                `);
         };
         $returnGoods = $goodsModel->getList('api', $field, $where, $order, $page, $limit);
         if ($returnGoods['status']) {
