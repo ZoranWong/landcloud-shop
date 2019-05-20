@@ -357,9 +357,9 @@ class Order extends Common
 
         if (!empty($input['search']) && $input['search']) {
            $query = $query->where(function ($query) use($input){
-               Log::debug('======== search data : '.$input['search'].'; =========');
                /**@var Query $query**/
                return $query->relation(['items' => function($query) use($input){
+                   Log::debug('======== search data : '.$input['search'].'; =========');
                    /**@var Query $query**/
                    return $query->whereLike('name', "%{$input['search']}%")
                        ->whereLike('bn', "%{$input['search']}%", 'or')
