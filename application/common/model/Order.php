@@ -362,7 +362,7 @@ class Order extends Common
                return $query->whereLike('item.name', "%{$input['search']}%")
                    ->whereLike('item.bn', "%{$input['search']}%", 'or')
                    ->whereLike('g.erp_goods_id', "%{$input['search']}%", 'or');
-           })->whereLike("order_id", "%{$input['search']}%", 'or');
+           })->whereLike("o.order_id", "%{$input['search']}%", 'or');
         }
         $query = $query->with(['items', 'delivery'])->where($where);
 
