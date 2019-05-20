@@ -357,9 +357,8 @@ class Order extends Common
         if (!empty($input['search']) && $input['search']) {
            $query->where(function ($query) use($input){
                $query->has('items', function($query) use($input){
-                   if(!empty($input['search'])){
-                       $query->whereRaw("(`name` like %{$input['search']}% or `bn` like %{$input['search']}% or `erp_goods_id` like %{$input['search']}%)");
-                   }
+                   $query->whereRaw("(`name` like %{$input['search']}% or `bn` like %{$input['search']}% or 
+                   `erp_goods_id` like %{$input['search']}%)");
                })->whereOr("order_id", "like", "%{$input['search']}%");
            });
         }
