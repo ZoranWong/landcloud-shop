@@ -19,6 +19,7 @@ class WorkOrder extends Api
         $pageSize = input('param.pageSize', PAGE_SIZE);
         $type = input('param.type', 'all');
         $where = [];
+        $where['user_id'] = $this->userId;
         if (in_array($type, [WorkOrderModel::TYPE_CONSULT, WorkOrderModel::TYPE_COMPLAIN])) {
             $where['type'] = WorkOrderModel::TYPES[$type];
         }
