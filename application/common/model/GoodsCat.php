@@ -10,6 +10,7 @@
 namespace app\common\model;
 
 use Illuminate\Support\Debug\Dumper;
+use think\model\relation\HasMany;
 
 /**
  * 商品分类
@@ -29,6 +30,11 @@ class GoodsCat extends Common
     protected $autoWriteTimestamp = true;
     protected $createTime = 'utime';
     protected $updateTime = 'utime';
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(GoodsCat::class, 'parent_id');
+    }
 
 
     /**
@@ -128,10 +134,11 @@ class GoodsCat extends Common
         } else {
             $where = [];
         }
-        $data = $this->field('id, parent_id, name, sort, image_id')
+        $data = $this->with(['children'])->field('id, parent_id, name, sort, image_id')
             ->where($where)
             ->order('sort asc')
             ->select();
+        return $data;
         $return_data = $this->getTreeApi($data);
         return $return_data;
     }
