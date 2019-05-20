@@ -3,6 +3,7 @@
 namespace app\common\model;
 
 use think\Db;
+use think\db\Query;
 use think\facade\Log;
 use think\model\concern\SoftDelete;
 
@@ -355,13 +356,10 @@ class Order extends Common
         $query = $this;
 
         if (!empty($input['search']) && $input['search']) {
-           $query = $query->where(function ($query) use($input){
-               Log::debug('======== search data : '.$input['search'].'; =========');
-               return $query->has('items', function($query) use($input){
-                   return $query->whereRaw("(`name` like %{$input['search']}% or `bn` like %{$input['search']}% or 
+           $query = $query->has('items', function($query) use($input){
+               return $query->whereRaw("(`name` like %{$input['search']}% or `bn` like %{$input['search']}% or 
                    `erp_goods_id` like %{$input['search']}%)");
-               })->whereOr("order_id", "like", "%{$input['search']}%");
-           });
+           })->whereOr("order_id", "like", "%{$input['search']}%");
         }
         $query = $query->with(['items', 'delivery'])->where($where);
 
