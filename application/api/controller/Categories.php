@@ -84,7 +84,7 @@ class Categories extends Api
     public function getAllCat()
     {
         $model = new GoodsCat();
-        $data = $model->getAllCat();
+        $data = $model->getChildClass();
         $return = array(
             'status' => false,
             'msg' => '',

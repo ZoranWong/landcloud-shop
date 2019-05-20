@@ -134,7 +134,7 @@ class GoodsCat extends Common
         } else {
             $where = [];
         }
-        $data = $this->with(['child'])->field('id, parent_id, name, sort, image_id')
+        $data = $this->field('id, parent_id, name, sort, image_id')
             ->where($where)
             ->order('sort asc')
             ->select();
@@ -265,7 +265,7 @@ class GoodsCat extends Common
     {
         $where[] = array('parent_id', 'eq', $parent_id);
 
-        $data = $this->field('id, name, sort, image_id')
+        $data = $this->with(['child'])->field('id, name, sort, image_id')
             ->where($where)
             ->order('sort asc')
             ->select();
@@ -273,6 +273,11 @@ class GoodsCat extends Common
         foreach ($data as &$v) {
             if ($v['image_id']) {
                 $v['image_url'] = _sImage($v['image_id']);
+            }
+            foreach ($v['child'] as &$item) {
+                if ($item['image_id']) {
+                    $item['image_url'] = _sImage($item['image_id']);
+                }
             }
         }
         return $data;
