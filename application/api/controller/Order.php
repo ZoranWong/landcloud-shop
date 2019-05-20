@@ -257,7 +257,7 @@ class Order extends Api
             'page' => input('page'),
             'limit' => input('limit'),
             'user_id' => $this->userId,
-            'search' => input('search')
+            'search' => input('search', null)
         );
         $model = new orderModel();
         $data = $model->getListFromWxApi($input);
