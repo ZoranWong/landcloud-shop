@@ -271,13 +271,13 @@ class GoodsCat extends Common
             ->where($where)
             ->order('sort asc')
             ->select();
-        $data->order('sort', 'desc');
-        return $data->map(function (GoodsCat $item) {
+
+        $data->map(function (GoodsCat &$item) {
             if ($item['image_id']) {
                 $item['image_url'] = _sImage($item['image_id']);
             }
             //$item->child->sort('sort', 'desc');
-            $item->child->map(function ($c) {
+            $item->child->map(function (&$c) {
                 if ($c['image_id']) {
                     $c['image_url'] = _sImage($c['image_id']);
                 }
@@ -285,6 +285,8 @@ class GoodsCat extends Common
             });
             return $item;
         });
+        $data->order('sort', 'desc');
+        return $data;
     }
 
 
