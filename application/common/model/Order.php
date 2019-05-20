@@ -356,15 +356,13 @@ class Order extends Common
         $query = $this;
 
         if (!empty($input['search']) && $input['search']) {
-
-           $query = $query->where(function ($query)use($input) {
-               /**@var Query $query**/
-               return $query->table(['orders' => 'o', 'order_items' => 'item'])->join([['item', 'o.order_id=item.order_id']])
-                   ->where('item.name', 'like', "%{$input['search']}%")
-                   ->whereOr('item.bn', 'like', "%{$input['search']}%")
-//                   ->whereOr('g.erp_goods_id', 'like', "%{$input['search']}%")
-                   ->whereLike("o.order_id", "%{$input['search']}%", 'or');
-           });
+            $sql = Db::table(['orders' => 'o', 'order_items' => 'item', 'goods'=>'g'])->field('o.id as id')
+                ->join([['item', 'o.order_id=item.order_id'], ['g', 'item.goods_id=g.id']])
+                ->where('item.name', 'like', "%{$input['search']}%")
+                ->whereOr('item.bn', 'like', "%{$input['search']}%")
+                ->whereOr('g.erp_goods_id', 'like', "%{$input['search']}%")
+                ->whereLike("o.order_id", "%{$input['search']}%", 'or')->buildSql();
+           $query = $query->whereIn('id', $sql);
         }
         $query = $query->with(['items', 'delivery'])->where($where);
 
