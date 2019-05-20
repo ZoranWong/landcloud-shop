@@ -356,16 +356,23 @@ class Order extends Common
         $query = $this;
 
         if (!empty($input['search']) && $input['search']) {
-           $query = $query->where(function ($query) use($input){
-               /**@var Query $query**/
-               return $query->relation(['items' => function($query) use($input){
-                   Log::debug('======== search data : '.$input['search'].'; =========');
-                   /**@var Query $query**/
-                   return $query->whereLike('name', "%{$input['search']}%")
-                       ->whereLike('bn', "%{$input['search']}%", 'or')
-                       ->whereLike('erp_goods_id', "%{$input['search']}%", 'or');
-               }])->whereLike("order_id", "%{$input['search']}%", 'or');
-           });
+//           $query = $query->where(function ($query) use($input){
+//               /**@var Query $query**/
+//               return $query->relation(['items' => function($query) use($input){
+//                   Log::debug('======== search data : '.$input['search'].'; =========');
+//                   /**@var Query $query**/
+//                   return $query->whereLike('name', "%{$input['search']}%")
+//                       ->whereLike('bn', "%{$input['search']}%", 'or')
+//                       ->whereLike('erp_goods_id', "%{$input['search']}%", 'or');
+//               }])->whereLike("order_id", "%{$input['search']}%", 'or');
+//           });
+            $query = $query->relation(['items' => function($query) use($input){
+                Log::debug('======== search data : '.$input['search'].'; =========');
+                /**@var Query $query**/
+                return $query->whereLike('name', "%{$input['search']}%")
+                    ->whereLike('bn', "%{$input['search']}%", 'or')
+                    ->whereLike('erp_goods_id', "%{$input['search']}%", 'or');
+            }]);
         }
         $query = $query->with(['items', 'delivery'])->where($where);
 
