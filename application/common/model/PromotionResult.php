@@ -195,7 +195,7 @@ class PromotionResult extends Common
         if ($v['price'] < $params['money']) {
             $params['money'] = $v['price'];
         }
-        $v['price'] -= $params['money'];
+        $v['promotion_price'] -= $params['money'];
 
         //此次商品促销一共优惠了多少钱
         $promotionMoney = $v['nums'] * $params['money'];
@@ -217,9 +217,9 @@ class PromotionResult extends Common
 
         $goods_price = $v['detail']['price'];
 
-        $v['price'] = round($v['detail']['price'] * $params['discount'] * 10) / 100;
-        $pmoney = $goods_price - $v['price'];        //单品优惠的金额
-        Log::debug("-------- discount {$params['discount']} price {$v['price']} goods_price {$goods_price} --------");
+        $v['promotion_price'] = round($v['detail']['price'] * $params['discount'] * 10) / 100;
+        $pmoney = $goods_price - $v['promotion_price'];        //单品优惠的金额
+        //Log::debug("-------- discount {$params['discount']} price {$v['price']} goods_price {$goods_price} --------");
         $promotionMoney = $v['nums'] * $pmoney;
         //设置商品优惠总金额
         if (!isset($v['promotion_amount'])) {
@@ -242,8 +242,8 @@ class PromotionResult extends Common
         }
 
         $goods_price = $v['price'];
-        $v['price'] = round($params['money'] * 100) / 100;
-        $pmoney = $goods_price - $v['price'];        //单品优惠的金额
+        $v['promotion_price'] = round($params['money'] * 100) / 100;
+        $pmoney = $goods_price - $v['promotion_price'];        //单品优惠的金额
 
         $promotionMoney = $v['nums'] * $pmoney;
 
