@@ -353,11 +353,12 @@ class Order extends Common
         $page = $input['page'] ? $input['page'] : 1;
         $limit = $input['limit'] ? $input['limit'] : 20;
         $query = $this;
-        Log::debug('======== search data : '.$input['search'].'; =========');
+
         if (!empty($input['search']) && $input['search']) {
-           $query->where(function ($query) use($input){
-               $query->has('items', function($query) use($input){
-                   $query->whereRaw("(`name` like %{$input['search']}% or `bn` like %{$input['search']}% or 
+           $query = $query->where(function ($query) use($input){
+               Log::debug('======== search data : '.$input['search'].'; =========');
+               return $query->has('items', function($query) use($input){
+                   return $query->whereRaw("(`name` like %{$input['search']}% or `bn` like %{$input['search']}% or 
                    `erp_goods_id` like %{$input['search']}%)");
                })->whereOr("order_id", "like", "%{$input['search']}%");
            });
