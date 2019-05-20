@@ -276,7 +276,7 @@ class GoodsCat extends Common
             if ($item['image_id']) {
                 $item['image_url'] = _sImage($item['image_id']);
             }
-            $item->child->sort('sort', 'desc');
+            //$item->child->sort('sort', 'desc');
             return $item->child->map(function ($c) {
                 if ($c['image_id']) {
                     $c['image_url'] = _sImage($c['image_id']);
