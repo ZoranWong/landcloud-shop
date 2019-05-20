@@ -191,7 +191,7 @@ class GoodsCat extends Common
         foreach ((array)$new_data as $key => $val) {
             $edition[] = $val['sort'];
         }
-        array_multisort($edition, SORT_ASC, $new_data);
+        array_multisort($edition, SORT_DESC, $new_data);
 
         return $new_data;
     }
@@ -269,7 +269,7 @@ class GoodsCat extends Common
             ->where($where)
             ->order('sort asc')
             ->select();
-
+        $edition = [];
         foreach ($data as &$v) {
             if ($v['image_id']) {
                 $v['image_url'] = _sImage($v['image_id']);
@@ -279,7 +279,9 @@ class GoodsCat extends Common
                     $item['image_url'] = _sImage($item['image_id']);
                 }
             }
+            $edition[] = $v['sort'];
         }
+        array_multisort($edition, SORT_DESC, $data);
         return $data;
     }
 
