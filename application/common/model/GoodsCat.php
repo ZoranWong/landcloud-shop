@@ -269,7 +269,7 @@ class GoodsCat extends Common
 
         $data = $this->with(['child'])->field('id, name, sort, image_id')
             ->where($where)
-            ->order('sort asc')
+            ->order('sort desc')
             ->select();
 
         $data->map(function (GoodsCat &$item) {
@@ -285,7 +285,6 @@ class GoodsCat extends Common
             });
             return $item;
         });
-        $data->order('sort', 'desc');
         return $data;
     }
 
