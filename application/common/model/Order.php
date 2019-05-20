@@ -357,12 +357,16 @@ class Order extends Common
 
         if (!empty($input['search']) && $input['search']) {
 
-           $query = $query->alias('o')->join([['order_items item', 'o.id=item.order_id'], ['goods g', 'g.id=item.goods_id']])->where(function ($query)use($input) {
-
-               return $query->whereLike('item.name', "%{$input['search']}%")
-                   ->whereLike('item.bn', "%{$input['search']}%", 'or')
-                   ->whereLike('g.erp_goods_id', "%{$input['search']}%", 'or');
-           })->whereLike("o.order_id", "%{$input['search']}%", 'or');
+           $query = $query->where(function ($query)use($input) {
+               /**@var Query $query**/
+               return $query->alias('o')->join([['order_items item', 'o.order_id=item.order_id'], ['goods g', 'g.id=item.goods_id']])
+                   ->where(function ($query)use($input) {
+                   /**@var Query $query**/
+                   return $query->whereLike('item.name', "%{$input['search']}%")
+                       ->whereLike('item.bn', "%{$input['search']}%", 'or')
+                       ->whereLike('g.erp_goods_id', "%{$input['search']}%", 'or');
+               })->whereLike("o.order_id", "%{$input['search']}%", 'or');
+           });
         }
         $query = $query->with(['items', 'delivery'])->where($where);
 
