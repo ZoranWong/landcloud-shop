@@ -361,10 +361,10 @@ class Order extends Common
                /**@var Query $query**/
                return $query->relation(['items' => function($query) use($input){
                    /**@var Query $query**/
-                   return $query->where('name', 'like', "%{$input['search']}%")
-                       ->whereOr('bn', 'like', "%{$input['search']}%")
-                       ->whereOr('erp_goods_id', 'like', "%{$input['search']}%");
-               }])->whereOr("order_id", "like", "%{$input['search']}%");
+                   return $query->whereLike('name', "%{$input['search']}%")
+                       ->whereLike('bn', "%{$input['search']}%", 'or')
+                       ->whereLike('erp_goods_id', "%{$input['search']}%", 'or');
+               }])->whereLike("order_id", "%{$input['search']}%", 'or');
            });
         }
         $query = $query->with(['items', 'delivery'])->where($where);
