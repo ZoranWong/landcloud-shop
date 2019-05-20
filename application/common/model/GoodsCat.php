@@ -31,7 +31,7 @@ class GoodsCat extends Common
     protected $createTime = 'utime';
     protected $updateTime = 'utime';
 
-    public function children(): HasMany
+    public function child(): HasMany
     {
         return $this->hasMany(GoodsCat::class, 'parent_id');
     }
@@ -134,7 +134,7 @@ class GoodsCat extends Common
         } else {
             $where = [];
         }
-        $data = $this->with(['children'])->field('id, parent_id, name, sort, image_id')
+        $data = $this->with(['child'])->field('id, parent_id, name, sort, image_id')
             ->where($where)
             ->order('sort asc')
             ->select();
