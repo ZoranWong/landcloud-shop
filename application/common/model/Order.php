@@ -354,7 +354,7 @@ class Order extends Common
         $limit = $input['limit'] ? $input['limit'] : 20;
         $query = $this::with('items,delivery')->where($where);
 
-        if (!empty($input['search'])) {
+        if (!empty($input['search']) && $input['search']) {
            $query->where(function ($query) use($input){
                $query->has('items', function($query) use($input){
                    if(!empty($input['search'])){
