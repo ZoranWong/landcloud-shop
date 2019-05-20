@@ -366,7 +366,7 @@ class Order extends Common
                 ->buildSql();
                $query = $query->where(function ($query) use($sql, $input){
                    /**@var Query $query**/
-                   $query->whereIn('order_id', $sql)->whereLike('order_id', "%{$input['search']}%", 'or');
+                   $query->whereRaw("order_id in ({$sql})")->whereLike('order_id', "%{$input['search']}%", 'or');
                });
         }
         $query = $query->with(['items', 'delivery'])->where($where);
