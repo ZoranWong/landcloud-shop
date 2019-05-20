@@ -362,8 +362,8 @@ class Order extends Common
                return $query->alias('o')->join([['order_items item', 'o.order_id=item.order_id'], ['goods g', 'g.id=item.goods_id']])
                    ->where(function ($query)use($input) {
                    /**@var Query $query**/
-                   return $query->whereLike('item.name', "%{$input['search']}%")
-                       ->whereLike('item.bn', "%{$input['search']}%", 'or')
+                   return $query->whereLike('g.name', "%{$input['search']}%")
+                       ->whereLike('g.bn', "%{$input['search']}%", 'or')
                        ->whereLike('g.erp_goods_id', "%{$input['search']}%", 'or');
                })->whereLike("o.order_id", "%{$input['search']}%", 'or');
            });
