@@ -10,12 +10,14 @@
 namespace app\common\model;
 
 use Illuminate\Support\Debug\Dumper;
+use think\model\Collection;
 use think\model\relation\HasMany;
 
 /**
  * 商品分类
  * Class GoodsCat
  * @package app\common\model
+ * @property-read  Collection|GoodsCat[] $child
  * @author keinx
  */
 class GoodsCat extends Common
@@ -269,20 +271,19 @@ class GoodsCat extends Common
             ->where($where)
             ->order('sort asc')
             ->select();
-        $edition = [];
-        foreach ($data as &$v) {
-            if ($v['image_id']) {
-                $v['image_url'] = _sImage($v['image_id']);
+        $data->order('sort', 'desc');
+        return $data->map(function (GoodsCat $item) {
+            if ($item['image_id']) {
+                $item['image_url'] = _sImage($item['image_id']);
             }
-            foreach ($v['child'] as &$item) {
-                if ($item['image_id']) {
-                    $item['image_url'] = _sImage($item['image_id']);
+            $item->child->sort('sort', 'desc');
+            return $item->child->map(function ($c) {
+                if ($c['image_id']) {
+                    $c['image_url'] = _sImage($c['image_id']);
                 }
-            }
-            $edition[] = $v['sort'];
-        }
-        array_multisort($edition, SORT_DESC, $data);
-        return $data;
+                return $c;
+            });
+        });
     }
 
 
