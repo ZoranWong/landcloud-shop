@@ -353,7 +353,7 @@ class Order extends Common
         $page = $input['page'] ? $input['page'] : 1;
         $limit = $input['limit'] ? $input['limit'] : 20;
         $query = $this;
-
+        Log::debug('======== search data : '.$input['search'].'; =========');
         if (!empty($input['search']) && $input['search']) {
            $query->where(function ($query) use($input){
                $query->has('items', function($query) use($input){
