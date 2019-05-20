@@ -356,8 +356,8 @@ class Order extends Common
         $query = $this;
 
         if (!empty($input['search']) && $input['search']) {
-            $sql = Db::table(['lc_order' => 'o', 'lc_order_items' => 'item', 'lc_goods'=>'g'])->field('o.order_id as id')
-                ->join([['item', 'o.order_id=item.order_id'], ['g', 'item.goods_id=g.id']])
+            $sql = Db::table(['lc_order' => 'o'])->field('o.order_id as id')
+                ->join([['order_items item', 'o.order_id=item.order_id'], ['goods g', 'item.goods_id=g.id']])
                 ->where('item.name', 'like', "%{$input['search']}%")
                 ->whereOr('item.bn', 'like', "%{$input['search']}%")
                 ->whereOr('g.erp_goods_id', 'like', "%{$input['search']}%")
