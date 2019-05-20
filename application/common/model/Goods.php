@@ -67,7 +67,7 @@ class Goods extends Common implements Excelable
         $query = $this::with('defaultImage,brand,goodsCat,goodsType')
             ->field($tableWhere['field'])->where(function ($query) use ($tableWhere) {
                 $query->where($tableWhere['where'])->whereOr($tableWhere['whereOr']);
-            })->order($tableWhere['order']);
+            })->order($tableWhere['order'])->whereNull('isdel');
 
         if ($isPage) {
             $list = $query->paginate($limit);

@@ -453,8 +453,9 @@ class GoodsCat extends Common
         if (!$name) {
             return false;
         }
+        $name = trim($name);
         $cat_id = 0;
-        $cat = $this->field('id')->where([['name', 'like', '%' . $name . '%']])->find();
+        $cat = $this->field('id')->where('name', 'eq',  $name )->find();
 
         if (!$cat && $isForce) {
             $this->insert([
