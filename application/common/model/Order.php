@@ -362,7 +362,7 @@ class Order extends Common
                     return $query->where('item.name', 'like', "%{$input['search']}%")
                         ->whereOr('item.bn', 'like', "%{$input['search']}%")
                         ->whereOr('g.erp_goods_id', 'like', "%{$input['search']}%");
-                })->where('o.user', 'eq', $input['user_id'])
+                })->where('o.user_id', 'eq', $input['user_id'])
                 ->buildSql();
                $query = $query->where(function ($query) use($sql, $input){
                    /**@var Query $query**/
