@@ -360,8 +360,10 @@ class Order extends Common
                Log::debug('======== search data : '.$input['search'].'; =========');
                /**@var Query $query**/
                return $query->relation(['items' => function($query) use($input){
-                   return $query->whereRaw("(`name` like %{$input['search']}% or `bn` like %{$input['search']}% or 
-                   `erp_goods_id` like %{$input['search']}%)");
+                   /**@var Query $query**/
+                   return $query->where('name', 'like', "%{$input['search']}%")
+                       ->whereOr('bn', 'like', "%{$input['search']}%")
+                       ->whereOr('erp_goods_id', 'like', "%{$input['search']}%");
                }])->whereOr("order_id", "like", "%{$input['search']}%");
            });
         }
