@@ -132,7 +132,7 @@ class GoodsCat extends Common
             ->where($where)
             ->order('sort asc')
             ->select();
-
+        return $data;
         $return_data = $this->getTreeApi($data);
         return $return_data;
     }

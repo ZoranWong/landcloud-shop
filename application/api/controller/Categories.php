@@ -1,5 +1,7 @@
 <?php
+
 namespace app\api\controller;
+
 use app\common\controller\Api;
 use app\common\model\GoodsCat;
 use think\facade\Request;
@@ -32,13 +34,10 @@ class Categories extends Api
             'msg' => '',
             'data' => array(),
         );
-        if($data)
-        {
+        if ($data) {
             $return['status'] = true;
             $return['data'] = $data;
-        }
-        else
-        {
+        } else {
             $return['msg'] = '获取顶级分类失败';
         }
 
@@ -64,13 +63,10 @@ class Categories extends Api
             'data' => array(),
         );
 
-        if($data)
-        {
+        if ($data) {
             $return['status'] = true;
             $return['data'] = $data;
-        }
-        else
-        {
+        } else {
             $return['msg'] = '获取顶级分类失败';
         }
 
@@ -95,13 +91,10 @@ class Categories extends Api
             'data' => array(),
         );
 
-        if($data)
-        {
+        if ($data) {
             $return['status'] = true;
             $return['data'] = $data;
-        }
-        else
-        {
+        } else {
             $return['msg'] = '获取顶级分类失败';
         }
 
