@@ -370,8 +370,7 @@ class Order extends Common
                 Log::debug('======== search data : '.$input['search'].'; =========');
                 /**@var Query $query**/
                 return $query->whereLike('name', "%{$input['search']}%")
-                    ->whereLike('bn', "%{$input['search']}%", 'or')
-                    ->whereLike('erp_goods_id', "%{$input['search']}%", 'or');
+                    ->whereLike('bn', "%{$input['search']}%", 'or');
             }]);
         }
         $query = $query->with(['items', 'delivery'])->where($where);
