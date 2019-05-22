@@ -300,6 +300,7 @@ class Cart extends Common
         } else {
             $result['data']['list'] = $cartList['data']['list'];
         }
+        $carts = [];
         //算订单总金额
         foreach ($result['data']['list'] as $k => $v) {
             //库存不足不计算金额不可以选择
@@ -307,21 +308,27 @@ class Cart extends Common
 //                $result['data']['list'][$k]['is_select'] = false;
 //                $v['is_select'] = false;
 //            }
-
             //单条商品总价
             list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $area);
-            $result['data']['list'][$k]['amount'] = $amount;
-            $result['data']['list'][$k]['prices'] = $priceStruct;
+            $v['amount'] = $amount;
+            //$result['data']['list'][$k]['prices'] = $priceStruct;
+
             if ($v['is_select']) {
                 //算订单总商品价格
                 //$result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
                 //算订单总价格
-                $result['data']['amount'] += $result['data']['list'][$k]['amount'];
+                $result['data']['amount'] += $v['amount'];
                 //计算总重量
                 //$result['data']['weight'] += $v['weight'] * $v['nums'];
             }
-        }
 
+            foreach ($priceStruct as $value) {
+                $cart = clone $v;
+                $cart['level'] = $value;
+                $carts[] = $cart;
+            }
+        }
+        $result['data']['list'] = $carts;
         //echo json_encode($result['data']['list']);exit;
 
         //运费判断
