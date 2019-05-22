@@ -8,6 +8,23 @@ use app\common\model\GoodsCat as GoodsCatModel;
 
 class Brand extends Api
 {
+    public function getCategories()
+    {
+        $result = [
+            'status' => true,
+            'msg' => '获取成功',
+            'data' => []
+        ];
+        $id = input('id');
+        if($id) {
+            $brand = (new \app\common\model\Brand())->findOrFail($id);
+            $result['data'] = $brand->categories;
+            return $result;
+        }else{
+            $result['status'] = true;
+            return $result;
+        }
+    }
 
     /**
      *

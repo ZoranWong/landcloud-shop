@@ -30,6 +30,11 @@ class Brand extends Common
     ];
 
 
+    public function categories()
+    {
+        return $this->belongsToMany(GoodsCat::class, 'goods_category_brand', 'goods_cat_id', 'brand_id');
+    }
+
     /**
      * @param $post
      *

@@ -270,6 +270,10 @@ return [
             'brandList' => [
                 'code' => 'brandList',
                 'is_login' => false
+            ],
+            'getCategories' => [
+                'code' => 'getCategories',
+                'is_login' => false
             ]
         ]
     ],
