@@ -113,7 +113,7 @@ class Goods extends Api
 
             if (isset($postWhere['brands'])) {
                 $brands = explode(',', $postWhere['brands']);
-                $where[] = ['goods_cat_id', 'in', $brands];
+                $where[] = ['brand_id', 'in', $brands];
             }
             //判断商品搜索,
             if (isset($postWhere['search_name']) && $postWhere['search_name']) {
