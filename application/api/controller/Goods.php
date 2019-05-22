@@ -110,6 +110,11 @@ class Goods extends Api
             if (is_string($postWhere)) {
                 $postWhere = json_decode($postWhere, true);
             }
+
+            if (isset($postWhere['brands'])) {
+                $brands = explode(',', $postWhere['brands']);
+                $where[] = ['goods_cat_id', 'in', $brands];
+            }
             //判断商品搜索,
             if (isset($postWhere['search_name']) && $postWhere['search_name']) {
                 $where[] = ['name|bn|brief|keywords', 'LIKE', '%' . $postWhere['search_name'] . '%'];
@@ -193,6 +198,7 @@ class Goods extends Api
         $page = input('page/d', 1);
         $limit = input('limit/d', PAGE_SIZE);
         $order = input('order', 'sort asc');
+
 
         $return_data = $this->allowedField($field);
         if (!$return_data['status']) {
