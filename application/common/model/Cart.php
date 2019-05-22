@@ -248,7 +248,7 @@ class Cart extends Common
                 }
             }
             if($num > 0) {
-                $level0 = ['pack' => false, 'count' => $num, 'amount' => $price * $num];
+                $level0 = ['pack' => false, 'count' => $num, 'amount' => $price * $num, 'price' => $price];
                 $priceStruct[] = $level0;
                 $amount += $price * $num;
             }
