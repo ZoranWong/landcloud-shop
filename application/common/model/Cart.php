@@ -323,7 +323,7 @@ class Cart extends Common
             }
 
             foreach ($priceStruct as $value) {
-                $cart = clone $v;
+                $cart = json_decode(json_encode($v), true);
                 $cart['level'] = $value;
                 $carts[] = $cart;
             }
