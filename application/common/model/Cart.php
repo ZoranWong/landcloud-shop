@@ -311,7 +311,7 @@ class Cart extends Common
             //单条商品总价
             list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $area);
             $result['data']['list'][$k]['amount'] = $amount;
-            $result['data']['list'][$k]['price_strcut'] = $priceStruct;
+            $result['data']['list'][$k]['prices'] = $priceStruct;
             if ($v['is_select']) {
                 //算订单总商品价格
                 //$result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
