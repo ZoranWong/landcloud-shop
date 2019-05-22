@@ -1,4 +1,5 @@
 <?php
+
 namespace app\common\model;
 
 
@@ -29,12 +30,9 @@ class GoodsCollection extends Common
         $where['user_id'] = $userId;
         $where['goods_id'] = $goodsId;
         $collectionInfo = $this->where($where)->find();
-        if($collectionInfo)
-        {
+        if ($collectionInfo) {
             return $this->toDel($userId, $goodsId);
-        }
-        else
-        {
+        } else {
             return $this->toAdd($userId, $goodsId);
         }
     }
@@ -50,9 +48,9 @@ class GoodsCollection extends Common
         $where['user_id'] = $userId;
         $where['goods_id'] = $goodsId;
         $collectionInfo = $this->where($where)->find();
-        if($collectionInfo){
+        if ($collectionInfo) {
             return true;
-        }else{
+        } else {
             return false;
         }
 
@@ -95,9 +93,8 @@ class GoodsCollection extends Common
             'msg' => ''
         );
         $goodsModel = new Goods();
-        $goodsInfo = $goodsModel->where(array('id'=>$goodsId))->find();
-        if(!$goodsInfo)
-        {
+        $goodsInfo = $goodsModel->where(array('id' => $goodsId))->find();
+        if (!$goodsInfo) {
             $result['msg'] = '没有此商品';
             return $result;
         }
@@ -124,7 +121,7 @@ class GoodsCollection extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function getList($user_id,$page = 1,$limit = 10,$where = [], $order = "id asc")
+    public function getList($user_id, $page = 1, $limit = 10, $where = [], $order = "id asc")
     {
         $result = array(
             'status' => true,
@@ -136,24 +133,19 @@ class GoodsCollection extends Common
         $list = $this::with('goods')
             ->where($where)
             ->order($order)
-            ->limit(($page-1) * $limit, $limit)
+            ->limit(($page - 1) * $limit, $limit)
             ->select();
-        if(!$list->isEmpty())
-        {
-            $list = $list->hidden(['goods'=>['isdel']]);
+        if (!$list->isEmpty()) {
+            $list = $list->hidden(['goods' => ['isdel']]);
             $list = $list->toArray();
         }
 
         $count = $this->where($where)->count();
 
-        foreach($list as $k => $v)
-        {
-            if($v['goods'])
-            {
+        foreach ($list as $k => $v) {
+            if ($v['goods']) {
                 $list[$k]['goods']['image_url'] = _sImage($v['goods']['image_id']);
-            }
-            else
-            {
+            } else {
                 //商品被删除时
                 $list[$k]['goods']['price'] = 0;
                 $list[$k]['goods']['image_url'] = _sImage();
@@ -173,6 +165,6 @@ class GoodsCollection extends Common
      */
     public function goods()
     {
-        return $this->hasOne('Goods', 'id','goods_id');
+        return $this->hasOne('Goods', 'id', 'goods_id');
     }
 }

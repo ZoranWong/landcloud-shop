@@ -228,6 +228,7 @@ class PromotionResult extends Common
         $v['promotion_amount'] += $promotionMoney;
         //设置商品的实际销售总金额
         $v['amount'] -= $promotionMoney;
+        $v['coupon_code'] = $promotionInfo[''];
 
         return $promotionMoney;
     }
