@@ -308,27 +308,21 @@ class Cart extends Common
 //                $result['data']['list'][$k]['is_select'] = false;
 //                $v['is_select'] = false;
 //            }
+            $carts[] = $v;
             //单条商品总价
             list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $area);
-            $v['amount'] = $amount;
-            //$result['data']['list'][$k]['prices'] = $priceStruct;
-
+            $result['data']['list'][$k]['amount'] = $amount;
+            $result['data']['list'][$k]['prices'] = $priceStruct;
             if ($v['is_select']) {
                 //算订单总商品价格
                 //$result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
                 //算订单总价格
-                $result['data']['amount'] += $v['amount'];
+                $result['data']['amount'] += $result['data']['list'][$k]['amount'];
                 //计算总重量
                 //$result['data']['weight'] += $v['weight'] * $v['nums'];
             }
-
-            foreach ($priceStruct as $value) {
-                $cart = json_decode(json_encode($v), true);
-                $cart['level'] = $value;
-                $carts[] = $cart;
-            }
         }
-        $result['data']['list'] = $carts;
+
         //echo json_encode($result['data']['list']);exit;
 
         //运费判断
