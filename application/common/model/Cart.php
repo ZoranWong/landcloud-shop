@@ -219,9 +219,19 @@ class Cart extends Common
         return $result;
     }
 
-    protected function getGoodsAmount($goods, $num, $area = null)
+    protected function getGoodsAmount($goods, $num, $userId, $area = null)
     {
         $amount = 0;
+
+        if(!$area) {
+            $where[] = ['user_id', 'eq', $userId];
+            $where[] = ['is_def', 'eq', 1];
+            $userShip = (new UserShip())->where($where)
+                ->order('utime desc')
+                ->find();
+            $area = $userShip['area_id'];
+        }
+
         if ($goods['price_levels']) {
             /** @var Collection $levels * */
             $levels = $goods['price_levels'];
@@ -310,7 +320,7 @@ class Cart extends Common
 //            }
             $carts[] = $v;
             //单条商品总价
-            list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $area);
+            list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $userId, $area);
             $result['data']['list'][$k]['amount'] = $amount;
             $result['data']['list'][$k]['prices'] = $priceStruct;
             if ($v['is_select']) {
