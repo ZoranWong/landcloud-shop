@@ -247,9 +247,12 @@ class Cart extends Common
                     $level['amount'] = $fee;
                 }
             }
-            $level0 = ['pack' => false, 'count' => $num, 'amount' => $price * $num];
-            $priceStruct[] = $level0;
-            $amount += $price * $num;
+            if($num > 0) {
+                $level0 = ['pack' => false, 'count' => $num, 'amount' => $price * $num];
+                $priceStruct[] = $level0;
+                $amount += $price * $num;
+            }
+
         }
         return [$amount, $priceStruct];
     }
