@@ -287,7 +287,8 @@ class Goods extends Common implements Excelable
         })->order('buy_num', 'desc');
 
         Log::debug("-------- list count {$list->count()} -------");
-        $levels = $list;
+        while ($levels->pop());
+        $levels->merge($list);
     }
 
     /**
