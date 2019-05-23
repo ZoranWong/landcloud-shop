@@ -272,7 +272,7 @@ end
                 if($area) {
                     $returnGoods['data']['price_levels'] = $returnGoods['data']['price_levels']->where('area', '=', $area);
                 }else{
-                    $returnGoods['data']['price_levels'] = $returnGoods['data']['price_levels']->where('area', 'in', [null, '']);
+                    $returnGoods['data']['price_levels'] = $returnGoods['data']['price_levels']->where('area', '=', "");
                 }
 
             }
