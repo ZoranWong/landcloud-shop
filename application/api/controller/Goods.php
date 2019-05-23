@@ -242,9 +242,21 @@ end
 
     public function levels (Collection $levels, $area)
     {
-        $levels = $levels->where('area', 'in', $area)->count() > 0 ? $levels->where('area', '=', $area) :
-            $levels->where('area', '=', "");
-        return $levels->order('buy_num', 'desc')->all();
+        $list = [];
+        $levels->map(function ($level) use($area, &$list) {
+            if ($level['area'] == $area) {
+                $list[] = $level;
+            }
+        });
+
+        if(count($list)) {
+            $levels->map(function ($level) use(&$list) {
+                if ($level['area'] == "") {
+                    $list[] = $level;
+                }
+            });
+        }
+        return $list;
     }
 
     /**
