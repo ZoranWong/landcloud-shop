@@ -281,6 +281,7 @@ class Goods extends Common implements Excelable
             Log::debug("---- level area {$level['area']} ------ {$area} --------");
             return $level['area'] == $area;
         })->order('buy_num', 'desc');
+        Log::debug("-------- list count {$list->count()} -------");
         return $list->count() > 0 ? $list : $levels->filter(function ($level) {
             return $level['area'] == '';
         })->order('buy_num', 'desc');
