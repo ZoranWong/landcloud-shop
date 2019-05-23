@@ -348,7 +348,7 @@ class Cart extends Common
 
         if ($coupon_code === "") {
             $couponCodes = [];
-            $list = $result['data']['list'];
+            $list = &$result['data']['list'];
             foreach ($list as $key => &$item) {
                 $list[$key]['use_coupon'] = null;
                 if (isset($item['promotion_list']) && $item['promotion_list']) {
