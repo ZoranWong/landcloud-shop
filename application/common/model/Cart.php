@@ -354,6 +354,7 @@ class Cart extends Common
                 if (isset($item['promotion_list']) && $item['promotion_list']) {
                     foreach ($item['promotion_list'] as $promotion) {
                         $item['use_coupon'] = $promotion['coupons'][0]['coupon_code'];
+                        Log::debug('--------use coupon ----------'.$item['use_coupon']);
                         $couponCodes[] = $promotion['coupons'][0]['coupon_code'];
                         break;
                     }
