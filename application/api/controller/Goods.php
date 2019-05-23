@@ -242,7 +242,9 @@ end
 
     public function levels (Collection $levels, $area)
     {
-        return $levels->where('area', 'in', [$area, ""])->order('buy_num', 'desc')->all();
+        $levels = $levels->where('area', 'in', $area)->count() > 0 ? $levels->where('area', '=', $area) :
+            $levels->where('area', '=', "");
+        return $levels->order('buy_num', 'desc')->all();
     }
 
     /**
