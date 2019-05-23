@@ -276,8 +276,12 @@ class Goods extends Common implements Excelable
 
     public function levels (Collection $levels, $area)
     {
-        $list = $levels->where('area', '=', $area)->order('buy_num', 'desc');
-        return $list->count() > 0 ? $list : $levels->where('area', '=', '')->order('buy_num', 'desc');
+        $list = $levels->filter(function ($level) use($area){
+            return $level['area'] == $area;
+        })->order('buy_num', 'desc');
+        return $list->count() > 0 ? $list : $levels->filter(function ($level) {
+            return $level['area'] == '';
+        })->order('buy_num', 'desc');
     }
 
     /**
