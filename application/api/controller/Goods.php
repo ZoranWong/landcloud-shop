@@ -10,6 +10,7 @@ use app\common\model\GoodsComment;
 use app\common\model\Products;
 use app\common\model\UserShip;
 use think\db\Query;
+use think\facade\Log;
 use think\facade\Request;
 use think\model\Collection;
 
@@ -256,6 +257,7 @@ end
                 }
             });
         }
+        Log::debug('--------- filter levels ---------- '.json_encode($list));
         return $list;
     }
 
