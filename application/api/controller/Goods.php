@@ -277,6 +277,7 @@ end
         ];
         $goods_id = input('id/d', 0);//商品ID
         $token = input('token', '');//token值 会员登录后传
+        $this->userId = getUserIdByToken($token);
         if (!$goods_id) {
             $return_data['msg'] = '缺少商品ID参数';
             return $return_data;
@@ -286,19 +287,19 @@ end
         $goodsModel = new GoodsModel();
         $returnGoods = $goodsModel->getGoodsDetial($goods_id, $field, $token);
         Log::debug('----- user id ------'.$this->userId);
+        $area = "";
         if($this->userId) {
             $where[] = ['user_id', 'eq', $this->userId];
             $where[] = ['is_def', 'eq', 1];
             $userShip = (new UserShip())->where($where)->order('utime desc')->find();
             $area = $userShip['area_id'];
-            if($returnGoods['data']['price_levels']) {
-                if (!$area) {
-                    $area = "";
-                }
-                $returnGoods['data']['price_levels'] = $this->levels($returnGoods['data']['price_levels'], $area);
+        }
+
+        if($returnGoods['data']['price_levels']) {
+            if (!$area) {
+                $area = "";
             }
-        }else{
-            unset($returnGoods['data']['price_levels']);
+            $returnGoods['data']['price_levels'] = $this->levels($returnGoods['data']['price_levels'], $area);
         }
 
 
