@@ -21,8 +21,10 @@ class Api extends Base
         if(request()->module()!= 'api' && request()->controller() != 'Index' && request()->action() != 'index'){
             die('error');
         }
-
-
+        $token = input('token', '');//token值 会员登录后传
+        if($token){
+            $this->userId = getUserIdByToken($token);
+        }
     }
 
     //此方法用于设置参数
