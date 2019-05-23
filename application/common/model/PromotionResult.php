@@ -234,9 +234,8 @@ class PromotionResult extends Common
         //$v['coupon_code'] = $promotionInfo[''];
         foreach ($v['prices'] as &$p) {
             $mp = round($p['price'] * $params['discount'] * 10) / 100;
-            $dp = $p['price'] - $mp;
-            $tm = $p['count'] * $dp;
-            $p['amount'] = number_format($p['amount'] - $tm, 2);
+            $tm = $p['count'] * $mp;
+            $p['amount'] = number_format($tm, 2);
             $p['price'] = number_format($mp, 2);
         }
 
