@@ -232,12 +232,12 @@ class Cart extends Common
 
         if ($goods['price_levels']) {
             /** @var Collection $levels * */
-            $levels = $goods['price_levels'];
+            $levels = &$goods['price_levels'];
             Log::debug('----------------------- levels ---------------- area = '.$area . '--------' . json_encode($levels));
             if (!$area) {
                 $area = "";
             }
-            $levels = $goods->levels($levels, $area);
+            $goods->levels($levels, $area);
             $price = $goods['promotion_price'] > 0 ? ($goods['preferential_price'] > 0 ? ($goods['preferential_price'] < $goods['promotion_price'] ?
                 $goods['preferential_price'] : $goods['promotion_price']) : $goods['promotion_price']) : $goods['price'];
             $priceStruct = [];
