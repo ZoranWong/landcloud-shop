@@ -219,7 +219,7 @@ class PromotionResult extends Common
 
         $v['price'] = round($v['detail']['price'] * $params['discount'] * 10) / 100;
         $pmoney = $goods_price - $v['price'];        //单品优惠的金额
-        Log::debug("-------- discount {$params['discount']} price {$v['price']} goods_price {$goods_price} --------");
+        Log::debug("-------- discount {$params['discount']} price {$v['price']} goods_price {$goods_price} --------".json_encode($v));
         $promotionMoney = $v['nums'] * $pmoney;
         //设置商品优惠总金额
         if (!isset($v['promotion_amount'])) {
