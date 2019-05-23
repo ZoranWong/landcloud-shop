@@ -280,9 +280,13 @@ end
             $userShip = (new UserShip())->with('area')->where($where)->order('utime desc')->find();
             if($userShip) {
                 $areas = $userShip->area->getParentArea();
-                Log::debug('----- user area tree'.json_encode($areas));
+                foreach ($areas as $a) {
+                    if($a['info']['parent_id'] == 0) {
+                        $area = $a['info']['id'];
+                        break;
+                    }
+                }
             }
-            $area = $userShip['area_id'];
         }
 
         if($returnGoods['data']['price_levels']) {
