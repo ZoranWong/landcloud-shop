@@ -11,6 +11,7 @@ use app\common\model\Products;
 use app\common\model\UserShip;
 use think\db\Query;
 use think\facade\Request;
+use think\model\Collection;
 
 /***
  * 商品相关接口
@@ -239,6 +240,11 @@ end
         return $return_data;
     }
 
+    public function levels (Collection $levels, $area)
+    {
+        return $levels->where('area', '=', $area)->order('buy_num', 'desc')->all();
+    }
+
     /**
      * 获取商品明细
      * @return array
@@ -272,8 +278,7 @@ end
                 if (!$area) {
                     $area = "";
                 }
-                $returnGoods['data']['price_levels'] = $returnGoods['data']['price_levels']->where('area', '=', $area)->all();
-
+                $returnGoods['data']['price_levels'] = $this->levels($returnGoods['data']['price_levels'], $area);
             }
         }else{
             unset($returnGoods['data']['price_levels']);
