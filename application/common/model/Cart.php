@@ -226,9 +226,7 @@ class Cart extends Common
         if(!$area) {
             $where[] = ['user_id', 'eq', $userId];
             $where[] = ['is_def', 'eq', 1];
-            $userShip = (new UserShip())->where($where)
-                ->order('utime desc')
-                ->find();
+            $userShip = (new UserShip())->where($where)->order('utime desc')->find();
             $area = $userShip['area_id'];
         }
 
