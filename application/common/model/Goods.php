@@ -275,7 +275,7 @@ class Goods extends Common implements Excelable
         return $result;
     }
 
-    public function levels (Collection $levels, $area)
+    public function levels (Collection &$levels, $area)
     {
         $list = $levels->filter(function ($level) use($area){
             Log::debug("---- level area {$level['area']} ------ {$area} --------");
@@ -287,7 +287,7 @@ class Goods extends Common implements Excelable
         })->order('buy_num', 'desc');
 
         Log::debug("-------- list count {$list->count()} -------");
-        return $list;
+        $levels = $list;
     }
 
     /**
