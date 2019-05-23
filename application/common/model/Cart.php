@@ -252,11 +252,15 @@ class Cart extends Common
                     $priceStruct[] = $level;
                     $level['count'] = $n;
                     $level['pack'] = true;
-                    $level['amount'] = $fee;
+                    $level['amount'] = number_format($fee, 2);
+                    $level['price'] = number_format($level['price'], 2);
                 }
             }
             if($num > 0) {
-                $level0 = ['pack' => false, 'count' => $num, 'amount' => $price * $num, 'price' => $price, 'buy_num' => 1];
+                $level0 = ['pack' => false, 'count' => $num,
+                    'amount' => number_format($price * $num, 2),
+                    'price' => number_format($price, 2),
+                    'buy_num' => 1];
                 $priceStruct[] = $level0;
                 $amount += $price * $num;
             }
@@ -353,7 +357,7 @@ class Cart extends Common
                 $list[$key]['use_coupon'] = null;
                 if (isset($item['promotion_list']) && $item['promotion_list']) {
                     foreach ($item['promotion_list'] as $promotion) {
-                        $list[$key]['use_coupon'] = $promotion['coupons'][0]['coupon_code'];
+                        $item['use_coupon'] = ['code' => $promotion['coupons'][0]['coupon_code'], 'name' => $promotion['name']];
                         Log::debug('--------use coupon ----------'.json_encode($item));
                         $couponCodes[] = $promotion['coupons'][0]['coupon_code'];
                         break;
@@ -399,10 +403,10 @@ class Cart extends Common
             }
 
             $result['data']['point'] = $point;
-            $result['data']['point_money'] = $point_deducted_money;
+            $result['data']['point_money'] = number_format($point_deducted_money, 2);
             $result['data']['amount'] = $result['data']['amount'] - $point_deducted_money;
         }
-
+        $result['data']['amount'] = number_format($result['data']['amount'], 2);
         $result['status'] = true;
         return $result;
     }

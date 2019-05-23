@@ -228,7 +228,17 @@ class PromotionResult extends Common
         $v['promotion_amount'] += $promotionMoney;
         //设置商品的实际销售总金额
         $v['amount'] -= $promotionMoney;
+        $v['amount'] = number_format($v['amount'], 2);
+        $v['price'] = number_format($v['price'], 2);
+        $v['promotion_amount'] = number_format($v['promotion_amount'], 2);
         //$v['coupon_code'] = $promotionInfo[''];
+        foreach ($v['prices'] as &$p) {
+            $mp = round($p['price'] * $params['discount'] * 10) / 100;
+            $dp = $p['price'] - $mp;
+            $tm = $p['count'] * $dp;
+            $p['amount'] = number_format($p['amount'] - $tm, 2);
+            $p['price'] = number_format($mp, 2);
+        }
 
         return $promotionMoney;
     }
