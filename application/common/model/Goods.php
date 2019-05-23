@@ -13,6 +13,7 @@ use app\service\excel\Excelable;
 use app\service\LabGicApiService;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use think\Db;
+use think\facade\Log;
 use think\model\Collection;
 
 
@@ -277,6 +278,7 @@ class Goods extends Common implements Excelable
     public function levels (Collection $levels, $area)
     {
         $list = $levels->filter(function ($level) use($area){
+            Log::debug("---- level area {$level['area']} ------ {$area} --------");
             return $level['area'] == $area;
         })->order('buy_num', 'desc');
         return $list->count() > 0 ? $list : $levels->filter(function ($level) {
