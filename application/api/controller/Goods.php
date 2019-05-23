@@ -269,11 +269,10 @@ end
             $userShip = (new UserShip())->where($where)->order('utime desc')->find();
             $area = $userShip['area_id'];
             if($returnGoods['data']['price_levels']) {
-                if($area) {
-                    $returnGoods['data']['price_levels'] = $returnGoods['data']['price_levels']->where('area', '=', $area);
-                }else{
-                    $returnGoods['data']['price_levels'] = $returnGoods['data']['price_levels']->where('area', '=', "");
+                if (!$area) {
+                    $area = "";
                 }
+                $returnGoods['data']['price_levels'] = $returnGoods['data']['price_levels']->where('area', '=', $area)->all();
 
             }
         }else{
