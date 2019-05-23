@@ -285,7 +285,9 @@ end
             if (!$area) {
                 $area = "";
             }
-            $returnGoods['data']['price_levels'] = $returnGoods['data']->levels($returnGoods['data']['price_levels'], $area);
+            $levels = $returnGoods['data']->levels($returnGoods['data']['price_levels'], $area);
+            Log::debug("------ levels filter --------- {$levels->count()}");
+            $returnGoods['data']['price_levels'] = $levels;
         }
 
 
