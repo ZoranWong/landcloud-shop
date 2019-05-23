@@ -233,7 +233,7 @@ class Cart extends Common
         if ($goods['price_levels']) {
             /** @var Collection $levels * */
             $levels = $goods['price_levels'];
-            Log::debug('----------------------- levels ----------------' . json_encode($levels));
+            Log::debug('----------------------- levels ---------------- area = '.$area . '--------' . json_encode($levels));
             if (!$area) {
                 $levels->where('area', 'in', ['', null]);
             } else {
