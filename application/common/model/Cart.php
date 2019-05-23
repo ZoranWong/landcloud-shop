@@ -237,8 +237,7 @@ class Cart extends Common
             if (!$area) {
                 $area = "";
             }
-            $levels = $levels->where('area', '=', $area)->all();
-            $levels = $levels->order('buy_num', 'desc')->all();
+            $levels = $goods->levels($levels, $area);
             $price = $goods['promotion_price'] > 0 ? ($goods['preferential_price'] > 0 ? ($goods['preferential_price'] < $goods['promotion_price'] ?
                 $goods['preferential_price'] : $goods['promotion_price']) : $goods['promotion_price']) : $goods['price'];
             $priceStruct = [];
