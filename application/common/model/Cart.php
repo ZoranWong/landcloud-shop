@@ -235,9 +235,9 @@ class Cart extends Common
             $levels = $goods['price_levels'];
             Log::debug('----------------------- levels ---------------- area = '.$area . '--------' . json_encode($levels));
             if (!$area) {
-                $levels->where('area', 'in', ['', null]);
+                $levels = $levels->where('area', 'in', ['', null]);
             } else {
-                $levels->where('area', '=', $area);
+                $levels = $levels->where('area', '=', $area);
             }
             $levels = $levels->order('buy_num', 'desc')->all();
             $price = $goods['promotion_price'] > 0 ? ($goods['preferential_price'] > 0 ? ($goods['preferential_price'] < $goods['promotion_price'] ?
