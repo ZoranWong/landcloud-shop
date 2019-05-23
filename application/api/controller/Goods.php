@@ -277,7 +277,11 @@ end
         if($this->userId) {
             $where[] = ['user_id', 'eq', $this->userId];
             $where[] = ['is_def', 'eq', 1];
-            $userShip = (new UserShip())->where($where)->order('utime desc')->find();
+            $userShip = (new UserShip())->with('area')->where($where)->order('utime desc')->find();
+            if($userShip) {
+                $areas = $userShip->area->getParentArea();
+                Log::debug('----- user area tree'.json_encode($areas));
+            }
             $area = $userShip['area_id'];
         }
 

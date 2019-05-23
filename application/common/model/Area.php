@@ -333,9 +333,9 @@ class Area extends Common implements Excelable
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function getParentArea($id)
+    public function getParentArea($id = null)
     {
-        $data['info'] = $this->field('id,name,parent_id')->where(array('id' => $id))->find();
+        $data['info'] = $this->field('id,name,parent_id')->where(array('id' => $id ? $id : $this['id']))->find();
         if ($data['info']) {
             $data['list'] = $this->field('id,name,parent_id')->where(array('id' => $data['info']['parent_id']))->select();
             if ($data['info']['parent_id'] != self::PROVINCE_PARENT_ID) {
