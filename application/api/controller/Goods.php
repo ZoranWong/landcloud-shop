@@ -263,18 +263,24 @@ end
         $return_data = $this->allowedField($field);
         $goodsModel = new GoodsModel();
         $returnGoods = $goodsModel->getGoodsDetial($goods_id, $field, $token);
-        $where[] = ['user_id', 'eq', $this->userId];
-        $where[] = ['is_def', 'eq', 1];
-        $userShip = (new UserShip())->where($where)->order('utime desc')->find();
-        $area = $userShip['area_id'];
-        if($returnGoods['data']['price_levels']) {
-            if($area) {
-                $returnGoods['data']['price_levels'] = $returnGoods['data']['price_levels']->where('area', '=', $area);
-            }else{
-                $returnGoods['data']['price_levels'] = $returnGoods['data']['price_levels']->where('area', 'in', [null, '']);
-            }
+        if($this->userId) {
+            $where[] = ['user_id', 'eq', $this->userId];
+            $where[] = ['is_def', 'eq', 1];
+            $userShip = (new UserShip())->where($where)->order('utime desc')->find();
+            $area = $userShip['area_id'];
+            if($returnGoods['data']['price_levels']) {
+                if($area) {
+                    $returnGoods['data']['price_levels'] = $returnGoods['data']['price_levels']->where('area', '=', $area);
+                }else{
+                    $returnGoods['data']['price_levels'] = $returnGoods['data']['price_levels']->where('area', 'in', [null, '']);
+                }
 
+            }
+        }else{
+            unset($returnGoods['data']['price_levels']);
         }
+
+
 
         if ($returnGoods['status']) {
             if ($return_data['data']['isdel']) {
