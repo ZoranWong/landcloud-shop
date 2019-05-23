@@ -243,22 +243,8 @@ end
 
     public function levels (Collection $levels, $area)
     {
-        $list = [];
-        $levels->map(function ($level) use($area, &$list) {
-            if ($level['area'] == $area) {
-                $list[] = $level;
-            }
-        });
-
-        if(count($list)) {
-            $levels->map(function ($level) use(&$list) {
-                if ($level['area'] == "") {
-                    $list[] = $level;
-                }
-            });
-        }
-        Log::debug('--------- filter levels ---------- '.json_encode($list));
-        return $list;
+        $list = $levels->where('area', '=', $area)->order('buy_num', 'desc')->all();
+        return $list->count() > 0 ? $list : $levels->where('area', '=', '')->order('buy_num', 'desc')->all();
     }
 
     /**
