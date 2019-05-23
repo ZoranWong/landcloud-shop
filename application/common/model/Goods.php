@@ -341,6 +341,7 @@ class Goods extends Common implements Excelable
 
             $list['isfav'] = $this->getFav($list['id'], $user_id);
 
+
             foreach ($list->relate_goods as &$relate_good) {
                 $image_url = _sImage($relate_good['image_id']);
                 $relate_good['image_url'] = $image_url;

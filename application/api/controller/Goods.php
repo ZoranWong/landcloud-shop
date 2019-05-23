@@ -8,6 +8,7 @@ use app\common\model\Goods as GoodsModel;
 use app\common\model\GoodsCat;
 use app\common\model\GoodsComment;
 use app\common\model\Products;
+use app\common\model\UserShip;
 use think\db\Query;
 use think\facade\Request;
 
@@ -262,6 +263,19 @@ end
         $return_data = $this->allowedField($field);
         $goodsModel = new GoodsModel();
         $returnGoods = $goodsModel->getGoodsDetial($goods_id, $field, $token);
+        $where[] = ['user_id', 'eq', $this->userId];
+        $where[] = ['is_def', 'eq', 1];
+        $userShip = (new UserShip())->where($where)->order('utime desc')->find();
+        $area = $userShip['area_id'];
+        if($returnGoods['data']['price_levels']) {
+            if($area) {
+                $returnGoods['data']['price_levels'] = $returnGoods['data']['price_levels']->where('area', '=', $area);
+            }else{
+                $returnGoods['data']['price_levels'] = $returnGoods['data']['price_levels']->where('area', 'in', [null, '']);
+            }
+
+        }
+
         if ($returnGoods['status']) {
             if ($return_data['data']['isdel']) {
                 $return_data['msg'] = '产品已失效';
