@@ -241,11 +241,11 @@ end
         return $return_data;
     }
 
-    public function levels (Collection $levels, $area)
-    {
-        $list = $levels->where('area', '=', $area)->order('buy_num', 'desc');
-        return $list->count() > 0 ? $list : $levels->where('area', '=', '')->order('buy_num', 'desc');
-    }
+//    public function levels (Collection $levels, $area)
+//    {
+//        $list = $levels->where('area', '=', $area)->order('buy_num', 'desc');
+//        return $list->count() > 0 ? $list : $levels->where('area', '=', '')->order('buy_num', 'desc');
+//    }
 
     /**
      * 获取商品明细
@@ -285,7 +285,7 @@ end
             if (!$area) {
                 $area = "";
             }
-            $returnGoods['data']['price_levels'] = $this->levels($returnGoods['data']['price_levels'], $area);
+            $returnGoods['data']['price_levels'] = $returnGoods['data']->levels($returnGoods['data']['price_levels'], $area);
         }
 
 
