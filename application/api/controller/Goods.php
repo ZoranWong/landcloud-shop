@@ -285,7 +285,7 @@ end
         $return_data = $this->allowedField($field);
         $goodsModel = new GoodsModel();
         $returnGoods = $goodsModel->getGoodsDetial($goods_id, $field, $token);
-        Log::debug('----- user id ------'.$this->userId);
+        Log::debug('----- user id ------'.getUserIdByToken($token));
         if($this->userId) {
             $where[] = ['user_id', 'eq', $this->userId];
             $where[] = ['is_def', 'eq', 1];
