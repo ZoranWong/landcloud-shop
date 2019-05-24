@@ -289,7 +289,7 @@ class Goods extends Common implements Excelable
         Log::debug("-------- list count {$list->count()} -------");
         while ($levels->pop());
         while ($list->count()) {
-            $levels->push($list->pop());
+            $levels->push($list->shift());
         }
         //$levels->merge($list->toArray());
         Log::debug('------ '.$levels->toJson().'  ------');
