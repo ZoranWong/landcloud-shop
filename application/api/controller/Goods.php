@@ -292,7 +292,7 @@ end
         /**
          * @var Collection $levels
          * */
-        $levels = &$returnGoods['data']['levels'];
+        $levels = &$returnGoods['data']['price_levels'];
         /**
          * @var \app\common\model\Goods $goods
          * */
