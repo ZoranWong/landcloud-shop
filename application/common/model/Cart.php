@@ -320,6 +320,18 @@ class Cart extends Common
         }
         $carts = [];
         //算订单总金额
+        foreach ($result['data']['list'] as $k => $v) {
+            //库存不足不计算金额不可以选择
+//            if ($v['nums'] > $v['products']['stock']) {
+//                $result['data']['list'][$k]['is_select'] = false;
+//                $v['is_select'] = false;
+//            }
+            $carts[] = $v;
+            //单条商品总价
+            list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $userId, $area);
+            $result['data']['list'][$k]['amount'] = $amount;
+            $result['data']['list'][$k]['prices'] = $priceStruct;
+        }
 
         //echo json_encode($result['data']['list']);exit;
 
@@ -369,12 +381,6 @@ class Cart extends Common
         }
 
         foreach ($result['data']['list'] as $k => $v) {
-            //库存不足不计算金额不可以选择
-            $carts[] = $v;
-            //单条商品总价
-            list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $userId, $area);
-            $result['data']['list'][$k]['amount'] = $amount;
-            $result['data']['list'][$k]['prices'] = $priceStruct;
             if ($v['is_select']) {
                 //算订单总商品价格
                 //$result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
