@@ -296,6 +296,12 @@ end
             $returnGoods['data']->levels($returnGoods['data']['price_levels'], $area);
 //            Log::debug("------ levels filter --------- {$levels->count()}");
 //            $returnGoods['data']['price_levels'] = $levels;
+            foreach ($returnGoods['data']['price_levels'] as $key => $level) {
+                if($level['buy_num'] == 1) {
+                    $returnGoods['data']['price'] = $level['price'];
+                }
+                array_splice($returnGoods['data']['price_levels'], $key, 1);
+            }
         }
 
 
