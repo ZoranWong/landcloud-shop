@@ -148,7 +148,7 @@ class Goods extends Manage
     {
         $levels = \think\facade\Request::post('levels') ?: \think\facade\Request::put('levels');
         if (!isset($levels)) {
-            return true;
+            $levels = [];
         }
         return GoodsPriceLevels::sync($goodsId, $levels);
     }
