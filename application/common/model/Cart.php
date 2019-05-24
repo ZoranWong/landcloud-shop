@@ -386,6 +386,7 @@ class Cart extends Common
                 //$result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
                 //算订单总价格
                 $result['data']['amount'] += $result['data']['list'][$k]['amount'];
+                $result['data']['list'][$k]['amount'] = number_format($result['data']['list'][$k]['amount'], 2);
                 //计算总重量
                 //$result['data']['weight'] += $v['weight'] * $v['nums'];
             }

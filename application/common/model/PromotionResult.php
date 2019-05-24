@@ -239,8 +239,6 @@ class PromotionResult extends Common
             $v['amount'] += $tm;
         }
 
-        $v['amount'] = number_format($v['amount'], 2);
-
         return $promotionMoney;
     }
 
