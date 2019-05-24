@@ -289,19 +289,30 @@ end
             }
         }
 
-        if($returnGoods['data']['price_levels']) {
+        /**
+         * @var Collection $levels
+         * */
+        $levels = &$returnGoods['data']['levels'];
+        /**
+         * @var \app\common\model\Goods $goods
+         * */
+        $goods = &$returnGoods['data'];
+        if($levels && $levels->count() > 0) {
             if (!$area) {
                 $area = "";
             }
-            $returnGoods['data']->levels($returnGoods['data']['price_levels'], $area);
-//            Log::debug("------ levels filter --------- {$levels->count()}");
-//            $returnGoods['data']['price_levels'] = $levels;
-            foreach ($returnGoods['data']['price_levels'] as $key => $level) {
+            $goods->levels($levels, $area);
+            $levels->each(function ($level, $key) use (&$goods, &$levels) {
                 if($level['buy_num'] == 1) {
-                    $returnGoods['data']['price'] = $level['price'];
+                    $goods['price'] = $level['price'];
+                    $items = $levels->toArray();
+                    array_splice($items, $key, 1);
+                    while ($levels->pop());
+                    if(count($items) > 0)
+                        $levels->merge($items);
                 }
-                array_splice($returnGoods['data']['price_levels'], $key, 1);
-            }
+            });
+
         }
 
 
