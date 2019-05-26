@@ -2,6 +2,8 @@
 
 namespace app\common\model;
 
+use think\facade\Log;
+
 class Coupon extends Common
 {
     protected $autoWriteTimestamp = true;
@@ -251,7 +253,7 @@ class Coupon extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function codeToInfo($code,$check=false)
+    public function codeToInfo($code, $check=false)
     {
         $result = [
             'status' => false,
@@ -260,6 +262,8 @@ class Coupon extends Common
         ];
 
         $code_arr = explode(',',$code);
+
+        Log::debug('-------- coupon code --------'.$code);
 
         foreach($code_arr as $v){
             $where['coupon_code'] = $v;
