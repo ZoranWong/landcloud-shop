@@ -232,6 +232,7 @@ class PromotionResult extends Common
         //$v['coupon_code'] = $promotionInfo[''];
 //        $num = $v['nums'];
         $v['amount'] = 0;
+        Log::debug('------------- prices data --------------'.json_encode($v['prices']));
         foreach ($v['prices'] as &$p) {
             $mp = round($p['price'] * $params['discount'] * 10) / 100;
             $tm = $p['count'] * $mp;
