@@ -1192,7 +1192,7 @@ class Order extends Common
             return error_code(11100);
         }
 
-        exit(json_encode($orderInfo));
+//        exit(json_encode($orderInfo));
 
         $order['order_id'] = get_sn(1);
         $order['goods_amount'] = $orderInfo['data']['goods_amount'];
@@ -1384,11 +1384,11 @@ class Order extends Common
         if (!$cartList['status']) {
             return $cartList;
         }
-        exit(json_encode($cartList));
+//        exit(json_encode($cartList));
 //        Log::debug('----------- order list ---------------'.json_encode($cartList['data']['list']));
         foreach ($cartList['data']['list'] as $v) {
             Log::debug('------- for each ------');
-            list($amount, $levels) = $this->getGoodsAmount($v, $v['nums'], $area_id);
+//            list($amount, $levels) = $this->getGoodsAmount($v, $v['nums'], $area_id);
             $item['goods_id'] = $v['detail']['id'];
             $item['product_id'] = $v['detail']['id'];
             //$item['sn'] = $v['detail']['sn'];
@@ -1399,12 +1399,12 @@ class Order extends Common
             $item['mktprice'] = $v['detail']['mktprice'];
             $item['image_url'] = $v['detail']['image_url'];
             $item['nums'] = $v['nums'];
-            $item['amount'] = $amount;
+            $item['amount'] = $v['amount'];
             $item['promotion_amount'] = isset($v['detail']['promotion_amount']) ? $v['detail']['promotion_amount'] : 0;
             $item['weight'] = $v['weight'];
             $item['sendnums'] = 0;
 //            $item['addon'] = $v['products']['spes_desc'];
-            $item['addon'] = json_encode($levels);
+            $item['addon'] = json_encode($v['prices']);
             $item['promotion_list'] = '[]';
 //            if (isset($v['products']['promotion_list'])) {
 //                $promotion_list = [];
