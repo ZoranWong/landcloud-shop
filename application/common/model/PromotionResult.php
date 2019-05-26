@@ -89,25 +89,25 @@ class PromotionResult extends Common
                                     //设置总的商品促销金额
                                     $cart['goods_pmt'] += $promotionModel;
                                     //设置总的价格
-                                    $cart['amount'] -= $promotionModel;
+                                    //$cart['amount'] -= $promotionModel;
                                     break;
                                 case Promotion::TYPE_COUPON:
                                     //优惠券促销金额
                                     $cart['coupon_pmt'] += $promotionModel;
                                     //设置总的价格
-                                    $cart['amount'] -= $promotionModel;
+                                    //$cart['amount'] -= $promotionModel;
                                     break;
                                 case Promotion::TYPE_GROUP:
                                     //团购
                                     $cart['goods_pmt'] += $promotionModel;
                                     //设置总的价格
-                                    $cart['amount'] -= $promotionModel;
+                                    //$cart['amount'] -= $promotionModel;
                                     break;
                                 case Promotion::TYPE_SKILL:
                                     //秒杀
                                     $cart['goods_pmt'] += $promotionModel;
                                     //设置总的价格
-                                    $cart['amount'] -= $promotionModel;
+                                    //$cart['amount'] -= $promotionModel;
                                     break;
                             }
                         }
