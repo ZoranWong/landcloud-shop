@@ -214,17 +214,17 @@ class Goods extends Api
 
         $goodsModel = new GoodsModel();
 
-        $where = function (Query $query) use ($keyword) {
+        $where = function (Query $query) use ($keyword, &$order){
             $query->where('name', 'like', '%' . $keyword . '%')
                 ->whereOr('erp_goods_id', $keyword)
                 ->whereOr('bn', $keyword)
-                ->whereOrRaw('json_contains(keywords->\'$[*]\',\'"' . $keyword . '"\',\'$\')')
-                ->orderRaw(`
+                ->whereOrRaw('json_contains(keywords->\'$[*]\',\'"' . $keyword . '"\',\'$\')');
+            $order = (`
                 order by case
     when keywords LIKE "%{$keyword}%" then 1
     else 2
-end
-                `);
+end,
+                `).$order;
         };
         $returnGoods = $goodsModel->getList('api', $field, $where, $order, $page, $limit);
         if ($returnGoods['status']) {
