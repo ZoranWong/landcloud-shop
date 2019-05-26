@@ -347,9 +347,8 @@ class Cart extends Common
         //接下来算订单促销金额
         $promotionModel = new Promotion();
         $result['data'] = $promotionModel->toPromotion($result['data']);
-
+        $couponCodes = [];
         if ($coupon_code === "") {
-            $couponCodes = [];
             $list = &$result['data']['list'];
             foreach ($list as $key => &$item) {
                 $list[$key]['use_coupon'] = null;
@@ -362,14 +361,14 @@ class Cart extends Common
                     }
                 }
             }
-            $coupon_code = implode(',', $couponCodes);
+//            $coupon_code = implode(',', $couponCodes);
         }
 
         Log::info('------------ result promotion ----------- ' . $coupon_code != "");
         //加入有优惠券，判断优惠券是否可用
-        if ($coupon_code != "") {
+        if (count($couponCodes) > 0) {
             $couponModel = new Coupon();
-            $couponInfo = $couponModel->codeToInfo($coupon_code, true);
+            $couponInfo = $couponModel->codeToInfo($couponCodes, true);
             if (!$couponInfo['status']) {
                 return $couponInfo;
             }

@@ -246,14 +246,14 @@ class Coupon extends Common
 
     /**
      * 根据优惠券编码取优惠券的信息,并判断是否可用
-     * @param $code //优惠券号码,多个优惠券的话，用个英文逗号分割
+     * @param $codes //优惠券号码,多个优惠券的话，用个英文逗号分割
      * @param bool $check 校验是否是可用的
      * @return array|mixed
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function codeToInfo($code, $check=false)
+    public function codeToInfo($codes, $check=false)
     {
         $result = [
             'status' => false,
@@ -261,11 +261,11 @@ class Coupon extends Common
             'data' => []
         ];
 
-        $code_arr = explode(',',$code);
+//        $code_arr = explode(',',$code);
 
-        Log::debug('-------- coupon code --------'.$code);
+//        Log::debug('-------- coupon code --------'.$code);
 
-        foreach($code_arr as $v){
+        foreach($codes as $v){
             $where['coupon_code'] = $v;
             $info = $this::with('promotion')->where($where)->find();
             if($info){
