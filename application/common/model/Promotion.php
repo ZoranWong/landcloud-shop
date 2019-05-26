@@ -45,7 +45,7 @@ class Promotion extends Common
 
         $list = $this->where($where)->order('sort', 'asc')->select();
         foreach ($list as $v) {
-            //$this->setPromotion($v, $cart);
+            $this->setPromotion($v, $cart);
             //如果排他，就跳出循环，不执行下面的促销了
             if ($v['exclusive'] == self::EXCLUSIVE_YES) {
                 break;
@@ -61,7 +61,7 @@ class Promotion extends Common
 
         $list = $this->where($where)->order('sort', 'asc')->select();
         foreach ($list as $v) {
-            //$this->setPromotion($v, $cart);
+            $this->setPromotion($v, $cart);
             //团购秒杀不能排他
             /*if($v['exclusive'] == self::EXCLUSIVE_YES){
                 break;
@@ -94,7 +94,7 @@ class Promotion extends Common
             if (!$info) {
                 return error_code(15014);
             }
-            if ($this->setPromotion($info, $cart)) {
+            if ($this->setPromotion($info, $cart, false)) {
                 $cart['coupons'][$k] = $v['name'];
             } else {
                 return error_code(15014);
@@ -106,7 +106,7 @@ class Promotion extends Common
 
 
     //根据促销信息，去计算购物车的促销情况
-    private function setPromotion($promotionInfo, &$cart)
+    private function setPromotion($promotionInfo, &$cart, $caculate = false)
     {
         $conditionModel = new PromotionCondition();
         $where['promotion_id'] = $promotionInfo['id'];
@@ -131,7 +131,7 @@ class Promotion extends Common
             $resultList = $resultModel->where($where)->select();
 
             foreach ($resultList as $v) {
-                $resultModel->toResult($v, $cart, $promotionInfo);
+                $resultModel->toResult($v, $cart, $promotionInfo, $caculate);
             }
         } else {
             //如果不满足需求，就要统一标准，把有些满足条件的（2），变成1
