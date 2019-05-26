@@ -240,7 +240,7 @@ class Goods extends Common implements Excelable
         if ($from === 'api') {
             $query = $query->where('marketable', '=', 1);
         }
-        Log::debug($order);
+        Log::debug('--------order condition --------- '.$order.'  ----------');
         $list = $query->order($order)
             ->page($page, $limit)
             ->select();
