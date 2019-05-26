@@ -96,7 +96,7 @@ class Promotion extends Common
             if (!$info) {
                 return error_code(15014);
             }
-            if ($this->setPromotion($info, $cart)) {
+            if ($this->setPromotion($info, $cart, true)) {
                 $cart['coupons'][$k] = $v['name'];
             } else {
                 return error_code(15014);
@@ -127,7 +127,7 @@ class Promotion extends Common
             }
         }
 
-        if ($key && $conditionList->count() > 0) {
+        if ($key && $conditionList->count() > 0 && $caculate) {
             //走到这一步就说明所有的促销条件都符合，那么就去计算结果
             $resultModel = new PromotionResult();
             $resultList = $resultModel->where($where)->select();
