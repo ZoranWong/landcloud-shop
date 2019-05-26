@@ -10,6 +10,7 @@ use app\common\model\InvoiceRecord;
 use app\common\model\Order as orderModel;
 use app\common\model\Ship;
 use app\service\LogisticsService;
+use Finecho\Logistics\Providers\Aliyun;
 use think\facade\Request;
 
 /**
@@ -545,6 +546,25 @@ class Order extends Api
     public function orderLogistics()
     {
         $no = input('no');
-        return LogisticsService::getInstance()->order($no);
+        $billDelivery = BillDelivery::where('delivery_id', $no)->find();
+        if(!$billDelivery['logi_information'] ||
+            ($billDelivery['status'] != BillDelivery::STATUS_CONFIRM
+                && $billDelivery['status'] != BillDelivery::STATUS_OTHER)) {
+            $result = LogisticsService::getInstance()->order($no);
+            $status =$result['original']['result']['status'];
+            if($status === Aliyun::STATUS_SIGNED) {
+                $billDelivery['status'] = BillDelivery::STATUS_CONFIRM;
+            }elseif ($status === Aliyun::STATUS_ON_THE_WAY || $status === Aliyun::STATUS_SENDING_A_PIECE || $status === Aliyun::STATUS_COURIER_RECEIPT) {
+                $billDelivery['status'] = BillDelivery::STATUS_ALREADY;
+            }elseif(in_array($status, [Aliyun::STATUS_DELIVERY_FAILED, Aliyun::STATUS_TROUBLESOME, Aliyun::STATUS_RETURN_RECEIPT])){
+                $billDelivery['status'] = BillDelivery::STATUS_OTHER;
+            }
+            $billDelivery['logi_information'] = json_encode($result);
+            $billDelivery->save();
+        }else{
+            $result = is_array($billDelivery['logi_information']) ? $billDelivery['logi_information']:
+                json_decode($billDelivery['logi_information'], true);
+        }
+        return $result;
     }
 }
