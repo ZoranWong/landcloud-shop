@@ -122,7 +122,7 @@ class PromotionCondition extends Common
                             $cart['list'][$k]['promotion_list'][$promotionInfo['id']] = [
                                 'name' => $promotionInfo['name'],
                                 'type' => $type,
-                                'coupons' => $promotionInfo['coupons'],
+                                'coupons' => $promotionInfo['coupons']->where('is_used', '=', Coupon::USED_NO),
                                 'results' => $promotionInfo['promotionResults']
                             ];
                         }
