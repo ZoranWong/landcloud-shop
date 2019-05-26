@@ -2,6 +2,7 @@
 
 namespace app\common\model;
 
+use think\facade\Log;
 use think\model\concern\SoftDelete;
 use think\model\relation\HasMany;
 
@@ -115,7 +116,7 @@ class Promotion extends Common
         })->with(['promotionResults'])->whereRaw("`PromotionCondition`.`promotion_id` = {$promotionInfo['id']}")->select();
         //循环取出所有的促销条件，有一条不满足，就不行，就返回false
         $key = true;
-
+        Log::debug('------------- condition --------------'.$conditionList->toJson());
         foreach ($conditionList as $v) {
             $re = $conditionModel->check($v, $cart, $promotionInfo);
             if ($key) {
