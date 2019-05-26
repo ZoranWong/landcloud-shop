@@ -234,13 +234,13 @@ class PromotionResult extends Common
         $v['amount'] = 0;
 
         foreach ($v['prices'] as &$p) {
-            if(isset($v['discount'])) {
+            if(isset($p['discount'])) {
                 $mp = round($p['price'] * $params['discount'] * 10) / 100;
                 $tm = $p['count'] * $mp;
                 $p['amount'] = number_format($tm, 2);
                 $p['price'] = number_format($mp, 2);
                 $v['amount'] += $tm;
-                $v['discount'] = $params['discount'];
+                $p['discount'] = $params['discount'];
             }
         }
         Log::debug('------------- prices data --------------'.json_encode($v['prices']));
