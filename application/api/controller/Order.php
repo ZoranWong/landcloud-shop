@@ -9,6 +9,7 @@ use app\common\model\BillReship;
 use app\common\model\InvoiceRecord;
 use app\common\model\Order as orderModel;
 use app\common\model\Ship;
+use app\service\LogisticsService;
 use think\facade\Request;
 
 /**
@@ -539,5 +540,11 @@ class Order extends Api
         $irModel = new InvoiceRecord();
         $name = Request::param('name');
         return $irModel->getCodeByName($name);
+    }
+
+    public function orderLogistics()
+    {
+        $no = input('no');
+        return LogisticsService::getInstance()->order($no);
     }
 }

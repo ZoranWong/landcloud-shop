@@ -27,7 +27,8 @@
         "aliyuncs/oss-sdk-php": "^2.3",
         "phpoffice/phpspreadsheet": "^1.6",
         "guzzlehttp/guzzle": "^6.3",
-        "selden1992/think-flysystem": "^1.0"
+        "selden1992/think-flysystem": "^1.0",
+        "finecho/logistics": "^2.0"
     },
     "autoload": {
         "psr-4": {

@@ -478,6 +478,10 @@ return [
             'gettaxcode' => [
                 'code' => 'getTaxCode',
                 'is_login' => false
+            ],
+            'orderLogistics' => [
+                'code' => 'orderLogistics',
+                'is_login' =>false
             ]
         ]
     ],

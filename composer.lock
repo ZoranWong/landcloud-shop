@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c92557c55bf7c6719553b6561b0a6824",
+    "content-hash": "5511069624d859b7b88bf6c90fff0192",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -88,6 +88,53 @@
                 "download"
             ],
             "time": "2014-02-10T17:12:20+00:00"
+        },
+        {
+            "name": "finecho/logistics",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/finecho/logistics.git",
+                "reference": "370eb78f25fa7180878adb14c10c71a700b2fce3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/finecho/logistics/zipball/370eb78f25fa7180878adb14c10c71a700b2fce3",
+                "reference": "370eb78f25fa7180878adb14c10c71a700b2fce3",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.3"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.2",
+                "phpunit/phpunit": "~5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Finecho\\Logistics\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Finecho\\Logistics\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "finecho",
+                    "email": "liuhao25@foxmail.com"
+                }
+            ],
+            "description": "A logistics SDK.",
+            "time": "2019-05-24T08:11:35+00:00"
         },
         {
             "name": "firephp/firephp-core",
@@ -1180,6 +1227,7 @@
             "keywords": [
                 "wechat-php-sdk"
             ],
+            "abandoned": "zoujingli/wechat-developer",
             "time": "2018-10-23T09:57:56+00:00"
         }
     ],
