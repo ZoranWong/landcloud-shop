@@ -208,10 +208,10 @@ class Cart extends Common
             //判断商品是否已收藏
             $list[$k]['isCollection'] = model('common/GoodsCollection')->check($v['user_id'], $v['product_id']);
         }
-        foreach ($needExcludeGoods as $needExcludeGoodId) {
-            unset($list[$needExcludeGoodId]);
-        }
-        $list = array_values($list);
+//        foreach ($needExcludeGoods as $needExcludeGoodId) {
+//            unset($list[$needExcludeGoodId]);
+//        }
+//        $list = array_values($list);
 
         $data['list'] = $list;
         $result['data'] = $data;
