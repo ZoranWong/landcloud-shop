@@ -220,12 +220,11 @@ class Goods extends Api
                 ->whereOr('bn', $keyword)
                 ->whereOrRaw('json_contains(keywords->\'$[*]\',\'"' . $keyword . '"\',\'$\')');
         };
-        $order = `
+        $order = "
                 order by case
-    when keywords LIKE "%{$keyword}%" then 1
+    when keywords LIKE '%{$keyword}%' then 1
     else 2
-end asc,{$order}
-                `;
+end asc,{$order}";
         Log::debug("-------- order condition: {$order} -------");
         $returnGoods = $goodsModel->getList('api', $field, $where, $order, $page, $limit);
         if ($returnGoods['status']) {
