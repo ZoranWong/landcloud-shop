@@ -372,6 +372,7 @@ class Cart extends Common
             if (!$couponInfo['status']) {
                 return $couponInfo;
             }
+            Log::debug('----------- use coupon ------------');
             $re = $promotionModel->toCoupon($result['data'], $couponInfo['data']);
             if (!$re['status']) {
                 return $re;       //优惠券不符合使用规则，后期会把不符合的原因写出来
