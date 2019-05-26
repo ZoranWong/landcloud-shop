@@ -241,7 +241,7 @@ class Goods extends Common implements Excelable
             $query = $query->where('marketable', '=', 1);
         }
         Log::debug('--------order condition --------- '.$order.'  ----------');
-        $list = $query->order($order)
+        $list = $query->orderRaw($order)
             ->page($page, $limit)
             ->select();
         $ids = [];
