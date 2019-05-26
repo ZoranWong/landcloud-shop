@@ -233,12 +233,12 @@ class PromotionCondition extends Common
     //指定某些商品满足条件
     private function condition_GOODS_IDS($params, $goods_id, $nums)
     {
-        Log::debug("goods_ids = [{$params['goods_id']}]; goods_id = {$goods_id}, nums = {$nums}, params = {$params['nums']}");
         $goods_ids = explode(',', $params['goods_id']);
         Log::debug('1.---------- '.in_array($goods_id, $goods_ids).' ---------');
         Log::debug('2.---------- '.($nums >= $params['nums']).' ---------');
         if (in_array($goods_id, $goods_ids)) {
             if ($nums >= $params['nums']) {
+                Log::debug("goods_ids = [{$params['goods_id']}]; goods_id = {$goods_id}, nums = {$nums}, params = {$params['nums']}");
                 return 2;
             } else {
                 return 1;
