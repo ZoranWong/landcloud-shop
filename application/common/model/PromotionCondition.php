@@ -115,7 +115,7 @@ class PromotionCondition extends Common
                 $key = false;
                 foreach ($cart['list'] as $k => $v) {
                     $type = $this->$method($params, $v['product_id'], $v['nums']);
-                    Log::debug('type = '.$type);
+                    Log::debug('type = '.$type.' '.$v['product_id']);
                     if ($type > 0) {
                         if (!isset($cart['list'][$k]['promotion_list'][$promotionInfo['id']])) {
                             $cart['list'][$k]['promotion_list'][$promotionInfo['id']] = [
@@ -233,7 +233,7 @@ class PromotionCondition extends Common
     //指定某些商品满足条件
     private function condition_GOODS_IDS($params, $goods_id, $nums)
     {
-        Log::debug("goods_ids = {$params['goods_id']}; goods_id = {$goods_id}, nums = {$nums}, params = {$params['nums']}");
+        Log::debug("goods_ids = [{$params['goods_id']}]; goods_id = {$goods_id}, nums = {$nums}, params = {$params['nums']}");
         $goods_ids = explode(',', $params['goods_id']);
         Log::debug('---------- '.in_array($goods_id, $goods_ids).' ---------');
         Log::debug('---------- '.($nums >= $params['nums']).' ---------');
