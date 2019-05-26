@@ -115,7 +115,7 @@ class PromotionCondition extends Common
                 $key = false;
                 foreach ($cart['list'] as $k => $v) {
                     $type = $this->$method($params, $v['product_id'], $v['nums']);
-
+                    Log::debug('type = '.$type);
                     if ($type > 0) {
                         if (!isset($cart['list'][$k]['promotion_list'][$promotionInfo['id']])) {
                             $cart['list'][$k]['promotion_list'][$promotionInfo['id']] = [
