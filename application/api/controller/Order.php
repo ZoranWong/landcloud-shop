@@ -212,7 +212,7 @@ class Order extends Api
         $tax['tax_type'] = Request::param('tax_type', 1);
         $tax['tax_name'] = Request::param('tax_name', '');
         $tax['tax_code'] = Request::param('tax_code', '');
-
+        $coupon_code = explode(',', $coupon_code);
         $model = new orderModel();
         return $model->toAdd($this->userId, $cart_ids, $uship_id, $memo, $area_id, $point, $coupon_code, $formId, $receipt_type, $store_id, $lading_name, $lading_mobile, $source, $tax);
     }
