@@ -110,13 +110,13 @@ class PromotionCondition extends Common
             $method = 'condition_' . $conditionInfo['code'];
             $params = json_decode($conditionInfo['params'], true);
             //如果是订单促销就直接去判断促销条件，如果是商品促销，就循环订单明细
-            Log::info('condition code type '.$conditionInfo['params']);
+//            Log::info('condition code type '.$conditionInfo['params']);
             if ($this->code[$conditionInfo['code']]['type'] == 'goods') {
                 $key = false;
                 foreach ($cart['list'] as $k => $v) {
-                    Log::debug('------------------- begin ----------------------'.json_encode($params));
+//                    Log::debug('------------------- begin ----------------------'.json_encode($params));
                     $type = $this->$method($params, $v['product_id'], $v['nums']);
-                    Log::debug('type = '.$type.' '.$v['product_id'].' '.$params['goods_id']);
+//                    Log::debug('type = '.$type.' '.$v['product_id'].' '.$params['goods_id']);
                     if ($type > 0) {
                         if (!isset($cart['list'][$k]['promotion_list'][$promotionInfo['id']])) {
                             $cart['list'][$k]['promotion_list'][$promotionInfo['id']] = [
@@ -175,7 +175,7 @@ class PromotionCondition extends Common
         foreach ($conditionList as $k => $v) {
             if ($this->code[$v['code']]['type'] == 'goods') {
                 $method = 'condition_' . $v['code'];
-                Log::debug("--------------- {$method} ----------------; goods_id = {$goods_id}");
+//                Log::debug("--------------- {$method} ----------------; goods_id = {$goods_id}");
                 $params = json_decode($v['params'], true);
                 $type = $this->$method($params, $goods_id, $nums);
                 if ($type != 2) {
