@@ -114,6 +114,7 @@ class PromotionCondition extends Common
             if ($this->code[$conditionInfo['code']]['type'] == 'goods') {
                 $key = false;
                 foreach ($cart['list'] as $k => $v) {
+                    Log::debug('------------------- begin ----------------------');
                     $type = $this->$method($params, $v['product_id'], $v['nums']);
                     Log::debug('type = '.$type.' '.$v['product_id'].' '.$params['goods_id']);
                     if ($type > 0) {
