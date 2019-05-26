@@ -232,7 +232,7 @@ class PromotionResult extends Common
         //$v['coupon_code'] = $promotionInfo[''];
 //        $num = $v['nums'];
         $v['amount'] = 0;
-        Log::debug('------------- prices data --------------'.json_encode($v['prices']));
+
         foreach ($v['prices'] as &$p) {
             if(isset($v['discount'])) {
                 $mp = round($p['price'] * $params['discount'] * 10) / 100;
@@ -243,7 +243,7 @@ class PromotionResult extends Common
                 $v['discount'] = $params['discount'];
             }
         }
-
+        Log::debug('------------- prices data --------------'.json_encode($v['prices']));
         return $promotionMoney;
     }
 
