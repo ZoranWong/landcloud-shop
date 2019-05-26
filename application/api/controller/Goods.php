@@ -226,6 +226,7 @@ class Goods extends Api
     else 2
 end,
                 `).$order;
+        Log::debug("-------- order condition: {$order} -------");
         $returnGoods = $goodsModel->getList('api', $field, $where, $order, $page, $limit);
         if ($returnGoods['status']) {
             $return_data ['msg'] = '查询成功';
