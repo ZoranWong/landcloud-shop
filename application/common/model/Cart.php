@@ -381,7 +381,7 @@ class Cart extends Common
 
         }
         //$result['data']['amount'] = 0;
-        Log::debug(json_encode($result['data']['list']));
+//        Log::debug(json_encode($result['data']['list']));
         foreach ($result['data']['list'] as $k => &$v) {
             if ($v['is_select']) {
                 //算订单总商品价格

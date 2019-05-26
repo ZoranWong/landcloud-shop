@@ -245,7 +245,7 @@ class PromotionResult extends Common
             }
         }
         $cart['amount'] += $v['amount'];
-        Log::debug('------------- prices data --------------'.$v['amount'].'     '.$cart['amount']);
+//        Log::debug('------------- prices data --------------'.$v['amount'].'     '.$cart['amount']);
         return $promotionMoney;
     }
 
