@@ -1192,6 +1192,8 @@ class Order extends Common
             return error_code(11100);
         }
 
+        exit(json_encode($orderInfo));
+
         $order['order_id'] = get_sn(1);
         $order['goods_amount'] = $orderInfo['data']['goods_amount'];
         $order['order_amount'] = $orderInfo['data']['amount'];
