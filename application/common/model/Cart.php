@@ -354,10 +354,17 @@ class Cart extends Common
                 $list[$key]['use_coupon'] = null;
                 if (isset($item['promotion_list']) && $item['promotion_list'] && $item['is_select']) {
                     foreach ($item['promotion_list'] as $promotion) {
-                        $item['use_coupon'] = ['code' => $promotion['coupons'][0]['coupon_code'], 'name' => $promotion['name']];
-//                        Log::debug('--------use coupon ----------'.json_encode($item));
-                        $couponCodes[] = $promotion['coupons'][0]['coupon_code'];
-                        break;
+                        if(!isset($item['use_coupon'])) {
+                            foreach ($promotion['coupons'] as $coupon) {
+                                if($coupon['is_used'] === Coupon::USED_NO) {
+                                    $item['use_coupon'] = ['code' => $coupon['coupon_code'], 'name' => $promotion['name']];
+                                    $couponCodes[] = $coupon['coupon_code'];
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
                     }
                 }
             }

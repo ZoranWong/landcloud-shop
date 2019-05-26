@@ -116,13 +116,13 @@ class PromotionCondition extends Common
                 foreach ($cart['list'] as $k => $v) {
 //                    Log::debug('------------------- begin ----------------------'.json_encode($params));
                     $type = $this->$method($params, $v['product_id'], $v['nums']);
-                    Log::debug('---------------- coupons ------------'.$promotionInfo['coupons']->toJson());
+//                    Log::debug('---------------- coupons ------------'.$promotionInfo['coupons']->toJson());
                     if ($type > 0) {
                         if (!isset($cart['list'][$k]['promotion_list'][$promotionInfo['id']])) {
                             $cart['list'][$k]['promotion_list'][$promotionInfo['id']] = [
                                 'name' => $promotionInfo['name'],
                                 'type' => $type,
-                                'coupons' => $promotionInfo['coupons']->where('is_used', '=', Coupon::USED_NO),
+                                'coupons' => $promotionInfo['coupons'],
                                 'results' => $promotionInfo['promotionResults']
                             ];
                         }
