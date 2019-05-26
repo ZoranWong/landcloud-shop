@@ -220,8 +220,7 @@ class Goods extends Api
                 ->whereOr('bn', $keyword)
                 ->whereOrRaw('json_contains(keywords->\'$[*]\',\'"' . $keyword . '"\',\'$\')');
         };
-        $order = "
-                order by case
+        $order = "case
     when keywords LIKE '%{$keyword}%' then 1
     else 2
 end asc,{$order}";
