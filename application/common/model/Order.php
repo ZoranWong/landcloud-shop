@@ -1329,6 +1329,7 @@ class Order extends Common
             return $result;
         } catch (\Exception $e) {
             Db::rollback();
+            throw $e;
             $result['msg'] = $e->getMessage();
             return $result;
         }
