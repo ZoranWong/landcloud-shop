@@ -352,6 +352,7 @@ class Coupon extends Common
      */
     public function usedMultipleCoupon($coupon_code, $user_id)
     {
+        $coupon_code = explode(',', $coupon_code);
         $res = $this->codeToInfo($coupon_code, true);
         if(!$res['status'])
         {
