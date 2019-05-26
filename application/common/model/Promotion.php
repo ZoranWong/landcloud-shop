@@ -45,7 +45,7 @@ class Promotion extends Common
 
         $list = $this->where($where)->order('sort', 'asc')->select();
         foreach ($list as $v) {
-            $this->setPromotion($v, $cart);
+            $this->setPromotion($v, $cart, false);
             //如果排他，就跳出循环，不执行下面的促销了
             if ($v['exclusive'] == self::EXCLUSIVE_YES) {
                 break;
@@ -94,7 +94,7 @@ class Promotion extends Common
             if (!$info) {
                 return error_code(15014);
             }
-            if ($this->setPromotion($info, $cart, false)) {
+            if ($this->setPromotion($info, $cart)) {
                 $cart['coupons'][$k] = $v['name'];
             } else {
                 return error_code(15014);
