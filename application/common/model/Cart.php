@@ -379,7 +379,7 @@ class Cart extends Common
         } else {
 
         }
-
+        $result['data']['amount'] = 0;
         foreach ($result['data']['list'] as $k => $v) {
             if ($v['is_select']) {
                 //算订单总商品价格
