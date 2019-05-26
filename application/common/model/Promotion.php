@@ -127,7 +127,7 @@ class Promotion extends Common
             }
         }
 
-        if ($key) {
+        if ($key && $conditionList->count() > 0) {
             //走到这一步就说明所有的促销条件都符合，那么就去计算结果
             $resultModel = new PromotionResult();
             $resultList = $resultModel->where($where)->select();
