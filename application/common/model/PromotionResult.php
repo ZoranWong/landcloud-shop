@@ -243,7 +243,7 @@ class PromotionResult extends Common
                 $p['discount'] = $params['discount'];
             }
         }
-        Log::debug('------------- prices data --------------'.json_encode($v['prices']));
+        Log::debug('------------- prices data --------------'.json_encode($v));
         return $promotionMoney;
     }
 
