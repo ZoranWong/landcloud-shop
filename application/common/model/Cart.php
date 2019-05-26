@@ -364,7 +364,7 @@ class Cart extends Common
 //            $coupon_code = implode(',', $couponCodes);
         }
 
-        Log::info('------------ result promotion ----------- ' . $coupon_code != "");
+        Log::info('------------ result promotion ----------- ' . json_encode($couponCodes));
         //加入有优惠券，判断优惠券是否可用
         if (count($couponCodes) > 0) {
             $couponModel = new Coupon();
