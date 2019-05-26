@@ -333,7 +333,7 @@ class Cart extends Common
             $result['data']['list'][$k]['prices'] = $priceStruct;
         }
 
-        //echo json_encode($result['data']['list']);exit;
+        echo json_encode($result['data']['list']);exit;
 
         //运费判断
         if ($receipt_type == 1) {
