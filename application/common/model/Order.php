@@ -1381,8 +1381,9 @@ class Order extends Common
         if (!$cartList['status']) {
             return $cartList;
         }
-        Log::debug('----------- order list ---------------'.json_encode($cartList['data']['list']));
+//        Log::debug('----------- order list ---------------'.json_encode($cartList['data']['list']));
         foreach ($cartList['data']['list'] as $v) {
+            Log::debug('------- for each ------');
             list($amount, $levels) = $this->getGoodsAmount($v, $v['nums'], $area_id);
             $item['goods_id'] = $v['detail']['id'];
             $item['product_id'] = $v['detail']['id'];
