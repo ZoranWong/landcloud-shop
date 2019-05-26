@@ -1394,7 +1394,7 @@ class Order extends Common
             //$item['sn'] = $v['detail']['sn'];
             $item['bn'] = $v['detail']['bn'];
             $item['name'] = $v['detail']['name'];
-            $item['price'] = $v['detail']['price'];
+            $item['price'] = $v['price'];
             $item['costprice'] = $v['detail']['costprice'];
             $item['mktprice'] = $v['detail']['mktprice'];
             $item['image_url'] = $v['detail']['image_url'];
