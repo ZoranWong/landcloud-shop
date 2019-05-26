@@ -368,7 +368,7 @@ class Cart extends Common
         //加入有优惠券，判断优惠券是否可用
         if (count($couponCodes) > 0) {
             $couponModel = new Coupon();
-            $couponInfo = $couponModel->codeToInfo($couponCodes, true);
+            $couponInfo = $couponModel->codeToInfo($couponCodes, $coupon_code);
             if (!$couponInfo['status']) {
                 return $couponInfo;
             }
