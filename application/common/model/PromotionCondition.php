@@ -235,8 +235,8 @@ class PromotionCondition extends Common
     {
         Log::debug("goods_ids = [{$params['goods_id']}]; goods_id = {$goods_id}, nums = {$nums}, params = {$params['nums']}");
         $goods_ids = explode(',', $params['goods_id']);
-        Log::debug('---------- '.in_array($goods_id, $goods_ids).' ---------');
-        Log::debug('---------- '.($nums >= $params['nums']).' ---------');
+        Log::debug('1.---------- '.in_array($goods_id, $goods_ids).' ---------');
+        Log::debug('2.---------- '.($nums >= $params['nums']).' ---------');
         if (in_array($goods_id, $goods_ids)) {
             if ($nums >= $params['nums']) {
                 return 2;
