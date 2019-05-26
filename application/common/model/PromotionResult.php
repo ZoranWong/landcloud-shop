@@ -66,7 +66,7 @@ class PromotionResult extends Common
     }
 
     //去计算结果
-    public function toResult($resultInfo, &$cart, $promotionInfo, $caculate)
+    public function toResult($resultInfo, &$cart, $promotionInfo)
     {
         if ($this->code[$resultInfo['code']]) {
             $method = 'result_' . $resultInfo['code'];
@@ -77,7 +77,7 @@ class PromotionResult extends Common
                 foreach ($cart['list'] as $k => $v) {
                     $type = $conditionModel->goods_check($promotionInfo['id'], $v['product_id'], $v['nums']);
 
-                    if ($type == 2 && $caculate) {
+                    if ($type == 2 ) {
                         //到这里就说明此商品信息满足促销商品促销信息的条件，去计算结果
                         //注意，在明细上面，就不细分促销的种类了，都放到一个上面，在订单上面才细分
                         $promotionModel = $this->$method($params, $cart['list'][$k], $promotionInfo);

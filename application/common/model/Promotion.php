@@ -131,7 +131,7 @@ class Promotion extends Common
             $resultList = $resultModel->where($where)->select();
 
             foreach ($resultList as $v) {
-                $resultModel->toResult($v, $cart, $promotionInfo, $caculate);
+                $resultModel->toResult($v, $cart, $promotionInfo);
             }
         } else {
             //如果不满足需求，就要统一标准，把有些满足条件的（2），变成1
