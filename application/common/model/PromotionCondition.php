@@ -239,7 +239,7 @@ class PromotionCondition extends Common
         Log::debug('2.---------- '.($nums >= $params['nums']).' ---------');
         if (in_array($goods_id, $goods_ids)) {
             if ($nums >= $params['nums']) {
-                Log::debug("goods_ids = [{$params['goods_id']}]; goods_id = {$goods_id}, nums = {$nums}, params = {$params['nums']}");
+//                Log::debug("goods_ids = [{$params['goods_id']}]; goods_id = {$goods_id}, nums = {$nums}, params = {$params['nums']}");
                 return 2;
             } else {
                 return 1;

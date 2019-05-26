@@ -45,7 +45,7 @@ class Promotion extends Common
         $where[] = ['type', 'in', [self::TYPE_PROMOTION, self::TYPE_COUPON]];
 
         $list = $this->where($where)->order('sort', 'asc')->select();
-        Log::debug('------------ list -----------'.$list->toJson());
+//        Log::debug('------------ list -----------'.$list->toJson());
         foreach ($list as $v) {
             $this->setPromotion($v, $cart);
             //如果排他，就跳出循环，不执行下面的促销了

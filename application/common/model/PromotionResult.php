@@ -81,7 +81,7 @@ class PromotionResult extends Common
                         //到这里就说明此商品信息满足促销商品促销信息的条件，去计算结果
                         //注意，在明细上面，就不细分促销的种类了，都放到一个上面，在订单上面才细分
                         $promotionModel = $this->$method($params, $cart['list'][$k], $promotionInfo, $cart);
-                        Log::debug("------ promotion type {$type} method {$method} type1 {$promotionInfo['type']} amount {$promotionModel}----- ");
+                        //Log::debug("------ promotion type {$type} method {$method} type1 {$promotionInfo['type']} amount {$promotionModel}----- ");
                         if ($v['is_select']) {
                             //根据具体的促销类型取做对应的操作
                             switch ($promotionInfo['type']) {

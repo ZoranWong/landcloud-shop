@@ -241,7 +241,7 @@ class Cart extends Common
         if ($goods['price_levels']) {
             /** @var Collection $levels * */
             $levels = &$goods['price_levels'];
-            Log::debug('----------------------- levels ---------------- area = '.$area . '--------' . json_encode($levels));
+//            Log::debug('----------------------- levels ---------------- area = '.$area . '--------' . json_encode($levels));
             if (!$area) {
                 $area = "";
             }
@@ -355,7 +355,7 @@ class Cart extends Common
                 if (isset($item['promotion_list']) && $item['promotion_list'] && $item['is_select']) {
                     foreach ($item['promotion_list'] as $promotion) {
                         $item['use_coupon'] = ['code' => $promotion['coupons'][0]['coupon_code'], 'name' => $promotion['name']];
-                        Log::debug('--------use coupon ----------'.json_encode($item));
+//                        Log::debug('--------use coupon ----------'.json_encode($item));
                         $couponCodes[] = $promotion['coupons'][0]['coupon_code'];
                         break;
                     }
