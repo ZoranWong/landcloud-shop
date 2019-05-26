@@ -80,7 +80,7 @@ class PromotionResult extends Common
                     if ($type == 2 ) {
                         //到这里就说明此商品信息满足促销商品促销信息的条件，去计算结果
                         //注意，在明细上面，就不细分促销的种类了，都放到一个上面，在订单上面才细分
-                        $promotionModel = $this->$method($params, $cart['list'][$k], $promotionInfo);
+                        $promotionModel = $this->$method($params, $cart['list'][$k], $promotionInfo, $cart);
                         Log::debug("------ promotion type {$type} method {$method} type1 {$promotionInfo['type']} amount {$promotionModel}----- ");
                         if ($v['is_select']) {
                             //根据具体的促销类型取做对应的操作
@@ -187,7 +187,7 @@ class PromotionResult extends Common
 
 
     //指定商品减固定金额
-    private function result_GOODS_REDUCE($params, &$v, $promotionInfo)
+    private function result_GOODS_REDUCE($params, &$v, $promotionInfo, &$cart)
     {
         $promotionMoney = 0;
 
@@ -206,12 +206,13 @@ class PromotionResult extends Common
         $v['promotion_amount'] += $promotionMoney;
         //设置商品的实际销售金额（单品）
         $v['amount'] -= $promotionMoney;
+        $cart['amount'] += $v['amount'];
 
         return $promotionMoney;
     }
 
     //指定商品打X折
-    private function result_GOODS_DISCOUNT($params, &$v, $promotionInfo)
+    private function result_GOODS_DISCOUNT($params, &$v, $promotionInfo, &$cart)
     {
         $promotionMoney = 0;
 
@@ -243,6 +244,7 @@ class PromotionResult extends Common
                 $p['discount'] = $params['discount'];
             }
         }
+        $cart['amount'] += $v['amount'];
         Log::debug('------------- prices data --------------'.$v['amount']);
         return $promotionMoney;
     }

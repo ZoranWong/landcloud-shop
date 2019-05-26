@@ -380,14 +380,14 @@ class Cart extends Common
         } else {
 
         }
-        $result['data']['amount'] = 0;
+        //$result['data']['amount'] = 0;
         Log::debug(json_encode($result['data']['list']));
         foreach ($result['data']['list'] as $k => &$v) {
             if ($v['is_select']) {
                 //算订单总商品价格
                 //$result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
                 //算订单总价格
-                $result['data']['amount'] += (float)$v['amount'];
+                //$result['data']['amount'] += (float)$v['amount'];
                 $v['amount'] = number_format($v['amount'], 2);
                 //计算总重量
                 //$result['data']['weight'] += $v['weight'] * $v['nums'];
