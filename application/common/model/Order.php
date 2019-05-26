@@ -1384,6 +1384,7 @@ class Order extends Common
         if (!$cartList['status']) {
             return $cartList;
         }
+        exit(json_encode($cartList));
 //        Log::debug('----------- order list ---------------'.json_encode($cartList['data']['list']));
         foreach ($cartList['data']['list'] as $v) {
             Log::debug('------- for each ------');
