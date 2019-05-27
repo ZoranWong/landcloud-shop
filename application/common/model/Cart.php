@@ -237,7 +237,7 @@ class Cart extends Common
                 }
             }
         }
-
+        $prices = [];
         if ($goods['price_levels']) {
             /** @var Collection $levels * */
             $levels = &$goods['price_levels'];
@@ -248,14 +248,14 @@ class Cart extends Common
             $goods->levels($levels, $area);
             $price = $goods['promotion_price'] > 0 ? ($goods['preferential_price'] > 0 ? ($goods['preferential_price'] < $goods['promotion_price'] ?
                 $goods['preferential_price'] : $goods['promotion_price']) : $goods['promotion_price']) : $goods['price'];
-            $priceStruct = [];
+
             foreach ($levels as $level) {
                 if ($num >= $level['buy_num']) {
                     $n = (int)($num / $level['buy_num']);
                     $fee = $level['price'] * $n;
                     $amount += $fee;
                     $num = $num % $level['buy_num'];
-                    $priceStruct[] = $level;
+                    $prices[] = $level;
                     $level['count'] = $n;
                     $level['pack'] = true;
                     $level['amount'] = number_format($fee, 2);
@@ -267,12 +267,13 @@ class Cart extends Common
                     'amount' => number_format($price * $num, 2),
                     'price' => number_format($price, 2),
                     'buy_num' => 1];
-                $priceStruct[] = $level0;
+                $prices[] = $level0;
                 $amount += $price * $num;
             }
 
         }
-        return [$amount, $priceStruct];
+        Log::debug("----- amount ------ {$amount} ------");
+        return [$amount, $prices];
     }
 
     /**
@@ -328,9 +329,9 @@ class Cart extends Common
 //            }
             $carts[] = $v;
             //单条商品总价
-            list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $userId, $area);
+            list($amount, $prices) = $this->getGoodsAmount($v['detail'], $v['nums'], $userId, $area);
             $result['data']['list'][$k]['amount'] = $amount;
-            $result['data']['list'][$k]['prices'] = $priceStruct;
+            $result['data']['list'][$k]['prices'] = $prices;
         }
 
 //        echo json_encode($result['data']['list']);exit;
