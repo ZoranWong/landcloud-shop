@@ -402,7 +402,7 @@ class Cart extends Common
                 //$result['data']['weight'] += $v['weight'] * $v['nums'];
             }
         }
-
+        $result['data']['o_amount'] = $result['data']['amount'];
         if ($point != 0) {
             //判断用户是否有这么多积分
             $userModel = new User();

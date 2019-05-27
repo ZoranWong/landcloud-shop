@@ -1196,7 +1196,7 @@ class Order extends Common
 
         $order['order_id'] = get_sn(1);
         $order['goods_amount'] = $orderInfo['data']['goods_amount'];
-        $order['order_amount'] = $orderInfo['data']['amount'];
+        $order['order_amount'] = $orderInfo['data']['o_amount'];
         if ($order['order_amount'] <= 0) {
             $order['pay_status'] = 2;
             $order['payment_time'] = time();
@@ -1394,12 +1394,12 @@ class Order extends Common
                 //$item['sn'] = $v['detail']['sn'];
                 $item['bn'] = $v['detail']['bn'];
                 $item['name'] = $v['detail']['name'];
-                $item['price'] = $price['price'];
+                $item['price'] = $price['o_price'];
                 $item['costprice'] = $v['detail']['costprice'];
                 $item['mktprice'] = $v['detail']['mktprice'];
                 $item['image_url'] = $v['detail']['image_url'];
                 $item['nums'] = $price['count'];
-                $item['amount'] = $price['amount'];
+                $item['amount'] = $price['o_amount'];
                 $item['promotion_amount'] = isset($v['detail']['promotion_amount']) ? $v['detail']['promotion_amount'] : 0;
                 $item['weight'] = $v['weight'];
                 $item['sendnums'] = 0;
