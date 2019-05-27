@@ -61,6 +61,7 @@ class ProductPriceLevelExporter extends BaseGenerator
                 foreach ($goods['price_levels'] as $priceLevel) {
                     $i++;
                     $finalList[$i]['erp_goods_id'] = $goods['erp_goods_id'];
+                    $finalList[$i]['goods_name'] = $goods['name'];
                     $finalList[$i]['area_id'] = $priceLevel['area'] ?: '未设';
                     if ($priceLevel['area']) {
                         $areaList = $areaModel->getArea($priceLevel['area']);
