@@ -230,7 +230,7 @@ class PromotionResult extends Common
         //设置商品的实际销售总金额
         $v['price'] = number_format($v['price'], 2);
         $v['promotion_amount'] = number_format($v['promotion_amount'], 2);
-        //$v['coupon_code'] = $promotionInfo[''];
+        // $v['coupon_code'] = $promotionInfo[''];
 //        $num = $v['nums'];
         $v['amount'] = 0;
 
