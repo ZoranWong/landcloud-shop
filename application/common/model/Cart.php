@@ -269,7 +269,10 @@ class Cart extends Common
                 $level0 = ['pack' => false, 'count' => $num,
                     'amount' => number_format($price * $num, 2),
                     'price' => number_format($price, 2),
-                    'buy_num' => 1];
+                    'buy_num' => 1,
+                    'o_price' => $price,
+                    'o_amount' => $price * $num
+                    ];
                 $prices[] = $level0;
                 $amount += $price * $num;
             }
