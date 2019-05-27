@@ -332,7 +332,7 @@ class Cart extends Common
             list($amount, $prices) = $this->getGoodsAmount($v['detail'], $v['nums'], $userId, $area);
             $result['data']['list'][$k]['amount'] = number_format($amount, 2);
             $result['data']['list'][$k]['prices'] = $prices;
-            $result['data']['amount'] += $amount;
+           // $result['data']['amount'] += $amount;
         }
 
 //        echo json_encode($result['data']['list']);exit;
@@ -396,7 +396,7 @@ class Cart extends Common
                 //算订单总商品价格
                 //$result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
                 //算订单总价格
-                //$result['data']['amount'] += (float)$v['amount'];
+                $result['data']['amount'] += (float)$v['amount'];
                 $v['amount'] = number_format($v['amount'], 2);
                 //计算总重量
                 //$result['data']['weight'] += $v['weight'] * $v['nums'];
