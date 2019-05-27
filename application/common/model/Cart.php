@@ -256,10 +256,13 @@ class Cart extends Common
                     $amount += $fee;
                     $num = $num % $level['buy_num'];
                     $prices[] = $level;
+                    $level['o_price'] = $level['price'];
                     $level['count'] = $n;
                     $level['pack'] = true;
                     $level['amount'] = number_format($fee, 2);
                     $level['price'] = number_format($level['price'], 2);
+                    $level['o_amount'] = $fee;
+
                 }
             }
             if($num > 0) {
