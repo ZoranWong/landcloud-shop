@@ -1388,24 +1388,23 @@ class Order extends Common
 //        Log::debug('----------- order list ---------------'.json_encode($cartList['data']['list']));
         foreach ($cartList['data']['list'] as $v) {
             Log::debug('------- for each ------'.json_encode($v));
-//            list($amount, $levels) = $this->getGoodsAmount($v, $v['nums'], $area_id);
-            $item['goods_id'] = $v['detail']['id'];
-            $item['product_id'] = $v['detail']['id'];
-            //$item['sn'] = $v['detail']['sn'];
-            $item['bn'] = $v['detail']['bn'];
-            $item['name'] = $v['detail']['name'];
-            $item['price'] = $v['detail']['price'];
-            $item['costprice'] = $v['detail']['costprice'];
-            $item['mktprice'] = $v['detail']['mktprice'];
-            $item['image_url'] = $v['detail']['image_url'];
-            $item['nums'] = $v['nums'];
-            $item['amount'] = $v['amount'];
-            $item['promotion_amount'] = isset($v['detail']['promotion_amount']) ? $v['detail']['promotion_amount'] : 0;
-            $item['weight'] = $v['weight'];
-            $item['sendnums'] = 0;
-//            $item['addon'] = $v['products']['spes_desc'];
-            $item['addon'] = json_encode($v['prices']);
-            $item['promotion_list'] = '[]';
+            foreach ($v['prices'] as $price) {
+                $item['goods_id'] = $v['detail']['id'];
+                $item['product_id'] = $v['detail']['id'];
+                //$item['sn'] = $v['detail']['sn'];
+                $item['bn'] = $v['detail']['bn'];
+                $item['name'] = $v['detail']['name'];
+                $item['price'] = $price['price'];
+                $item['costprice'] = $v['detail']['costprice'];
+                $item['mktprice'] = $v['detail']['mktprice'];
+                $item['image_url'] = $v['detail']['image_url'];
+                $item['nums'] = $v['nums'];
+                $item['amount'] = $price['amount'];
+                $item['promotion_amount'] = isset($v['detail']['promotion_amount']) ? $v['detail']['promotion_amount'] : 0;
+                $item['weight'] = $v['weight'];
+                $item['sendnums'] = 0;
+                $item['addon'] = json_encode($price);
+                $item['promotion_list'] = '[]';
 //            if (isset($v['products']['promotion_list'])) {
 //                $promotion_list = [];
 //                foreach ($v['products']['promotion_list'] as $k => $v) {
@@ -1413,7 +1412,10 @@ class Order extends Common
 //                }
 //                $item['promotion_list'] = json_encode($promotion_list);
 //            }
-            $cartList['data']['items'][] = $item;
+                $cartList['data']['items'][] = $item;
+            }
+//            list($amount, $levels) = $this->getGoodsAmount($v, $v['nums'], $area_id);
+
         }
         //unset($cartList['data']['list']);
         return $cartList;
