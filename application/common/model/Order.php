@@ -1398,7 +1398,7 @@ class Order extends Common
                 $item['costprice'] = $v['detail']['costprice'];
                 $item['mktprice'] = $v['detail']['mktprice'];
                 $item['image_url'] = $v['detail']['image_url'];
-                $item['nums'] = $v['nums'];
+                $item['nums'] = $v['count'];
                 $item['amount'] = $price['amount'];
                 $item['promotion_amount'] = isset($v['detail']['promotion_amount']) ? $v['detail']['promotion_amount'] : 0;
                 $item['weight'] = $v['weight'];
