@@ -330,8 +330,9 @@ class Cart extends Common
             $carts[] = $v;
             //单条商品总价
             list($amount, $prices) = $this->getGoodsAmount($v['detail'], $v['nums'], $userId, $area);
-            $result['data']['list'][$k]['amount'] = $amount;
+            $result['data']['list'][$k]['amount'] = number_format($amount, 2);
             $result['data']['list'][$k]['prices'] = $prices;
+            $result['data']['amount'] += $amount;
         }
 
 //        echo json_encode($result['data']['list']);exit;
