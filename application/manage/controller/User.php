@@ -52,6 +52,7 @@ class User extends Manage
 
     /**
      * @return array|bool|mixed
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -196,9 +197,6 @@ class User extends Manage
     /**
      * 编辑用户
      * @return array|mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      */
     public function editUser()
     {
@@ -224,9 +222,6 @@ class User extends Manage
     /**
      * 用户详情
      * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      */
     public function details()
     {

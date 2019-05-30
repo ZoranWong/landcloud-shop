@@ -1230,13 +1230,17 @@ class User extends Common
         }
 
         $areaModel = new AreaModel();
+
         foreach ($data as &$user) {
-            $areaList = $areaModel->getArea($user['ship_address']['area_id']);
-            $address = '';
-            foreach ($areaList as $area) {
-                $address .= $area['info']['name'] . '-';
+            if($user['ship_address']['area_id']){
+                $areaList = $areaModel->getArea($user['ship_address']['area_id']);
+                $address = '';
+                foreach ($areaList as $area) {
+                    $address .= $area['info']['name'] . '-';
+                }
+                $user['ship_address']['address'] = $address . $user['ship_address']['address'];
             }
-            $user['ship_address']['address'] = $address . $user['ship_address']['address'];
+
         }
 
         $re['code'] = 0;
