@@ -53,7 +53,7 @@ class LabGicApiService
         $response = $this->http->get("{$this->host}{$method}", ['query' => ['CusCode' => $cusCode, 'Apikey' => $code]]);
         Log::debug('-------------- '.$response->getBody()->getContents() . ' ------------ '.json_encode(['CusCode' => $id, 'Apikey' => $code]));
         $data = json_decode($response->getBody()->getContents(), true);
-        Log::debug('---- code ----'.$data['code'].'----'.is_array($data));
+        Log::debug('---- code ----'.$data['code'].'----'.(is_array($data) ? 'true' : 'false'));
         if ($data['code'] == self::SUCCESS_CODE) {
             return $data['data'];
         } else {
