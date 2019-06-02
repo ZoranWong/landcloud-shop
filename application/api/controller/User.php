@@ -20,6 +20,7 @@ use app\common\model\UserWx;
 use app\service\LabGicApiService;
 use think\Container;
 use think\facade\Cache;
+use think\facade\Log;
 use think\facade\Request;
 
 class User extends Api
@@ -213,8 +214,10 @@ class User extends Api
         if ($userInfo !== false) {
             if ($userInfo['erp_user_id']) {
                 $balance = LabGicApiService::userBalance($userInfo['erp_user_id']);
+                Log::debug('-------- balance info ----------- '.json_encode($balance).' --------------');
                 if ($balance) {
-                    $userInfo['balance'] = $balance;
+                    $userInfo['balance'] = $balance['CurrCredit'];
+                    $userInfo['return_day'] = $balance['cName'];
                 }
             }
             $userInfo['payment_amount'] = \app\common\model\Order::where(['user_id' => $userInfo['id'], 'status' => 2])->sum('order_pmt');

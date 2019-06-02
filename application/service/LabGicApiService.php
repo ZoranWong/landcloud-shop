@@ -52,7 +52,7 @@ class LabGicApiService
         $response = $this->http->get("{$this->host}{$method}", ['query' => ['CusCode' => $id, 'ApiKey' => $code]]);
         $data = json_decode($response->getBody()->getContents(), true);
         if ($data['code'] === self::SUCCESS_CODE) {
-            return $data['data']['CurrCredit'];
+            return $data['data'];
         } else {
             return 0;
         }
