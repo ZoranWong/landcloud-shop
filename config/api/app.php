@@ -18,5 +18,5 @@ return [
     'default_return_type'    => 'json',
     // API运行模式 formal=正式 review=审核
     'operating_mode' => 'formal',
-    'lab_gic_host' => 'http://120.209.132.99:8043'
+    'lab_gic_host' => 'http://erp-service.labgic.online:8043'
 ];
