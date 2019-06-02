@@ -46,8 +46,9 @@ class LabGicApiService
 
     public function getUserBalance($id)
     {
+        Log::debug('---------------- '.json_encode($id).' --------');
         $method = '/api/api/GetCurrCreditSP';
-        $id = urlencode(base64_encode($id));
+        $id = urlencode(base64_encode(json_encode($id)));
         $code = md5($this->apiKey . $id);
         $response = $this->http->get("{$this->host}{$method}", ['query' => ['CusCode' => $id, 'ApiKey' => $code]]);
         Log::debug('-------------- '.$response->getBody()->getContents().' ------------');
