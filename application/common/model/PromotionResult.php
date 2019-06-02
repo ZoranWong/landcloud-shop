@@ -206,7 +206,7 @@ class PromotionResult extends Common
         $v['promotion_amount'] += $promotionMoney;
         //设置商品的实际销售金额（单品）
         $v['amount'] -= $promotionMoney;
-        $cart['amount'] += $v['amount'];
+//        $cart['amount'] += $v['amount'];
 
         return $promotionMoney;
     }
@@ -230,7 +230,7 @@ class PromotionResult extends Common
         //设置商品的实际销售总金额
         $v['price'] = number_format($v['price'], 2);
         $v['promotion_amount'] = number_format($v['promotion_amount'], 2);
-        //$v['coupon_code'] = $promotionInfo[''];
+        // $v['coupon_code'] = $promotionInfo[''];
 //        $num = $v['nums'];
         $v['amount'] = 0;
 
@@ -240,11 +240,15 @@ class PromotionResult extends Common
                 $tm = $p['count'] * $mp;
                 $p['amount'] = number_format($tm, 2);
                 $p['price'] = number_format($mp, 2);
+                $p['o_price'] = $mp;
+                $p['o_amount'] = $tm;
                 $v['amount'] += $tm;
+
                 $p['discount'] = $params['discount'];
             }
         }
-        $cart['amount'] += $v['amount'];
+        $v['o_amount'] = $v['amount'];
+            //$cart['amount'] += $v['amount'];
         Log::debug('------------- prices data --------------'.$v['amount'].'     '.$cart['amount']);
         return $promotionMoney;
     }

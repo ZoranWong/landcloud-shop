@@ -237,7 +237,7 @@ class Cart extends Common
                 }
             }
         }
-
+        $prices = [];
         if ($goods['price_levels']) {
             /** @var Collection $levels * */
             $levels = &$goods['price_levels'];
@@ -248,31 +248,38 @@ class Cart extends Common
             $goods->levels($levels, $area);
             $price = $goods['promotion_price'] > 0 ? ($goods['preferential_price'] > 0 ? ($goods['preferential_price'] < $goods['promotion_price'] ?
                 $goods['preferential_price'] : $goods['promotion_price']) : $goods['promotion_price']) : $goods['price'];
-            $priceStruct = [];
+
             foreach ($levels as $level) {
                 if ($num >= $level['buy_num']) {
                     $n = (int)($num / $level['buy_num']);
                     $fee = $level['price'] * $n;
                     $amount += $fee;
                     $num = $num % $level['buy_num'];
-                    $priceStruct[] = $level;
+                    $prices[] = $level;
+                    $level['o_price'] = $level['price'];
                     $level['count'] = $n;
                     $level['pack'] = true;
                     $level['amount'] = number_format($fee, 2);
                     $level['price'] = number_format($level['price'], 2);
+                    $level['o_amount'] = $fee;
+
                 }
             }
             if($num > 0) {
                 $level0 = ['pack' => false, 'count' => $num,
                     'amount' => number_format($price * $num, 2),
                     'price' => number_format($price, 2),
-                    'buy_num' => 1];
-                $priceStruct[] = $level0;
+                    'buy_num' => 1,
+                    'o_price' => $price,
+                    'o_amount' => $price * $num
+                    ];
+                $prices[] = $level0;
                 $amount += $price * $num;
             }
 
         }
-        return [$amount, $priceStruct];
+        Log::debug("----- amount ------ {$amount} ------");
+        return [$amount, $prices];
     }
 
     /**
@@ -328,9 +335,10 @@ class Cart extends Common
 //            }
             $carts[] = $v;
             //单条商品总价
-            list($amount, $priceStruct) = $this->getGoodsAmount($v['detail'], $v['nums'], $userId, $area);
-            //$result['data']['list'][$k]['amount'] = $amount;
-            $result['data']['list'][$k]['prices'] = $priceStruct;
+            list($amount, $prices) = $this->getGoodsAmount($v['detail'], $v['nums'], $userId, $area);
+            $result['data']['list'][$k]['amount'] = $amount;
+            $result['data']['list'][$k]['prices'] = $prices;
+           // $result['data']['amount'] += $amount;
         }
 
 //        echo json_encode($result['data']['list']);exit;
@@ -394,13 +402,13 @@ class Cart extends Common
                 //算订单总商品价格
                 //$result['data']['goods_amount'] += $result['data']['list'][$k]['products']['amount'];
                 //算订单总价格
-                //$result['data']['amount'] += (float)$v['amount'];
+                $result['data']['amount'] += (float)$v['amount'];
                 $v['amount'] = number_format($v['amount'], 2);
                 //计算总重量
                 //$result['data']['weight'] += $v['weight'] * $v['nums'];
             }
         }
-
+        $result['data']['o_amount'] = $result['data']['amount'];
         if ($point != 0) {
             //判断用户是否有这么多积分
             $userModel = new User();

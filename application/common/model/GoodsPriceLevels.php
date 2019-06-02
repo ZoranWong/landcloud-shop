@@ -35,6 +35,7 @@ class GoodsPriceLevels extends Common implements Excelable
     {
         return [
             ['id' => 'erp_goods_id', 'desc' => '产品ID（ERP U8编号）'],
+            ['id' => 'goods_name', 'desc' => '产品名称'],
             ['id' => 'area', 'desc' => '区域（省）'],
             ['id' => 'level', 'desc' => '梯度'],
             ['id' => 'name', 'desc' => '产品规格'],
@@ -61,6 +62,7 @@ class GoodsPriceLevels extends Common implements Excelable
     {
         return [
             ['field' => 'erp_goods_id', 'desc' => 'ERP U8编号', 'type' => DataType::TYPE_STRING],
+            ['field' => 'goods_name', 'desc' => '产品名称', 'type' => DataType::TYPE_STRING],
             ['field' => 'area_id', 'desc' => '区域代码', 'type' => DataType::TYPE_NUMERIC],
             ['field' => 'area', 'desc' => '区域', 'type' => DataType::TYPE_STRING],
             ['field' => 'level', 'desc' => '梯度', 'type' => DataType::TYPE_NUMERIC],

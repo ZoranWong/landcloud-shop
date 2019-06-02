@@ -998,7 +998,7 @@ CREATE TABLE `lc_operation_log` (
   `controller` varchar(50) DEFAULT NULL COMMENT '操作的控制器名',
   `method` varchar(50) DEFAULT NULL COMMENT '操作方法名',
   `desc` varchar(255) DEFAULT NULL COMMENT '操作描述',
-  `content` text COMMENT '操作数据序列号存储',
+  `content` longtext  COMMENT '操作数据序列号存储',
   `ip` char(50) DEFAULT NULL COMMENT '操作IP',
   `ctime` bigint(12) unsigned DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`) USING BTREE
