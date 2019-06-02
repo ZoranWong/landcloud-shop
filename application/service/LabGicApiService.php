@@ -48,7 +48,7 @@ class LabGicApiService
     {
         Log::debug('---------------- '.json_encode($id).' --------');
         $method = '/api/api/GetCurrCreditSP';
-        $id = urlencode(base64_encode(is_string($id) ? $id : $id[0]));
+        $id = urlencode(base64_encode(!is_array($id) ? $id : $id[0]));
         $code = md5($this->apiKey . $id);
         $response = $this->http->get("{$this->host}{$method}", ['query' => ['CusCode' => $id, 'ApiKey' => $code]]);
         Log::debug('-------------- '.$response->getBody()->getContents().' ------------');
