@@ -216,7 +216,7 @@ class User extends Api
                 $balance = LabGicApiService::userBalance($userInfo['erp_user_id']);
                 Log::debug('-------- balance info ----------- '.json_encode($balance).' -------------- '.$userInfo['erp_user_id']);
                 if ($balance) {
-                    $userInfo['balance'] = $balance['CurrCredit'];
+                    $userInfo['balance'] = number_format($balance['CurrCredit'], 2);
                     $userInfo['return_day'] = $balance['cName'];
                 }
             }
