@@ -550,7 +550,7 @@ CREATE TABLE `lc_goods` (
   `ctime` bigint(12) unsigned DEFAULT NULL COMMENT '创建时间',
   `utime` bigint(12) unsigned DEFAULT NULL COMMENT '更新时间',
   `isdel` bigint(12) unsigned DEFAULT NULL COMMENT '删除标志 有数据表示删除',
-  `erp_goods_id` varchar(64) not null comment 'erp产品id',
+  `erp_goods_id` varchar(100) not null comment 'erp产品id',
   `en_name` varchar(200)  default null comment '产品英文名称',
   `length` decimal(10,2) unsigned default 0 comment '产品长度',
   `width` decimal(10,2) unsigned default 0 comment '产品宽度',
@@ -871,7 +871,7 @@ COMMIT;
 DROP TABLE IF EXISTS `lc_manage`;
 CREATE TABLE `lc_manage` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `erp_manage_id` varchar(64) unsigned not null comment '用户ERP的ID',
+  `erp_manage_id` varchar(100) unsigned not null comment '用户ERP的ID',
   `username` varchar(20) DEFAULT NULL COMMENT '用户名',
   `password` varchar(255) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
   `mobile` char(15) DEFAULT NULL COMMENT '手机号',
@@ -1345,9 +1345,9 @@ CREATE TABLE `lc_user` (
   `pid` int(10) unsigned DEFAULT '0' COMMENT '销售客服',
   `isdel` bigint(12) unsigned DEFAULT NULL COMMENT '删除标志 有数据就是删除',
   `company` varchar(30) comment '公司',
-  `erp_user_id` varchar (64) not null comment '用户erp系统id',
-  `erp_manage_id` varchar (64) not null comment '销售经理erp系统id',
-  `erp_manage_name` varchar(20) not null comment '销售经理erp系统name',
+  `erp_user_id` varchar (100) not null comment '用户erp系统id',
+  `erp_manage_id` varchar (100) not null comment '销售经理erp系统id',
+  `erp_manage_name` varchar(100) not null comment '销售经理erp系统name',
   `return_day` int(11) default null comment '回款日';
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户表';
@@ -1427,7 +1427,7 @@ DROP TABLE IF EXISTS `lc_user_ship`;
 CREATE TABLE `lc_user_ship` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned DEFAULT NULL COMMENT '用户id 关联user.id',
-  `erp_user_id` varchar(64) unsigned default null comment '用户ERP中ID',
+  `erp_user_id` varchar(100) unsigned default null comment '用户ERP中ID',
   `area_id` int(10) unsigned DEFAULT NULL COMMENT '收货地区ID',
   `address` varchar(200) DEFAULT NULL COMMENT '收货详细地址',
   `name` varchar(50) DEFAULT NULL COMMENT '收货人姓名',
@@ -1631,7 +1631,7 @@ DROP TABLE IF EXISTS `lc_goods_price_levels`;
 CREATE TABLE `lc_goods_price_levels`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `goods_id` int(11) NOT NULL  COMMENT '产品ID',
-  `area` varchar (80) CHARACTER SET utf8 DEFAULT NULL  COMMENT '区域名称',
+  `area` varchar (255) CHARACTER SET utf8 DEFAULT NULL  COMMENT '区域名称',
   `level` int(2) NOT NULL  COMMENT '梯度',
   `price` decimal (10, 2) NOT NULL COMMENT '售卖价格',
   `name` varchar (16) NOT NULL COMMENT '梯度名称',
