@@ -1682,7 +1682,9 @@ CREATE TABLE `lc_work_order_comment` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COMMENT='服务工单跟单表';
 
-// 产品品牌与产品分类关联表
+-- ---------------------
+-- 产品品牌与产品分类关联表
+-- ---------------------
 drop table if exists `lc_goods_category_brand`;
 create table `lc_goods_category_brand`(
     `id` int(10) not null AUTO_INCREMENT,
