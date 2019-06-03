@@ -1189,6 +1189,7 @@ class Order extends Common
             return $orderInfo;
         }
         if (!isset($orderInfo['data']['items']) || count($orderInfo['data']['items']) <= 0) {
+            Log::debug('-------- error --------- items count '.count($orderInfo['data']['items']));
             return error_code(11100);
         }
 
