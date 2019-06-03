@@ -1024,7 +1024,7 @@ CREATE TABLE `lc_order` (
   `user_id` int(10) unsigned DEFAULT NULL COMMENT '用户ID 关联user.id',
   `seller_id` int(10) unsigned DEFAULT NULL COMMENT '店铺ID 关联seller.id',
   `confirm` tinyint(1) unsigned DEFAULT '1' COMMENT '售后状态 1=未确认收货 2=已确认收货',
-  `confirm` tinyint(1) unsigned DEFAULT '1' COMMENT '售后状态 1=未确认收货 2=已确认收货',
+--   `confirm` tinyint(1) unsigned DEFAULT '1' COMMENT '售后状态 1=未确认收货 2=已确认收货',
   `confirm_time` bigint(12) unsigned DEFAULT NULL COMMENT '确认收货时间',
   `store_id` int(10) unsigned DEFAULT '0' COMMENT '自提门店ID，0就是不门店自提',
   `ship_area_id` int(10) unsigned DEFAULT '0' COMMENT '收货地区ID',
