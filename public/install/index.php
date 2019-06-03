@@ -147,6 +147,9 @@ if ($get == $config['endPage']) {
                         if (!empty($v)) {
                             $link->query($v);
                             //var_dump($k);
+                            if($link->error){
+                                var_dump($link->error);
+                            }
                             $return['sql'][] = [$v, $link->error];
                         }
                     }
