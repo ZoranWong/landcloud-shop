@@ -224,12 +224,18 @@ class Manage extends Common implements Excelable
             return $result;
         }
 
-        if ($info['password'] != $this->enPassword($oldPassword, $info['ctime'])) {
-            $result['msg'] = "旧密码不正确";
+//         if ($info['password'] != $this->enPassword($oldPassword, $info['ctime'])) {
+//             $result['msg'] = "旧密码不正确";
+//             return $result;
+//         }
+
+        if (decrypt($info['password']) !== $oldPassword) {
+            $result['msg'] = '旧密码不正确';
             return $result;
         }
 
-        $re = $this->save(['password' => $this->enPassword($newPassword, $info['ctime'])], ['id' => $info['id']]);
+//         $re = $this->save(['password' => $this->enPassword($newPassword, $info['ctime'])], ['id' => $info['id']]);
+        $re = $this->save(['password' => encrypt($newPasswold)],['id' => $info['id']]);
         if ($re) {
             $result['status'] = true;
             $result['msg'] = "修改成功";
