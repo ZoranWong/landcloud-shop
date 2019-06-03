@@ -1184,7 +1184,7 @@ class Order extends Common
         }
 
         $orderInfo = $this->formatOrderItems($user_id, $cart_ids, $area_id, $point, $coupon_code, $receipt_type);
-
+        Log::debug('----------- order info --------------'.json_encode($orderInfo));
         if (!$orderInfo['status']) {
             return $orderInfo;
         }
