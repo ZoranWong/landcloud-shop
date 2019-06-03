@@ -871,7 +871,7 @@ COMMIT;
 DROP TABLE IF EXISTS `lc_manage`;
 CREATE TABLE `lc_manage` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `erp_manage_id` varchar(100) unsigned not null comment '用户ERP的ID',
+  `erp_manage_id` varchar(100)  not null comment '用户ERP的ID',
   `username` varchar(20) DEFAULT NULL COMMENT '用户名',
   `password` varchar(255) DEFAULT NULL COMMENT '密码 md5(md5()+创建时间)',
   `mobile` char(15) DEFAULT NULL COMMENT '手机号',
@@ -1427,7 +1427,7 @@ DROP TABLE IF EXISTS `lc_user_ship`;
 CREATE TABLE `lc_user_ship` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned DEFAULT NULL COMMENT '用户id 关联user.id',
-  `erp_user_id` varchar(100) unsigned default null comment '用户ERP中ID',
+  `erp_user_id` varchar(100)  default null comment '用户ERP中ID',
   `area_id` int(10) unsigned DEFAULT NULL COMMENT '收货地区ID',
   `address` varchar(200) DEFAULT NULL COMMENT '收货详细地址',
   `name` varchar(50) DEFAULT NULL COMMENT '收货人姓名',
