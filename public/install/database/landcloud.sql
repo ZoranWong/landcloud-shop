@@ -1654,7 +1654,9 @@ CREATE TABLE `lc_relation_goods`(
 
 SET FOREIGN_KEY_CHECKS = 1;
 
-// 服务工单
+-- ----------------------
+--  服务工单
+-- ----------------------
 drop table if exists `lc_work_order`;
 CREATE TABLE `lc_work_order` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -1666,7 +1668,9 @@ CREATE TABLE `lc_work_order` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='服务工单表';
 
-// 服务工单跟单
+-- ------------
+-- 服务工单跟单
+-- -----------
 drop table if exists `lc_work_order_comment`;
 CREATE TABLE `lc_work_order_comment` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
