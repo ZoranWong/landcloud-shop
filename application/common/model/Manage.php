@@ -235,7 +235,7 @@ class Manage extends Common implements Excelable
         }
 
 //         $re = $this->save(['password' => $this->enPassword($newPassword, $info['ctime'])], ['id' => $info['id']]);
-        $re = $this->save(['password' => encrypt($newPasswold)],['id' => $info['id']]);
+        $re = $this->save(['password' => encrypt($newPassword)],['id' => $info['id']]);
         if ($re) {
             $result['status'] = true;
             $result['msg'] = "修改成功";
