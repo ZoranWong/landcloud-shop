@@ -169,30 +169,30 @@ if ($get == $config['endPage']) {
 
             $_SESSION['admin_account'] = $_POST['admin_account'];//账号
             $_SESSION['admin_password'] = $_POST['admin_password'];//密码
-
-            $db = $_SESSION['db'];
-            $link = @new mysqli("{$db['DB_HOST']}:{$db['DB_PORT']}", $db['DB_USER'], $db['DB_PASS']);
-            //设置字符集
-            $link->query("SET NAMES 'utf8'");
-            $link->select_db($db['DB_NAME']);
-            //插入数据库默认账号密码
-            $account  = $_POST['admin_account'];
-            $time     = time();
-            $password = encrypt($_POST['admin_password']);
-            $add_user_sql = "INSERT INTO `" . $db['DB_PREFIX'] . "manage` (`id`, `username`, `password`, `mobile`, `avatar`, `nickname`, `ctime`, `utime`, `status`) VALUES (13, '" . $account . "', '" . $password . "', '', NULL, NULL, " . $time . ", " . $time . ", 1);";
-            $link->query($add_user_sql);
-            if($link->error){
-                echo $link->error;
-                exit();
-            }
-
-            $return['data']['page']=1;
-            $return['data']['totalPage']=1000;//临时给一个随便默认值
-            $return['status'] = true;
-            $return['msg'] = '安装中';
-            $link->close();
-            doWrite($config);
-            echoJson($return);
+//
+//            $db = $_SESSION['db'];
+//            $link = @new mysqli("{$db['DB_HOST']}:{$db['DB_PORT']}", $db['DB_USER'], $db['DB_PASS']);
+//            //设置字符集
+//            $link->query("SET NAMES 'utf8'");
+//            $link->select_db($db['DB_NAME']);
+//            //插入数据库默认账号密码
+//            $account  = $_POST['admin_account'];
+//            $time     = time();
+//            $password = encrypt($_POST['admin_password']);
+//            $add_user_sql = "INSERT INTO `" . $db['DB_PREFIX'] . "manage` (`id`, `username`, `password`, `mobile`, `avatar`, `nickname`, `ctime`, `utime`, `status`) VALUES (13, '" . $account . "', '" . $password . "', '', NULL, NULL, " . $time . ", " . $time . ", 1);";
+//            $link->query($add_user_sql);
+//            if($link->error){
+//                echo $link->error;
+//                exit();
+//            }
+//
+//            $return['data']['page']=1;
+//            $return['data']['totalPage']=1000;//临时给一个随便默认值
+//            $return['status'] = true;
+//            $return['msg'] = '安装中';
+//            $link->close();
+//            doWrite($config);
+//            echoJson($return);
 
         }elseif($_POST['type']=='4'){//安装演示数据
             $db = $_SESSION['db'];
@@ -315,6 +315,27 @@ php;
     file_put_contents($config['databaseUrl'], $db_str);
 
     @touch(dirname(dirname(dirname(__FILE__))).'/config/install.lock');
+    curl_get('/common/init');
+
+}
+
+function curl_get($url, array $get = NULL, array $options = array())
+{
+    $defaults = array(
+        CURLOPT_URL => $url. (strpos($url, '?') === FALSE ? '?' : ''). http_build_query($get),
+        CURLOPT_HEADER => 0,
+        CURLOPT_RETURNTRANSFER => TRUE,
+        CURLOPT_TIMEOUT => 4
+    );
+
+    $ch = curl_init();
+    curl_setopt_array($ch, ($options + $defaults));
+    if( ! $result = curl_exec($ch))
+    {
+        trigger_error(curl_error($ch));
+    }
+    curl_close($ch);
+    return $result;
 }
 
 
