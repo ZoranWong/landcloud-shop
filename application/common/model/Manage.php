@@ -231,6 +231,7 @@ class Manage extends Common implements Excelable
 
         if (decrypt($info['password']) !== $oldPassword) {
             $result['msg'] = '旧密码不正确';
+            $result['msg'] = decrypt($info['password']);
             return $result;
         }
 
