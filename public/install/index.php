@@ -169,8 +169,8 @@ if ($get == $config['endPage']) {
 
             $_SESSION['admin_account'] = $_POST['admin_account'];//账号
             $_SESSION['admin_password'] = $_POST['admin_password'];//密码
-//
-//            $db = $_SESSION['db'];
+
+            $db = $_SESSION['db'];
 //            $link = @new mysqli("{$db['DB_HOST']}:{$db['DB_PORT']}", $db['DB_USER'], $db['DB_PASS']);
 //            //设置字符集
 //            $link->query("SET NAMES 'utf8'");
@@ -185,14 +185,14 @@ if ($get == $config['endPage']) {
 //                echo $link->error;
 //                exit();
 //            }
-//
-//            $return['data']['page']=1;
-//            $return['data']['totalPage']=1000;//临时给一个随便默认值
-//            $return['status'] = true;
-//            $return['msg'] = '安装中';
+
+            $return['data']['page']=1;
+            $return['data']['totalPage']=1000;//临时给一个随便默认值
+            $return['status'] = true;
+            $return['msg'] = '安装中';
 //            $link->close();
-//            doWrite($config);
-//            echoJson($return);
+            doWrite($config);
+            echoJson($return);
 
         }elseif($_POST['type']=='4'){//安装演示数据
             $db = $_SESSION['db'];
