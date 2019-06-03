@@ -181,6 +181,10 @@ if ($get == $config['endPage']) {
             $password = encrypt($_POST['admin_password']);
             $add_user_sql = "INSERT INTO `" . $db['DB_PREFIX'] . "manage` (`id`, `username`, `password`, `mobile`, `avatar`, `nickname`, `ctime`, `utime`, `status`) VALUES (13, '" . $account . "', '" . $password . "', '', NULL, NULL, " . $time . ", " . $time . ", 1);";
             $link->query($add_user_sql);
+            if($link->error){
+                echo $link->error;
+                exit();
+            }
 
             $return['data']['page']=1;
             $return['data']['totalPage']=1000;//临时给一个随便默认值
