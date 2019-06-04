@@ -125,7 +125,7 @@
         <div class="layui-form-item layui-upload video" {if condition="$form.head_type neq 3"}style="display: none;"{/if}>
             <label class="layui-form-label">视频封面：</label>
             <div class="layui-input-inline seller-inline-4">
-                {Labgic:image id='video_cover' name="video_cover" value="$head_type_value[1]"/}
+                {Labgic:image id='video_cover' name="video_cover" value="$head_type_value[1]" path="/video/covers"/}
                 <div class="layui-form-mid layui-word-aux">
                     图标尺寸建议：377px*177px
                 </div>
