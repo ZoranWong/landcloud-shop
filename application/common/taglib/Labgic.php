@@ -62,7 +62,7 @@ class Labgic extends TagLib
     public function tagImage($tag)
     {
         $id       = !empty($tag['id']) ? $tag['id'] : '_editor';
-        $path      = !empty($tag['path']) ? $tag['path'] : '/';
+        $path      = !empty($tag['path']) ? $tag['path'] : '';
         $name     = !empty($tag['name']) ? $tag['name'] : '';
         $style    = !empty($tag['style']) ? $tag['style'] : '';
         $value    = !empty($tag['value']) ? $tag['value'] : config('labgic.default_image'); //todo 默认图片
