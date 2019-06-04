@@ -87,6 +87,7 @@ class Labgic extends TagLib
             <input class="layui-upload-file" type="hidden" name="{$str_name}"  id="image_value_{$id}" value="{$value}">
             <textarea id="edit_{$id}" style="display: none;"></textarea>
             <script>
+                var x = 0;
                 var _edito{$id}r = UE.getEditor("edit_{$id}",{
                     initialFrameWidth:800,
                     initialFrameHeight:300,
