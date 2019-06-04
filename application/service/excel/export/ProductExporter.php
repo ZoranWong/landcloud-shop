@@ -54,6 +54,7 @@ class ProductExporter extends BaseGenerator
                     'bn' => $goods['bn'],
                     'name' => $goods['name'],
                     'en_name' => $goods['en_name'],
+                    'spes_desc' => $goods['spes_desc'],
                     'brief' => $goods['brief'],
                     'intro' => $goods['intro'],
                     'weight' => $goods['weight'],
