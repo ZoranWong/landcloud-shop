@@ -70,6 +70,8 @@ class Upload
 
     protected $savePath = '';
 
+    public $path = '';
+
     /**
      * 构造方法，用于构造上传实例
      * @param array $config 配置

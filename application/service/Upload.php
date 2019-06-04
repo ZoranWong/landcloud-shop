@@ -19,7 +19,7 @@ class Upload extends OUpload
     protected static  $instance = null;
     protected  $config = null;
     protected  $imageStorage = null;
-    protected  $path = null;
+    public  $path = '';
     public function __construct()
     {
         $filetypes = [
