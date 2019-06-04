@@ -218,6 +218,7 @@ class User extends Api
                 if ($balance) {
                     $userInfo['balance'] = number_format($balance['CurrCredit'], 2);
                     $userInfo['return_day'] = $balance['cName'];
+                    $userInfo['company'] = $balance['CusName'];
                 }
             }
             $userInfo['payment_amount'] = \app\common\model\Order::where(['user_id' => $userInfo['id'], 'status' => 2])->sum('order_pmt');
