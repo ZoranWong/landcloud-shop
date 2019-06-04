@@ -665,7 +665,7 @@
     var _editor = UE.getEditor("edit_image", {
         initialFrameWidth: 800,
         initialFrameHeight: 300,
-        serverUrl: "{:url('images/manage').?path='/goods/images'}"
+        serverUrl: `{:url('images/manage')."?path='/goods/images'"}`
     });
     _editor.ready(function () {
         _editor.hide();
