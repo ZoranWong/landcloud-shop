@@ -253,7 +253,7 @@ class Upload
             if ($this->uploader->save($file, $this->replace)) {
                 unset($file['error'], $file['tmp_name']);
                 $info[$key] = $file;
-                $this->path = trim($this->savePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . trim($savename, DIRECTORY_SEPARATOR);
+                $this->path =  substr($file['savepath'], 1) . $file['savename'];;
             } else {
                 $this->error = $this->uploader->getError();
             }

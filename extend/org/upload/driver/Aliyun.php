@@ -90,11 +90,11 @@ class Aliyun
      */
     public function save(&$file, $replace = true)
     {
-        $filePath = $file['savepath'];
+        $filePath = $file['tmp_name'];
 
         try {
 
-            $fileName = $file['savename'];
+            $fileName = substr($file['savepath'], 1) . $file['savename'];
 
             $result = $this->aliyun->uploadFile($this->config['bucket'], $fileName, $filePath);
             if (isset($result['info']['url'])) {
