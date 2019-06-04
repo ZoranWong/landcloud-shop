@@ -156,10 +156,10 @@ class Upload
             return false;
         }
 
-        Log::debug(`1)----- save path {$this->savePath} path = {$path}-----`);
+        Log::debug("1)----- save path {$this->savePath} path = {$path}-----");
         $this->savePath = trim($this->savePath ?: '', DIRECTORY_SEPARATOR) .
             DIRECTORY_SEPARATOR . trim($path, DIRECTORY_SEPARATOR);
-        Log::debug(`2)----- save path {$this->savePath} -----`);
+        Log::debug("2)----- save path {$this->savePath} -----");
         /* 检测上传根目录 */
         if (!$this->uploader->checkRootPath($this->rootPath)) {
             $this->error = $this->uploader->getError();
