@@ -1431,6 +1431,7 @@ CREATE TABLE `lc_user_ship` (
   `area_id` int(10) unsigned DEFAULT NULL COMMENT '收货地区ID',
   `address` varchar(200) DEFAULT NULL COMMENT '收货详细地址',
   `name` varchar(50) DEFAULT NULL COMMENT '收货人姓名',
+  `postal_code` varchar (16) DEFAULT '' COMMENT '邮编',
   `mobile` char(15) DEFAULT NULL COMMENT '收货电话',
   `utime` bigint(12) NOT NULL COMMENT '更新时间',
   `is_def` tinyint(1) unsigned DEFAULT NULL COMMENT '是否默认 1=默认 2=不默认',
