@@ -12,6 +12,7 @@ use app\service\Upload;
 use Request;
 use app\common\controller\Manage;
 use app\common\model\Images as imageModel;
+use think\facade\Log;
 
 
 class Images extends Manage
@@ -39,6 +40,7 @@ class Images extends Manage
         if (Request::isPost()) {
             $type = \think\facade\Request::post('type');
             $path = \think\facade\Request::param('path', '/');
+            Log::debug("------ path = {$path}----------");
             $upload = Upload::getInstance();
             $info = $upload->upload($path);
             $imageStorage = $upload->imageStorage;
@@ -55,7 +57,6 @@ class Images extends Manage
                 $iData['path'] = $savepath;
                 $image_model = new imageModel();
                 if ($image_model->save($iData)) {
-
                     if (isset($_FILES['upfile'])) {
                         $callback = input('callback', '');
                         $editInfo = [
