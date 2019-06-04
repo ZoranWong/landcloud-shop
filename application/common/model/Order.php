@@ -1184,11 +1184,12 @@ class Order extends Common
         }
 
         $orderInfo = $this->formatOrderItems($user_id, $cart_ids, $area_id, $point, $coupon_code, $receipt_type);
-
+        Log::debug('----------- order info --------------'.json_encode($orderInfo));
         if (!$orderInfo['status']) {
             return $orderInfo;
         }
         if (!isset($orderInfo['data']['items']) || count($orderInfo['data']['items']) <= 0) {
+            Log::debug('-------- error --------- items count '.count($orderInfo['data']['items']));
             return error_code(11100);
         }
 

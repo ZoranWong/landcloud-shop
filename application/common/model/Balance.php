@@ -80,10 +80,10 @@ class Balance extends Common
                 $money = - $money - $cate_money;
             }
             $balance = $userInfo[ 'balance' ] + $money;
-            if(($balance) < 0)
-            {
-                return error_code(11007);
-            }
+//            if(($balance) < 0)
+//            {
+//                return error_code(11007);
+//            }
 
             $data['user_id'] = $user_id;
             $data['type'] = $type;
