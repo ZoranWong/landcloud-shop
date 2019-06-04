@@ -61,7 +61,7 @@ class Labgic extends TagLib
         $path      = !empty($tag['path']) ? $tag['path'] : '';
         $name     = !empty($tag['name']) ? $tag['name'] : '';
         $style    = !empty($tag['style']) ? $tag['style'] : '';
-        $value    = !empty($tag['value']) ? $tag['value'] : config('labgic.default_image'); //todo 默认图片
+        $o = $value    = !empty($tag['value']) ? $tag['value'] : config('labgic.default_image'); //todo 默认图片
         $type     = !empty($tag['type']) ? $tag['type'] : '';
         $num      = !empty($tag['num']) ? $tag['num'] : 1;
         $width    = !empty($tag['width']) ? $tag['width'] : '90px';
@@ -79,7 +79,7 @@ class Labgic extends TagLib
             $value = _sImage($value);
         }
         $parseStr = '
-            <!------- ddddddd ---->
+            <!------- ddddddd'.$o.' ---->
             <button type="button" class="layui-btn" id="upload_img_' . $id . '" onclick="upImag'.$id.'e()">上传图片</button>
             <div class="layui-upload-list">
                 <img class="layui-upload-img"  src="' . $value . '" id="image_src_' . $id . '" style="width:' . $width . ';height:' . $height . ';" >
