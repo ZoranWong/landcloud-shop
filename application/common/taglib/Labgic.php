@@ -76,44 +76,10 @@ class Labgic extends TagLib
         $imageServer = url('images/manage')."?path={$path}";
         Log::info("------ image server url ------ {$imageServer}");
         if(isset($tag['value']) && !empty($tag['value'])) {
-            $value = $this->autoBuildVar($value);
+            // $value = $this->autoBuildVar($value);
             $src = _sImage($value);
-            $parseStr = `
-            <button type="button" class="layui-btn" id="upload_img_{$id}" onclick="upImag{$id}e()">上传图片</button>
-            <div class="layui-upload-list">
-                <img class="layui-upload-img"  src='{$src}' id="image_src_{$id}" style="width:{$width};height:{ $height};" >
-                <p id="upload_text_{$id}"></p>
-            </div>
-            <input class="layui-upload-file" type="hidden" name="{$str_name}"  id="image_value_{$id}" value="{$value}">
-            <textarea id="edit_{$id}" style="display: none;"></textarea>
-            <script>
-                var x = 0;
-                var _edito{$id}r = UE.getEditor("edit_{$id}",{
-                    initialFrameWidth:800,
-                    initialFrameHeight:300,
-                    zIndex:19891026,
-                    single: {$single},
-                    serverUrl: '{$imageServer}'
-                });
-                _edito{$id}r.ready(function (){
-                    //_edito{$id}r.setDisabled();
-                    _edito{$id}r.hide();
-                    //侦听图片上传
-                    _edito{$id}r.addListener('beforeInsertImage',function(t,arg){
-                            $("#image_value_{$id}").attr("value",arg[0].image_id);
-                            $("#image_src_{$id}").attr("src",arg[0].src);
-                    });
-                });
-                //上传dialog
-                function upImag{$id}e(){
-                    var myImag{$id}e = _edito{$id}r.getDialog("insertimage");
-                    myImag{$id}e.open();
-                }
-            </script>
-            `;
-        }else {
-            Log::info('------ ------ --------- ---------- --------');
-            $parseStr = '
+        }
+        $parseStr = '
             <!------- ddddddd ---->
             <button type="button" class="layui-btn" id="upload_img_' . $id . '" onclick="upImag'.$id.'e()">上传图片</button>
             <div class="layui-upload-list">
@@ -148,7 +114,6 @@ class Labgic extends TagLib
             }
 </script>
             ';
-        }
         return $parseStr;
     }
     /**
