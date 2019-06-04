@@ -78,11 +78,9 @@ class Labgic extends TagLib
         Log::info("------ image server url ------ {$imageServer}---- value = {$value}");
         if(isset($tag['value']) && !empty($tag['value'])){
             $value = _sImage($value);
-            $image = (new Images())->where('id', 'eq', $value)->find();
-            $str = $image->toJson();
         }
         $parseStr = '
-            <!------- image id '.$o.' image url '.$str.' ------>
+            <!------- image id '.$o.' image url '.$value.' ------>
             <button type="button" class="layui-btn" id="upload_img_' . $id . '" onclick="upImag'.$id.'e()">上传图片</button>
             <div class="layui-upload-list">
                 <img class="layui-upload-img"  src="' . $value . '" id="image_src_' . $id . '" style="width:' . $width . ';height:' . $height . ';" >
