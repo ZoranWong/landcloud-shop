@@ -92,7 +92,7 @@ class Labgic extends TagLib
                     initialFrameHeight:300,
                     zIndex:19891026,
                     single: {$single},
-                    serverUrl: {$imageServer}
+                    serverUrl: "{$imageServer}"
                 });
                 _edito{$id}r.ready(function (){
                     //_edito{$id}r.setDisabled();
