@@ -61,6 +61,7 @@ class Labgic extends TagLib
     public function tagImage($tag)
     {
         $id       = !empty($tag['id']) ? $tag['id'] : '_editor';
+        $path      = !empty($tag['path']) ? $tag['path'] : '/';
         $name     = !empty($tag['name']) ? $tag['name'] : '';
         $style    = !empty($tag['style']) ? $tag['style'] : '';
         $value    = !empty($tag['value']) ? $tag['value'] : config('labgic.default_image'); //todo 默认图片
@@ -76,39 +77,42 @@ class Labgic extends TagLib
         }else {
             $str_name = $name;
         }
+        $imageServer = url('images/manage')."?path={$path}";
         if(isset($tag['value']) && !empty($tag['value'])) {
             $value = $this->autoBuildVar($value);
-            $parseStr = '
-            <button type="button" class="layui-btn" id="upload_img_' . $id . '" onclick="upImag'.$id.'e()">上传图片</button>
+            $src = _sImage($value);
+            $parseStr = `
+            <button type="button" class="layui-btn" id="upload_img_{$id}" onclick="upImag{$id}e()">上传图片</button>
             <div class="layui-upload-list">
-                <img class="layui-upload-img"  src=' . "'" . '<?php echo _sImage(' . $value . ')?>' . "'" . ' id="image_src_' . $id . '" style="width:' . $width . ';height:' . $height . ';" >
-                <p id="upload_text_' . $id . '"></p>
+                <img class="layui-upload-img"  src='{$src}' id="image_src_{$id}" style="width:{$width};height:{ $height};" >
+                <p id="upload_text_{$id}"></p>
             </div>
-            <input class="layui-upload-file" type="hidden" name="' . $str_name . '"  id="image_value_' . $id . '" value="' . "<?php echo " . $value . "?>" . '">
-            <textarea id="edit_'.$id.'" style="display: none;"></textarea>
+            <input class="layui-upload-file" type="hidden" name="{$str_name}"  id="image_value_{$id}" value="{$value}">
+            <textarea id="edit_{$id}" style="display: none;"></textarea>
             <script>
-            var _edito'.$id.'r = UE.getEditor("edit_'.$id.'",{
-                initialFrameWidth:800,
-                initialFrameHeight:300,
-                zIndex:19891026,
-                 single:'.$single.'
-            });
-            _edito'.$id.'r.ready(function (){
-                //_edito'.$id.'r.setDisabled();
-                _edito'.$id.'r.hide();
-                //侦听图片上传
-                _edito'.$id.'r.addListener(\'beforeInsertImage\',function(t,arg){
-                        $("#image_value_'.$id.'").attr("value",arg[0].image_id);
-                        $("#image_src_'.$id.'").attr("src",arg[0].src);
+                var _edito{$id}r = UE.getEditor("edit_{$id}",{
+                    initialFrameWidth:800,
+                    initialFrameHeight:300,
+                    zIndex:19891026,
+                    single: {$single},
+                    serverUrl: {$imageServer}
                 });
-            });
-            //上传dialog
-            function upImag'.$id.'e(){
-                var myImag'.$id.'e = _edito'.$id.'r.getDialog("insertimage");
-                myImag'.$id.'e.open();
-            }
-</script>
-            ';
+                _edito{$id}r.ready(function (){
+                    //_edito{$id}r.setDisabled();
+                    _edito{$id}r.hide();
+                    //侦听图片上传
+                    _edito{$id}r.addListener('beforeInsertImage',function(t,arg){
+                            $("#image_value_{$id}").attr("value",arg[0].image_id);
+                            $("#image_src_{$id}").attr("src",arg[0].src);
+                    });
+                });
+                //上传dialog
+                function upImag{$id}e(){
+                    var myImag{$id}e = _edito{$id}r.getDialog("insertimage");
+                    myImag{$id}e.open();
+                }
+            </script>
+            `;
         }else {
             $parseStr = '
             <button type="button" class="layui-btn" id="upload_img_' . $id . '" onclick="upImag'.$id.'e()">上传图片</button>
@@ -123,7 +127,8 @@ class Labgic extends TagLib
                 initialFrameWidth:800,
                 initialFrameHeight:300,
                 zIndex:19891026,
-                single:'.$single.'
+                single:'.$single.',
+                serverUrl: '.$imageServer.'
             });
             _edito'.$id.'r.ready(function (){
                 //_edito'.$id.'r.setDisabled();
