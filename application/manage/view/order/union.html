@@ -36,7 +36,7 @@
         {volist name='order.items' id='vo'}
         <tr class="">
             <td>
-                {$vo.name}{if condition="$vo.addon"} - {$vo.addon}{/if}
+                {$vo.name}
             </td>
             <td>{$vo.bn}</td>
             <td>￥{$vo.price}</td>
@@ -120,7 +120,7 @@
         {volist name='order.items' id='vo'}
         <tr>
             <td>
-                {$vo.name}{if condition="$vo.addon"} - {$vo.addon}{/if}
+                {$vo.name}
             </td>
             <td>{$vo.bn}</td>
             <td>￥{$vo.price}</td>
