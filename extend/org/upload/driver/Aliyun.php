@@ -94,7 +94,7 @@ class Aliyun
 
         try {
 
-            $fileName = substr($file['savepath'], 1) . $file['savename'];
+            $fileName = trim($file['savepath'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file['savename'];
 
             $result = $this->aliyun->uploadFile($this->config['bucket'], $fileName, $filePath);
             if (isset($result['info']['url'])) {
