@@ -159,7 +159,8 @@ class Upload
         Log::debug("1)----- save path {$this->savePath} path = {$path}-----");
         $tPath = DIRECTORY_SEPARATOR . trim($path, DIRECTORY_SEPARATOR);
         $savePath = $this->savePath ?: '/';
-        $this->savePath = trim($savePath, DIRECTORY_SEPARATOR) . $tPath;
+        $savePath = trim($savePath, DIRECTORY_SEPARATOR);
+        $this->savePath = $savePath. $tPath;
 
         Log::debug("2)----- save path {$this->savePath} ----- path = {$tPath}");
         /* 检测上传根目录 */
