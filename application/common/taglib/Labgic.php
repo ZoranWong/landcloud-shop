@@ -74,7 +74,7 @@ class Labgic extends TagLib
             $str_name = $name;
         }
         $imageServer = url('images/manage')."?path={$path}";
-        Log::info("------ image server url ------ {$imageServer}");
+        Log::info("------ image server url ------ {$imageServer}---- value = {$value}");
         if(isset($value) && !empty($value)){
             $value = _sImage($value);
         }
