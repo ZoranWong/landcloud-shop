@@ -523,7 +523,7 @@ CREATE TABLE `lc_goods` (
   `name` varchar(200) DEFAULT NULL COMMENT '商品名称',
   `brief` varchar(255) DEFAULT NULL COMMENT '商品简介',
   `price` decimal(10,2) DEFAULT NULL COMMENT '商品价格',
---   `costprice` decimal(10,2) DEFAULT NULL COMMENT '成本价',
+  `costprice` decimal(10,2) DEFAULT NULL COMMENT '成本价',
   `mktprice` decimal(10,2) DEFAULT NULL COMMENT '市场价',
   `image_id` char(32) DEFAULT NULL COMMENT '默认图片 图片id',
   `goods_cat_id` int(10) unsigned DEFAULT NULL COMMENT '商品分类ID 关联category.id',
