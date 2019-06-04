@@ -9,6 +9,7 @@
 namespace app\common\taglib;
 
 use app\common\model\GoodsCat;
+use think\facade\Log;
 use think\template\TagLib;
 
 
@@ -78,6 +79,7 @@ class Labgic extends TagLib
             $str_name = $name;
         }
         $imageServer = url('images/manage')."?path={$path}";
+        Log::info("------ image server url ------ {$imageServer}");
         if(isset($tag['value']) && !empty($tag['value'])) {
             $value = $this->autoBuildVar($value);
             $src = _sImage($value);
