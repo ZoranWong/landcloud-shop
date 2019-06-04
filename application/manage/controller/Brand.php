@@ -63,7 +63,7 @@ class Brand extends Manage
         if (!$data) {
             return error_code(10002);
         }
-        return $this->fetch('edit', ['data' => $data, 'logo' => $data['logo']]);
+        return $this->fetch('edit', ['data' => $data, 'logo' => _sImage($data['logo'])]);
     }
 
 

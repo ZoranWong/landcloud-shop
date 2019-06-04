@@ -76,9 +76,9 @@ class Labgic extends TagLib
         }
         $imageServer = url('images/manage')."?path={$path}";
         Log::info("------ image server url ------ {$imageServer}---- value = {$value}");
-        if(isset($tag['value']) && !empty($tag['value'])){
-            $value = _sImage($value);
-        }
+//        if(isset($tag['value']) && !empty($tag['value'])){
+//            $value = _sImage($value);
+//        }
         $parseStr = '
             <!------- image id '.$o.' image url '.$value.' ------>
             <button type="button" class="layui-btn" id="upload_img_' . $id . '" onclick="upImag'.$id.'e()">上传图片</button>
