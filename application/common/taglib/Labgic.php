@@ -61,6 +61,7 @@ class Labgic extends TagLib
      */
     public function tagImage($tag)
     {
+        Log::info('-------- tag data --------'.json_encode($tag));
         $id       = !empty($tag['id']) ? $tag['id'] : '_editor';
         $path      = !empty($tag['path']) ? $tag['path'] : '';
         $name     = !empty($tag['name']) ? $tag['name'] : '';
