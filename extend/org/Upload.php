@@ -225,10 +225,11 @@ class Upload
 
             /* 检测并创建子目录 */
             $subpath = $this->getSubPath($file['name']);
+            $file['savepath'] = $this->savePath;
             if (false === $subpath) {
                 continue;
             } else {
-                $file['savepath'] = $this->savePath . $subpath;
+                $file['savepath'] .= $subpath;
             }
 
             /* 对图像文件进行严格检测 */
