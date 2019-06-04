@@ -75,7 +75,7 @@ class Labgic extends TagLib
         }
         $imageServer = url('images/manage')."?path={$path}";
         Log::info("------ image server url ------ {$imageServer}---- value = {$value}");
-        if(isset($value) && !empty($value)){
+        if(isset($tag['value']) && !empty($tag['value'])){
             $value = _sImage($value);
         }
         $parseStr = '
