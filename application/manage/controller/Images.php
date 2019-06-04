@@ -47,7 +47,7 @@ class Images extends Manage
             $savepath = $upload->path;
             if ($info) {
                 $first = array_shift($info);
-                $url = Upload::url($savepath);
+                $url = $info['url'];
                 $preview_url = $url;
                 $iData['id'] = md5(get_hash($first['name']));
                 $iData['type'] = $imageStorage['type'];
