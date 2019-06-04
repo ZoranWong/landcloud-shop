@@ -53,6 +53,8 @@ class UserShipImportHandler extends BaseHandler
                 } catch (Exception $exception) {
                     var_dump($userShip);
                     var_dump($userShipModel->getLastSql());
+                    var_dump($userShipModel->getError());
+                    var_dump($exception);
                     exit;
                 }
             }
