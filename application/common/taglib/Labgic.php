@@ -112,6 +112,7 @@ class Labgic extends TagLib
             </script>
             `;
         }else {
+            Log::info('------ ------ --------- ---------- --------');
             $parseStr = '
             <button type="button" class="layui-btn" id="upload_img_' . $id . '" onclick="upImag'.$id.'e()">上传图片</button>
             <div class="layui-upload-list">
