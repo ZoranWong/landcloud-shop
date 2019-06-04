@@ -7,22 +7,18 @@
  * Time: 19:51
  */
 namespace app\common\taglib;
-
 use app\common\model\GoodsCat;
 use think\facade\Log;
 use think\template\TagLib;
-
-
 class Labgic extends TagLib
 {
-
     /**
      * 定义标签列表
      */
     protected $tags = [
         // 标签定义： attr 属性列表 close 是否闭合（0 或者1 默认1） alias 标签别名 level 嵌套层次
         'image' => [
-            'attr'  => 'id,name,style,width,height,type,value,single',
+            'attr'  => 'id,name,style,width,height,type,value,single,path',
             'close' => 0
         ],
         'uploadImage' => [
@@ -50,7 +46,6 @@ class Labgic extends TagLib
             'close' => 0
         ],
     ];
-
     /**
      * 图片上传标签
      * @param $tag
@@ -72,7 +67,6 @@ class Labgic extends TagLib
         $width    = !empty($tag['width']) ? $tag['width'] : '90px';
         $height   = !empty($tag['height']) ? $tag['height'] : '90px';
         $single   = !empty($tag['single']) ? $tag['single'] : 'false';//是否单图上传
-
         $str_name = '';
         if($num > 1) {
             $str_name = $name . '[]';
@@ -153,7 +147,6 @@ class Labgic extends TagLib
         }
         return $parseStr;
     }
-
     /**
      * 地区（省市区）标签
      * @param $tag
@@ -170,7 +163,6 @@ class Labgic extends TagLib
             $js_val = "id=0";
         }
         $parse .= ' />';
-
         if(isset($tag['class'])){
             $class = ' class=\''.$tag['class'].'\'';
         }else {
@@ -182,7 +174,7 @@ class Labgic extends TagLib
             $style = "";
         }
         $full     = !empty($tag['full']) ? $tag['full'] : '1';      //传1或者2，如果是1就说明是省市区必须得输入到最后一个节点才有值，否则就是任意点都有值
-        
+
         $parse .= '
             <script>
                 $(function(){
@@ -203,7 +195,6 @@ class Labgic extends TagLib
                                     }
                                 });
                                 str += "</select>";
-
                             });
                             $("input[name=\''.$tag['name'].'\']").after(str);
                             //以上数据输出完，以下绑定事件
@@ -214,7 +205,6 @@ class Labgic extends TagLib
                                     });
                                 }
                             });
-
                         }
                     });
                     function change'.$tag['name'].'Area(i,max_i){
@@ -243,7 +233,6 @@ class Labgic extends TagLib
                                         $("select[name=\''.$tag['name'].'_"+(i+1)+"\']").change(function(){
                                             change'.$tag['name'].'Area(i+1,i+2);
                                         });
-
                                         //如果有返回值，就说明省市区没有选择到最终节点
                                         if( '.$full.'== 1){
                                             $("input[name=\''.$tag['name'].'\']").val("");
@@ -266,7 +255,6 @@ class Labgic extends TagLib
                                     i--;
                                     $("input[name=\''.$tag['name'].'\']").val($("select[name=\''.$tag['name'].'_"+ i +"\']").val());
                                 }
-
                             }
                         }
                     }
@@ -275,7 +263,6 @@ class Labgic extends TagLib
         ';
         return $parse;
     }
-
     /**
      * 商户平台的选择品牌标签，总后台不能用，总后台会做另外一个tab标签
      * @param $tag
@@ -288,7 +275,6 @@ class Labgic extends TagLib
         }else{
             $tag['value'] = "";
         }
-
         if(isset($tag['num'])){
             $tag['num'] = $this->autoBuildVar($tag['num']);
             $num = "<?php echo (" . $tag['num'] . ");?>";
@@ -296,7 +282,6 @@ class Labgic extends TagLib
             $num = "1";
         }
         $time = "b".time().rand(1,4);
-
         $parse = '
             <div id="'.$time.'_box" class="select_seller_brands_box">
                 <div>
@@ -315,7 +300,6 @@ class Labgic extends TagLib
                 </ul>
             </div>
         ';
-
         $parse .= '
             <script>
                 var obj_'.$time.'_ids = {};
@@ -339,8 +323,6 @@ class Labgic extends TagLib
                                             layer.msg("最多只能选择"+num_'.$time.'+"个");
                                             return false;
                                         }
-
-
                                         $("#'.$time.'_list").empty();
                                         var the_val = "";
                                         for(var key in ids){
@@ -370,7 +352,6 @@ class Labgic extends TagLib
         ';
         return $parse;
     }
-
     /**
      * 商户平台的选择商品标签，总后台不能用，总后台会做另外一个tab标签
      * @param $tag
@@ -383,8 +364,6 @@ class Labgic extends TagLib
         }else{
             $tag['value'] = "";
         }
-
-
         if(isset($tag['num'])){
             $tag['num'] = $this->autoBuildVar($tag['num']);
             $num = "<?php echo (" . $tag['num'] . ");?>";
@@ -392,7 +371,6 @@ class Labgic extends TagLib
             $num = "1";
         }
         $time = "g".time().rand(1,4);
-
         //增加变量key，解决同时存在多个选择商品时的问题
         if (isset($tag['key']) && $tag['key']) {
             $tag['key']  = $this->autoBuildVar($tag['key']);
@@ -402,7 +380,6 @@ class Labgic extends TagLib
         } else {
             $tag['key'] = "";
         }
-
         $parse = '
             <div id="'.$time.'_box" class="select_seller_goods_box">
                 <div>
@@ -421,7 +398,6 @@ class Labgic extends TagLib
                 </ul>
             </div>
         ';
-
         $parse .= '
             <script>
                 var obj_'.$time.'_ids = {};
@@ -445,8 +421,6 @@ class Labgic extends TagLib
                                             layer.msg("最多只能选择"+num_'.$time.'+"个");
                                             return false;
                                         }
-
-
                                         $("#'.$time.'_list").empty();
                                         var the_val = "";
                                         for(var key in ids){
@@ -476,11 +450,8 @@ class Labgic extends TagLib
         ';
         return $parse;
     }
-
     public function tagUploadImage(){
-
     }
-
     /**
      * 无限极商品分类
      * @param $tag
@@ -496,7 +467,6 @@ class Labgic extends TagLib
         $id            = !empty($tag['id']) ? $tag['id'] : '_goods_cat';
         $name          = !empty($tag['name']) ? $tag['name'] : $id;
         $value         = !empty($tag['value']) ? $tag['value'] : 0; //todo 默认值
-
         $goodsCatModel = new GoodsCat();
         $cat           = $goodsCatModel->getAllCat();
         $parseStr      = '<div id="' . $id . '"></div>';
@@ -513,7 +483,6 @@ class Labgic extends TagLib
     $ = layui.jquery;
     var form = layui.form
     ,selectN = layui.selectN;
-
     goodscat' . $id . ' = function(){
             $.ajax({
             type:"get",
