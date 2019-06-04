@@ -150,7 +150,7 @@ class Categories extends Manage
             $this->assign('type', $type['data']);
             $data = model('common/GoodsCat')->getCatInfo($id);
             $this->assign('data', $data); //分类信息
-            $this->assign('logo', _sImage($data['image_id']));
+            $this->assign('logo', $data['image_id'] ?_sImage($data['image_id']) : null);
             return $this->fetch('edit');
         } else {
             //存储编辑内容
