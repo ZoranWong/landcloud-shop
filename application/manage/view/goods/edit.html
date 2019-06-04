@@ -208,7 +208,9 @@
 
 
 <script type="text/javascript">
-    var ue = UE.getEditor('container');
+    var ue = UE.getEditor('container', {
+        serverUrl: "{:url('images/manage').'?path=/goods/intro/images'}"
+    });
     var intro=$("#goods_intro").text();
 
     ue.ready(function(){
