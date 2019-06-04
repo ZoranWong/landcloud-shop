@@ -100,7 +100,7 @@ class Aliyun
             $result = $this->aliyun->uploadFile($this->config['bucket'], $fileName, $filePath);
             if (isset($result['info']['url'])) {
                 Log::debug("------- url = {$result['info']['url']} ------");
-                return true;
+                return $result['info']['url'];
             } else {
                 $this->error = '上传失败';
             }

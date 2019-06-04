@@ -252,10 +252,10 @@ class Upload
             }
 
             /* 保存文件 并记录保存成功的文件 */
-            if ($this->uploader->save($file, $this->replace)) {
+            if (($url = $this->uploader->save($file, $this->replace))) {
                 unset($file['error'], $file['tmp_name']);
                 $info[$key] = $file;
-                $this->path =  substr($file['savepath'], 1) . $file['savename'];;
+                $info['url'] = $url;
             } else {
                 $this->error = $this->uploader->getError();
             }
