@@ -86,7 +86,7 @@ class Labgic extends TagLib
                 <img class="layui-upload-img"  src="' . $value . '" id="image_src_' . $id . '" style="width:' . $width . ';height:' . $height . ';" >
                 <p id="upload_text_' . $id . '"></p>
             </div>
-            <input class="layui-upload-file" type="hidden" name="' . $str_name . '"  id="image_value_' . $id . '" value="'.$value.'">
+            <input class="layui-upload-file" type="hidden" name="' . $str_name . '"  id="image_value_' . $id . '" value="'.$o.'">
             <textarea id="edit_'.$id.'" style="display: none;"></textarea>
             <script>
             var t = 1;
