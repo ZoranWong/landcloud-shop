@@ -94,7 +94,7 @@ class Labgic extends TagLib
             var _edito'.$id.'r = UE.getEditor("edit_'.$id.'",{
                 initialFrameWidth:800,
                 initialFrameHeight:300,
-                zIndex:19891026,
+                zIndex:29891026,
                 single:'.$single.',
                 serverUrl: "'.$imageServer.'"
             });
