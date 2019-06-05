@@ -19,7 +19,7 @@ class Labgic extends TagLib
     protected $tags = [
         // 标签定义： attr 属性列表 close 是否闭合（0 或者1 默认1） alias 标签别名 level 嵌套层次
         'image' => [
-            'attr'  => 'id,name,style,width,height,type,value,single,path',
+            'attr'  => 'id,name,style,width,height,type,value,single,path,imgId',
             'close' => 0
         ],
         'uploadImage' => [
@@ -62,7 +62,8 @@ class Labgic extends TagLib
         $path      = !empty($tag['path']) ? $tag['path'] : '';
         $name     = !empty($tag['name']) ? $tag['name'] : '';
         $style    = !empty($tag['style']) ? $tag['style'] : '';
-        $o = $value    = !empty($tag['value']) ? $tag['value'] : config('labgic.default_image'); //todo 默认图片
+        $imgId    = !empty($tag['imgId']) ? $tag['imgId'] : '';
+        $value    = !empty($tag['value']) ? $tag['value'] : config('labgic.default_image'); //todo 默认图片
         $type     = !empty($tag['type']) ? $tag['type'] : '';
         $num      = !empty($tag['num']) ? $tag['num'] : 1;
         $width    = !empty($tag['width']) ? $tag['width'] : '90px';
@@ -80,13 +81,13 @@ class Labgic extends TagLib
 //            $value = _sImage($value);
 //        }
         $parseStr = '
-            <!------- image id '.$o.' image url '.$value.' ------>
+            <!------- image id '.$imgId.' image url '.$value.' ------>
             <button type="button" class="layui-btn" id="upload_img_' . $id . '" onclick="upImag'.$id.'e()">上传图片</button>
             <div class="layui-upload-list">
                 <img class="layui-upload-img"  src="' . $value . '" id="image_src_' . $id . '" style="width:' . $width . ';height:' . $height . ';" >
                 <p id="upload_text_' . $id . '"></p>
             </div>
-            <input class="layui-upload-file" type="hidden" name="' . $str_name . '"  id="image_value_' . $id . '" value="'.$o.'">
+            <input class="layui-upload-file" type="hidden" name="' . $str_name . '"  id="image_value_' . $id . '" value="'.$imgId.'">
             <textarea id="edit_'.$id.'" style="display: none;"></textarea>
             <script>
             var t = 1;
