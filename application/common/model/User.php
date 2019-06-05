@@ -1318,6 +1318,6 @@ class User extends Common
 
     public function shipAddress()
     {
-        return $this->hasOne(UserShip::class, 'user_id', 'id');
+        return $this->hasOne(UserShip::class, 'user_id', 'id')->where('is_def', 'eq', true);
     }
 }

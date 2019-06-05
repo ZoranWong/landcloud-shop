@@ -220,6 +220,13 @@ class User extends Api
                     $userInfo['company'] = $balance['CusName'];
                 }
             }
+            if(isset($userInfo['user_ships']) && isset($userInfo['user_ships'][0]))
+                $userInfo['address'] = $userInfo['user_ships'][0];
+            foreach ($userInfo['user_ships'] as $ship) {
+                if($ship['is_def']) {
+                    $userInfo['address'] = $ship;
+                }
+            }
             $userInfo['payment_amount'] = \app\common\model\Order::where(['user_id' => $userInfo['id'], 'status' => 2])->sum('order_pmt');
             $result['data'] = $userInfo;
             $result['status'] = true;
