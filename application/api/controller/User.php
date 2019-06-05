@@ -220,8 +220,11 @@ class User extends Api
                     $userInfo['company'] = $balance['CusName'];
                 }
             }
-            if(isset($userInfo['user_ships']) && isset($userInfo['user_ships'][0]))
-                $userInfo['address'] = $userInfo['user_ships'][0];
+            if(isset($userInfo['user_ships']) && count($userInfo['user_ships']) && !$userInfo['user_ships'][0]['is_def']) {
+                $ship = $userInfo['user_ships'][0];
+                $ship['is_def'] = true;
+                $ship->save();
+            }
             foreach ($userInfo['user_ships'] as $ship) {
                 if($ship['is_def']) {
                     $userInfo['address'] = $ship;
