@@ -73,6 +73,7 @@ class Carousel extends Manage
         return $this->fetch('edit',[
                 'position'=>$position,
                 'info'=>$info,
+                'img' => _sImage($info['img']),
                 'type'=>config('params.carousel')['type']
             ]);
     }
