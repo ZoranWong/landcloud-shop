@@ -222,7 +222,8 @@ class Cart extends Common
     protected function getGoodsAmount($goods, $num, $userId, $area = null)
     {
         $amount = 0;
-
+        $user = (new User())->where('id', 'eq', $userId)->find();
+        $area = $user['area_id'];
         if(!$area) {
             $where[] = ['user_id', 'eq', $userId];
             $where[] = ['is_def', 'eq', 1];
