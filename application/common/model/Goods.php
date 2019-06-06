@@ -234,15 +234,16 @@ class Goods extends Common implements Excelable
             $fields = implode(',', $tmpData);
         }
         $query = $this
+            ->alias('g')
             ->field($fields)
             ->where($where)
-            ->whereNull('isdel');
+            ->whereNull('g.isdel');
         if ($from === 'api') {
             $query = $query->where('marketable', '=', 1);
         }
         Log::debug('--------order condition --------- '.$order.'  ----------');
         $order = "b.sort asc";
-        $list = $query->alias('g')->leftJoin('lc_brand b', 'b.id=g.brand_id')->orderRaw($order)
+        $list = $query->leftJoin('lc_brand b', 'b.id=g.brand_id')->orderRaw($order)
             ->page($page, $limit)
             ->select();
         $ids = [];
