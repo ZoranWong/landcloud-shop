@@ -56,11 +56,9 @@ class Brand extends Api
             $goodsCatModel = new GoodsCatModel();
             $brandModel = new BrandModel();
 
-            $goodsCat = $goodsCatModel->with('brands')->where(['id' => $categoryId])->find();
+            $goodsCat = $goodsCatModel->where(['id' => $categoryId])->find();
 
-            $list = $goodsCat->brands;
-            /**@var Collection $list*/
-            $list = $list->order('sort', 'asc');
+            $list = $goodsCat->brands()->order('sort', 'asc')->all();
             $list = $brandModel->tableFormat($list);
 
             $count = count($list);
