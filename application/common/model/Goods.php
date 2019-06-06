@@ -247,6 +247,7 @@ class Goods extends Common implements Excelable
         $list = $query->orderRaw($order)
             ->page($page, $limit)
             ->select();
+        var_dump($list);
         $ids = [];
         foreach ($list as &$item) {
             $ids[] = $item['erp_goods_id'];
