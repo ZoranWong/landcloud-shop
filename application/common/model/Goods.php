@@ -232,6 +232,8 @@ class Goods extends Common implements Excelable
                 unset($tmpData[$key]);
             }
             $fields = implode(',', $tmpData);
+        }else{
+            $fields = "g.id as id,erp_goods_id,bn,name,price,mktprice,image_id,goods.cat_id,brand_id,stock,spes_desc,sort,is_hot,is_recommend";
         }
         $query = $this
             ->alias('g')
@@ -247,7 +249,6 @@ class Goods extends Common implements Excelable
         $list = $query->orderRaw($order)
             ->page($page, $limit)
             ->select();
-        var_dump($list);
         $ids = [];
         foreach ($list as &$item) {
             $ids[] = $item['erp_goods_id'];
