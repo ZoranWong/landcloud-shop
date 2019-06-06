@@ -43,7 +43,7 @@ class Brand extends Api
             'data' => []
         ];
 
-        $field = 'id,name,logo,sort';
+        $field = 'id,name,logo,sort,brand_id';
 
         $order = input('param.order', 'sort asc');
         $page = input('param.page', 1);
