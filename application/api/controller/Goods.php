@@ -200,7 +200,7 @@ class Goods extends Api
         $field = input('field', '*');
         $page = input('page/d', 1);
         $limit = input('limit/d', PAGE_SIZE);
-        $order = input('order', 'sort asc');
+        $order = input('order', 'g.sort asc');
 
 
         $return_data = $this->allowedField($field);
