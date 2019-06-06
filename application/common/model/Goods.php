@@ -217,7 +217,7 @@ class Goods extends Common implements Excelable
      * Email:1457529125@qq.com
      * Date: 2018-01-29 16:33
      */
-    public function getList($from = 'manage', $fields = '*', $where = [], $order = 'id desc', $page = 1, $limit = 10)
+    public function getList($from = 'manage', $fields = 'g.*', $where = [], $order = 'id desc', $page = 1, $limit = 10)
     {
         $result = [
             'status' => true,
