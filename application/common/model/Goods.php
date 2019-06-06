@@ -255,10 +255,7 @@ class Goods extends Common implements Excelable
         foreach ($list as &$item) {
             $item['stock'] = $pStocks[$item['erp_goods_id']];
         }
-        $total = $this
-            ->field($fields)
-            ->where($where)
-            ->count();
+        $total = $query->count();
 
         if (!$list->isEmpty()) {
             $gcModel = new GoodsComment();
