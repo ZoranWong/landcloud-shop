@@ -215,7 +215,7 @@ class Goods extends Api
         $goodsModel = new GoodsModel();
 
         $where = function (Query $query) use ($keyword){
-            $query->where('bn', 'eq', $keyword)
+            $query->where('bn', 'like', '%' . $keyword . '%')
                 ->whereOr('g.name', 'like', '%' . $keyword . '%')
                 ->whereOr('erp_goods_id', $keyword)
                 ->whereOrRaw('json_contains(keywords->\'$[*]\',\'"' . $keyword . '"\',\'$\')');
