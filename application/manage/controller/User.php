@@ -191,6 +191,8 @@ class User extends Manage
         $gradeModel = new UserGrade();
         $userGrade = $gradeModel->getAll();
         $this->assign('grade', $userGrade);
+        $areas = (new \app\common\model\Area())->getParentArea();
+        $this->assign('areas', $areas);
         return $this->fetch('addUser');
     }
 
@@ -215,6 +217,8 @@ class User extends Manage
         $gradeModel = new UserGrade();
         $userGrade = $gradeModel->getAll();
         $this->assign('grade', $userGrade);
+        $areas = (new \app\common\model\Area())->getParentArea();
+        $this->assign('areas', $areas);
         return $this->fetch('editUser');
     }
 

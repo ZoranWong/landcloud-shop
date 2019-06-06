@@ -96,6 +96,16 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
+            <label class="layui-form-label">注册地区：</label>
+            <div class="layui-input-inline">
+                <select name="area_id">
+                    {foreach name = "areas" item = "area" key="k"}
+                        <option value="{$area['id']}">{$area['name']}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
             <label class="layui-form-label">回款日：</label>
             <div class="layui-input-inline">
                 <select name="return_day">

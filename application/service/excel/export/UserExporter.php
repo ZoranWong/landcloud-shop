@@ -59,6 +59,7 @@ class UserExporter extends BaseGenerator
                 $finalList[$key]['password'] = decrypt($user['password']);
                 $finalList[$key]['sex'] = UserModel::SEX[$user['sex']];
                 $finalList[$key]['status'] = UserModel::STATUS[$user['status']];
+                $finalList[$key]['area_id'] = $user['area_id'];
             }
         } else {
             $result['status'] = false;

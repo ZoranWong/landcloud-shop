@@ -68,6 +68,7 @@ class UserImportHandler extends BaseHandler
             $user['return_day'] = $user['return_day'] ?? 1;
             $user['ctime'] = time();
             $user['utime'] = time();
+            $user['area_id'] = $record['area_id'];
 
             Log::info('用户:' . $user['username']);
 

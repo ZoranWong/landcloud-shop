@@ -1178,7 +1178,8 @@ class User extends Common
             ['id' => 'erp_manage_id', 'desc' => '销售代表ID'],
             ['id' => 'erp_manage_name', 'desc' => '销售代表姓名'],
             ['id' => 'company', 'desc' => '公司'],
-            ['id' => 'return_day', 'desc' => '回款日(数字,默认1号)']
+            ['id' => 'return_day', 'desc' => '回款日(数字,默认1号)'],
+            ['id' => 'area_id', 'desc' => '注册地区编码（省/直辖市）']
         ];
     }
 
@@ -1197,7 +1198,8 @@ class User extends Common
             ['field' => 'erp_manage_id', 'desc' => '销售代表ERP ID'],
             ['field' => 'erp_manage_name', 'desc' => '销售代表姓名'],
             ['field' => 'company', 'desc' => '公司'],
-            ['field' => 'return_day', 'desc' => '回款日', 'type' => DataType::TYPE_NUMERIC]
+            ['field' => 'return_day', 'desc' => '回款日', 'type' => DataType::TYPE_NUMERIC],
+            ['field' => 'area_id', 'desc' => '注册地区编码（省/直辖市）']
         ];
     }
 
