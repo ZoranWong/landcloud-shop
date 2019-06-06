@@ -205,7 +205,7 @@ class User extends Api
         ];
         $userModel = new UserModel();
         $userInfo = $userModel
-            ->with(['userShips', 'sellerManager'])
+            ->with(['userShips', 'sellerManager', 'registerArea'])
             ->where(array('id' => $this->userId))
             ->find();
 

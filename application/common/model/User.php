@@ -897,6 +897,11 @@ class User extends Common
         return $this->hasMany(UserShip::class, 'user_id', 'id');
     }
 
+    public function registerArea()
+    {
+        return $this->belongsTo(Area::class, 'area_id', 'id');
+    }
+
 
     /**
      * 修改邀请人
