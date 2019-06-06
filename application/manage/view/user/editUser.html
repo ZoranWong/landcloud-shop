@@ -103,7 +103,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">注册地区：</label>
             <div class="layui-input-inline">
-                <select name="area_id">
+                <select name="area_id" value="{$info['area_id']}">
                     {foreach name = "areas" item = "area" key="k"}
                     <option value="{$area['id']}">{$area['name']}</option>
                     {/foreach}
