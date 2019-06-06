@@ -241,6 +241,7 @@ class Goods extends Common implements Excelable
         if ($from === 'api') {
             $query = $query->where('marketable', '=', 1);
         }
+        $query = $query->join('lc_brand b', 'b.id=g.brand_id')->order('b.sort', 'asc');
         Log::debug('--------order condition --------- '.$order.'  ----------');
 //        $order = "b.sort asc";
         $list = $query->orderRaw($order)
