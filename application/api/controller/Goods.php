@@ -116,14 +116,14 @@ class Goods extends Api
 
             if (isset($postWhere['brands'])) {
                 $brands = explode(',', $postWhere['brands']);
-                $where[] = ['g.brand_id', 'in', $brands];
+                $where[] = ['brand_id', 'in', $brands];
             }
             //判断商品搜索,
             if (isset($postWhere['search_name']) && $postWhere['search_name']) {
-                $where[] = ['g.name|g.bn|g.brief|g.keywords', 'LIKE', '%' . $postWhere['search_name'] . '%'];
+                $where[] = ['name|bn|brief|keywords', 'LIKE', '%' . $postWhere['search_name'] . '%'];
             }
             if (isset($postWhere['bn']) && $postWhere['bn']) {
-                $where[] = ['g.bn', '=', $postWhere['bn']];
+                $where[] = ['bn', '=', $postWhere['bn']];
             }
             //商品分类,同时取所有子分类 todo 无限极分类时要注意
             if (isset($postWhere['cat_id'])) {
@@ -133,27 +133,27 @@ class Goods extends Api
                 $childCats = $goodsCatModel->getCatByParentId($postWhere['cat_id']);
                 $catIds = array_column($childCats->toArray(), 'id');
                 $catIds[] = $postWhere['cat_id'];
-                $where[] = ['g.goods_cat_id', 'in', $catIds];
+                $where[] = ['goods_cat_id', 'in', $catIds];
             }
             //价格区间
             if (isset($postWhere['price_f']) && $postWhere['price_f']) {
-                $where[] = ['g.price', '>=', $postWhere['price_f']];
+                $where[] = ['price', '>=', $postWhere['price_f']];
             }
             if (isset($postWhere['price_t']) && $postWhere['price_t']) {
-                $where[] = ['g.price', '<', $postWhere['price_t']];
+                $where[] = ['price', '<', $postWhere['price_t']];
             }
             if (isset($postWhere['recommend'])) {
-                $where[] = ['g.is_recommend', 'eq', '1'];
+                $where[] = ['is_recommend', 'eq', '1'];
             }
             if (isset($postWhere['hot'])) {
-                $where[] = ['g.is_hot', 'eq', '1'];
+                $where[] = ['is_hot', 'eq', '1'];
             }
             if (isset($postWhere['keyword'])) {
 
             }
         }
         $goodsModel = new GoodsModel();
-        $where[] = ['g.marketable', 'eq', $goodsModel::MARKETABLE_UP];
+        $where[] = ['marketable', 'eq', $goodsModel::MARKETABLE_UP];
 
 
         $return_data = $this->allowedField($field);
