@@ -5,6 +5,7 @@ namespace app\api\controller;
 use app\common\controller\Api;
 use app\common\model\Brand as BrandModel;
 use app\common\model\GoodsCat as GoodsCatModel;
+use think\model\Collection;
 
 class Brand extends Api
 {
@@ -58,7 +59,8 @@ class Brand extends Api
             $goodsCat = $goodsCatModel->with('brands')->where(['id' => $categoryId])->find();
 
             $list = $goodsCat->brands;
-
+            /**@var Collection $list*/
+            $list = $list->order('sort', 'asc');
             $list = $brandModel->tableFormat($list);
 
             $count = count($list);
