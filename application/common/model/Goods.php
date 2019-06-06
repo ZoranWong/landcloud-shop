@@ -233,7 +233,7 @@ class Goods extends Common implements Excelable
             }
             $fields = implode(',', $tmpData);
         }else{
-            $fields = "g.id as id,erp_goods_id,bn,name,price,mktprice,image_id,goods.cat_id,brand_id,stock,spes_desc,sort,is_hot,is_recommend";
+            $fields = "g.id as id,erp_goods_id,bn,g.name as name,price,mktprice,image_id,goods_cat_id,brand_id,stock,spes_desc,g.sort as sort,is_hot,is_recommend";
         }
         $query = $this
             ->alias('g')
