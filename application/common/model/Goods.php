@@ -242,7 +242,7 @@ class Goods extends Common implements Excelable
         }
         Log::debug('--------order condition --------- '.$order.'  ----------');
         $order = "b.sort asc";
-        $list = $query->alias('g')->leftJoin('lc_brands b', 'b.id=g.brand_id')->orderRaw($order)
+        $list = $query->alias('g')->leftJoin('lc_brand b', 'b.id=g.brand_id')->orderRaw($order)
             ->page($page, $limit)
             ->select();
         $ids = [];
