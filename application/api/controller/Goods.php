@@ -271,18 +271,23 @@ class Goods extends Api
         Log::debug('----- user id ------'.$this->userId);
         $area = "";
         if($this->userId) {
-            $where[] = ['user_id', 'eq', $this->userId];
-            $where[] = ['is_def', 'eq', 1];
-            $userShip = (new UserShip())->with('area')->where($where)->order('utime desc')->find();
-            if($userShip) {
-                $areas = $userShip->area->getParentArea();
-                foreach ($areas as $a) {
-                    if($a['info']['parent_id'] == 0) {
-                        $area = $a['info']['id'];
-                        break;
+            $user = (new \app\common\model\User())->where('id', 'eq', $this->userId)->find();
+            $area = $user['area_id'];
+            if(!$area){
+                $where[] = ['user_id', 'eq', $this->userId];
+                $where[] = ['is_def', 'eq', 1];
+                $userShip = (new UserShip())->with('area')->where($where)->order('utime desc')->find();
+                if($userShip) {
+                    $areas = $userShip->area->getParentArea();
+                    foreach ($areas as $a) {
+                        if($a['info']['parent_id'] == 0) {
+                            $area = $a['info']['id'];
+                            break;
+                        }
                     }
                 }
             }
+
         }
 
         /**
