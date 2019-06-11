@@ -46,29 +46,30 @@ class UserImportHandler extends BaseHandler
         $userModel = new UserModel();
 
         foreach ($importData as $record) {
-            $user['erp_user_id'] = $record['erp_user_id'];
-            $user['username'] = $record['username'];
-            $user['mobile'] = $record['mobile'];
-            $user['password'] = encrypt($record['password']);
-            $user['sex'] = $record['sex'] === '男' ? UserModel::SEX_BOY : $record['sex'] === '女' ? UserModel::SEX_GIRL : UserModel::SEX_OTHER;
+            $user['erp_user_id'] = trim($record['erp_user_id']);
+            $user['username'] = trim($record['username']);
+            $user['mobile'] = trim($record['mobile']);
+            $user['password'] = encrypt(trim($record['password']));
+            $sex = trim($record['sex']);
+            $user['sex'] = $sex === '男' ? UserModel::SEX_BOY : $sex === '女' ? UserModel::SEX_GIRL : UserModel::SEX_OTHER;
             $user['birthday'] = str_replace('/', '-', $record['birthday']);
             if (trim($user['birthday']) === '') {
                 $user['birthday'] = null;
             }
-            $user['avatar'] = $record['avatar'];
-            $user['nickname'] = $record['nickname'];
-            $user['status'] = $record['status'];
+            $user['avatar'] = trim($record['avatar']);
+            $user['nickname'] = trim($record['nickname']);
+            $user['status'] = trim($record['status']);
             if (trim($user['status']) === '') {
                 $user['status'] = 1;
             }
-            $user['erp_manage_id'] = $record['erp_manage_id'];
-            $user['erp_manage_name'] = $record['erp_manage_name'];
-            $user['company'] = $record['company'];
-            $user['return_day'] = (int)$record['return_day'];
-            $user['return_day'] = $user['return_day'] ?? 1;
+            $user['erp_manage_id'] = trim($record['erp_manage_id']);
+            $user['erp_manage_name'] = trim($record['erp_manage_name']);
+            $user['company'] = trim($record['company']);
+            $user['return_day'] = (int)trim($record['return_day']);
+            $user['return_day'] = trim($user['return_day'] ?? 1);
             $user['ctime'] = time();
             $user['utime'] = time();
-            $user['area_id'] = $record['area_id'];
+            $user['area_id'] = trim($record['area_id']);
 
             Log::info('用户:' . $user['username']);
 
