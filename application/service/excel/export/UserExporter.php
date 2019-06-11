@@ -60,6 +60,7 @@ class UserExporter extends BaseGenerator
                 $finalList[$key]['sex'] = UserModel::SEX[$user['sex']];
                 $finalList[$key]['status'] = UserModel::STATUS[$user['status']];
                 $finalList[$key]['area_id'] = $user['area_id'];
+                $finalList[$key]['area_name'] = $user['register_area']['name'];
             }
         } else {
             $result['status'] = false;
