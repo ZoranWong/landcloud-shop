@@ -22,7 +22,7 @@ class UserShipImportHandler extends BaseHandler
         $userShipModel = new UserShipModel();
 
         foreach ($importData as $record) {
-            $userShip['erp_user_id'] = $record['erp_user_id'];
+            $userShip['erp_user_id'] = trim($record['erp_user_id']);
 
             if (empty($record['erp_user_id'])) {
                 continue;
@@ -31,16 +31,15 @@ class UserShipImportHandler extends BaseHandler
             $user = UserModel::where(['erp_user_id' => $record['erp_user_id']])->find();
             $userShip['user_id'] = $user->id;
             $userShip['area_id'] = (int)$record['area_id'];
-            $userShip['address'] = $record['address'];
-            $userShip['postal_code'] = $record['postal_code'];
-            $userShip['name'] = $record['name'];
-            $userShip['mobile'] = $record['mobile'];
+            $userShip['address'] = trim($record['address']);
+            $userShip['postal_code'] = trim($record['postal_code']);
+            $userShip['name'] = trim($record['name']);
+            $userShip['mobile'] = trim($record['mobile']);
             $userShip['utime'] = time();
 
             $userShipModel->startTrans();
 
             $userShipData = $userShipModel->where(['user_id' => $userShip['user_id']])->find();
-
             if ($userShipData && isset($userShipData['id']) && $userShipData['id'] !== '') {
                 $res = $userShipData->isUpdate(true)->save($userShip);
                 if ($res === false) {
