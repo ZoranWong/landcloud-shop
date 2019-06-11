@@ -225,7 +225,7 @@
                     }
                 },
                 {field: 'register_area', title: '注册地区', templet: function (d) {
-                    return d['name'];
+                    return d ? d['name'] : '--未填写注册地区--';
                     }},
                 {field: 'status', title: '状态'},
                 {field: 'erp_manage_id', title: '销售代表ERP ID'},
