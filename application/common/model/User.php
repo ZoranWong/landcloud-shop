@@ -1225,11 +1225,11 @@ class User extends Common
         $tableWhere = $this->tableWhere($post);
         $list = [];
         if ($isPage) {
-            $list = $this->with('grade,shipAddress')->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->paginate($limit);
+            $list = $this->with('grade,shipAddress,registerArea')->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->paginate($limit);
             $data = $this->tableFormat($list->getCollection());         //返回的数据格式化，并渲染成table所需要的最终的显示数据类型
             $re['count'] = $list->total();
         } else {
-            $list = $this->with('shipAddress')->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->select();
+            $list = $this->with('shipAddress,registerArea')->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->select();
             $data = [];
             if (!$list->isEmpty()) {
                 $data = $this->tableFormat($list->toArray());

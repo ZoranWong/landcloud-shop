@@ -224,7 +224,9 @@
                         return html;
                     }
                 },
-
+                {field: 'register_area', title: '注册地区', templet: function (d) {
+                    return d['name'];
+                    }},
                 {field: 'status', title: '状态'},
                 {field: 'erp_manage_id', title: '销售代表ERP ID'},
                 {field: 'erp_manage_name', title: '销售代表'},
