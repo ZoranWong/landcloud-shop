@@ -1011,7 +1011,7 @@ class User extends Common
         $newData['erp_manage_id'] = $data['erp_manage_id'];
         $newData['erp_manage_name'] = $data['erp_manage_name'];
         $newData['return_day'] = $data['return_day'] ?? 1;
-
+        $newData['area_id'] = $data['area_id'] ?? 0;
         $result = $this->save($newData);
         $return['data'] = $this->getLastInsID();
 
@@ -1088,6 +1088,7 @@ class User extends Common
         $newData['erp_manage_id'] = $data['erp_manage_id'];
         $newData['erp_manage_name'] = $data['erp_manage_name'];
         $newData['return_day'] = $data['return_day'] ?: 1;
+        $newData['area_id'] = $data['area_id'] ?? 0;
         $result = $this->save($newData, $where);
         $return['data'] = $result;
 
