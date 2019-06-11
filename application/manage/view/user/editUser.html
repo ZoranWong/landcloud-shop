@@ -105,7 +105,11 @@
             <div class="layui-input-inline">
                 <select name="area_id" value="{$info['area_id']}">
                     {foreach name = "areas" item = "area" key="k"}
-                    <option value="{$area['id']}" {$info['area_id'] == $area['id'] ? "selected='selected'":""}>{$area['name']}</option>
+                    {if condition="$info['area_id'] eq $area['id']"}
+                    <option value="{$area['id']}" selected="selected">{$area['name']}</option>
+                    {else /}
+                    <option value="{$area['id']}" >{$area['name']}</option>
+                    {/if}
                     {/foreach}
                 </select>
             </div>
