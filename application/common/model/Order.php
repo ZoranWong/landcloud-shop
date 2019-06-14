@@ -193,6 +193,10 @@ class Order extends Common
             $where = array_merge($where, $this->getReverseStatus($input['order_unified_status'], 'o.'));
         }
 
+        if(!empty($input['erp_id'])) {
+            $where['u.erp_manage_id'] = $input['erp_id'];
+        }
+
         $page = $input['page'] ? $input['page'] : 1;
         $limit = $input['limit'] ? $input['limit'] : 20;
         $query = $this->alias('o');
