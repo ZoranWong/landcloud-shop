@@ -390,7 +390,7 @@ class Report extends Manage
             $query->group(['area_code', 'product_id']);
             $result['count'] = $query->count();
 
-            $list = $query->page($page)->limit($limit)->select();//$result['count'] ? $query->page($page)->limit($limit)->select() : [];
+            $list = $query->page($page)->limit($limit)->order('visit_count', 'desc')->select();//$result['count'] ? $query->page($page)->limit($limit)->select() : [];
             $result['data'] = $list;
             $result['start'] = $start;
             $result['end'] = $end;
