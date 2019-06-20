@@ -3005,7 +3005,6 @@ class Query
         $this->options['data'] = $data;
 
         $resultSet = $this->connection->select($this);
-        var_dump($this->options);
         if ($this->options['fetch_sql']) {
             return $resultSet;
         }
