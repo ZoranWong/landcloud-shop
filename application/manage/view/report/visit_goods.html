@@ -11,8 +11,9 @@
             <label class="layui-form-label">区域：</label>
             <div class="layui-input-inline seller-inline-2">
                 <select name="product_id">
-                    <option value="1">销量</option>
-                    <option value="1">销售额</option>
+                    {foreach name = "areas" key = "area" }
+                    <option value="{$area.id}">{$area.name}</option>
+                    {/foreach}
                 </select>
             </div>
             <label class="layui-form-label">商品：</label>
