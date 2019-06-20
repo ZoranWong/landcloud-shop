@@ -9,6 +9,7 @@ use app\common\model\GoodsCat;
 use app\common\model\GoodsComment;
 use app\common\model\Products;
 use app\common\model\UserShip;
+use app\common\model\VisitProductCount;
 use think\db\Query;
 use think\facade\Log;
 use think\facade\Request;
@@ -506,5 +507,21 @@ class Goods extends Api
         $model = new GoodsModel();
         $res = $model->getGoodsCatHotGoods($cat_id, $limit);
         return $res;
+    }
+
+    public function visit($id)
+    {
+        $userId = $this->userId;
+        $result = (new VisitProductCount())->addRecord($id, $userId);
+        $return_data = [
+            'status' => false,
+            'msg' => '无参数相关信息',
+            'data' => []
+        ];
+        if($result){
+            $return_data['status'] = true;
+            $return_data['msg'] = '记录成功';
+        }
+        return $return_data;
     }
 }
