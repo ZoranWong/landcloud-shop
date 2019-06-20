@@ -348,7 +348,7 @@ class Report extends Manage
         }
     }
 
-    public function visitGoods()
+    public function visit_goods()
     {
         if (Request::isAJAX()) {
             $result = [
