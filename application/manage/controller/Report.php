@@ -396,7 +396,7 @@ class Report extends Manage
             $result['sql'] = '';
             return $result;
         } else {
-            $areas = \app\common\model\Area::where('parent_id', 'eq', 0)->all();
+            $areas = \app\common\model\Area::where('parent_id', 'eq', 0)->select()->all();
             return $this->fetch('', ['areas' => $areas]);
         }
     }
