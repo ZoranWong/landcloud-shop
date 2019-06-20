@@ -387,7 +387,7 @@ class Report extends Manage
             if ($start < $end) {
                 $query->where('date', '>=', $start)->where('date', '<', $end);
             }
-            $query->group(['area_code', 'prodcut_id']);
+            $query->group(['area_code', 'product_id']);
             $result['count'] = $query->count();
 
             $list = $query->page($page)->limit($limit)->select();//$result['count'] ? $query->page($page)->limit($limit)->select() : [];
