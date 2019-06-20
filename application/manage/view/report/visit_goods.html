@@ -8,32 +8,18 @@
                 <input type="text" name="date" value="" id="date" placeholder="请输入起止时间" autocomplete="off"
                        class="layui-input">
             </div>
-            <label class="layui-form-label">品类：</label>
+            <label class="layui-form-label">区域：</label>
             <div class="layui-input-inline seller-inline-2">
-                <select name="filter">
+                <select name="product_id">
                     <option value="nums">销量</option>
                     <option value="amount">销售额</option>
                 </select>
             </div>
             <label class="layui-form-label">商品：</label>
             <div class="layui-input-inline seller-inline-2">
-                <select name="filter">
+                <select name="product_id">
                     <option value="nums">销量</option>
                     <option value="amount">销售额</option>
-                </select>
-            </div>
-            <label class="layui-form-label">排名条件：</label>
-            <div class="layui-input-inline seller-inline-2">
-                <select name="filter">
-                    <option value="nums">销量</option>
-                    <option value="amount">销售额</option>
-                </select>
-            </div>
-            <label class="layui-form-label">升降序：</label>
-            <div class="layui-input-inline seller-inline-2">
-                <select name="thesort">
-                    <option value="desc">降序</option>
-                    <option value="asc">升序</option>
                 </select>
             </div>
             <button class="layui-btn layui-btn-sm" val="" lay-submit lay-filter="*"><i class="iconfont icon-chaxun"></i>确定
@@ -86,16 +72,10 @@
             limit: '20',
             cols: [[ //表头
                 {field: 'id', title: '排名', align: 'center', width: 80},
-                {field: 'nums', title: '销量', align: 'center', width: 80},
-                {field: 'amount', title: '销售额', align: 'center', width: 120},
-                {
-                    field: 'image_url', width: 100, title: '缩略图', align: 'center', templet: function (data) {
-                        return '<a href="javascript:void(0);" onclick=viewImage("' + data.image_url + '")><image style="max-width:30px;max-height:30px;" src="' + data.image_url + '"/></a>';
-                    }
-                },
+                {field: 'area', title: '区域', align: 'center'},
+                {field: 'sn', title: '货号', align: 'center'},
                 {field: 'name', title: '商品名称', align: 'center'},
-                {field: 'addon', title: '规格', align: 'center'},
-                {field: 'sn', title: '货号', align: 'center'}
+                {field: 'nums', title: '访问次数', align: 'center'},
             ]]
         });
 
