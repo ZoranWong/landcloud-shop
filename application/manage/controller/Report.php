@@ -377,7 +377,7 @@ class Report extends Manage
             $query = VisitProductCount::with(['area', 'product']);
             $query->field(['*', 'count(*) as visit_time']);
             if ($areaId) {
-                $query->where('area_id', 'eq', $areaId);
+                $query->where('area_code', 'eq', $areaId);
             }
 
             if ($productId) {
@@ -387,7 +387,7 @@ class Report extends Manage
             if ($start < $end) {
                 $query->where('date', '>=', $start)->where('date', '<', $end);
             }
-//            $query->group(['area_id', 'prodcut_id']);
+            $query->group(['area_code', 'prodcut_id']);
             $result['count'] = $query->count();
 
             $list = $query->page($page)->limit($limit)->select();
