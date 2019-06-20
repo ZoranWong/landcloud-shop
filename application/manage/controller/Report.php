@@ -359,8 +359,6 @@ class Report extends Manage
             ];
             $page = input('param.page', 1);
             $limit = input('param.limit', 5000);
-            $productId = input('param.product_id', null);
-            $areaId = input('param.area_id', null);
             if (input('?param.date')) {
                 $theDate = explode(' 到 ', input('param.date'));
                 if (count($theDate) == 2) {
@@ -376,14 +374,6 @@ class Report extends Manage
             }
             $query = VisitProductCount::with(['area', 'product']);
             $query->field('*, count(*) as visit_count');
-            if ($areaId) {
-                $query->where('area_code', 'eq', $areaId);
-            }
-
-            if ($productId) {
-                $query->where('product_id', 'eq', $productId);
-            }
-
             if ($start < $end) {
                 $query->where('date', '>=', $start)->where('date', '<', $end);
             }
