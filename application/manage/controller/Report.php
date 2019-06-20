@@ -375,7 +375,7 @@ class Report extends Manage
                 $end = $start + 60 * 60 * 24;
             }
             $query = VisitProductCount::with(['area', 'product']);
-            $query->field(['*', 'count(*) as visit_time', 'area.name as area_name', 'product.name as product_name']);
+            $query->field(['*', 'count(*) as visit_time', 'area', 'product']);
             if ($areaId) {
                 $query->where('area_code', 'eq', $areaId);
             }
