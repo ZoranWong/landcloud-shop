@@ -359,7 +359,7 @@ class Report extends Manage
             ];
             $page = input('param.page', 1);
             $limit = input('param.limit', 5000);
-            $filter = input('param.filter');
+            $filter = input('param.filter', 0);
             if (input('?param.date')) {
                 $theDate = explode(' 到 ', input('param.date'));
                 if (count($theDate) == 2) {
@@ -379,7 +379,8 @@ class Report extends Manage
             if($filter == 0){
                 $query->where('user_id', 'eq', 0);
             }elseif ($filter == 1) {
-                $query->where('user_id', 'neq', 0);
+                $query->where('user_id', 'neq', 0)
+                    ->where('area_code', 'neq', 0);
             }
             $query->field('*, count(*) as visit_count');
             if ($start < $end) {
