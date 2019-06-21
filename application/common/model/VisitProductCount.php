@@ -51,7 +51,6 @@ class VisitProductCount extends Common
         $this->ip = Request::ip();
         $this->date = date('Y-m-d h:i:s');
         $this->product_id = $productId;
-        $this->setArea();
         return $this->save();
     }
 
