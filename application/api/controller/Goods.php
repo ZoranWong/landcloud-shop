@@ -528,6 +528,7 @@ class Goods extends Api
             $return_data['status'] = true;
             $return_data['msg'] = '记录成功';
         }
+        Log::debug('--------- '.json_encode($return_data).' --------');
         return $return_data;
     }
 }
