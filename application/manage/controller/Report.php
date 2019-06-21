@@ -362,15 +362,17 @@ class Report extends Manage
             if (input('?param.date')) {
                 $theDate = explode(' 到 ', input('param.date'));
                 if (count($theDate) == 2) {
-                    $start = strtotime($theDate[0]);
-                    $end = strtotime($theDate[1]) + 60 * 60 * 24;
+
+                    $start = $theDate[0] . ' 00:00:00';
+                    $end = $theDate[1] . ' 23:59:59';
                 } else {
                     return result;
                 }
             } else {
                 //默认今天
-                $start = strtotime(date('Y-m-d'));
-                $end = $start + 60 * 60 * 24;
+                $date = date('Y-m-d');
+                $start = $date . ' 00:00:00';
+                $end = $date . ' 23:59:59';
             }
             $query = VisitProductCount::with(['area', 'product']);
             $query->field('*, count(*) as visit_count');
