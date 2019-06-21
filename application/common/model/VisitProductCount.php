@@ -30,11 +30,11 @@ class VisitProductCount extends Common
             $client = new Client();
             $data = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$this->ip}");
             if($data && $data['code'] == 0) {
-                $this->area_id = $data['data']['region_id'];
+                $this->area_code = $data['data']['region_id'];
             }
         }elseif ($this->user_id) {
             $user = User::where('user_id', 'eq', $this->user_id)->find();
-            $this->area_id = $user ? $user->area_id : 0;
+            $this->area_code = $user ? $user->area_id : 0;
         }
     }
 
