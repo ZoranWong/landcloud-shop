@@ -244,9 +244,11 @@ class Order extends Common
     {
         $managerId = session('manage')['id'];
         if (Manage::TYPE_SUPER_ID == $managerId) {
+            Log::debug('----- Ihis is super manager -----');
             $input['super'] = true;
         } else {
             $input['super'] = false;
+            Log::debug('----- This is not super manager -----');
         }
         $result = $this->getListByWhere($input, $isPage);
 
