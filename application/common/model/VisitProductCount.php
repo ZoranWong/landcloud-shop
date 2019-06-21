@@ -42,27 +42,31 @@ class VisitProductCount extends Common
         if(!$ip){
             $ip = $this->ip;
         }
-        $data = json_encode(IpLocation::getLocation($ip), JSON_UNESCAPED_UNICODE);
-        if($data && isset($data['province']) && $data['province']) {
-            $area = Area::where('name', 'like', "%{$data['province']}%")->find();
-            if($area)
-                return $area->id;
-        }
-
-        $client = new Client();
         try{
-            $respone = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$ip}");
-            $content = $respone->getBody()->getContents();
-            $data = json_decode($content, true);
-            if($data && $data['code'] == 0) {
-                return  $data['data']['region_id'];
+            $data = json_encode(IpLocation::getLocation($ip), JSON_UNESCAPED_UNICODE);
+            if($data && isset($data['province']) && $data['province']) {
+                $area = Area::where('name', 'like', "%{$data['province']}%")->find();
+                Log::debug('------- area for database ------'.$area->toJson());
+                if($area)
+                    return $area->id;
             }
+            throw new \Exception();
         }catch (\Exception $exception) {
+            $client = new Client();
+            try{
+                $respone = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$ip}");
+                $content = $respone->getBody()->getContents();
+                $data = json_decode($content, true);
+                if($data && $data['code'] == 0) {
+                    return  $data['data']['region_id'];
+                }
+            }catch (\Exception $exception) {
+                return 0;
+            }
+            /**@var Response $respone**/
+
             return 0;
         }
-        /**@var Response $respone**/
-
-        return 0;
     }
 
 
