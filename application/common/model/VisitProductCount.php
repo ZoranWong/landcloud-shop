@@ -42,13 +42,17 @@ class VisitProductCount extends Common
             $ip = $this->ip;
         }
         $client = new Client();
-        /**@var Response $respone**/
-        $respone = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$ip}");
-        $data = json_encode($respone->getBody()->getContents(), true);
-        var_dump($data);exit();
-        if($data && $data['code'] == 0) {
-            return  $data['data']['region_id'];
+        try{
+            $respone = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$ip}");
+            $data = json_decode($respone->getBody()->getContents(), true);
+            if($data && $data['code'] == 0) {
+                return  $data['data']['region_id'];
+            }
+        }catch (\Exception $exception) {
+            return 0;
         }
+        /**@var Response $respone**/
+
         return 0;
     }
 
