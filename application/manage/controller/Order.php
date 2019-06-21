@@ -77,7 +77,7 @@ class Order extends Manage
             $model = new Model();
             $managerId = session('manage')['id'];
             Log::debug('-----  manager id '.$managerId.' -----');
-            if (Manage::TYPE_SUPER_ID == $managerId) {
+            if (\app\common\model\Manage::TYPE_SUPER_ID == $managerId) {
                 Log::debug('----- Ihis is super manager -----');
                 $input['super'] = true;
             } else {
