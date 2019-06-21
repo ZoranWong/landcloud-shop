@@ -199,12 +199,14 @@ class Order extends Common
             $where['u.erp_manage_id'] = $input['erp_id'];
         }
 
+        if (empty($input['super']) || !$input['super']) {
+            $where[] = ['u.is_tester', 'eq', 0];
+        }
+
         $page = $input['page'] ? $input['page'] : 1;
         $limit = $input['limit'] ? $input['limit'] : 20;
         $query = $this->alias('o');
-        if (empty($input['super']) || !$input['super']) {
-            $where['u.is_tester'] = 0;
-        }
+
         if (!empty($input['search'])) {
             $query->where(function ($query) use ($input) {
                 $query->has('items', function ($query) use ($input) {
