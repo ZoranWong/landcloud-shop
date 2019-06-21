@@ -8,11 +8,18 @@
                 <input type="text" name="date" value="" id="date" placeholder="请输入起止时间" autocomplete="off"
                        class="layui-input">
             </div>
-            <label class="layui-form-label">统计：</label>
+            <label class="layui-form-label">统计对象：</label>
             <div class="layui-input-inline seller-inline-2">
-                <select name="filter">
+                <select name="filter_obj">
                     <option value="0">游客</option>
                     <option value="1">用户</option>
+                </select>
+            </div>
+            <label class="layui-form-label">统计方式：</label>
+            <div class="layui-input-inline seller-inline-2">
+                <select name="filter_type">
+                    <option value="0">含区域</option>
+                    <option value="1">仅产品</option>
                 </select>
             </div>
             <button class="layui-btn layui-btn-sm" val="" lay-submit lay-filter="*"><i class="iconfont icon-chaxun"></i>确定
@@ -72,8 +79,29 @@
             ]]
         });
 
+        function setColumns(orderByArea = true)
+        {
+            if(orderByArea) {
+                return [[ //表头
+                    {field: 'index', title: '排名', align: 'center', width: 80},
+                    {field: 'area_name', title: '区域', align: 'center'},
+                    {field: 'product_sn', title: '货号', align: 'center'},
+                    {field: 'product_name', title: '商品名称', align: 'center'},
+                    {field: 'visit_count', title: '访问次数', align: 'center'},
+                ]]
+            }else {
+                return  [[ //表头
+                    {field: 'index', title: '排名', align: 'center', width: 80},
+                    {field: 'product_sn', title: '货号', align: 'center'},
+                    {field: 'product_name', title: '商品名称', align: 'center'},
+                    {field: 'visit_count', title: '访问次数', align: 'center'},
+                ]]
+            }
+        }
+
         layui.form.on('submit(*)', function (data) {
             type = data.elem.getAttribute('val');
+            let orderByArea = $('select[name="filter_obj"]').val() == 0;
             if (type != "") {
                 getTime(type, function () {
                     table.reload('table', {
@@ -81,13 +109,7 @@
                         , page: {
                             curr: 1 //重新从第 1 页开始
                         },
-                        cols: [[ //表头
-                            {field: 'index', title: '排名', align: 'center', width: 80},
-                            // {field: 'area_name', title: '区域', align: 'center'},
-                            {field: 'product_sn', title: '货号', align: 'center'},
-                            {field: 'product_name', title: '商品名称', align: 'center'},
-                            {field: 'visit_count', title: '访问次数', align: 'center'},
-                        ]]
+                        cols: setColumns(orderByArea)
                     });
                 });
             } else {
@@ -96,13 +118,7 @@
                     , page: {
                         curr: 1 //重新从第 1 页开始
                     },
-                    cols: [[ //表头
-                        {field: 'index', title: '排名', align: 'center', width: 80},
-                        // {field: 'area_name', title: '区域', align: 'center'},
-                        {field: 'product_sn', title: '货号', align: 'center'},
-                        {field: 'product_name', title: '商品名称', align: 'center'},
-                        {field: 'visit_count', title: '访问次数', align: 'center'},
-                    ]]
+                    cols: setColumns(orderByArea)
                 });
             }
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。

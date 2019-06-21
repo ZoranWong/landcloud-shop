@@ -359,7 +359,8 @@ class Report extends Manage
             ];
             $page = input('param.page', 1);
             $limit = input('param.limit', 5000);
-            $filter = input('param.filter', 0);
+            $filterObj = input('param.filter_obj', 0);
+            $filterType = input('param.filter_type', 0);
             if (input('?param.date')) {
                 $theDate = explode(' 到 ', input('param.date'));
                 if (count($theDate) == 2) {
@@ -376,9 +377,9 @@ class Report extends Manage
                 $end = $date . ' 23:59:59';
             }
             $query = VisitProductCount::has('product')->with(['area', 'product']);
-            if($filter == 0){
+            if ($filterObj == 0) {
                 $query->where('user_id', 'eq', 0);
-            }elseif ($filter == 1) {
+            } elseif ($filterObj == 1) {
                 $query->where('user_id', 'neq', 0)
                     ->where('area_code', 'neq', 0);
             }
@@ -386,7 +387,13 @@ class Report extends Manage
             if ($start < $end) {
                 $query->where('date', '>=', $start)->where('date', '<', $end);
             }
-            $query->group(['area_code', 'product_id']);
+            if ($filterType == 0) {
+                $query->group(['area_code', 'product_id']);
+            }elseif ($filterType == 1) {
+                $query->group(['product_id']);
+            }
+
+
             $result['count'] = $query->count();
             $list = $result['count'] ? $query->fetchSql(false)->order('visit_count', 'desc')->page($page)->limit($limit)->select() : [];
             $begin = ($page - 1) * $limit + 1;
@@ -394,7 +401,7 @@ class Report extends Manage
                 $item['product_sn'] = $item->product['bn'];
                 $item['area_name'] = $item->area['name'];
                 $item['product_name'] = $item->product['name'];
-                $item['index'] =  $begin + $key;
+                $item['index'] = $begin + $key;
             }
             $result['data'] = $list;
             $result['start'] = $start;
