@@ -531,4 +531,9 @@ class Goods extends Api
         Log::debug('--------- '.json_encode($return_data).' --------');
         return $return_data;
     }
+
+    public function ipArea()
+    {
+        return (new VisitProductCount())->ipArea(Request::ip());
+    }
 }

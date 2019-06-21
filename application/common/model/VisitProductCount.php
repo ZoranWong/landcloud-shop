@@ -35,10 +35,13 @@ class VisitProductCount extends Common
         }
     }
 
-    protected function ipArea()
+    public function ipArea($ip = null)
     {
+        if(!$ip){
+            $ip = $this->ip;
+        }
         $client = new Client();
-        $data = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$this->ip}");
+        $data = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$ip}");
         if($data && $data['code'] == 0) {
             return  $data['data']['region_id'];
         }
