@@ -155,7 +155,7 @@ class Order extends Common
         }
         if (!empty($input['super'])) {
             if (!$input['super'])
-                $where[] = ['u.is_tester', 'neq', false];
+                $where[] = ['u.is_tester', 'neq', 0];
         }
 
         if (!empty($input['ship_mobile'])) {
