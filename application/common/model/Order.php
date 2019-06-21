@@ -153,9 +153,8 @@ class Order extends Common
         if (!empty($input['username'])) {
             $where[] = array('u.username|u.mobile|u.nickname', 'eq', $input['username']);
         }
-        if (!empty($input['super'])) {
-            if (!$input['super'])
-                $where[] = ['u.is_tester', 'neq', 0];
+        if (empty($input['super']) || !$input['super']) {
+            $where[] = ['u.is_tester', 'neq', 0];
         }
 
         if (!empty($input['ship_mobile'])) {
