@@ -27,15 +27,21 @@ class VisitProductCount extends Common
     public function setArea()
     {
         if($this->ip && !$this->user_id) {
-            $client = new Client();
-            $data = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$this->ip}");
-            if($data && $data['code'] == 0) {
-                $this->area_code = $data['data']['region_id'];
-            }
+            $this->area_code = $this->ipArea();
         }elseif ($this->user_id) {
             $user = User::where('user_id', 'eq', $this->user_id)->find();
-            $this->area_code = $user ? $user->area_id : 0;
+            $this->area_code = $user ? $user->area_id : $this->ipArea();
         }
+    }
+
+    protected function ipArea()
+    {
+        $client = new Client();
+        $data = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$this->ip}");
+        if($data && $data['code'] == 0) {
+            return  $data['data']['region_id'];
+        }
+        return 0;
     }
 
 
@@ -45,6 +51,7 @@ class VisitProductCount extends Common
         $this->ip = Request::ip();
         $this->date = date('Y-m-d h:i:s');
         $this->product_id = $productId;
+        $this->setArea();
         return $this->save();
     }
 
