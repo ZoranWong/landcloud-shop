@@ -102,6 +102,15 @@
         layui.form.on('submit(*)', function (data) {
             type = data.elem.getAttribute('val');
             let orderByArea = $('select[name="filter_type"]').val() == 0;
+            table.render({
+                elem: '#table', //指定原始表格元素选择器（推荐id选择器）
+                height: 'full-260',
+                cellMinWidth: '80',
+                id: 'table',
+                url: "{:url('visit_goods')}",
+                page: 'true',
+                limit: '20'
+            });
             if (type != "") {
                 getTime(type, function () {
                     table.reload('table', {
