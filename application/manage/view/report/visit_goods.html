@@ -109,7 +109,9 @@
                 id: 'table',
                 url: "{:url('visit_goods')}",
                 page: 'true',
-                limit: '20'
+                limit: '20',
+                cols: [[ //表头
+                ]]
             });
             if (type != "") {
                 getTime(type, function () {
