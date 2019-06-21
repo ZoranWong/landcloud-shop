@@ -11,6 +11,7 @@ namespace app\common\model;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
+use itbdw\Ip\IpLocation;
 use think\facade\Log;
 use think\facade\Request;
 
@@ -41,19 +42,19 @@ class VisitProductCount extends Common
         if(!$ip){
             $ip = $this->ip;
         }
+        $data = json_encode(IpLocation::getLocation($ip), JSON_UNESCAPED_UNICODE);
+        if($data && isset($data['province']) && $data['province']) {
+            $area = Area::where('name', 'like', "%{$data['province']}%")->find();
+            if($area)
+                return $area->id;
+        }
+
         $client = new Client();
         try{
             $respone = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$ip}");
             $content = $respone->getBody()->getContents();
-            Log::debug('-----BEGIN ip area request response --------'.$content.' END-----------');
             $data = json_decode($content, true);
-            $isArray = is_array($data) ? 'array' : '';
-            $isObject = is_object($data) ? 'object' : '';
-            $isString = is_string($data) ? 'string' : '';
-            Log::debug("--------- {$isArray} - {$isObject} - {$isString}---------");
-            Log::debug('--------IF '.($data && $data['code'] == 0 ? 'true' : 'false').' ENDIF------');
             if($data && $data['code'] == 0) {
-                Log::debug('-----BEGIN ip area code --------'.$data['data']['region_id'].' END-----------');
                 return  $data['data']['region_id'];
             }
         }catch (\Exception $exception) {
