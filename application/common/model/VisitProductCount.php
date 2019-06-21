@@ -31,7 +31,7 @@ class VisitProductCount extends Common
         if($this->ip && !$this->user_id) {
             $this->area_code = $this->ipArea();
         }elseif ($this->user_id) {
-            $user = User::where('user_id', 'eq', $this->user_id)->find();
+            $user = User::where('id', 'eq', $this->user_id)->find();
             $this->area_code = $user ? $user->area_id : $this->ipArea();
         }
     }
