@@ -80,7 +80,14 @@
                         where: data.field
                         , page: {
                             curr: 1 //重新从第 1 页开始
-                        }
+                        },
+                        cols: [[ //表头
+                            {field: 'index', title: '排名', align: 'center', width: 80},
+                            {field: 'area_name', title: '区域', align: 'center'},
+                            {field: 'product_sn', title: '货号', align: 'center'},
+                            {field: 'product_name', title: '商品名称', align: 'center'},
+                            {field: 'visit_count', title: '访问次数', align: 'center'},
+                        ]]
                     });
                 });
             } else {
@@ -88,7 +95,14 @@
                     where: data.field
                     , page: {
                         curr: 1 //重新从第 1 页开始
-                    }
+                    },
+                    cols: [[ //表头
+                        {field: 'index', title: '排名', align: 'center', width: 80},
+                        {field: 'area_name', title: '区域', align: 'center'},
+                        {field: 'product_sn', title: '货号', align: 'center'},
+                        {field: 'product_name', title: '商品名称', align: 'center'},
+                        {field: 'visit_count', title: '访问次数', align: 'center'},
+                    ]]
                 });
             }
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
