@@ -374,7 +374,7 @@ class Report extends Manage
                 $start = $date . ' 00:00:00';
                 $end = $date . ' 23:59:59';
             }
-            $query = VisitProductCount::with(['area', 'product']);
+            $query = VisitProductCount::with(['area', 'product'])->hasWhere('product');
             $query->field('*, count(*) as visit_count');
             if ($start < $end) {
                 $query->where('date', '>=', $start)->where('date', '<', $end);
