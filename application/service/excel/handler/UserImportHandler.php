@@ -49,7 +49,8 @@ class UserImportHandler extends BaseHandler
             $user['erp_user_id'] = trim($record['erp_user_id']);
             $user['username'] = trim($record['username']);
             $user['mobile'] = trim($record['mobile']);
-            $user['password'] = encrypt(trim($record['password']));
+            if (trim($record['password']))
+                $user['password'] = encrypt(trim($record['password']));
             $sex = trim($record['sex']);
             $user['sex'] = $sex === '男' ? UserModel::SEX_BOY : $sex === '女' ? UserModel::SEX_GIRL : UserModel::SEX_OTHER;
             $user['birthday'] = str_replace('/', '-', $record['birthday']);

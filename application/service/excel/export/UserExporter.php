@@ -56,7 +56,7 @@ class UserExporter extends BaseGenerator
                 $finalList[$key]['erp_manage_id'] = $user['erp_manage_id'];
                 $finalList[$key]['erp_manage_name'] = $user['erp_manage_name'];
                 $finalList[$key]['company'] = $user['company'];
-                $finalList[$key]['password'] = decrypt($user['password']);
+                $finalList[$key]['password'] = '';
                 $finalList[$key]['sex'] = UserModel::SEX[$user['sex']];
                 $finalList[$key]['status'] = UserModel::STATUS[$user['status']];
                 $finalList[$key]['area_id'] = $user['area_id'];
