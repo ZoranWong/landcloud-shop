@@ -203,7 +203,7 @@ class Order extends Common
         $limit = $input['limit'] ? $input['limit'] : 20;
         $query = $this->alias('o');
         if (empty($input['super']) || !$input['super']) {
-            $where['u.is_tester'] = false;
+            $where['u.is_tester'] = 0;
         }
         if (!empty($input['search'])) {
             $query->where(function ($query) use ($input) {
