@@ -153,6 +153,11 @@ class Order extends Common
         if (!empty($input['username'])) {
             $where[] = array('u.username|u.mobile|u.nickname', 'eq', $input['username']);
         }
+        if (!empty($input['super'])) {
+            if (!$input['super'])
+                $where[] = ['u.is_tester', 'neq', false];
+        }
+
         if (!empty($input['ship_mobile'])) {
             $where[] = array('o.ship_mobile', 'eq', $input['ship_mobile']);
         }
@@ -193,7 +198,7 @@ class Order extends Common
             $where = array_merge($where, $this->getReverseStatus($input['order_unified_status'], 'o.'));
         }
 
-        if(!empty($input['erp_id'])) {
+        if (!empty($input['erp_id'])) {
             $where['u.erp_manage_id'] = $input['erp_id'];
         }
 
@@ -201,9 +206,9 @@ class Order extends Common
         $limit = $input['limit'] ? $input['limit'] : 20;
         $query = $this->alias('o');
         if (!empty($input['search'])) {
-            $query->where(function ($query) use($input){
-                $query->has('items', function($query) use($input){
-                    if(!empty($input['search'])){
+            $query->where(function ($query) use ($input) {
+                $query->has('items', function ($query) use ($input) {
+                    if (!empty($input['search'])) {
                         $query->whereRaw("(`name` like %{$input['search']}% or `bn` like %{$input['search']}% or `erp_goods_id` like %{$input['search']}%)");
                     }
                 })->whereOr("order_id", "like", "%{$input['search']}%");
@@ -237,6 +242,12 @@ class Order extends Common
      */
     public function getListFromAdmin($input, $isPage = true)
     {
+        $managerId = session('manage')['id'];
+        if (Manage::TYPE_SUPER_ID == $managerId) {
+            $input['super'] = true;
+        } else {
+            $input['super'] = false;
+        }
         $result = $this->getListByWhere($input, $isPage);
 
         if (count($result['data']) > 0) {
@@ -363,16 +374,16 @@ class Order extends Common
 
             $sql = Db::table([$this->getTable() => 'o'])->field('o.order_id as id')
                 ->join([['order_items item', 'o.order_id=item.order_id'], ['goods g', 'item.goods_id=g.id']])
-                ->where(function ($query) use($input){
+                ->where(function ($query) use ($input) {
                     return $query->where('item.name', 'like', "%{$input['search']}%")
                         ->whereOr('item.bn', 'like', "%{$input['search']}%")
                         ->whereOr('g.erp_goods_id', 'like', "%{$input['search']}%");
                 })->where('o.user_id', 'eq', $input['user_id'])
                 ->buildSql();
-               $query = $query->where(function ($query) use($sql, $input){
-                   /**@var Query $query**/
-                   $query->whereRaw("order_id in ({$sql})")->whereLike('order_id', "%{$input['search']}%", 'or');
-               });
+            $query = $query->where(function ($query) use ($sql, $input) {
+                /**@var Query $query * */
+                $query->whereRaw("order_id in ({$sql})")->whereLike('order_id', "%{$input['search']}%", 'or');
+            });
         }
         $query = $query->with(['items', 'delivery'])->where($where);
 
@@ -382,7 +393,7 @@ class Order extends Common
 
         $count = $this->where($where)
             ->count();
-            // var_dump($data);
+        // var_dump($data);
         return array('data' => $data, 'count' => $count);
     }
 
@@ -1188,12 +1199,12 @@ class Order extends Common
         }
 
         $orderInfo = $this->formatOrderItems($user_id, $cart_ids, $area_id, $point, $coupon_code, $receipt_type);
-        Log::debug('----------- order info --------------'.json_encode($orderInfo));
+        Log::debug('----------- order info --------------' . json_encode($orderInfo));
         if (!$orderInfo['status']) {
             return $orderInfo;
         }
         if (!isset($orderInfo['data']['items']) || count($orderInfo['data']['items']) <= 0) {
-            Log::debug('-------- error --------- items count '.count($orderInfo['data']['items']));
+            Log::debug('-------- error --------- items count ' . count($orderInfo['data']['items']));
             return error_code(11100);
         }
 
@@ -1392,7 +1403,7 @@ class Order extends Common
 //        exit(json_encode($cartList));
 //        Log::debug('----------- order list ---------------'.json_encode($cartList['data']['list']));
         foreach ($cartList['data']['list'] as $v) {
-            Log::debug('------- for each ------'.json_encode($v));
+            Log::debug('------- for each ------' . json_encode($v));
             foreach ($v['prices'] as $price) {
                 $item['goods_id'] = $v['detail']['id'];
                 $item['product_id'] = $v['detail']['id'];
