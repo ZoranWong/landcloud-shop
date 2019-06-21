@@ -243,6 +243,7 @@ class Order extends Common
     public function getListFromAdmin($input, $isPage = true)
     {
         $managerId = session('manage')['id'];
+        Log::debug('-----  manager id '.$managerId.' -----');
         if (Manage::TYPE_SUPER_ID == $managerId) {
             Log::debug('----- Ihis is super manager -----');
             $input['super'] = true;
