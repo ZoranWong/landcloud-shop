@@ -153,9 +153,7 @@ class Order extends Common
         if (!empty($input['username'])) {
             $where[] = array('u.username|u.mobile|u.nickname', 'eq', $input['username']);
         }
-        if (empty($input['super']) || !$input['super']) {
-            $where[] = ['u.is_tester', 'neq', 0];
-        }
+
 
         if (!empty($input['ship_mobile'])) {
             $where[] = array('o.ship_mobile', 'eq', $input['ship_mobile']);
@@ -204,6 +202,11 @@ class Order extends Common
         $page = $input['page'] ? $input['page'] : 1;
         $limit = $input['limit'] ? $input['limit'] : 20;
         $query = $this->alias('o');
+        if (empty($input['super']) || !$input['super']) {
+            $query->has('user', function ($query) {
+                $query->where('is_tester', 'eq', false);
+            });
+        }
         if (!empty($input['search'])) {
             $query->where(function ($query) use ($input) {
                 $query->has('items', function ($query) use ($input) {
