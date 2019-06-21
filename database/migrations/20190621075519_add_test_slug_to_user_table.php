@@ -28,7 +28,7 @@ class AddTestSlugToUserTable extends Migrator
      */
     public function change()
     {
-        $this->table('lc_user')
+        $this->table('user')
             ->addColumn(Column::boolean('is_tester')->setDefault(false)->setComment('测试用户标示'))
             ->update();
     }
