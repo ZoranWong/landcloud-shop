@@ -55,6 +55,6 @@ class VisitProductCount extends Common
 
     public function area()
     {
-        return $this->belongsTo(Area::class, 'area_id');
+        return $this->belongsTo(Area::class, 'area_code');
     }
 }
