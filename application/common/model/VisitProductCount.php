@@ -45,6 +45,7 @@ class VisitProductCount extends Common
         /**@var Response $respone**/
         $respone = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$ip}");
         $data = json_encode($respone->getBody()->getContents(), true);
+        var_dump($data);exit();
         if($data && $data['code'] == 0) {
             return  $data['data']['region_id'];
         }
