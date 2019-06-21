@@ -278,6 +278,11 @@
                     }
                 },
                 {
+                    field: 'is_special', width: 100, title: '含隐藏价格', align: 'center', templet: function (data) {
+                        return data.is_special ? '是' : '否';
+                    }
+                },
+                {
                     field: 'price', width: 100, title: '销售价', align: 'center', templet: function (data) {
                         return '￥' + data.price
                     }

@@ -5,7 +5,8 @@
         <div class="layui-inline">
             <label class="layui-form-label">时间范围：</label>
             <div class="layui-input-inline seller-inline-4">
-                <input  type="text" name="date" value="" id="date" placeholder="请输入起止时间" autocomplete="off" class="layui-input">
+                <input type="text" name="date" value="" id="date" placeholder="请输入起止时间" autocomplete="off"
+                       class="layui-input">
             </div>
             <label class="layui-form-label">品类：</label>
             <div class="layui-input-inline seller-inline-2">
@@ -35,7 +36,8 @@
                     <option value="asc">升序</option>
                 </select>
             </div>
-            <button class="layui-btn layui-btn-sm" val="" lay-submit lay-filter="*"><i class="iconfont icon-chaxun"></i>确定</button>
+            <button class="layui-btn layui-btn-sm" val="" lay-submit lay-filter="*"><i class="iconfont icon-chaxun"></i>确定
+            </button>
         </div>
         <div class="layui-inline">
             <div class="">
@@ -57,13 +59,14 @@
 </form>
 
 <div class="table-body">
-        <div class="report_table_bar" style="margin-top:10px;"><span id="tableExport"><i class="layui-icon">&#xe601;</i>下载明细</span></div>
+    <div class="report_table_bar" style="margin-top:10px;"><span id="tableExport"><i class="layui-icon">&#xe601;</i>下载明细</span>
+    </div>
     <table id="table" lay-filter="table"></table>
 </div>
 <script type="text/javascript">
-    layui.use(['element','laydate','form','table'], function(){
+    layui.use(['element', 'laydate', 'form', 'table'], function () {
         var element = layui.element;
-        var table = layui.table,form = layui.form,layer = layui.layer;
+        var table = layui.table, form = layui.form, layer = layui.layer;
         //时间插件
         layui.laydate.render({
             elem: '#date',
@@ -71,44 +74,46 @@
             type: 'date',
             value: "{:date('Y-m-d')} 到 {:date('Y-m-d')}"
         });
-        
+
         //第一个实例
         table.render({
             elem: '#table', //指定原始表格元素选择器（推荐id选择器）
             height: 'full-260',
             cellMinWidth: '80',
-            id:'table',
+            id: 'table',
             url: "{:url('goods')}",
             page: 'true',
-            limit:'20',
+            limit: '20',
             cols: [[ //表头
-                {field: 'id',title:'排名',align:'center',width:80},
-                {field: 'nums', title: '销量',align:'center',width:80},
-                {field: 'amount', title: '销售额',align:'center',width:120},
-                {field:'image_url', width:100,title:'缩略图', align: 'center',templet: function(data){
-                        return '<a href="javascript:void(0);" onclick=viewImage("'+data.image_url+'")><image style="max-width:30px;max-height:30px;" src="'+data.image_url+'"/></a>';
-                }},
-                {field: 'name', title: '商品名称',align:'center'},
-                {field: 'addon', title: '规格', align:'center'},
-                {field: 'sn', title: '货号',align:'center'}
+                {field: 'id', title: '排名', align: 'center', width: 80},
+                {field: 'nums', title: '销量', align: 'center', width: 80},
+                {field: 'amount', title: '销售额', align: 'center', width: 120},
+                {
+                    field: 'image_url', width: 100, title: '缩略图', align: 'center', templet: function (data) {
+                        return '<a href="javascript:void(0);" onclick=viewImage("' + data.image_url + '")><image style="max-width:30px;max-height:30px;" src="' + data.image_url + '"/></a>';
+                    }
+                },
+                {field: 'name', title: '商品名称', align: 'center'},
+                {field: 'addon', title: '规格', align: 'center'},
+                {field: 'sn', title: '货号', align: 'center'}
             ]]
         });
 
-        layui.form.on('submit(*)', function(data){
+        layui.form.on('submit(*)', function (data) {
             type = data.elem.getAttribute('val');
-            if(type != ""){
-                getTime(type,function(){
+            if (type != "") {
+                getTime(type, function () {
                     table.reload('table', {
                         where: data.field
-                        ,page: {
+                        , page: {
                             curr: 1 //重新从第 1 页开始
                         }
                     });
                 });
-            }else{
+            } else {
                 table.reload('table', {
                     where: data.field
-                    ,page: {
+                    , page: {
                         curr: 1 //重新从第 1 页开始
                     }
                 });
@@ -116,35 +121,32 @@
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
 
-        $('#tableExport').on('click', function(){
-            JsPost('', $('.seller-form').serialize(), function(res){
-                if(res.count > 0){
+        $('#tableExport').on('click', function () {
+            JsPost('', $('.seller-form').serialize(), function (res) {
+                if (res.count > 0) {
                     //设置时间，回调
-                    layui.table.exportFile('table',res.data);
-                }else{
+                    layui.table.exportFile('table', res.data);
+                } else {
                     layer.msg('数据为空，导出啥子哟？');
                 }
             })
-                
-            });
+
+        });
 
         //解析时间按钮
-        function getTime(type,calback){
+        function getTime(type, calback) {
             var data = {
-                date_type:type
+                date_type: type
             };
-            JsPost('{:url("getDateType")}', data, function(res){
-                if(res.status){
+            JsPost('{:url("getDateType")}', data, function (res) {
+                if (res.status) {
                     //设置时间，回调
-                    $('#date').val(res.data.start  + " 到 " + res.data.end);
+                    $('#date').val(res.data.start + " 到 " + res.data.end);
                     calback();
-                }else{
+                } else {
                     layer.msg(res.msg);
                 }
             })
         }
     });
-
-
-
 </script>

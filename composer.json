@@ -28,7 +28,9 @@
         "phpoffice/phpspreadsheet": "^1.6",
         "guzzlehttp/guzzle": "^6.3",
         "selden1992/think-flysystem": "^1.0",
-        "finecho/logistics": "^2.0"
+        "finecho/logistics": "^2.0",
+        "topthink/think-migration": "v2.0.3",
+        "itbdw/ip-database": "^2.0"
     },
     "autoload": {
         "psr-4": {

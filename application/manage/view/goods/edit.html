@@ -174,6 +174,13 @@
             <input type="checkbox"  value="1" name="goods[is_hot]" {if condition="$data.is_hot eq 1"} checked="" {/if} lay-skin="switch" lay-filter="switchTest" title="开关"><div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em></em><i></i></div>
         </div>
     </div>
+    <div class="layui-inline" pane>
+        <label class="layui-form-label"><i class="required-color">*</i>含隐藏价格：</label>
+        <div class="layui-input-inline">
+            <input type="radio" name="is_special" value="0" title="否" checked="checked">
+            <input type="radio" name="is_special" value="1" title="是">
+        </div>
+    </div>
     <div class="layui-form-item layui-form-text" >
         <label class="layui-form-label">详细介绍：：</label>
         <div id="goods_intro" style="display: none;">{$data.intro}</div>

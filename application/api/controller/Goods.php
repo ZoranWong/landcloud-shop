@@ -9,6 +9,7 @@ use app\common\model\GoodsCat;
 use app\common\model\GoodsComment;
 use app\common\model\Products;
 use app\common\model\UserShip;
+use app\common\model\VisitProductCount;
 use think\db\Query;
 use think\facade\Log;
 use think\facade\Request;
@@ -214,7 +215,7 @@ class Goods extends Api
 
         $goodsModel = new GoodsModel();
 
-        $where = function (Query $query) use ($keyword){
+        $where = function (Query $query) use ($keyword) {
             $query->where('bn', 'like', '%' . $keyword . '%')
                 ->whereOr('g.name', 'like', '%' . $keyword . '%')
                 ->whereOr('erp_goods_id', $keyword)
@@ -260,6 +261,7 @@ class Goods extends Api
         $goods_id = input('id/d', 0);//商品ID
         $token = input('token', '');//token值 会员登录后传
         $this->userId = getUserIdByToken($token);
+        $this->visit($goods_id);
         if (!$goods_id) {
             $return_data['msg'] = '缺少商品ID参数';
             return $return_data;
@@ -268,19 +270,19 @@ class Goods extends Api
         $return_data = $this->allowedField($field);
         $goodsModel = new GoodsModel();
         $returnGoods = $goodsModel->getGoodsDetial($goods_id, $field, $token);
-        Log::debug('----- user id ------'.$this->userId);
+        Log::debug('----- user id ------' . $this->userId);
         $area = "";
-        if($this->userId) {
+        if ($this->userId) {
             $user = (new \app\common\model\User())->where('id', 'eq', $this->userId)->find();
             $area = $user['area_id'];
-            if(!$area){
+            if (!$area) {
                 $where[] = ['user_id', 'eq', $this->userId];
                 $where[] = ['is_def', 'eq', 1];
                 $userShip = (new UserShip())->with('area')->where($where)->order('utime desc')->find();
-                if($userShip) {
+                if ($userShip) {
                     $areas = $userShip->area->getParentArea();
                     foreach ($areas as $a) {
-                        if($a['info']['parent_id'] == 0) {
+                        if ($a['info']['parent_id'] == 0) {
                             $area = $a['info']['id'];
                             break;
                         }
@@ -298,24 +300,23 @@ class Goods extends Api
          * @var \app\common\model\Goods $goods
          * */
         $goods = &$returnGoods['data'];
-        if($levels && $levels->count() > 0) {
+        if ($levels && $levels->count() > 0) {
             if (!$area) {
                 $area = "";
             }
             $goods->levels($levels, $area);
             $levels->each(function ($level, $key) use (&$goods, &$levels) {
-                if($level['buy_num'] == 1) {
+                if ($level['buy_num'] == 1) {
                     $goods['price'] = $level['price'];
                     $items = $levels->toArray();
                     array_splice($items, $key, 1);
-                    while ($levels->pop());
-                    if(count($items) > 0)
+                    while ($levels->pop()) ;
+                    if (count($items) > 0)
                         $levels->merge($items);
                 }
             });
 
         }
-
 
 
         if ($returnGoods['status']) {
@@ -506,5 +507,33 @@ class Goods extends Api
         $model = new GoodsModel();
         $res = $model->getGoodsCatHotGoods($cat_id, $limit);
         return $res;
+    }
+
+    public function visit($id)
+    {
+        if (!$id)
+            $id = input('goods_id');
+        if (!$this->userId) {
+            $token = input('token', '');//token值 会员登录后传
+            $this->userId = getUserIdByToken($token);
+        }
+        $userId = $this->userId;
+        $result = (new VisitProductCount())->addRecord($id, $userId);
+        $return_data = [
+            'status' => false,
+            'msg' => '无参数相关信息',
+            'data' => []
+        ];
+        if ($result) {
+            $return_data['status'] = true;
+            $return_data['msg'] = '记录成功';
+        }
+        Log::debug('--------- '.json_encode($return_data).' --------');
+        return $return_data;
+    }
+
+    public function ipArea()
+    {
+        return (new VisitProductCount())->ipArea(Request::ip());
     }
 }

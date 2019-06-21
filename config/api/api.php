@@ -494,6 +494,14 @@ return [
                 'code' => 'getList',
                 'is_login' => false
             ],
+            'iparea' => [
+                'code' => 'ipArea',
+                'is_login' => false
+            ],
+            'visit' => [
+                'code' => 'visit',
+                'is_login' => false
+            ],
             'search' => [
                 'code' => 'getListByKeyword',
                 'is_login' => false

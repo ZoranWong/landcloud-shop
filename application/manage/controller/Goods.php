@@ -346,6 +346,7 @@ class Goods extends Manage
         if (empty($data['goods']['bn'])) {
             $data['goods']['bn'] = $bn;
         }
+        $data['goods']['is_special'] = input('post.is_special', false);
         $data['goods']['brief'] = input('post.goods.brief', '');
         $data['goods']['intro'] = input('post.goods.intro', '');
         $data['goods']['price'] = input('post.goods.price', '');
