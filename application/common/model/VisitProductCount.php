@@ -64,6 +64,7 @@ class VisitProductCount extends Common
         Log::debug('---------------- ip area --------------- '. "http://ip.taobao.com/service/getIpInfo.php?ip={$this->ip}");
         $this->date = date('Y-m-d h:i:s');
         $this->product_id = $productId;
+        $this->setArea();
         return $this->save();
     }
 
