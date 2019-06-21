@@ -49,7 +49,7 @@ class VisitProductCount extends Common
             $isArray = is_array($data) ? 'array' : '';
             $isObject = is_object($data) ? 'object' : '';
             $isString = is_string($data) ? 'string' : '';
-            Log::debug("--------- {$isArray} - {$isObject} - {$isString}---------");
+            Log::debug("--------- {$isArray} - {$isObject} - {$isString} - {$data}---------");
             Log::debug('--------IF '.($data && $data['code'] == 0 ? 'true' : 'false').' ENDIF------');
             if($data && $data['code'] == 0) {
                 Log::debug('-----BEGIN ip area code --------'.$data['data']['region_id'].' END-----------');
