@@ -43,9 +43,9 @@ class VisitProductCount extends Common
             $ip = $this->ip;
         }
         try{
-            $content = IpLocation::getLocation($ip);
+            $data = IpLocation::getLocation($ip);
             Log::debug('----- ip location ---- '.$content);
-            $data = json_encode($content, JSON_UNESCAPED_UNICODE);
+            //$data = json_encode($content, JSON_UNESCAPED_UNICODE);
             if($data && isset($data['province']) && $data['province']) {
                 $area = Area::where('name', 'like', "%{$data['province']}%")->find();
                 Log::debug('------- area for database ------'.$area->toJson());
