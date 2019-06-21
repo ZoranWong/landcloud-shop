@@ -383,7 +383,7 @@ class Report extends Manage
             $result['count'] = $query->count();
             $list = $result['count'] ? $query->fetchSql(false)->page($page)->limit($limit)->select() : [];
             foreach ($list as &$item) {
-                $item['product_sn'] = $item->product['sn'];
+                $item['product_sn'] = $item->product['bn'];
                 $item['area_name'] = $item->area['name'];
                 $item['product_name'] = $item->product['name'];
             }
