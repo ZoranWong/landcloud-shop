@@ -203,9 +203,9 @@ class Order extends Common
         $limit = $input['limit'] ? $input['limit'] : 20;
         $query = $this->alias('o');
         if (empty($input['super']) || !$input['super']) {
-            $query->has('user', function ($query) {
+            $query = self::has('user', function ($query) {
                 $query->where('is_tester', 'eq', false);
-            });
+            })->alias('o');
         }
         if (!empty($input['search'])) {
             $query->where(function ($query) use ($input) {
