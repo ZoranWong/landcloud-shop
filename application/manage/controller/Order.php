@@ -12,6 +12,7 @@ use app\common\model\Ship;
 use app\common\model\Logistics;
 use app\common\model\Store;
 use think\facade\Request;
+use think\Log;
 
 /**
  * 订单模块
@@ -74,6 +75,15 @@ class Order extends Manage
                 'limit' => Request::param('limit')
             );
             $model = new Model();
+            $managerId = session('manage')['id'];
+            Log::debug('-----  manager id '.$managerId.' -----');
+            if (Manage::TYPE_SUPER_ID == $managerId) {
+                Log::debug('----- Ihis is super manager -----');
+                $input['super'] = true;
+            } else {
+                $input['super'] = false;
+                Log::debug('----- This is not super manager -----');
+            }
             $data = $model->getListFromAdmin($input);
 
             if (count($data['data']) > 0) {

@@ -242,15 +242,6 @@ class Order extends Common
      */
     public function getListFromAdmin($input, $isPage = true)
     {
-        $managerId = session('manage')['id'];
-        Log::debug('-----  manager id '.$managerId.' -----');
-        if (Manage::TYPE_SUPER_ID == $managerId) {
-            Log::debug('----- Ihis is super manager -----');
-            $input['super'] = true;
-        } else {
-            $input['super'] = false;
-            Log::debug('----- This is not super manager -----');
-        }
         $result = $this->getListByWhere($input, $isPage);
 
         if (count($result['data']) > 0) {
