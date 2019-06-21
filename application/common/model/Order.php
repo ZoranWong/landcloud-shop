@@ -68,7 +68,7 @@ class Order extends Common
      */
     public function user()
     {
-        return $this->belongsTo('User', 'user_id');
+        return $this->belongsTo('User',  'user_id');
     }
 
     /**
@@ -203,7 +203,7 @@ class Order extends Common
         $limit = $input['limit'] ? $input['limit'] : 20;
         $query = $this->alias('o');
         if (empty($input['super']) || !$input['super']) {
-
+            $where['u.is_tester'] = false;
         }
         if (!empty($input['search'])) {
             $query->where(function ($query) use ($input) {
