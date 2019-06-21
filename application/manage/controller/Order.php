@@ -12,7 +12,7 @@ use app\common\model\Ship;
 use app\common\model\Logistics;
 use app\common\model\Store;
 use think\facade\Request;
-use think\Log;
+use think\facade\Log;
 
 /**
  * 订单模块
