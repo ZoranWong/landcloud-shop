@@ -46,7 +46,10 @@ class VisitProductCount extends Common
             $respone = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$ip}");
             Log::debug('-----BEGIN ip area request response --------'.$respone->getBody()->getContents().' END-----------');
             $data = json_decode($respone->getBody()->getContents(), true);
-            Log::debug('--------IF '.($data && $data['code'] == 0 ? 'true' : 'false').' ENDIF------ data is '.get_class($data));
+            $isArray = is_array($data) ? 'array' : '';
+            $isObject = is_object($data) ? 'object' : '';
+            Log::debug("--------- {$isArray} - {$isObject} ---------");
+            Log::debug('--------IF '.($data && $data['code'] == 0 ? 'true' : 'false').' ENDIF------');
             if($data && $data['code'] == 0) {
                 Log::debug('-----BEGIN ip area code --------'.$data['data']['region_id'].' END-----------');
                 return  $data['data']['region_id'];
