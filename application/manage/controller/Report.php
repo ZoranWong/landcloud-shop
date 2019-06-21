@@ -382,10 +382,11 @@ class Report extends Manage
             $query->group(['area_code', 'product_id']);
             $result['count'] = $query->count();
             $list = $result['count'] ? $query->fetchSql(false)->page($page)->limit($limit)->select() : [];
-            foreach ($list as &$item) {
+            foreach ($list as $key => &$item) {
                 $item['product_sn'] = $item->product['bn'];
                 $item['area_name'] = $item->area['name'];
                 $item['product_name'] = $item->product['name'];
+                $item['index'] = ($page - 1) * $limit + $key;
             }
             $result['data'] = $list;
             $result['start'] = $start;
