@@ -68,7 +68,7 @@ class Order extends Common
      */
     public function user()
     {
-        return $this->hasOne('User', 'id', 'user_id');
+        return $this->belongsTo('User', 'user_id');
     }
 
     /**
