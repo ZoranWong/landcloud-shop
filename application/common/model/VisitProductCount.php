@@ -47,6 +47,7 @@ class VisitProductCount extends Common
             Log::debug('-----BEGIN ip area request response --------'.$respone->getBody()->getContents().' END-----------');
             $data = json_decode($respone->getBody()->getContents(), true);
             if($data && $data['code'] == 0) {
+                Log::debug('-----BEGIN ip area code --------'.$data['data']['region_id'].' END-----------');
                 return  $data['data']['region_id'];
             }
         }catch (\Exception $exception) {
