@@ -10,6 +10,7 @@ namespace app\common\model;
 
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response;
 use think\facade\Log;
 use think\facade\Request;
 
@@ -41,7 +42,9 @@ class VisitProductCount extends Common
             $ip = $this->ip;
         }
         $client = new Client();
-        $data = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$ip}");
+        /**@var Response $respone**/
+        $respone = $client->get("http://ip.taobao.com/service/getIpInfo.php?ip={$ip}");
+        $data = json_encode($respone->getBody()->getContents(), true);
         if($data && $data['code'] == 0) {
             return  $data['data']['region_id'];
         }
