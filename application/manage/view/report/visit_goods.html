@@ -101,7 +101,7 @@
 
         layui.form.on('submit(*)', function (data) {
             type = data.elem.getAttribute('val');
-            let orderByArea = $('select[name="filter_obj"]').val() == 0;
+            let orderByArea = $('select[name="filter_type"]').val() == 0;
             if (type != "") {
                 getTime(type, function () {
                     table.reload('table', {
