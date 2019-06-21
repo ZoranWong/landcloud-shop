@@ -249,108 +249,103 @@
             page: 'true',
             limit: '20',
             url: "{:url('Goods/index')}?_ajax=1",
-            where: < ? php echo
-        $searchData ? json_encode($searchData) : "{}" ?
-    >,
-        id: 'goodsTable',
-            cols
-    :
-        [[
-            {type: 'checkbox', fixed: 'left'},
-            {
-                field: 'bn',
-                title: '商城商品编号',
-                width: 200,
-                fixed: 'left'
-            },
-            {
-                field: 'erp_goods_id',
-                title: 'ERP商品编号',
-                width: 200
-            },
-            {
-                field: 'image', width: 100, title: '缩略图', align: 'center', templet: function (data) {
-                    return '<a href="javascript:void(0);" onclick=viewImage("' + data.image + '")>' +
-                        '<image style="max-width:30px;max-height:30px;" src="' + data.image + '"/></a>';
-                }
-            },
-            {field: 'name', width: 250, title: '名称', align: 'center'},
-            {field: 'sort', edit: 'text', width: 80, title: '排序', align: 'center'},
-            {
-                field: 'keywords', width: 120, title: '搜索关键字', align: 'center', templet: function (data) {
-                    return getLabel(data.keywords);
-                }
-            },
-            {
-                field: 'is_special', width: 100, title: '是否含有隐藏价', align: 'center', templet: function (data) {
-                    return data['is_special'] ? '是' : '否';
-                }
-            },
-            {
-                field: 'price', width: 100, title: '销售价', align: 'center', templet: function (data) {
-                    return '￥' + data.price
-                }
-            },
-            {
-                field: 'mktprice', width: 100, title: '市场价', align: 'center', templet: function (data) {
-                    return '￥' + data.mktprice
-                }
-            },
-            {
-                field: 'promotion_price', width: 100, title: '优惠价', align: 'center', templet: function (data) {
-                    return '￥' + data.preferential_price
-                }
-            },
-            {
-                field: 'promotion_price', width: 100, title: '促销价', align: 'center', templet: function (data) {
-                    return '￥' + data.promotion_price
-                }
-            },
-            {field: 'cat_name', width: 150, title: '分类', align: 'center'},
-            // {field: 'type_name', width: 150, title: '类型', align: 'center'},
-            {field: 'brand_name', width: 100, title: '品牌', align: 'center'},
-            {
-                field: 'state',
-                sort: true,
-                title: '热门',
-                width: 80,
-                align: 'center',
-                templet: '#hot',
-                unresize: true
-            },
-            {
-                field: 'state',
-                sort: true,
-                title: '推荐',
-                width: 80,
-                align: 'center',
-                templet: '#rec',
-                unresize: true
-            },
-            {
-                field: 'marketable', width: 100, title: '上下架', align: 'center', templet: function (data) {
-                    if (data.marketable == '1') {
-                        return '<a href="javascript:void(0);">上架</a>';
-                    } else {
-                        return '<a href="javascript:void(0);">下架</a>';
-                    }
-                }
-            },
-            {field: 'spes_desc', width: 150, title: '规格', align: 'center'},
-            {field: 'stock', width: 100, title: '库存', align: 'center'},
-            {
-                field: 'operating', width: 250, title: '操作', align: 'center', templet: function (data) {
-                    var html = '';
-                    html += '<a class="layui-btn layui-btn-xs comment-class" href="{:url(\'goods/commentList\')}?goods_id=' + data.id + '">查看评价</a>';
-                    html += '<a class="layui-btn layui-btn-xs edit-class" data-id="' + data.id + '">编辑</a>';
-                    html += '<a class="layui-btn layui-btn-danger layui-btn-xs del-class" data-name="' + data.name + '" data-id="' + data.id + '">删除</a>';
-                    return html;
+            where: <?php echo $searchData ? json_encode($searchData) : "{}"?>,
+            id: 'goodsTable',
+            cols: [[
+                {type: 'checkbox', fixed: 'left'},
+                {
+                    field: 'bn',
+                    title: '商城商品编号',
+                    width: 200,
+                    fixed: 'left'
                 },
-                fixed: 'right'
-            }
-        ]]
-    })
-        ;
+                {
+                    field: 'erp_goods_id',
+                    title: 'ERP商品编号',
+                    width: 200
+                },
+                {
+                    field: 'image', width: 100, title: '缩略图', align: 'center', templet: function (data) {
+                        return '<a href="javascript:void(0);" onclick=viewImage("' + data.image + '")>' +
+                            '<image style="max-width:30px;max-height:30px;" src="' + data.image + '"/></a>';
+                    }
+                },
+                {field: 'name', width: 250, title: '名称', align: 'center'},
+                {field: 'sort', edit: 'text', width: 80, title: '排序', align: 'center'},
+                {
+                    field: 'keywords', width: 120, title: '搜索关键字', align: 'center', templet: function (data) {
+                        return getLabel(data.keywords);
+                    }
+                },
+                {
+                    field: 'is_special', width: 100, title: '含隐藏价格', align: 'center', templet: function (data) {
+                        return data.is_special ? '是' : '否';
+                    }
+                },
+                {
+                    field: 'price', width: 100, title: '销售价', align: 'center', templet: function (data) {
+                        return '￥' + data.price
+                    }
+                },
+                {
+                    field: 'mktprice', width: 100, title: '市场价', align: 'center', templet: function (data) {
+                        return '￥' + data.mktprice
+                    }
+                },
+                {
+                    field: 'promotion_price', width: 100, title: '优惠价', align: 'center', templet: function (data) {
+                        return '￥' + data.preferential_price
+                    }
+                },
+                {
+                    field: 'promotion_price', width: 100, title: '促销价', align: 'center', templet: function (data) {
+                        return '￥' + data.promotion_price
+                    }
+                },
+                {field: 'cat_name', width: 150, title: '分类', align: 'center'},
+                // {field: 'type_name', width: 150, title: '类型', align: 'center'},
+                {field: 'brand_name', width: 100, title: '品牌', align: 'center'},
+                {
+                    field: 'state',
+                    sort: true,
+                    title: '热门',
+                    width: 80,
+                    align: 'center',
+                    templet: '#hot',
+                    unresize: true
+                },
+                {
+                    field: 'state',
+                    sort: true,
+                    title: '推荐',
+                    width: 80,
+                    align: 'center',
+                    templet: '#rec',
+                    unresize: true
+                },
+                {
+                    field: 'marketable', width: 100, title: '上下架', align: 'center', templet: function (data) {
+                        if (data.marketable == '1') {
+                            return '<a href="javascript:void(0);">上架</a>';
+                        } else {
+                            return '<a href="javascript:void(0);">下架</a>';
+                        }
+                    }
+                },
+                {field: 'spes_desc', width: 150, title: '规格', align: 'center'},
+                {field: 'stock', width: 100, title: '库存', align: 'center'},
+                {
+                    field: 'operating', width: 250, title: '操作', align: 'center', templet: function (data) {
+                        var html = '';
+                        html += '<a class="layui-btn layui-btn-xs comment-class" href="{:url(\'goods/commentList\')}?goods_id=' + data.id + '">查看评价</a>';
+                        html += '<a class="layui-btn layui-btn-xs edit-class" data-id="' + data.id + '">编辑</a>';
+                        html += '<a class="layui-btn layui-btn-danger layui-btn-xs del-class" data-name="' + data.name + '" data-id="' + data.id + '">删除</a>';
+                        return html;
+                    },
+                    fixed: 'right'
+                }
+            ]]
+        });
 
         layui.table.on('edit(test)', function (obj) {
 
