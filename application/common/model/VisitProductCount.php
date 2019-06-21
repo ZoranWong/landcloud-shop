@@ -10,6 +10,7 @@ namespace app\common\model;
 
 
 use GuzzleHttp\Client;
+use think\facade\Log;
 use think\facade\Request;
 
 class VisitProductCount extends Common
@@ -49,6 +50,7 @@ class VisitProductCount extends Common
     {
         $this->user_id = $userId;
         $this->ip = Request::ip();
+        Log::debug('---------------- ip area --------------- '. "http://ip.taobao.com/service/getIpInfo.php?ip={$this->ip}");
         $this->date = date('Y-m-d h:i:s');
         $this->product_id = $productId;
         return $this->save();
