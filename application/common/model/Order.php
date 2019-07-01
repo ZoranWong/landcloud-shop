@@ -196,7 +196,7 @@ class Order extends Common
         }
 
         if (!empty($input['erp_id'])) {
-            $where['u.erp_manage_id'] = $input['erp_id'];
+            $where[] = ['u.erp_manage_id', 'eq', $input['erp_id']];
         }
 
         if (empty($input['super']) || !$input['super']) {
