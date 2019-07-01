@@ -14,17 +14,16 @@ class UserLog extends Common
 
 
     //总后台的登录记录
-    public function getList( $user_id, $limit = 10 )
+    public function getList($user_id, $limit = 10)
     {
         $where = [];
-        if($user_id){
-            $where[] = ['user_id','eq',$user_id];
+        if ($user_id) {
+            $where[] = ['user_id', 'eq', $user_id];
         }
         $data = $this->where($where)
             ->order('ctime DESC')
             ->paginate($limit);
-        foreach( $data as $key => $val )
-        {
+        foreach ($data as $key => $val) {
             $data[$key]['state'] = config('params.user')['state'][$val['state']];
             $data[$key]['ctime'] = getTime($val['ctime']);
         }
@@ -34,7 +33,7 @@ class UserLog extends Common
     protected function tableWhere($post)
     {
         $where = [];
-        if(isset($post['user_id']) && $post['user_id'] != ""){
+        if (isset($post['user_id']) && $post['user_id'] != "") {
             $where[] = ['user_id', 'eq', $post['user_id']];
         }
         $result['where'] = $where;
@@ -42,6 +41,7 @@ class UserLog extends Common
         $result['order'] = "ctime desc";
         return $result;
     }
+
     /**
      * 根据查询结果，格式化数据
      * @author sin
@@ -50,7 +50,7 @@ class UserLog extends Common
      */
     protected function tableFormat($list)
     {
-        foreach($list as $k => $v) {
+        foreach ($list as $k => $v) {
             $list[$k]['state'] = config('params.user')['state'][$v['state']];
             $list[$k]['ctime'] = getTime($v['ctime']);
         }
@@ -64,7 +64,7 @@ class UserLog extends Common
      * @param $user_id
      * @param string $state
      */
-    public function setLog( $user_id,$state,$data = [] )
+    public function setLog($user_id, $state, $data = [])
     {
 
         $data = [
@@ -81,12 +81,16 @@ class UserLog extends Common
     /**
      * 按天统计商户下面的数据
      */
-    public function statistics($day,$state)
+    public function statistics($day, $state)
     {
         $where['state'] = $state;
         $field = 'state,DATE_FORMAT(from_unixtime(ctime),"%Y-%m-%d") as day, count(*) as nums';
 
-        $res = $this->field($field)->where($where)->where("TIMESTAMPDIFF(DAY,from_unixtime(ctime),now()) <7")->group('DATE_FORMAT(from_unixtime(ctime),"%Y-%m-%d")')->select();
+        $res = $this->field($field)
+            ->where($where)
+            ->where("TIMESTAMPDIFF(DAY,from_unixtime(ctime),now()) <7")
+            ->group('DATE_FORMAT(from_unixtime(ctime),"%Y-%m-%d")')
+            ->select();
 
         $data = get_lately_days($day, $res);
         return ['day' => $data['day'], 'data' => $data['data']];
