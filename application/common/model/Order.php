@@ -200,7 +200,7 @@ class Order extends Common
         }
 
         if (empty($input['super']) || !$input['super']) {
-            $where[] = ['u.is_tester', 'eq', 0];
+            $where['u.is_tester'] = ['eq', 0];
         }
 
         $page = $input['page'] ? $input['page'] : 1;
