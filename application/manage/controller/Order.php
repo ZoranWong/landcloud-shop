@@ -39,7 +39,7 @@ class Order extends Manage
     {
         $managerId = session('manage')['id'];
         $manager = \app\common\model\Manage::find($managerId);
-        $input['erp_id'] = $manager['erp_id'];
+        $input['erp_id'] = $manager['erp_manage_id'];
         if (\app\common\model\Manage::TYPE_SUPER_ID == $managerId) {
             $super = true;
         } else {
