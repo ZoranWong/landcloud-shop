@@ -37,6 +37,14 @@ class Order extends Manage
      */
     public function index()
     {
+        $managerId = session('manage')['id'];
+        $manager = \app\common\model\Manage::find($managerId);
+        $input['erp_id'] = $manager['erp_id'];
+        if (\app\common\model\Manage::TYPE_SUPER_ID == $managerId) {
+            $super = true;
+        } else {
+            $super = false;
+        }
         if (!Request::isAjax()) {
             //订单来源
             $source = config('params.order')['source'];
@@ -60,6 +68,7 @@ class Order extends Manage
                 'complete' => $count[6]
             ];
             $this->assign('count', $counts);
+            $this->assign('super', $super);
 
             return $this->fetch('index');
         } else {
@@ -75,15 +84,7 @@ class Order extends Manage
                 'limit' => Request::param('limit')
             );
             $model = new Model();
-            $managerId = session('manage')['id'];
-            Log::debug('-----  manager id '.$managerId.' -----');
-            if (\app\common\model\Manage::TYPE_SUPER_ID == $managerId) {
-                Log::debug('----- Ihis is super manager -----');
-                $input['super'] = true;
-            } else {
-                $input['super'] = false;
-                Log::debug('----- This is not super manager -----');
-            }
+            $input['super'] = $super;
             $data = $model->getListFromAdmin($input);
 
             if (count($data['data']) > 0) {
