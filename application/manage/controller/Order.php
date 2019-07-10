@@ -69,6 +69,7 @@ class Order extends Manage
             ];
             $this->assign('count', $counts);
             $this->assign('super', $super);
+            $this->assign('erpId', $manager['erp_manage_id']);
 
             return $this->fetch('index');
         } else {
