@@ -81,11 +81,12 @@
         <div class="layui-inline">
             <label class="layui-form-label">销售代表：</label>
             <div class="layui-input-inline seller-inline-3">
-                <if condition="$super">
-                    <input type="text" name="erp_id" placeholder="请输入代表ERP_ID" autocomplete="off" class="layui-input">
-                <else />
-                    <input type="text" name="erp_id" placeholder="请输入代表ERP_ID" autocomplete="off" class="layui-input" readonly value="{$erp_id}">
-                </if>
+                {if condition="$super"}
+                <input type="text" name="erp_id" placeholder="请输入代表ERP_ID" autocomplete="off" class="layui-input">
+                {else /}
+                <input type="text" name="erp_id" placeholder="请输入代表ERP_ID" autocomplete="off" class="layui-input"
+                       readonly value="{$erp_id}">
+                {/if}
 
             </div>
         </div>
@@ -712,7 +713,9 @@
                 });
             });
         };
-        {:hook('orderExtJs')}
+        {:
+            hook('orderExtJs')
+        }
 
         //保存卖家备注
         $(document).on('click', '.mark-save', function () {
