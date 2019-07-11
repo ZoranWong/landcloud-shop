@@ -128,7 +128,7 @@ class Order extends Manage
         $orderModel = new Model();
         $order_info = $orderModel->getOrderInfoByOrderID($id, false, false);
         $this->assign('order', $order_info);
-
+        var_dump($order_info);
         $orderLog = new OrderLog();
         $order_log = $orderLog->getOrderLog($id);
         if ($order_log['status']) {
