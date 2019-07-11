@@ -11,6 +11,7 @@ namespace app\job\export;
 
 use app\common\model\Order;
 use app\common\model\OrderItems;
+use think\facade\Log;
 use think\queue\Job;
 use app\common\model\Goods as goodsModel;
 use app\common\model\Ietask;
@@ -81,5 +82,6 @@ class Orders
     {
 
         // ...任务达到最大重试次数后，失败了
+        Log::error('----------- order export fail -----------'. is_array($data) ? json_encode($data) : $data);
     }
 }
