@@ -685,6 +685,19 @@ class Order extends Common
             $order_info['promotion_list'] = json_decode($order_info['promotion_list'], true);
         }
 
+        if($order_info['items']) {
+            foreach ($order_info['items'] as &$item) {
+                if($item['addon']) {
+                    $item['addon'] = json_decode($item['addon'], true);
+                    if(!$item['addon']['pack']) {
+                        $goods = Goods::find(['id' => $item['product_id']]);
+                        $item['addon']['name'] = $item['addon']['count'] .$goods['spes_desc'];
+                    }
+                }
+
+            }
+        }
+
         return $order_info;
     }
 
