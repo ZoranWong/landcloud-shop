@@ -691,9 +691,9 @@ class Order extends Common
                     $item['addon'] = json_decode($item['addon'], true);
                     if(!$item['addon']['pack']) {
                         $goods = Goods::find(['id' => $item['product_id']]);
-                        $item['spes_desc'] = $item['count']. 'X'.$goods['spes_desc'];
+                        $item['spes_desc'] = $item['addon']['count']. 'X'.$goods['spes_desc'];
                     }else{
-                        $item['spes_desc'] = $item['count']. 'X'.$item['addon']['name'];
+                        $item['spes_desc'] = $item['addon']['count']. 'X'.$item['addon']['name'];
                     }
                 }
 
