@@ -475,8 +475,9 @@ class Order extends Common
                 if ($from == 'seller') {
                     $html .= '<a class="layui-btn layui-btn-xs edit-order" data-id="' . $id . '" data-type="1">编辑</a>';
                 }
-                $html .= '<a class="layui-btn layui-btn-xs cancel-order" data-id="' . $id . '">取消</a>';
             }
+            $html .= '<a class="layui-btn layui-btn-xs cancel-order" data-id="' . $id . '">取消</a>';
+
         }
 //        if ($order_status == self::ORDER_STATUS_COMPLETE)
 //        {
