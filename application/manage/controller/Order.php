@@ -39,7 +39,7 @@ class Order extends Manage
     {
         $managerId = session('manage')['id'];
         $manager = \app\common\model\Manage::find($managerId);
-//        $input['erp_id'] = $manager['erp_manage_id'];
+        $erpId = $manager['erp_manage_id'];
         if (\app\common\model\Manage::TYPE_SUPER_ID == $managerId) {
             $super = true;
         } else {
@@ -69,7 +69,7 @@ class Order extends Manage
             ];
             $this->assign('count', $counts);
             $this->assign('super', $super);
-            $this->assign('erpId', $manager['erp_manage_id']);
+            $this->assign('erp_id', $erpId);
 
             return $this->fetch('index');
         } else {
@@ -86,6 +86,9 @@ class Order extends Manage
             );
             $model = new Model();
             $input['super'] = $super;
+            if(!$super && $erpId) {
+                $input['erp_id'] = $erpId;
+            }
             $data = $model->getListFromAdmin($input);
 
             if (count($data['data']) > 0) {
