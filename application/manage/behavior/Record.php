@@ -68,8 +68,8 @@ class Record
                 if ($opinfo['status']) {
                     $postData = input('post.');
                     $decs     = $opinfo['data']['act']['name'];
-                    if ($postData['name'] || $postData['id']) {
-                        $decs = $decs . '：' . ($postData['name'] ? $postData['name'] : $postData['id']);
+                    if (isset($postData['name']) || isset($postData['id'])) {
+                        $decs = $decs . '：' . (isset($postData['name']) ? $postData['name'] : $postData['id']);
                     }
                     $log      = [
                         'manage_id'  => $user['id'],
