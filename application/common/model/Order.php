@@ -892,7 +892,7 @@ class Order extends Common
     {
         $where[] = array('order_id', 'in', $id);
 //        $where[] = array('pay_status', 'eq', self::PAY_STATUS_NO);
-//        $where[] = array('status', 'eq', self::ORDER_STATUS_NORMAL);
+        $where[] = array('status', 'eq', self::ORDER_STATUS_NORMAL);
 //        $where[] = array('ship_status', 'eq', self::SHIP_STATUS_NO);
 
         if ($user_id) {
