@@ -917,6 +917,7 @@ class Order extends Common
                 $w[] = ['order_id', 'in', $order_ids];
                 $d['status'] = self::ORDER_STATUS_CANCEL;
                 $d['utime'] = time();
+                var_dump($w);
                 $this->where($w)
                     ->update($d);
                 $itemModel = new OrderItems();
