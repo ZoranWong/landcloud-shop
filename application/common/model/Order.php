@@ -891,7 +891,7 @@ class Order extends Common
     public function cancel($id, $user_id = false)
     {
         $where[] = array('order_id', 'in', $id);
-        $where[] = array('pay_status', 'eq', self::PAY_STATUS_NO);
+//        $where[] = array('pay_status', 'eq', self::PAY_STATUS_NO);
         $where[] = array('status', 'eq', self::ORDER_STATUS_NORMAL);
         $where[] = array('ship_status', 'eq', self::SHIP_STATUS_NO);
 
@@ -908,7 +908,6 @@ class Order extends Common
                 //更改状态和库存
                 $order_ids = [];
                 $orderLog = new OrderLog();
-                var_dump($order_info->toArray());
                 foreach ($order_info as $k => $v) {
                     $order_ids[] = $v['order_id'];
                     //订单记录
