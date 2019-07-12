@@ -908,6 +908,7 @@ class Order extends Common
                 //更改状态和库存
                 $order_ids = [];
                 $orderLog = new OrderLog();
+                var_dump($order_info);
                 foreach ($order_info as $k => $v) {
                     $order_ids[] = $v['order_id'];
                     //订单记录
@@ -917,7 +918,7 @@ class Order extends Common
                 $w[] = ['order_id', 'in', $order_ids];
                 $d['status'] = self::ORDER_STATUS_CANCEL;
                 $d['utime'] = time();
-                var_dump($w);
+
                 $this->where($w)
                     ->update($d);
                 $itemModel = new OrderItems();
