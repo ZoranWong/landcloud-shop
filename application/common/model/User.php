@@ -150,7 +150,8 @@ class User extends Common
             }
         }
 
-        $userInfo = $this->where(array('username' => $data['mobile']))->whereOr(array('mobile' => $data['mobile']))->find();
+//        $userInfo = $this->where(array('username' => $data['mobile']))->whereOr(array('mobile' => $data['mobile']))->find();
+        $userInfo = $this->where(array('username' => $data['mobile']))->find();
         if (!$userInfo) {
             $result['msg'] = '没有找到此账号';
             return $result;
@@ -159,7 +160,9 @@ class User extends Common
 
         //判断是否是用户名登录
 //        $userInfo = $this->where(array('username|mobile' => $data['mobile'], 'password' => $this->enPassword($data['password'], $userInfo->ctime)))->find();
-        $userInfo = $this->where(array('username|mobile' => $data['mobile']))->find();
+//        $userInfo = $this->where(array('username|mobile' => $data['mobile']))->find();
+         $userInfo = $this->where(array('username' => $data['mobile']))->find();
+
         if ($userInfo && $data['password'] === decrypt($userInfo->password)) {
             $result = $this->setSession($userInfo, $loginType, $platform);            //根据登录类型，去存session，或者是返回user_token
         } else {
