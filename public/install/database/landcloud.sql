@@ -879,7 +879,7 @@ CREATE TABLE `lc_manage` (
   `nickname` varchar(50) DEFAULT NULL COMMENT '昵称',
   `ctime` bigint(12) unsigned DEFAULT NULL,
   `utime` bigint(12) unsigned DEFAULT NULL,
-  `status` tinyint(1) unsigned DEFAULT '1' COMMENT '1 = 正常 2 = 停用',
+  `status` tinyint(1) unsigned DEFAULT '1' COMMENT '1 = 正常 2 = l停用',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `username` (`username`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='管理员表';

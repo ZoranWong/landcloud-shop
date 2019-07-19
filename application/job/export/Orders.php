@@ -49,7 +49,7 @@ class Orders
             $order['body'] = $body;
             $csv = new \org\Csv($order);
             $resCsv = $csv->export('order');
-
+            Log::info('---- orders export ---- '.json_encode($resCsv));
             if ($resCsv['status']) {
                 $uData['file_name'] = $resCsv['data']['filename'];
                 $uData['file_size'] = $resCsv['data']['filesize'];
@@ -61,12 +61,14 @@ class Orders
             $job->delete();
         } else {
             //失败，导出失败
+            Log::info('---- orders export fail ---- ');
             $uData['status'] = $ietaskModle::EXPORT_FAIL_STATUS;
             $uData['message'] = $orderData['msg'];
             $uData['utime'] = time();
             $ietaskModle->update($uData, ['id' => $params['task_id']]);
         }
         if ($job->attempts() > 3) {
+            Log::info('---- orders export attempts ---- ');
             $uData['status'] = $ietaskModle::EXPORT_FAIL_STATUS;
             $uData['message'] = '导出执行失败';
             $uData['utime'] = time();
