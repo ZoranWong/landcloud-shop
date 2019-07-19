@@ -8,6 +8,8 @@
 // +----------------------------------------------------------------------
 namespace app\common\model;
 
+use think\facade\Log;
+
 /**
  * 导入导出任务类
  * Class Cart
@@ -48,6 +50,7 @@ class Ietask extends Common
 //            $jobClass = 'app\job\export\\' . $job . '@exec';
             $job = ucwords($job);
             $jobClass = "app\\service\\excel\\export\\{$job}Exporter@export";
+            Log::debug($jobClass.'======'.$job);
             $queueRes = \think\Queue::push($jobClass, ['type' => $job, 'exportData' => $exportData]);//加入导出队列
             return $queueRes;
         } else {
