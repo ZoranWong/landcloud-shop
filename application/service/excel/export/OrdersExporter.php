@@ -46,7 +46,8 @@ class OrdersExporter extends BaseGenerator
             $userIds = $users->map(function ($user) {
                 return $user['id'];
             });
-            $filter['user_id'] = $userIds->toArray();
+            if($userIds->count())
+                $filter['user_id'] = $userIds->toArray();
             unset($filter['erp_id']);
         }
 
