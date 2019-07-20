@@ -9,13 +9,9 @@ class Common extends Model
      * 返回layui的table所需要的格式
      * @author sin
      * @param $post
-     * @param bool $isAll
      * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      */
-    public function tableData($post, $isAll = false)
+    public function tableData($post)
     {
         if(isset($post['limit'])){
             $limit = $post['limit'];
@@ -23,12 +19,7 @@ class Common extends Model
             $limit = config('paginate.list_rows');
         }
         $tableWhere = $this->tableWhere($post);
-        if($isAll){
-            $list = $this->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->select();
-        }else{
-            $list = $this->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->paginate($limit);
-        }
-
+        $list = $this->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->paginate($limit);
         $data = $this->tableFormat($list->getCollection());         //返回的数据格式化，并渲染成table所需要的最终的显示数据类型
 
         $re['code'] = 0;
