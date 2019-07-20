@@ -42,7 +42,7 @@ class OrdersExporter extends BaseGenerator
         }
 
         if(isset($filter['erp_id'])) {
-            $users = User::where('erp_manage_id', 'eq', $filter['erp_id'])->select(['id']);
+            $users = User::where('erp_manage_id', 'eq', $filter['erp_id'])->select();
             $userIds = $users->map(function ($user) {
                 return $user['id'];
             });
