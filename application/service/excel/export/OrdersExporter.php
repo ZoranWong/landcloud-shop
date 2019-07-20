@@ -72,10 +72,10 @@ class OrdersExporter extends BaseGenerator
 //            unset($filter['username']);
 //        }
 
-        if(isset($filter['ship_mobile'])) {
-            $filter[] = ['ship_mobile', 'eq', $filter['ship_mobile']];
-            unset($filter['ship_mobile']);
-        }
+//        if(isset($filter['ship_mobile'])) {
+//            $filter[] = ['ship_mobile', 'eq', $filter['ship_mobile']];
+//            unset($filter['ship_mobile']);
+//        }
 //
 //        if(isset($filter['source'])) {
 //            $filter[] = ['source', 'eq', $filter['source']];
