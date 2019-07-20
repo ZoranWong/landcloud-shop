@@ -2,6 +2,7 @@
 
 namespace app\common\model;
 
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use think\Db;
 use think\db\Query;
 use think\facade\Log;
@@ -1805,7 +1806,22 @@ class Order extends Common
             return $result;
         }
     }
-
+    public static function exportHeader()
+    {
+        return [
+            ['field' => 'order_id', 'desc' => '订单编号', 'type' => DataType::TYPE_STRING],
+            ['field' => 'ctime', 'desc' => '下单时间', 'type' => DataType::TYPE_STRING],
+            ['field' => 'status_text', 'desc' => '订单状态', 'type' => DataType::TYPE_STRING],
+            ['field' => 'username', 'desc' => '用户名', 'type' => DataType::TYPE_STRING],
+            ['field' => 'ship_name', 'desc' => '收货人', 'type' => DataType::TYPE_STRING],
+            ['field' => 'area_name', 'desc' => '收货地址', 'type' => DataType::TYPE_STRING],
+            ['field' => 'ship_mobile', 'desc' => '收货人手机号', 'type' => DataType::TYPE_STRING],
+            ['field' => 'pay_status', 'desc' => '支付状态', 'type' => DataType::TYPE_STRING],
+            ['field' => 'ship_status', 'desc' => '发货状态', 'type' => DataType::TYPE_STRING],
+            ['field' => 'order_amount', 'desc' => '订单总额', 'type' => DataType::TYPE_STRING],
+            ['field' => 'source', 'desc' => '订单来源', 'type' => DataType::TYPE_STRING]
+        ];
+    }
     /**
      * 设置csv header
      * @return array
