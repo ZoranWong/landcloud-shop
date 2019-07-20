@@ -1965,7 +1965,7 @@ class Order extends Common
         }else{
             $list = $this->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->paginate($limit);
         }
-
+        var_dump($list);
         $data = $this->tableFormat($list->getCollection());         //返回的数据格式化，并渲染成table所需要的最终的显示数据类型
 
         $re['code'] = 0;
