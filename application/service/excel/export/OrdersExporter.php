@@ -35,7 +35,7 @@ class OrdersExporter extends BaseGenerator
 
         if (isset($filter['order_ids'])) {
             if ($filter['order_ids']) {
-                $filter['order_id'] = ['in', explode(',', $filter['order_ids'])];
+                $filter['order_id'] = explode(',', $filter['order_ids']);
             }
             unset($filter['order_ids']);
         }
