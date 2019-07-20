@@ -6,6 +6,7 @@ use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use think\Db;
 use think\db\Query;
 use think\facade\Log;
+use think\model\Collection;
 use think\model\concern\SoftDelete;
 
 /**
@@ -1960,12 +1961,12 @@ class Order extends Common
             $limit = config('paginate.list_rows');
         }
         $tableWhere = $this->tableWhere($post);
+        $list = Collection::make();
         if($isAll){
             $list = $this->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->select();
         }else{
             $list = $this->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->paginate($limit);
         }
-        var_dump($list);
         $data = $this->tableFormat($list->getCollection());         //返回的数据格式化，并渲染成table所需要的最终的显示数据类型
 
         $re['code'] = 0;
