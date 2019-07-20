@@ -61,16 +61,16 @@ class OrdersExporter extends BaseGenerator
             unset($filter['date']);
         }
 
-        if(isset($filter['username'])) {
-            $where[] = array('username|mobile|nickname', 'eq', $filter['username']);
-            $users = User::where($where)->select();
-            $userIds = $users->map(function ($user) {
-                return $user['id'];
-            });
-            if($userIds->count())
-                $userIdList = array_merge($userIdList, $userIds->toArray());
-            unset($filter['username']);
-        }
+//        if(isset($filter['username'])) {
+//            $where[] = array('username|mobile|nickname', 'eq', $filter['username']);
+//            $users = User::where($where)->select();
+//            $userIds = $users->map(function ($user) {
+//                return $user['id'];
+//            });
+//            if($userIds->count())
+//                $userIdList = array_merge($userIdList, $userIds->toArray());
+//            unset($filter['username']);
+//        }
 
         if(isset($filter['ship_mobile'])) {
             $filter[] = ['ship_mobile', 'eq', $filter['ship_mobile']];
