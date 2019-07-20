@@ -1812,6 +1812,7 @@ class Order extends Common
         return [
             ['field' => 'order_id', 'desc' => '订单编号', 'type' => DataType::TYPE_STRING],
             ['field' => 'erp_id', 'desc' => '销售经理ERP编号', 'type' => DataType::TYPE_STRING],
+            ['field' => 'register_address', 'desc' => '注册地址', 'type' => DataType::TYPE_STRING],
             ['field' => 'ctime', 'desc' => '下单时间', 'type' => DataType::TYPE_STRING],
             ['field' => 'status_text', 'desc' => '订单状态', 'type' => DataType::TYPE_STRING],
             ['field' => 'username', 'desc' => '用户名', 'type' => DataType::TYPE_STRING],
