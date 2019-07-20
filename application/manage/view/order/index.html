@@ -639,7 +639,10 @@
                         });
                     }
                     var filter = $(".seller-form").serialize();
-                    filter += '&order_ids=' + ids + '&order_unified_status=' + tabStatus;
+                    filter += '&order_ids=' + ids;
+                    if(typeof tabStatus !== 'undefined') {
+                        filter += '&order_unified_status=' + tabStatus;
+                    }
 
                     $(".export-form:last").append("<input type='hidden' name='filter' value='" + filter + "'>");
                     var data = $(".export-form:last").serializeArray();
