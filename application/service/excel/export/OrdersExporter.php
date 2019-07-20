@@ -56,7 +56,8 @@ class OrdersExporter extends BaseGenerator
             $dateArray = explode(' 到 ', $dateString);
             $sDate = strtotime($dateArray[0] . ' 00:00:00');
             $eDate = strtotime($dateArray[1] . ' 23:59:59');
-            $filter[] = array('ctime', ['>=', $sDate], ['<=', $eDate], 'and');
+            $filter['ctime'] = [['>=', $sDate], ['<=', $eDate], 'and'];
+            unset($filter['date']);
         }
 
         foreach ($filter as $key => $item) {
