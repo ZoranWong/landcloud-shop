@@ -1988,4 +1988,31 @@ class Order extends Common
         $result['order'] = [];
         return $result;
     }
+
+    protected function tableFormat($list)
+    {
+        foreach ($list as $k => &$v) {
+            $v['status_text'] = config('params.order')['status_text'][$this->getStatus($v['status'], $v['pay_status'], $v['ship_status'], $v['confirm'], $v['is_comment'])];
+            $v['username'] = get_user_info($v['user_id'], 'nickname');
+            $v['operating'] = $this->getOperating($v['order_id'], $v['status'], $v['pay_status'], $v['ship_status']);
+            $v['area_name'] = get_area($v['ship_area_id']) . '-' . $v['ship_address'];
+            $v['pay_status'] = config('params.order')['pay_status'][$v['pay_status']];
+            $v['ship_status'] = config('params.order')['ship_status'][$v['ship_status']];
+            $v['source'] = config('params.order')['source'][$v['source']];
+            //获取订单打印状态
+            $print_express = hook('getPrintExpressInfo', ['order_id' => $v['order_id']]);
+            if ($print_express[0]['status']) {
+                $v['print'] = true;
+            } else {
+                $v['print'] = false;
+            }
+            //备注醒目
+            if (isset($v['mark']) && !empty($v['mark']) && $v['mark'] != '') {
+                $v['order_id_k'] = '<span style="color:#FF7159;" title="' . $v['mark'] . '">' . $v['order_id'] . '</span>';
+            } else {
+                $v['order_id_k'] = $v['order_id'];
+            }
+        }
+        return $list;
+    }
 }
