@@ -1811,6 +1811,7 @@ class Order extends Common
     {
         return [
             ['field' => 'order_id', 'desc' => '订单编号', 'type' => DataType::TYPE_STRING],
+            ['field' => 'erp_id', 'desc' => '销售经理ERP编号', 'type' => DataType::TYPE_STRING],
             ['field' => 'ctime', 'desc' => '下单时间', 'type' => DataType::TYPE_STRING],
             ['field' => 'status_text', 'desc' => '订单状态', 'type' => DataType::TYPE_STRING],
             ['field' => 'username', 'desc' => '用户名', 'type' => DataType::TYPE_STRING],
@@ -1992,8 +1993,11 @@ class Order extends Common
     protected function tableFormat($list)
     {
         foreach ($list as $k => &$v) {
+            $user = User::get($v['user_id']);
             $v['status_text'] = config('params.order')['status_text'][$this->getStatus($v['status'], $v['pay_status'], $v['ship_status'], $v['confirm'], $v['is_comment'])];
-            $v['username'] = get_user_info($v['user_id'], 'nickname');
+            $v['username'] = $user ? $user['nickname'] : '';
+            $v['register_address'] = $user ? $user['registerArea']['name'] : '';
+            $v['erp_id'] = $user ? $user['erp_manage_id'] : '';
             $v['operating'] = $this->getOperating($v['order_id'], $v['status'], $v['pay_status'], $v['ship_status']);
             $v['area_name'] = get_area($v['ship_area_id']) . '-' . $v['ship_address'];
             $v['pay_status'] = config('params.order')['pay_status'][$v['pay_status']];
