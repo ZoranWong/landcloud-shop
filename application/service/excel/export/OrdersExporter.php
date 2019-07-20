@@ -40,6 +40,12 @@ class OrdersExporter extends BaseGenerator
             unset($filter['order_ids']);
         }
 
+        foreach ($filter as $key => $item) {
+            if($item === null || $item === ''){
+                unset($filter[$key]);
+            }
+        }
+
         $result = [
             'status' => true,
             'data' => [],
