@@ -1975,4 +1975,12 @@ class Order extends Common
 
         return $re;
     }
+
+    protected function tableWhere($post)
+    {
+        $result['where'] = $post;
+        $result['field'] = "*";
+        $result['order'] = [];
+        return $result;
+    }
 }
