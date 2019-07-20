@@ -34,7 +34,7 @@ class OrdersExporter extends BaseGenerator
 
         if (isset($filter['ids'])) {
             if ($filter['ids']) {
-                $filter['id'] = explode(',', $filter['ids']);
+                $filter['id'] = ['in', $filter['ids']];
             }
             unset($filter['ids']);
         }
@@ -46,6 +46,8 @@ class OrdersExporter extends BaseGenerator
         ];
 
         $order = new Order();
-        $order->tableData($filter, false);
+        $ordersResult = $order->tableData($filter);
+        $result['data'] = $ordersResult['data'];
+        return $result;
     }
 }
