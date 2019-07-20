@@ -38,7 +38,7 @@ class Common extends Model
      */
     protected function tableWhere($post)
     {
-        $result['where'] = [];
+        $result['where'] = $post;
         $result['field'] = "*";
         $result['order'] = [];
         return $result;
