@@ -9,7 +9,11 @@ class Common extends Model
      * 返回layui的table所需要的格式
      * @author sin
      * @param $post
+     * @param bool $isAll
      * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function tableData($post, $isAll = false)
     {

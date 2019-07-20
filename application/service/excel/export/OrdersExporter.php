@@ -53,7 +53,7 @@ class OrdersExporter extends BaseGenerator
         ];
         Log::info('------ order filter -----'.json_encode($filter));
         $order = new Order();
-        $ordersResult = $order->tableData($filter);
+        $ordersResult = $order->tableData($filter, true);
         $result['data'] = $ordersResult['data']->toArray();
         return $result;
     }
