@@ -10,6 +10,7 @@ namespace app\service\excel\export;
 
 
 use app\common\model\Order;
+use app\common\model\User;
 use app\service\excel\BaseGenerator;
 use think\facade\Log;
 
@@ -38,6 +39,15 @@ class OrdersExporter extends BaseGenerator
                 $filter['order_id'] = explode(',', $filter['order_ids']);
             }
             unset($filter['order_ids']);
+        }
+
+        if(isset($filter['erp_id'])) {
+            $users = User::where('erp_manage_id', 'eq', $filter['erp_id'])->select(['id']);
+            $userIds = $users->map(function ($user) {
+                return $user['id'];
+            });
+            $filter['user_id'] = $userIds;
+            unset($filter['erp_id']);
         }
 
         foreach ($filter as $key => $item) {
