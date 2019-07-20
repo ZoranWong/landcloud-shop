@@ -36,7 +36,7 @@ class OrdersExporter extends BaseGenerator
 
         if (isset($filter['order_ids'])) {
             if ($filter['order_ids']) {
-                $filter['order_id'] = explode(',', $filter['order_ids']);
+                $filter[] = ['order_id', 'in', explode(',', $filter['order_ids'])];
             }
             unset($filter['order_ids']);
         }
@@ -47,7 +47,7 @@ class OrdersExporter extends BaseGenerator
                 return $user['id'];
             });
             if($userIds->count())
-                $filter['user_id'] = $userIds->toArray();
+                $filter[] = ['user_id', 'in', $userIds->toArray()];
             unset($filter['erp_id']);
         }
 
