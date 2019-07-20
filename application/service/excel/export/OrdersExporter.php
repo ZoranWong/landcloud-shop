@@ -11,6 +11,7 @@ namespace app\service\excel\export;
 
 use app\common\model\Order;
 use app\service\excel\BaseGenerator;
+use think\facade\Log;
 
 class OrdersExporter extends BaseGenerator
 {
@@ -44,7 +45,7 @@ class OrdersExporter extends BaseGenerator
             'data' => [],
             'msg' => ''
         ];
-
+        Log::info('------ order filter -----'.json_encode($filter));
         $order = new Order();
         $ordersResult = $order->tableData($filter);
         $result['data'] = $ordersResult['data']->toArray();
