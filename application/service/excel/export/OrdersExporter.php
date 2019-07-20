@@ -51,6 +51,14 @@ class OrdersExporter extends BaseGenerator
             unset($filter['erp_id']);
         }
 
+        if (isset($filter['date'])) {
+            $dateString = $filter['date'];
+            $dateArray = explode(' 到 ', $dateString);
+            $sDate = strtotime($dateArray[0] . ' 00:00:00');
+            $eDate = strtotime($dateArray[1] . ' 23:59:59');
+            $filter[] = array('ctime', ['>=', $sDate], ['<=', $eDate], 'and');
+        }
+
         foreach ($filter as $key => $item) {
             if($item === null || $item === ''){
                 unset($filter[$key]);
