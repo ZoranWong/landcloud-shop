@@ -32,11 +32,11 @@ class OrdersExporter extends BaseGenerator
         // TODO: Implement getExportData() method.
         $filter = json_decode($params, true);
 
-        if (isset($filter['ids'])) {
-            if ($filter['ids']) {
-                $filter['id'] = ['in', $filter['ids']];
+        if (isset($filter['order_ids'])) {
+            if ($filter['order_ids']) {
+                $filter['id'] = ['in', $filter['order_ids']];
             }
-            unset($filter['ids']);
+            unset($filter['order_ids']);
         }
 
         $result = [
