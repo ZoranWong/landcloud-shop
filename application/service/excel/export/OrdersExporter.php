@@ -47,7 +47,7 @@ class OrdersExporter extends BaseGenerator
 
         $order = new Order();
         $ordersResult = $order->tableData($filter);
-        $result['data'] = $ordersResult['data'];
+        $result['data'] = $ordersResult['data']->toArray();
         return $result;
     }
 }
