@@ -41,13 +41,14 @@ class OrdersExporter extends BaseGenerator
             unset($filter['order_ids']);
         }
 
+        $userIdList = [];
         if(isset($filter['erp_id'])) {
             $users = User::where('erp_manage_id', 'eq', $filter['erp_id'])->select();
             $userIds = $users->map(function ($user) {
                 return $user['id'];
             });
             if($userIds->count())
-                $filter[] = ['user_id', 'in', $userIds->toArray()];
+                $userIdList = array_merge($userIdList, $userIds->toArray());
             unset($filter['erp_id']);
         }
 
@@ -60,6 +61,29 @@ class OrdersExporter extends BaseGenerator
             unset($filter['date']);
         }
 
+        if(isset($filter['username'])) {
+            $where[] = array('username|mobile|nickname', 'eq', $filter['username']);
+            $users = User::where($where)->select();
+            $userIds = $users->map(function ($user) {
+                return $user['id'];
+            });
+            if($userIds->count())
+                $userIdList = array_merge($userIdList, $userIds->toArray());
+            unset($filter['username']);
+        }
+
+        if(isset($filter['ship_mobile'])) {
+            $filter[] = ['ship_mobile', 'eq', $filter['ship_mobile']];
+            unset($filter['ship_mobile']);
+        }
+
+        if(isset($filter['source'])) {
+            $filter[] = ['source', 'eq', $filter['source']];
+            unset($filter['source']);
+        }
+
+        if(count($userIdList))
+            $filter[] = ['user_id', 'in', $userIdList];
         foreach ($filter as $key => $item) {
             if($item === null || $item === ''){
                 unset($filter[$key]);
