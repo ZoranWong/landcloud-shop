@@ -250,6 +250,7 @@ class Order extends Common
 
         if (count($result['data']) > 0) {
             foreach ($result['data'] as $k => &$v) {
+                $user = User::get($v['user_id']);
                 $v['status_text'] = config('params.order')['status_text'][$this->getStatus($v['status'], $v['pay_status'], $v['ship_status'], $v['confirm'], $v['is_comment'])];
                 $v['username'] = get_user_info($v['user_id'], 'nickname');
                 $v['operating'] = $this->getOperating($v['order_id'], $v['status'], $v['pay_status'], $v['ship_status']);
@@ -257,6 +258,7 @@ class Order extends Common
                 $v['pay_status'] = config('params.order')['pay_status'][$v['pay_status']];
                 $v['ship_status'] = config('params.order')['ship_status'][$v['ship_status']];
                 $v['source'] = config('params.order')['source'][$v['source']];
+                $v['register_area'] = $user['register_area']['name'];
                 //获取订单打印状态
                 $print_express = hook('getPrintExpressInfo', ['order_id' => $v['order_id']]);
                 if ($print_express[0]['status']) {
