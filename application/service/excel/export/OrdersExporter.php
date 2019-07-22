@@ -53,7 +53,7 @@ class OrdersExporter extends BaseGenerator
         }
         Log::info('-----------=========---------'.json_encode($filter));
         if (isset($filter['date'])) {
-            $dateString = $filter['date'];
+            $dateString = urldecode($filter['date']);
             $dateArray = explode('到', $dateString);
             $sDate = strtotime($dateArray[0] . ' 00:00:00');
             $eDate = strtotime($dateArray[1] . ' 23:59:59');
