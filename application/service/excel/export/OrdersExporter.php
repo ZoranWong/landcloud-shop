@@ -60,7 +60,7 @@ class OrdersExporter extends BaseGenerator
             $filter[] = ['ctime', ['>=', $sDate], ['<=', $eDate], 'and'];
             unset($filter['date']);
         }
-        Log::info('-----------=========---------'.$filter['date']);
+        Log::info('-----------=========---------'.json_encode($filter));
 
 //        if(isset($filter['username'])) {
 //            $where[] = array('username|mobile|nickname', 'eq', $filter['username']);
