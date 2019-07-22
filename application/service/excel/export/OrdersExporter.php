@@ -51,7 +51,7 @@ class OrdersExporter extends BaseGenerator
                 $userIdList = array_merge($userIdList, $userIds->toArray());
             unset($filter['erp_id']);
         }
-
+        Log::info('-----------=========---------'.json_encode($filter));
         if (isset($filter['date'])) {
             $dateString = $filter['date'];
             $dateArray = explode(' 到 ', $dateString);
@@ -60,7 +60,7 @@ class OrdersExporter extends BaseGenerator
             $filter[] = ['ctime', ['>=', $sDate], ['<=', $eDate], 'and'];
             unset($filter['date']);
         }
-        Log::info('-----------=========---------'.json_encode($filter));
+
 
 //        if(isset($filter['username'])) {
 //            $where[] = array('username|mobile|nickname', 'eq', $filter['username']);
