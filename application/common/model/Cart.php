@@ -251,8 +251,8 @@ class Cart extends Common
                 $goods['preferential_price'] : $goods['promotion_price']) : $goods['promotion_price']) : $goods['price'];
 
             foreach ($levels as $level) {
-                if ($num >= $level['buy_num']) {
-                    $level['buy_num'] = $level['buy_num'] > 0 ? $level['buy_num'] : $num;
+                if ($level['buy_num'] > 0 && $num >= $level['buy_num']) {
+//                    $level['buy_num'] = $level['buy_num'] > 0 ? $level['buy_num'] : $num;
                     $n = (int)($num / $level['buy_num']);
                     $fee = $level['price'] * $n;
                     $amount += $fee;
