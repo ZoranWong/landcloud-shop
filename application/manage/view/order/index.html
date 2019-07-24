@@ -444,9 +444,9 @@
 
         // 创见快递单
         $(document).on('click', '.express-order-btn', function () {
-            $(this).disable();
+            $(this).prop('disabled', true);
             setTimeout(() => {
-                $(this).enable();
+                $(this).removeAttr('disabled');
             }, 3000);
             var id = $(this).attr('data-id');
             $.ajax({
