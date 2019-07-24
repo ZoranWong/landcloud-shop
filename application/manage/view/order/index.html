@@ -447,7 +447,7 @@
             $(this).prop('disabled', true);
             setTimeout(() => {
                 $(this).removeAttr('disabled');
-            }, 3000);
+            }, 1500);
             var id = $(this).attr('data-id');
             $.ajax({
                 url: '{:url("order/express")}',
