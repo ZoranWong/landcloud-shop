@@ -465,6 +465,12 @@
 
         //发货生成
         $(document).on('click', '.order-ship-btn', function () {
+            let doing = $(this).prop('shipping');
+            if(doing) {
+                layer.msg('发货中请等待！！！！');
+                return ;
+            }
+            $(this).prop('shipping', true);
             var ship_data = [];
             var order_id = $("#order_id").val();
             var logi_no = $("#logi_no").val();
@@ -501,6 +507,10 @@
                         layer.msg(e.msg, {time: 1300}, function () {
                             table.reload();
                         });
+                        $(this).prop('shipping', false);
+                    },
+                    fail(){
+                        $(this).prop('shipping', false);
                     }
                 });
             }
