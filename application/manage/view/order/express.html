@@ -26,7 +26,7 @@
         <td>{$vo.name}</td>
         <td>{$vo.bn}</td>
         <td>{$vo.sn}</td>
-        <td>{$vo.addon}</td>
+        <td>{if isset($vo.addon['name'])}{$vo.addon['name']}{else /} {$vo.goods['spes_desc']}{/if}</td>
         <td>{$vo.nums}</td>
         <td>{if $vo.sendnums}{$vo.sendnums}{else /}0{/if}</td>
         <td><input type="text" data-id="{$vo.id}" class="order-express-num layui-input" max="{$vo.nums-$vo.sendnums}" value="{$vo.nums-$vo.sendnums}" min="0"></td>
