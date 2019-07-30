@@ -967,9 +967,9 @@ class User extends Common
             $return['msg'] = '请输入正确的手机号';
             return $return;
         }
-        $flag = $this->checkUserByMobile($data['mobile']);
+        $flag = $this->checkUserByUsername($data['username']);
         if ($flag) {
-            $return['msg'] = '手机号已经存在，请更换手机号重新添加';
+            $return['msg'] = '用户名已经存在，请更换用户名重新添加';
             return $return;
         }
         if ($data['password'] == '' || strlen($data['password']) < 6 || strlen($data['password']) > 20) {
@@ -995,7 +995,7 @@ class User extends Common
         }
 
         $time = time();
-        $newData['username'] = null;
+        $newData['username'] = $data['username'];
         $newData['mobile'] = $data['mobile'];
 //        $newData['password'] = $this->enPassword($data['password'], $time);
         $newData['password'] = encrypt($data['password']);
@@ -1082,6 +1082,7 @@ class User extends Common
 
         $where[] = ['id', 'eq', $data['id']];
         $newData['nickname'] = $data['nickname'];
+        $newData['mobile'] = $data['p_mobile'];
         $newData['sex'] = $data['sex'] ? $data['sex'] : 3;
         $newData['birthday'] = $data['birthday'] ? $data['birthday'] : null;
         $newData['avatar'] = $data['avatar'];
@@ -1111,6 +1112,17 @@ class User extends Common
     public function checkUserByMobile($mobile)
     {
         $where[] = ['mobile', 'eq', $mobile];
+        $where[] = ['status', 'eq', self::STATUS_NORMAL];
+        $res = $this->field('id')->where($where)->find();
+        return $res;
+    }
+
+    /**
+     * 根据用户手机号获取用户id
+     */
+    public function checkUserByUsername($username)
+    {
+        $where[] = ['username', 'eq', $username];
         $where[] = ['status', 'eq', self::STATUS_NORMAL];
         $res = $this->field('id')->where($where)->find();
         return $res;

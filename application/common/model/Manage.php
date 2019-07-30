@@ -16,7 +16,7 @@ class Manage extends Common implements Excelable
     protected $rule = [
 //        'username' => 'length:3,20|alphaDash',
         'username' => 'length:2,50',
-        'mobile' => ['regex' => '^1[3|4|5|6|7|8][0-9]\d{4,8}$'],
+        'mobile' => ['regex' => '^1[3|4|5|6|7|8|9][0-9]\d{4,8}$'],
         'nickname' => 'length:2,50',
     ];
     protected $msg = [

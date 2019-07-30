@@ -83,7 +83,7 @@ class UserImportHandler extends BaseHandler
                 $userModel->startTrans();
                 //判断用户是否存在，存在跳过
                 $userModel->whereLike('mobile', "%{$user['mobile']}%")->where('mobile', 'neq', $user['mobile'])->delete();
-                $userData = $userModel->field('id')->where(['mobile' => $user['mobile']])->find();
+                $userData = $userModel->field('id')->where(['username' => $user['username']])->find();
                 try {
                     if ($userData && isset($userData['id']) && $userData['id'] !== '') {
                         $res = $userData->isUpdate(true)->save($user);

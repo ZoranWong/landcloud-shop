@@ -37,7 +37,7 @@ class AdministratorImportHandler extends BaseHandler
             Log::record("管理者导入：『#{$manage['erp_manage_id']}』{$manage['username']}");
 
             $manageModel->startTrans();
-            $manageData = $manageModel->field('id')->where(['mobile' => $manage['mobile']])->find();
+            $manageData = $manageModel->field('id')->where(['username' => $manage['username']])->find();
             if ($manageData && isset($manageData['id']) && $manageData['id'] !== '') {
                 $manage['password'] = encrypt($manage['password']);
                 $res = $manageModel->save($manage, ['id' => $manageData['id']]);

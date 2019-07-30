@@ -23,7 +23,7 @@ class Administrator extends ManageController
     {
         if(Request::isAjax()){
             $manageModel = new ManageModel();
-            return $manageModel->tableData([]);
+            return $manageModel->tableData(input('param.'));
         }else{
             return $this->fetch('index');
         }
