@@ -67,6 +67,7 @@
             <th>商品名称</th>
             <th>商品编码</th>
             <th>货品编码</th>
+            <th>商品规格</th>
             <th>购买数量</th>
             <th>已发数量</th>
             <th>未发货数量</th>
@@ -78,6 +79,7 @@
             <td>{$vo.name}</td>
             <td>{$vo.bn}</td>
             <td>{$vo.sn}</td>
+            <td>{if isset($vo.addon['name'])}{$vo.addon['name']}{else /} {$vo.goods['spes_desc']}{/if}</td>
             <td>{$vo.nums}</td>
             <td>{if $vo.sendnums}{$vo.sendnums}{else /}0{/if}</td>
             <td>{$vo.nums-$vo.sendnums}<input type="hidden" data-id="{$vo.id}" class="order-ship-num"

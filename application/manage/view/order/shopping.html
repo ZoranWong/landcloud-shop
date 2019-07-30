@@ -28,6 +28,7 @@
         <tr>
             <th>商品名称</th>
             <th>货号</th>
+            <th>商品规格</th>
             <th>单价</th>
             <th>重量</th>
             <th>数量</th>
@@ -39,6 +40,7 @@
                 {$vo.name}
             </td>
             <td>{$vo.bn}</td>
+            <td>{if isset($vo.addon['name'])}{$vo.addon['name']}{else /} {$vo.goods['spes_desc']}{/if}</td>
             <td>￥{$vo.price}</td>
             <td>{$vo.weight*$vo.nums}g</td>
             <td>{$vo.nums}</td>
