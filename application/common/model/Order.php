@@ -70,7 +70,7 @@ class Order extends Common
      */
     public function user()
     {
-        return $this->belongsTo('User',  'user_id');
+        return $this->belongsTo('User', 'user_id');
     }
 
     /**
@@ -404,7 +404,7 @@ class Order extends Common
      */
     public function getOrderStatusNum($input)
     {
-        $ids = explode(",", $input['ids']);
+        $status = explode(",", $input['status']);
         if ($input['user_id']) {
             $user_id = $input['user_id'];
         } else {
@@ -412,8 +412,8 @@ class Order extends Common
         }
 
         $data = [];
-        foreach ($ids as $k => $v) {
-            $data[$v] = $this->orderCount($v, $user_id);
+        foreach ($status as $k => $v) {
+            $data[$v] = $this->orderCount($v, $user_id, $input['erp_id'] ?? false);
         }
 
         //售后状态查询
@@ -432,12 +432,22 @@ class Order extends Common
      * @param bool $user_id
      * @return int|string
      */
-    protected function orderCount($id = 0, $user_id = false)
+    protected function orderCount($id = 0, $user_id = false, $erpId = false)
     {
         $where = [];
         //都需要验证的
         if ($user_id) {
             $where[] = ['user_id', 'eq', $user_id];
+        }
+
+        if ($erpId) {
+            $userIds = [];
+            User::where('erp_manage_id', 'eq', $erpId)->select()->map(function (User $user) use(&$userIds) {
+                $userIds[] = $user['id'];
+            });
+
+            $where[] = ['user_id', 'in', $userIds];
+
         }
 
         $where = array_merge($where, $this->getReverseStatus($id));
@@ -689,15 +699,15 @@ class Order extends Common
             $order_info['promotion_list'] = json_decode($order_info['promotion_list'], true);
         }
 
-        if($order_info['items']) {
+        if ($order_info['items']) {
             foreach ($order_info['items'] as &$item) {
-                if($item['addon']) {
+                if ($item['addon']) {
                     $item['addon'] = json_decode($item['addon'], true);
-                    if(!$item['addon']['pack']) {
+                    if (!$item['addon']['pack']) {
                         $goods = Goods::find(['id' => $item['product_id']]);
-                        $item['spes_desc'] = $item['addon']['count']. 'X'.$goods['spes_desc'];
-                    }else{
-                        $item['spes_desc'] = $item['addon']['count']. 'X'.$item['addon']['name'];
+                        $item['spes_desc'] = $item['addon']['count'] . 'X' . $goods['spes_desc'];
+                    } else {
+                        $item['spes_desc'] = $item['addon']['count'] . 'X' . $item['addon']['name'];
                     }
                 }
 
@@ -1809,6 +1819,7 @@ class Order extends Common
             return $result;
         }
     }
+
     public static function exportHeader()
     {
         return [
@@ -1828,6 +1839,7 @@ class Order extends Common
             ['field' => 'source', 'desc' => '订单来源', 'type' => DataType::TYPE_STRING]
         ];
     }
+
     /**
      * 设置csv header
      * @return array
@@ -1960,23 +1972,23 @@ class Order extends Common
 
     public function tableData($post, $isAll = false)
     {
-        if(isset($post['limit'])){
+        if (isset($post['limit'])) {
             $limit = $post['limit'];
-        }else{
+        } else {
             $limit = config('paginate.list_rows');
         }
         $tableWhere = $this->tableWhere($post);
 
-        if($isAll){
+        if ($isAll) {
             $list = $this->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->select();
             $data = $this->tableFormat($list);
             $re['count'] = $list->count();
-        }else{
+        } else {
             $list = $this->field($tableWhere['field'])->where($tableWhere['where'])->order($tableWhere['order'])->paginate($limit);
             $data = $this->tableFormat($list->getCollection());
             $re['count'] = $list->total();
         }
-                //返回的数据格式化，并渲染成table所需要的最终的显示数据类型
+        //返回的数据格式化，并渲染成table所需要的最终的显示数据类型
 
         $re['code'] = 0;
         $re['msg'] = '';

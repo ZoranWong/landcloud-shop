@@ -52,9 +52,12 @@ class Order extends Manage
 
             //数据统计
             $input = [
-                'ids' => '0,1,2,3,4,5,6,7'
+                'status' => '0,1,2,3,4,5,6,7'
             ];
-
+            $input['super'] = $super;
+            if(!$super && $erpId) {
+                $input['erp_id'] = $erpId;
+            }
             $model = new Model();
             $count = $model->getOrderStatusNum($input);
             $counts = [
