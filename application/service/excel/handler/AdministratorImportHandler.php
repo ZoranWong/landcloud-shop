@@ -79,6 +79,7 @@ class AdministratorImportHandler extends BaseHandler
             }catch (\Exception $exception) {
                 Log::record("管理者导入失败：『#{$manage['erp_manage_id']}』{$manage['username']}");
                 Log::record("管理者导入失败：{$exception->getMessage()} ## {$manageModel->getLastSql()}");
+                throw $exception;
             }
         }
 
