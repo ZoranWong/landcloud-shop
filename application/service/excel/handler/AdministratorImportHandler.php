@@ -51,7 +51,7 @@ class AdministratorImportHandler extends BaseHandler
                 } else {
                     Log::record("管理者导入：『#{$manage['erp_manage_id']}』{$manage['username']} ##");
                     $result = $manageModel->toAdd($manage);
-                    Log::record("管理者导入：『#{$manage['erp_manage_id']}』{$manage['username']} ######");
+                    Log::record("管理者导入：『#{$manage['erp_manage_id']}』{$manage['username']} ######".json_encode($result));
                     $manage_id = $result['insertId'];
                 }
 
