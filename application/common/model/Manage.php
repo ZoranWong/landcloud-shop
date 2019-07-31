@@ -141,7 +141,7 @@ class Manage extends Common implements Excelable
 
 
         $result['status'] = true;
-        $result['insertId'] = $this->id;
+        $result['insertId'] = $this->getLastInsID();
         return $result;
     }
 
