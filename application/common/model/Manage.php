@@ -120,8 +120,12 @@ class Manage extends Common implements Excelable
 //            $data['password'] = $this->enPassword($data['password'], $data['ctime']);
             $data['password'] = encrypt($data['password']);
             //插入数据库
-            $this->data($data)->allowField(true)->save();
-            \think\facade\Log::info("------{$data['username']} manager info -----".$this->toJson());
+            if($this->data($data)->allowField(true)->save()) {
+                \think\facade\Log::info("------{$data['username']} manager info -----".$this->toJson());
+            }else{
+                \think\facade\Log::info('----- save fail -----');
+            }
+
             $data['id'] = $this->getLastInsID();
         }
         //设置角色
