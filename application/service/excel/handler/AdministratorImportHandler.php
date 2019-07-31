@@ -34,8 +34,7 @@ class AdministratorImportHandler extends BaseHandler
             $manage['nickname'] = $record['nickname'];
             $manage['utime'] = time();
             $manage['utime'] = time();
-
-
+            $manageData = [];
 
             try{
                 $manageData = $manageModel->field('id')->where('username', 'eq', $manage['username'])->find();
@@ -50,7 +49,9 @@ class AdministratorImportHandler extends BaseHandler
                     }
                     $manage_id = $manageData['id'];
                 } else {
+                    Log::record("管理者导入：『#{$manage['erp_manage_id']}』{$manage['username']} ##");
                     $result = $manageModel->toAdd($manage);
+                    Log::record("管理者导入：『#{$manage['erp_manage_id']}』{$manage['username']} ######");
                     $manage_id = $result['insertId'];
                 }
 
