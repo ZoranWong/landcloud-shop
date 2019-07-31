@@ -122,7 +122,7 @@ class Manage extends Common implements Excelable
             //插入数据库
             $this->data($data)->allowField(true)->save();
             \think\facade\Log::info("------{$data['username']} manager info -----".$this->toJson());
-            $data['id'] = $this->id;
+            $data['id'] = $this->getLastInsID();
         }
         //设置角色
         $manageRoleRelModel = new ManageRoleRel();
