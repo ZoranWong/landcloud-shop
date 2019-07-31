@@ -111,7 +111,7 @@ class Manage extends Common implements Excelable
                 return error_code(11011);
             }
 
-            \think\facade\Log::info("------{$data['username']} manager info -----".$manageInfo->toJson());
+
             $data['ctime'] = time();
 
             if (!isset($data['password']) && $data['password'] == "") {
@@ -121,6 +121,7 @@ class Manage extends Common implements Excelable
             $data['password'] = encrypt($data['password']);
             //插入数据库
             $this->data($data)->allowField(true)->save();
+            \think\facade\Log::info("------{$data['username']} manager info -----".$this->toJson());
             $data['id'] = $this->id;
         }
         //设置角色
