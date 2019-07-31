@@ -1082,7 +1082,7 @@ class User extends Common
 
         $where[] = ['id', 'eq', $data['id']];
         $newData['nickname'] = $data['nickname'];
-        $newData['mobile'] = $data['p_mobile'];
+        $newData['mobile'] = $data['mobile'];
         $newData['sex'] = $data['sex'] ? $data['sex'] : 3;
         $newData['birthday'] = $data['birthday'] ? $data['birthday'] : null;
         $newData['avatar'] = $data['avatar'];
