@@ -3,6 +3,7 @@
 namespace app\common\model;
 
 use app\service\excel\Excelable;
+use think\Log;
 use think\Validate;
 
 class Manage extends Common implements Excelable
@@ -105,9 +106,12 @@ class Manage extends Common implements Excelable
         } else {
             //判断用户名是否重复
             $manageInfo = $this->where(['username' => $data['username']])->find();
+
             if ($manageInfo) {
                 return error_code(11011);
             }
+
+            \think\facade\Log::info("------{$data['username']} manager info -----".$manageInfo->toJson());
             $data['ctime'] = time();
 
             if (!isset($data['password']) && $data['password'] == "") {
