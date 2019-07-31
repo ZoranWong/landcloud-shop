@@ -120,13 +120,13 @@ class Manage extends Common implements Excelable
 //            $data['password'] = $this->enPassword($data['password'], $data['ctime']);
             $data['password'] = encrypt($data['password']);
             //插入数据库
-            if($this->data($data)->allowField(true)->save()) {
+            if($id = $this->allowField(true)->insertGetId($data)) {
                 \think\facade\Log::info("------{$data['username']} manager info -----".$this->toJson());
             }else{
                 \think\facade\Log::info('----- save fail -----');
             }
 
-            $data['id'] = $this->getLastInsID();
+            $data['id'] = $id;
         }
         //设置角色
         $manageRoleRelModel = new ManageRoleRel();
@@ -145,7 +145,7 @@ class Manage extends Common implements Excelable
 
 
         $result['status'] = true;
-        $result['insertId'] = $this->getLastInsID();
+        $result['insertId'] = $data['id'];
         return $result;
     }
 
