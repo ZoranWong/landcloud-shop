@@ -35,10 +35,11 @@ class AdministratorImportHandler extends BaseHandler
             $manage['utime'] = time();
             $manage['utime'] = time();
 
-            Log::record("管理者导入：『#{$manage['erp_manage_id']}』{$manage['username']}");
+
 
             try{
                 $manageData = $manageModel->field('id')->where('username', 'eq', $manage['username'])->find();
+                Log::record("管理者导入：『#{$manage['erp_manage_id']}』{$manage['username']} ## {$manageModel->getLastSql()}");
                 $manageModel->startTrans();
                 if ($manageData && isset($manageData['id']) && $manageData['id'] != '') {
                     $manage['password'] = encrypt($manage['password']);
