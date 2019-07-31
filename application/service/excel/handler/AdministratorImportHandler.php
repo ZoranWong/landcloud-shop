@@ -42,6 +42,7 @@ class AdministratorImportHandler extends BaseHandler
                 Log::record("管理者导入：『#{$manage['erp_manage_id']}』{$manage['username']} ## {$manageModel->getLastSql()}");
                 $manageModel->startTrans();
                 if ($manageData && isset($manageData['id']) && $manageData['id'] != '') {
+                    Log::info("-------- manager data -------".$manageData->toJson());
                     $manage['password'] = encrypt($manage['password']);
                     $res = $manageModel->save($manage, ['id' => $manageData['id']]);
                     if ($res === false) {
