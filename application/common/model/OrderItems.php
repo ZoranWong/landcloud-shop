@@ -56,7 +56,7 @@ class OrderItems extends Common
     public function delivery()
     {
 //        return $this->belongsToMany(BillDelivery::class, BillDeliveryItems::class, 'delivery_id', 'order_items_id');
-        return $this->belongsToMany(BillDelivery::class, 'bill_delivery_items', 'delivery_id', 'order_items_id');
+        return $this->hasMany(BillDelivery::class, 'order_items_id', 'id');
     }
 
     public function goods()

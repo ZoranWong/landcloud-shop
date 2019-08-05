@@ -70,7 +70,12 @@ class BillDelivery extends Common
         $order_item = [];
         foreach($order['items'] as $k => $v)
         {
-            $order_item[$v['id']] = $v['nums']-$v['sendnums'];
+            $delivery = $v['delivery'];
+            $sendNum = 0;
+            foreach ($delivery as $item) {
+                $sendNum += $item['nums'];
+            }
+            $order_item[$v['id']] = $v['nums']-$v['sendnums'] - $sendNum;
         }
         $ship_item = [];
         foreach($ship_data as $k => $v)
