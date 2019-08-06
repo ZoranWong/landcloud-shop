@@ -37,7 +37,7 @@ class Common extends Base
      */
     public function login()
     {
-        exit('------');
+//        exit('------');
         $shop_name = getSetting('shop_name');
         $this->assign('shop_name', $shop_name);
         if (session('?manage')) {
