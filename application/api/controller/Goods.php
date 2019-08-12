@@ -314,8 +314,8 @@ class Goods extends Api
                     while ($levels->pop()) ;
                     if (count($items) > 0)
                         $levels = $levels->merge($items);
-                    Log::info('<<<<<<<<-------- '.json_encode($levels).' -------->>>>>>>>');
-                    Log::info('<<<<<<<<-------- '.json_encode($items).' -------->>>>>>>>');
+//                    Log::info('<<<<<<<<-------- '.json_encode($levels).' -------->>>>>>>>');
+//                    Log::info('<<<<<<<<-------- '.json_encode($items).' -------->>>>>>>>');
                 }
             });
             $returnGoods['data']['price_levels'] = $levels;
@@ -332,13 +332,12 @@ class Goods extends Api
             } else {
                 $return_data['msg'] = '查询成功';
                 $return_data['data'] = $returnGoods['data'];
-                $return_data['data']['price_levels'] = $returnGoods['data']['price_levels'];
             }
         } else {
             $return_data['msg'] = $returnGoods['msg'];
             $return_data['status'] = false;
         }
-//        Log::info('<<<<<<<<-------- '.json_encode($return_data).' -------->>>>>>>>');
+        Log::info('<<<<<<<<-------- '.json_encode($return_data['data']['price_levels']).' -------->>>>>>>>');
         return $return_data;
     }
 
