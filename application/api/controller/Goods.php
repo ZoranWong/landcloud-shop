@@ -333,7 +333,8 @@ class Goods extends Api
                 $return_data['status'] = false;
             } else {
                 $return_data['msg'] = '查询成功';
-                $return_data['data'] = $returnGoods['data'];
+                $return_data['data'] = $goods->toArray();
+                $return_data['data']['price_levels'] = $levels->toArray();
             }
         } else {
             $return_data['msg'] = $returnGoods['msg'];
