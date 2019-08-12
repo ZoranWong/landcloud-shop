@@ -296,7 +296,7 @@ class Goods extends Api
          * @var Collection $levels
          * */
         $levels = &$returnGoods['data']['price_levels'];
-        Log::info('-------- '.json_encode($levels).' --------');
+        Log::info('<<<<<<<<-------- '.json_encode($levels).' -------->>>>>>>>');
         /**
          * @var \app\common\model\Goods $goods
          * */
