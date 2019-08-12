@@ -279,6 +279,9 @@ class Goods extends Common implements Excelable
 
     public function levels (Collection &$levels, $area)
     {
+        if(!$area) {
+            return $levels;
+        }
         $list = $levels->filter(function ($level) use($area){
             Log::debug("---- level area {$level['area']} ------ {$area} --------");
             return $level['area'] == $area;
