@@ -313,7 +313,7 @@ class Goods extends Api
                     array_splice($items, $key, 1);
                     while ($levels->pop()) ;
                     if (count($items) > 0)
-                        $levels->merge($items);
+                        $levels = $levels->merge($items);
                     Log::info('<<<<<<<<-------- '.json_encode($levels).' -------->>>>>>>>');
                     Log::info('<<<<<<<<-------- '.json_encode($items).' -------->>>>>>>>');
                 }
