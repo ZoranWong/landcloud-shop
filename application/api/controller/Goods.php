@@ -296,7 +296,7 @@ class Goods extends Api
          * @var Collection $levels
          * */
         $levels = &$returnGoods['data']['price_levels'];
-        Log::info('<<<<<<<<-------- '.json_encode($levels).' -------->>>>>>>>');
+
         /**
          * @var \app\common\model\Goods $goods
          * */
@@ -320,7 +320,7 @@ class Goods extends Api
             });
 
         }
-
+        Log::info('<<<<<<<<-------- '.json_encode($levels).' -------->>>>>>>>');
 
         if ($returnGoods['status']) {
             if (isset($return_data['data']['isdel']) && $return_data['data']['isdel']) {
