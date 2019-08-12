@@ -318,7 +318,7 @@ class Goods extends Api
                     Log::info('<<<<<<<<-------- '.json_encode($items).' -------->>>>>>>>');
                 }
             });
-
+            $returnGoods['data']['price_levels'] = $levels;
         }
         Log::info('<<<<<<<<-------- '.json_encode($levels).' -------->>>>>>>>');
 
