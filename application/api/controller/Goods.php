@@ -322,7 +322,7 @@ class Goods extends Api
             $return_data['data']['level_count'] = $levels->count();
             Log::info('<<<<<<<<-------- ++++++ -------->>>>>>>>');
         }
-        Log::info('<<<<<<<<-------- '.json_encode($returnGoods['data']['price_levels']).' -------->>>>>>>>');
+        Log::info('<<<<<<<<-------- '.($levels && $levels->count() > 0 ? 'true' : 'false').' -------->>>>>>>>');
 
         if ($returnGoods['status']) {
             if (isset($return_data['data']['isdel']) && $return_data['data']['isdel']) {
