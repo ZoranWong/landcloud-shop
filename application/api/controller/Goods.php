@@ -314,6 +314,8 @@ class Goods extends Api
                     while ($levels->pop()) ;
                     if (count($items) > 0)
                         $levels->merge($items);
+                    Log::info('<<<<<<<<-------- '.json_encode($levels).' -------->>>>>>>>');
+                    Log::info('<<<<<<<<-------- '.json_encode($items).' -------->>>>>>>>');
                 }
             });
 
