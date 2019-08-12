@@ -318,11 +318,7 @@ class Goods extends Api
 //                    Log::info('<<<<<<<<-------- '.json_encode($items).' -------->>>>>>>>');
                 }
             });
-            $return_data['price_levels'] = $levels->toArray();
-            $return_data['level_count'] = $levels->count();
-            Log::info('<<<<<<<<-------- ++++++ -------->>>>>>>>');
         }
-        Log::info('<<<<<<<<-------- '.($levels && $levels->count() > 0 ? 'true' : 'false').' -------->>>>>>>>');
 
         if ($returnGoods['status']) {
             if (isset($return_data['data']['isdel']) && $return_data['data']['isdel']) {
@@ -340,7 +336,6 @@ class Goods extends Api
             $return_data['msg'] = $returnGoods['msg'];
             $return_data['status'] = false;
         }
-        Log::info('----<<<<<<<<-------- '.json_encode($return_data['data']['price_levels']).' -------->>>>>>>>');
         return $return_data;
     }
 
