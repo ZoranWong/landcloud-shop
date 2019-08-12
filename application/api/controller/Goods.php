@@ -318,8 +318,8 @@ class Goods extends Api
 //                    Log::info('<<<<<<<<-------- '.json_encode($items).' -------->>>>>>>>');
                 }
             });
-            $returnGoods['data']['price_levels'] = $levels->toArray();
-            $return_data['data']['level_count'] = $levels->count();
+            $return_data['price_levels'] = $levels->toArray();
+            $return_data['level_count'] = $levels->count();
             Log::info('<<<<<<<<-------- ++++++ -------->>>>>>>>');
         }
         Log::info('<<<<<<<<-------- '.($levels && $levels->count() > 0 ? 'true' : 'false').' -------->>>>>>>>');
