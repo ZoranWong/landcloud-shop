@@ -295,7 +295,7 @@ class Goods extends Api
         /**
          * @var Collection $levels
          * */
-        $levels = $returnGoods['data']['price_levels'];
+        $levels = &$returnGoods['data']['price_levels'];
 
         /**
          * @var \app\common\model\Goods $goods
@@ -318,7 +318,7 @@ class Goods extends Api
 //                    Log::info('<<<<<<<<-------- '.json_encode($items).' -------->>>>>>>>');
                 }
             });
-            $returnGoods['data']['price_levels'] = $levels;
+            $returnGoods['data']['price_levels'] = $levels->toArray();
         }
         Log::info('<<<<<<<<-------- '.json_encode($returnGoods['data']['price_levels']).' -------->>>>>>>>');
 
