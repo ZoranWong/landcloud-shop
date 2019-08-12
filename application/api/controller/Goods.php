@@ -332,6 +332,7 @@ class Goods extends Api
             } else {
                 $return_data['msg'] = '查询成功';
                 $return_data['data'] = $returnGoods['data'];
+                $return_data['data']['price_levels'] = $returnGoods['data']['price_levels'];
             }
         } else {
             $return_data['msg'] = $returnGoods['msg'];
