@@ -337,7 +337,7 @@ class Goods extends Api
             $return_data['msg'] = $returnGoods['msg'];
             $return_data['status'] = false;
         }
-        Log::info('<<<<<<<<-------- '.json_encode($return_data['data']['price_levels']).' -------->>>>>>>>');
+        Log::info('----<<<<<<<<-------- '.json_encode($return_data['data']['price_levels']).' -------->>>>>>>>');
         return $return_data;
     }
 
