@@ -320,7 +320,7 @@ class Goods extends Api
             });
             $returnGoods['data']['price_levels'] = $levels;
         }
-        Log::info('<<<<<<<<-------- '.json_encode($levels).' -------->>>>>>>>');
+        Log::info('<<<<<<<<-------- '.json_encode($returnGoods).' -------->>>>>>>>');
 
         if ($returnGoods['status']) {
             if (isset($return_data['data']['isdel']) && $return_data['data']['isdel']) {
@@ -337,6 +337,7 @@ class Goods extends Api
             $return_data['msg'] = $returnGoods['msg'];
             $return_data['status'] = false;
         }
+        Log::info('<<<<<<<<-------- '.json_encode($return_data).' -------->>>>>>>>');
         return $return_data;
     }
 
