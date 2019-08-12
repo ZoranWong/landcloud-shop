@@ -319,6 +319,7 @@ class Goods extends Api
                 }
             });
             $returnGoods['data']['price_levels'] = $levels->toArray();
+            $return_data['data']['level_count'] = $levels->count();
         }
         Log::info('<<<<<<<<-------- '.json_encode($returnGoods['data']['price_levels']).' -------->>>>>>>>');
 
