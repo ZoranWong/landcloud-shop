@@ -195,7 +195,7 @@ class Goods extends Api
         /**
          * @var \app\common\model\Goods[]|Collection $list
          * */
-        $list = &$returnGoods['data'];
+        $list = $returnGoods['data'];
         foreach ($list as &$goods) {
             /**
              * @var Collection $levels
@@ -305,6 +305,7 @@ class Goods extends Api
                     if ($level['buy_num'] == 1) {
                         $goods['price'] = $level['price'];
                     }
+                    Log::info('----- goods =>'.json_encode($goods).' -------');
                 });
             }
         }
