@@ -171,8 +171,49 @@ class Goods extends Api
         $limit = $limit ? $limit : $page_limit;
 
         $returnGoods = $goodsModel->getList('api', $field, $where, $order, $page, $limit);
-        foreach ($returnGoods['data'] as $goods) {
+        $area = "";
+        if ($this->userId) {
+            $user = (new \app\common\model\User())->where('id', 'eq', $this->userId)->find();
+            $area = $user['area_id'];
+            if (!$area) {
+                $where[] = ['user_id', 'eq', $this->userId];
+                $where[] = ['is_def', 'eq', 1];
+                /**@var UserShip $userShip*/
+                $userShip = (new UserShip())->with('area')->where($where)->order('utime desc')->find();
+                if ($userShip) {
+                    $areas = $userShip->area->getParentArea();
+                    foreach ($areas as $a) {
+                        if ($a['info']['parent_id'] == 0) {
+                            $area = $a['info']['id'];
+                            break;
+                        }
+                    }
+                }
+            }
 
+        }
+        /**
+         * @var \app\common\model\Goods[]|Collection $list
+         * */
+        $list = &$returnGoods['data'];
+        foreach ($list as &$goods) {
+            /**
+             * @var Collection $levels
+             * */
+            $levels = $goods['price_levels'];
+
+
+            if ($levels && $levels->count() > 0) {
+                if (!$area) {
+                    $area = "";
+                }
+                $goods->levels($levels, $area);
+                $levels->each(function ($level, $key) use (&$goods, &$levels) {
+                    if ($level['buy_num'] == 1) {
+                        $goods['price'] = $level['price'];
+                    }
+                });
+            }
         }
 
         if ($returnGoods['status']) {
@@ -224,9 +265,52 @@ class Goods extends Api
         $order = "case when g.keywords LIKE '%{$keyword}%' then 1 else 2 end asc,{$order}";
         Log::debug("-------- order condition: {$order} -------");
         $returnGoods = $goodsModel->getList('api', $field, $where, $order, $page, $limit);
+        $area = "";
+        if ($this->userId) {
+            $user = (new \app\common\model\User())->where('id', 'eq', $this->userId)->find();
+            $area = $user['area_id'];
+            if (!$area) {
+                $where[] = ['user_id', 'eq', $this->userId];
+                $where[] = ['is_def', 'eq', 1];
+                $userShip = (new UserShip())->with('area')->where($where)->order('utime desc')->find();
+                if ($userShip) {
+                    $areas = $userShip->area->getParentArea();
+                    foreach ($areas as $a) {
+                        if ($a['info']['parent_id'] == 0) {
+                            $area = $a['info']['id'];
+                            break;
+                        }
+                    }
+                }
+            }
+
+        }
+        /**
+         * @var \app\common\model\Goods[]|Collection $list
+         * */
+        $list = &$returnGoods['data'];
+        foreach ($list as &$goods) {
+            /**
+             * @var Collection $levels
+             * */
+            $levels = $goods['price_levels'];
+
+
+            if ($levels && $levels->count() > 0) {
+                if (!$area) {
+                    $area = "";
+                }
+                $goods->levels($levels, $area);
+                $levels->each(function ($level, $key) use (&$goods, &$levels) {
+                    if ($level['buy_num'] == 1) {
+                        $goods['price'] = $level['price'];
+                    }
+                });
+            }
+        }
         if ($returnGoods['status']) {
             $return_data ['msg'] = '查询成功';
-            $return_data ['data']['list'] = $returnGoods['data'];
+            $return_data ['data']['list'] = $list;
             $return_data ['data']['total_page'] = $returnGoods['total'];
         }
 
