@@ -108,7 +108,8 @@ class Goods extends Api
         $page = input('page/d', 1);
         $limit = input('limit/d', PAGE_SIZE);
         $order = input('order', 'g.sort asc');
-
+        $token = input('token', '');//token值 会员登录后传
+        $this->userId = getUserIdByToken($token);
         if (input('?param.where')) {
             $postWhere = request()->param('where');
             if (is_string($postWhere)) {
@@ -243,7 +244,8 @@ class Goods extends Api
         $page = input('page/d', 1);
         $limit = input('limit/d', PAGE_SIZE);
         $order = input('order', 'g.sort asc');
-
+        $token = input('token', '');//token值 会员登录后传
+        $this->userId = getUserIdByToken($token);
 
         $return_data = $this->allowedField($field);
         if (!$return_data['status']) {
