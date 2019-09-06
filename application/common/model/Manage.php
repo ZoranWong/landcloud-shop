@@ -81,17 +81,8 @@ class Manage extends Common implements Excelable
             $result['msg'] = $validate->getError();
             return $result;
         }
-        $data1 = null;
-
-        if (isset($data['role_id'])) {
-            $data1 = [];
-            foreach ($data['role_id'] as $k => $v) {
-                $row['manage_id'] = $data['id'];
-                $row['role_id'] = $k;
-                $data1[] = $row;
-            }
-            unset($data['role_id']);
-        }
+        $roles = isset($data['role_id']) ? $data['role_id'] : null;
+        if(isset($data['role_id']))unset($data['role_id']);
         //判断是新增还是修改
         if (isset($data['id'])) {
             $manageInfo = $this->where(['id' => $data['id']])->find();
@@ -129,8 +120,6 @@ class Manage extends Common implements Excelable
             }
 //            $data['password'] = $this->enPassword($data['password'], $data['ctime']);
             $data['password'] = encrypt($data['password']);
-
-
             //插入数据库
             if($id = $this->allowField(true)->insertGetId($data)) {
                 \think\facade\Log::info("------{$data['username']} manager info -----".$this->toJson());
@@ -145,8 +134,16 @@ class Manage extends Common implements Excelable
         //清空所有的旧角色
         $manageRoleRelModel->where(['manage_id' => $data['id']])->delete();
 
-        if($data1)
+        if ($roles) {
+            $data1 = [];
+            foreach ($roles as $k => $v) {
+                $row['manage_id'] = $data['id'];
+                $row['role_id'] = $k;
+                $data1[] = $row;
+            }
             $manageRoleRelModel->saveAll($data1);
+        }
+
 
         $result['status'] = true;
         $result['insertId'] = $data['id'];
