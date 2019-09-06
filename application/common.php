@@ -416,6 +416,9 @@ function get_logi_info($logi_code, $field = 'logi_name')
  */
 function get_area($area_id)
 {
+    if(!$area_id){
+        return '';
+    }
     $areaModel = new Area();
     $data = $areaModel->getArea($area_id);
     $parse = "";
