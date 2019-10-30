@@ -4,8 +4,12 @@ namespace app\common\model;
 
 use app\service\excel\Excelable;
 use think\Log;
+use think\model\Collection;
 use think\Validate;
 
+/**
+ * @property-read Collection|ManageRole[] $roles
+ * */
 class Manage extends Common implements Excelable
 {
 
@@ -82,7 +86,7 @@ class Manage extends Common implements Excelable
             return $result;
         }
         $roles = isset($data['role_id']) ? $data['role_id'] : null;
-        if(isset($data['role_id']))unset($data['role_id']);
+        if (isset($data['role_id'])) unset($data['role_id']);
         //判断是新增还是修改
         if (isset($data['id'])) {
             $manageInfo = $this->where(['id' => $data['id']])->find();
@@ -121,9 +125,9 @@ class Manage extends Common implements Excelable
 //            $data['password'] = $this->enPassword($data['password'], $data['ctime']);
             $data['password'] = encrypt($data['password']);
             //插入数据库
-            if($id = $this->allowField(true)->insertGetId($data)) {
-                \think\facade\Log::info("------{$data['username']} manager info -----".$this->toJson());
-            }else{
+            if ($id = $this->allowField(true)->insertGetId($data)) {
+                \think\facade\Log::info("------{$data['username']} manager info -----" . $this->toJson());
+            } else {
                 \think\facade\Log::info('----- save fail -----');
             }
 
@@ -248,7 +252,7 @@ class Manage extends Common implements Excelable
         }
 
 //         $re = $this->save(['password' => $this->enPassword($newPassword, $info['ctime'])], ['id' => $info['id']]);
-        $re = $this->save(['password' => encrypt($newPassword)],['id' => $info['id']]);
+        $re = $this->save(['password' => encrypt($newPassword)], ['id' => $info['id']]);
         if ($re) {
             $result['status'] = true;
             $result['msg'] = "修改成功";
@@ -303,5 +307,35 @@ class Manage extends Common implements Excelable
     public static function exportHeader()
     {
         // TODO: Implement exportHeader() method.
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(ManageRole::class, 'lc_manage_role_rel', 'manage_id', 'role_id');
+    }
+
+    public function sellerIds()
+    {
+        $ids = [];
+        $this->roles->map(function (ManageRole $manageRole) use (&$ids) {
+            return $manageRole->childrenTree->map(function (ManageRole $manageRole) use (&$ids) {
+                return $this->children($manageRole->children, $ids);
+            });
+        });
+
+        return empty($ids) ? [$this['erp_manage_id']] : $ids;
+    }
+
+    protected function children(Collection $collection, &$ids)
+    {
+        return $collection->map(function (ManageRole $manageRole) use (&$ids) {
+            if (!$manageRole->children) {
+                return $manageRole->managers->map(function (Manage $manage) use (&$ids) {
+                    $ids[] = $manage['erp_manage_id'];
+                });
+            } else {
+                return $this->children($manageRole->children, $ids);
+            }
+        });
     }
 }

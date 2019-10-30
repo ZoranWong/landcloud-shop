@@ -38,8 +38,9 @@ class Order extends Manage
     public function index()
     {
         $managerId = session('manage')['id'];
-        $manager = \app\common\model\Manage::find($managerId);
-        $erpId = $manager['erp_manage_id'];
+        /**@var \app\common\model\Manage $manager*/
+        $manager = \app\common\model\Manage::with('roles.childrenTree.managers')->find($managerId);
+        $erpId = $manager->sellerIds();
         if (\app\common\model\Manage::TYPE_SUPER_ID == $managerId) {
             $super = true;
         } else {

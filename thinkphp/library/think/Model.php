@@ -491,7 +491,6 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      */
     protected function checkBeforeSave($data, $where)
     {
-
         if (!empty($data)) {
             // 数据对象赋值
             foreach ($data as $key => $value) {
@@ -572,7 +571,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
                 $this->autoRelationUpdate();
             }
 
-            return false;
+            return true;
         } elseif ($this->autoWriteTimestamp && $this->updateTime && !isset($data[$this->updateTime])) {
             // 自动写入更新时间
             $data[$this->updateTime] = $this->autoWriteTimestamp($this->updateTime);

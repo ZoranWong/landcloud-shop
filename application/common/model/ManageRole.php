@@ -3,7 +3,13 @@
 namespace app\common\model;
 
 use think\Db;
+use think\model\Collection;
 
+/**
+ * @property-read Collection|ManageRole[] $children
+ * @property-read Collection|ManageRole[] $childrenTree
+ * @property-read Collection|Manage[] $managers
+ * */
 class ManageRole extends Common
 {
 
@@ -24,6 +30,8 @@ class ManageRole extends Common
         $result['order'] = 'utime desc';
         return $result;
     }
+
+
 
     /**
      * 根据查询结果，格式化数据
@@ -116,6 +124,33 @@ class ManageRole extends Common
             $manage_role_id = $manageRole['id'];
         }
         return $manage_role_id;
+    }
+
+    public function children()
+    {
+        return $this->hasMany(ManageRole::class, 'parent_id', 'id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(ManageRole::class, 'parent_id', 'id');
+    }
+
+    public function childrenTree()
+    {
+        return $this->hasMany(ManageRole::class, 'parent_id', 'id')
+            ->with('children');
+    }
+
+    public function parentTree()
+    {
+        return $this->belongsTo(ManageRole::class, 'parent_id', 'id')
+            ->with('parent');
+    }
+
+    public function managers()
+    {
+        return $this->belongsToMany(Manage::class, 'lc_manage_role_rel', 'role_id', 'manage_id');
     }
 
 }
