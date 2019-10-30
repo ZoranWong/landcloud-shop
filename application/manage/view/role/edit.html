@@ -1,10 +1,21 @@
 <form style="padding:30px;" class="layui-form seller-alone-form" id="edit_form">
-
+    <div class="layui-form-item">
+        <label class="layui-form-label">父级角色：</label>
+        <div class="layui-input-block">
+            <select name="parent_id" id="edit_parent" value="{$data.parent_id}" placeholder="请输入角色名称" class="layui-input">
+                <option value="{$superId}">顶级角色</option>
+                {if condition="count($roles)>0"}
+                {volist name="roles" id="role"}
+                <option value="{$role.id}">{$role.name}</option>
+                {/volist}
+                {/if}
+            </select>
+        </div>
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label">角色名称：</label>
         <div class="layui-input-block">
             <input name="name" id="edit_name" value="{$data.name}" placeholder="请输入角色名称" class="layui-input" type="text">
-
         </div>
     </div>
 </form>

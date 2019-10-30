@@ -153,4 +153,9 @@ class ManageRole extends Common
         return $this->belongsToMany(Manage::class, 'lc_manage_role_rel', 'role_id', 'manage_id');
     }
 
+    public function roleList($post)
+    {
+        return $this->withJoin('parent', 'LEFT')->tableData($post);
+    }
+
 }

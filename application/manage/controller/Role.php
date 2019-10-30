@@ -14,9 +14,9 @@ class Role extends Manage
     public function index()
     {
         if(Request::isAjax()){
-            $manageRoleModel = new ManageRole();
+            $manageRoleModel = new ManageRole;
             $data = input('param.');
-            return $manageRoleModel->tableData($data);
+            return $manageRoleModel->roleList($data);
         }else{
             return $this->fetch('index');
         }
@@ -40,7 +40,10 @@ class Role extends Manage
             ];
 
         }
-        return $this->fetch('edit');
+        return $this->fetch('edit', [
+            'roles' => ManageRole::where('id', 'neq', \app\common\model\Manage::TYPE_SUPER_ID)
+            ->all(),
+            'superId' => \app\common\model\Manage::TYPE_SUPER_ID]);
     }
     public function del()
     {

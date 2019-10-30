@@ -29,7 +29,9 @@ class Roles extends Migrator
     public function change()
     {
         $this->table('lc_manage_role')
-            ->addColumn(Column::unsignedInteger('parent_id')->setDefault(0)->setComment('父级角色ID'))
+            ->addColumn(Column::unsignedInteger('parent_id')
+                ->setDefault(\app\common\model\Manage::TYPE_SUPER_ID)
+                ->setComment('父级角色ID'))
             ->update();
     }
 }

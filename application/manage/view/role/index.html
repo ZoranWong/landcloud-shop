@@ -47,6 +47,9 @@
             id:'userTable',
             cols: [[
                 {type:'numbers'},
+                {field: 'parent', title: '父级角色', templet: function (data) {
+                        return data['parent'] ? data['parent']['name'] : '顶级角色';
+                    }},
                 {field:'name',title:'角色名称'},
                 {field:'utime',title:'创建时间'},
                 {field: 'operating', title: '操作', width:250, align: 'center', templet:function(data){
